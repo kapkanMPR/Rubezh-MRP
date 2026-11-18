@@ -1,0 +1,223 @@
+{
+  "frameOrder": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "frameSize": [
+    640,
+    896
+  ],
+  "minimumVisibleHeight": 720,
+  "characters": [
+    {
+      "atlas": "green-57.png",
+      "side": "green",
+      "head": 57,
+      "firstSprite": 7862,
+      "page": 346
+    },
+    {
+      "atlas": "green-59.png",
+      "side": "green",
+      "head": 59,
+      "firstSprite": 7866,
+      "page": 347
+    },
+    {
+      "atlas": "green-62.png",
+      "side": "green",
+      "head": 62,
+      "firstSprite": 7870,
+      "page": 348
+    },
+    {
+      "atlas": "green-63.png",
+      "side": "green",
+      "head": 63,
+      "firstSprite": 7874,
+      "page": 349
+    },
+    {
+      "atlas": "green-69.png",
+      "side": "green",
+      "head": 69,
+      "firstSprite": 7878,
+      "page": 350
+    },
+    {
+      "atlas": "green-82.png",
+      "side": "green",
+      "head": 82,
+      "firstSprite": 7882,
+      "page": 351
+    },
+    {
+      "atlas": "green-88.png",
+      "side": "green",
+      "head": 88,
+      "firstSprite": 7886,
+      "page": 352
+    },
+    {
+      "atlas": "green-106.png",
+      "side": "green",
+      "head": 106,
+      "firstSprite": 7890,
+      "page": 353
+    },
+    {
+      "atlas": "green-107.png",
+      "side": "green",
+      "head": 107,
+      "firstSprite": 7894,
+      "page": 354
+    },
+    {
+      "atlas": "green-109.png",
+      "side": "green",
+      "head": 109,
+      "firstSprite": 7898,
+      "page": 355
+    },
+    {
+      "atlas": "green-116.png",
+      "side": "green",
+      "head": 116,
+      "firstSprite": 7902,
+      "page": 356
+    },
+    {
+      "atlas": "green-131.png",
+      "side": "green",
+      "head": 131,
+      "firstSprite": 7906,
+      "page": 357
+    },
+    {
+      "atlas": "green-133.png",
+      "side": "green",
+      "head": 133,
+      "firstSprite": 7910,
+      "page": 358
+    },
+    {
+      "atlas": "green-134.png",
+      "side": "green",
+      "head": 134,
+      "firstSprite": 7914,
+      "page": 359
+    },
+    {
+      "atlas": "green-136.png",
+      "side": "green",
+      "head": 136,
+      "firstSprite": 7918,
+      "page": 360
+    },
+    {
+      "atlas": "green-143.png",
+      "side": "green",
+      "head": 143,
+      "firstSprite": 7922,
+      "page": 361
+    },
+    {
+      "atlas": "red-commander-1.png",
+      "side": "red",
+      "role": "commander",
+      "variant": 1,
+      "firstSprite": 7926,
+      "page": 362
+    },
+    {
+      "atlas": "red-commander-2.png",
+      "side": "red",
+      "role": "commander",
+      "variant": 2,
+      "firstSprite": 7930,
+      "page": 363
+    },
+    {
+      "atlas": "red-machinegunner-1.png",
+      "side": "red",
+      "role": "machinegunner",
+      "variant": 1,
+      "firstSprite": 7934,
+      "page": 364
+    },
+    {
+      "atlas": "red-machinegunner-2.png",
+      "side": "red",
+      "role": "machinegunner",
+      "variant": 2,
+      "firstSprite": 7938,
+      "page": 365
+    },
+    {
+      "atlas": "red-medic-1.png",
+      "side": "red",
+      "role": "medic",
+      "variant": 1,
+      "firstSprite": 7942,
+      "page": 366
+    },
+    {
+      "atlas": "red-medic-2.png",
+      "side": "red",
+      "role": "medic",
+      "variant": 2,
+      "firstSprite": 7946,
+      "page": 367
+    },
+    {
+      "atlas": "red-grenadier-1.png",
+      "side": "red",
+      "role": "grenadier",
+      "variant": 1,
+      "firstSprite": 7950,
+      "page": 368
+    },
+    {
+      "atlas": "red-grenadier-2.png",
+      "side": "red",
+      "role": "grenadier",
+      "variant": 2,
+      "firstSprite": 7954,
+      "page": 369
+    },
+    {
+      "atlas": "red-rifleman-1.png",
+      "side": "red",
+      "role": "rifleman",
+      "variant": 1,
+      "firstSprite": 7958,
+      "page": 370
+    },
+    {
+      "atlas": "red-rifleman-2.png",
+      "side": "red",
+      "role": "rifleman",
+      "variant": 2,
+      "firstSprite": 7962,
+      "page": 371
+    },
+    {
+      "atlas": "red-sniper-1.png",
+      "side": "red",
+      "role": "sniper",
+      "variant": 1,
+      "firstSprite": 7966,
+      "page": 372
+    },
+    {
+      "atlas": "red-sniper-2.png",
+      "side": "red",
+      "role": "sniper",
+      "variant": 2,
+      "firstSprite": 7970,
+      "page": 373
+    }
+  ]
+}

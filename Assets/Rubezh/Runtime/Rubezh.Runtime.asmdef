@@ -1,0 +1,9 @@
+{
+  "name": "Rubezh.Runtime",
+  "references": [
+    "Rubezh.Core",
+    "Rubezh.Camp",
+    "Unity.Addressables",
+    "Unity.ResourceManager"
+  ]
+}

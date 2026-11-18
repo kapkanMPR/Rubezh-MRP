@@ -1,0 +1,90 @@
+{
+  "mission": 19,
+  "charactersPerSecond": 32,
+  "lines": [
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Кедр!.. Кедр, Пламени!.. Кедр, как слышишь?..",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Да поправьте вы эту антенну уже!",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Кедр, Пламени! Приём!",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "КЕДР",
+      "portrait": "FieldCamp/Art/canonical/kedr",
+      "text": "Кедр на приёме! Слышу тебя, Пламя!",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Это твои там шумят? Квадрат ноль тридцать четыре — ноль сорок. У нас отсюда хорошо слышно!",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "КЕДР",
+      "portrait": "FieldCamp/Art/canonical/kedr",
+      "text": "Наши! Прорываемся к вам. На хвост куча туристов присосалась, теперь ещё сбоку поджимают. До вас квартал остался.",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "КЕДР",
+      "portrait": "FieldCamp/Art/canonical/kedr",
+      "text": "Боекомплект на исходе, люди еле идут. Есть раненые. Если сейчас дорогу перекроют — застрянем здесь. Как принял?",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Принял тебя, Кедр. Сейчас поможем. Только головы пока не поднимайте — дадим им прикурить.",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Следом прорывайтесь. Навстречу никого не вышлю, у нас самих тут жарко. На подходе встретим, раненых подхватим.",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "КЕДР",
+      "portrait": "FieldCamp/Art/canonical/kedr",
+      "text": "Понял тебя. Прикрой, Пламя. Очень вовремя ты объявился.",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Давай, Кедр. Дотяни своих.",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Первый, второй, пятый расчёты! Азимут триста сорок. Удаление шестьсот пятьдесят!",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "Заряжай… Беглым!",
+      "mortarSalvo": false
+    },
+    {
+      "speaker": "ПЛАМЯ",
+      "portrait": "Story/plamya",
+      "text": "ТРИСТА! ТРИДЦАТЬ! ТРИ!",
+      "mortarSalvo": true
+    }
+  ]
+}

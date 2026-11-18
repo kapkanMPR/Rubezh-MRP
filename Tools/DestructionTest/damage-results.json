@@ -1,0 +1,16 @@
+[
+  {
+    "scenario": "damage_contract",
+    "kind": 1,
+    "expected": 20.11754,
+    "actual": 20.117538,
+    "duplicatePrevented": true
+  },
+  {
+    "scenario": "damage_contract",
+    "kind": 2,
+    "expected": 44.767445,
+    "actual": 44.767445,
+    "duplicatePrevented": true
+  }
+]

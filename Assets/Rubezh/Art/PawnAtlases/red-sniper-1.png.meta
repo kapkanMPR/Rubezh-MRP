@@ -1,0 +1,131 @@
+fileFormatVersion: 2
+guid: 4b39b6feb6196c25bbfc8b70f9cc075e
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+  isReadable: 0
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  maxTextureSize: 2048
+  textureCompression: 0
+  spriteMode: 2
+  spritePixelsToUnits: 100
+  spriteMeshType: 0
+  alphaIsTransparency: 1
+  alphaSource: 1
+  textureType: 8
+  textureShape: 1
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: red-sniper-1_front
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 896
+        width: 640
+        height: 896
+      alignment: 9
+      pivot: {x: 0.5, y: 0.11607143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9b6eae0d0a362d00bfd559a77ad8f77
+      internalID: 21300000
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red-sniper-1_right
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 896
+        width: 640
+        height: 896
+      alignment: 9
+      pivot: {x: 0.5, y: 0.11607143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03b885b35d3ebbd2c2f84aecb8f6cb8b
+      internalID: 21300001
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red-sniper-1_back
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 640
+        height: 896
+      alignment: 9
+      pivot: {x: 0.5, y: 0.11607143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4102de5ae4415594639393e51242bf2
+      internalID: 21300002
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red-sniper-1_left
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 640
+        height: 896
+      alignment: 9
+      pivot: {x: 0.5, y: 0.11607143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 483a13e50e5d0ebf7eb2eef1d6365ce1
+      internalID: 21300003
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices:
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable: {}
+  platformSettings: []
+  userData:
+  assetBundleName:
+  assetBundleVariant:

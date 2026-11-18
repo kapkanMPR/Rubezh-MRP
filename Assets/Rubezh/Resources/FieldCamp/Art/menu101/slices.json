@@ -1,0 +1,198 @@
+{
+  "coordinateSpace": [
+    1672,
+    941
+  ],
+  "placements": [
+    {
+      "name": "headquarters",
+      "rect": [
+        618,
+        42,
+        466,
+        333
+      ]
+    },
+    {
+      "name": "medical",
+      "rect": [
+        99,
+        186,
+        520,
+        319
+      ]
+    },
+    {
+      "name": "range",
+      "rect": [
+        1068,
+        128,
+        575,
+        350
+      ]
+    },
+    {
+      "name": "barracks",
+      "rect": [
+        199,
+        463,
+        509,
+        364
+      ]
+    },
+    {
+      "name": "warehouse",
+      "rect": [
+        999,
+        436,
+        626,
+        376
+      ]
+    },
+    {
+      "name": "flag",
+      "rect": [
+        776,
+        367,
+        141,
+        193
+      ]
+    }
+  ],
+  "sprites": [
+    {
+      "name": "recruit-tile.png",
+      "size": [
+        418,
+        335
+      ]
+    },
+    {
+      "name": "ground.png",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "name": "range.png",
+      "size": [
+        496,
+        340
+      ]
+    },
+    {
+      "name": "personnel-tile.png",
+      "size": [
+        419,
+        325
+      ]
+    },
+    {
+      "name": "clan.png",
+      "size": [
+        31,
+        36
+      ]
+    },
+    {
+      "name": "avatar.png",
+      "size": [
+        142,
+        130
+      ]
+    },
+    {
+      "name": "squads-tile.png",
+      "size": [
+        413,
+        325
+      ]
+    },
+    {
+      "name": "operations-icon.png",
+      "size": [
+        163,
+        126
+      ]
+    },
+    {
+      "name": "flag.png",
+      "size": [
+        141,
+        193
+      ]
+    },
+    {
+      "name": "barracks.png",
+      "size": [
+        490,
+        383
+      ]
+    },
+    {
+      "name": "friends.png",
+      "size": [
+        40,
+        33
+      ]
+    },
+    {
+      "name": "interior.png",
+      "size": [
+        1672,
+        941
+      ]
+    },
+    {
+      "name": "mail.png",
+      "size": [
+        36,
+        29
+      ]
+    },
+    {
+      "name": "squad-icon.png",
+      "size": [
+        162,
+        114
+      ]
+    },
+    {
+      "name": "warehouse.png",
+      "size": [
+        499,
+        353
+      ]
+    },
+    {
+      "name": "headquarters.png",
+      "size": [
+        487,
+        396
+      ]
+    },
+    {
+      "name": "camp-icon.png",
+      "size": [
+        90,
+        78
+      ]
+    },
+    {
+      "name": "medical.png",
+      "size": [
+        457,
+        320
+      ]
+    },
+    {
+      "name": "chat.png",
+      "size": [
+        33,
+        29
+      ]
+    }
+  ],
+  "note": "Native UI text, currencies, hit targets and labels are separate from images."
+}

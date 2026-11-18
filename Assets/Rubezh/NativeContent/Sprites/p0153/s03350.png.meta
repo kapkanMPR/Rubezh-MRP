@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 473ce3b3ae755b04a46c0a1b7d95731d
+TextureImporter:
+  serializedVersion: 13
+  externalObjects: {}
+  textureType: 8
+  spriteMode: 1
+  spritePixelsToUnits: 1
+  spriteMeshType: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  mipmaps:
+    enableMipMap: 0
+    sRGBTexture: 0
+  isReadable: 0
+  alphaIsTransparency: 0
+  maxTextureSize: 8192
+  nPOTScale: 0
+  platformSettings: []

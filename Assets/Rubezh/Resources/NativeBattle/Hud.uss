@@ -1,0 +1,32 @@
+/* Logical 1000-high battlefield coordinates, matching RubezhUI + RubezhPresentation. */
+.battle-button {
+    margin: 0;
+    padding: 10px 18px;
+    background-color: rgb(27, 43, 46);
+    color: rgb(222, 230, 214);
+    border-color: rgb(56, 74, 74);
+    border-width: 2px;
+    border-radius: 8px;
+    font-size: 24px;
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    flex-shrink: 0;
+}
+.battle-button:hover, .battle-button:active, .battle-button:focus {
+    background-color: rgb(31, 50, 53);
+    border-color: rgb(186, 212, 148);
+}
+.battle-button:disabled { opacity: 0.5; }
+.battle-chosen { background-color: rgb(36, 59, 46); border-color: rgb(186, 212, 148); }
+.battle-primary { background-color: rgb(186, 212, 148); border-color: rgb(97, 122, 84); color: rgb(23, 36, 23); -unity-font-style: bold; }
+.battle-panel, .battle-squad-card {
+    background-color: rgb(20, 33, 38);
+    border-color: rgb(56, 74, 69);
+    border-width: 2px;
+    border-radius: 8px;
+}
+.battle-diagnostic { background-color: rgba(0, 0, 0, 0.72); color: rgb(156, 173, 166); }
+.battle-panel .unity-scroller--vertical { width: 16px; }
+.battle-panel .unity-scroller__low-button, .battle-panel .unity-scroller__high-button { display: none; }
+.battle-panel .unity-base-slider__dragger { background-color: rgb(66, 89, 84); border-radius: 8px; }

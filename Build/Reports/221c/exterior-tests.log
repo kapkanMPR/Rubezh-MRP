@@ -1,0 +1,6 @@
+PASS missing atlas rebuilt from 96 sources
+PASS unchanged atlas preserved
+PASS changed pixels regenerate catalog hashes
+PASS missing page regenerated
+PASS incomplete sources rejected
+Contracts only: PNG encoder is a stub; no Unity image/import verification.

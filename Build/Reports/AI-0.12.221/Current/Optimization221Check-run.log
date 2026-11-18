@@ -1,0 +1,5 @@
+PASS primitive batching: synthetic alternating sprite/solid workload 320 -> 8 material runs, all geometry/colors/depth/clips/order preserved.
+PASS benchmark regression: 31 checks
+PASS grouped MAX mask tests: 101 geometry, pan, invalidation, live vehicle and resource checks.
+PASS ground four-atlas palette: 34058 source mapping, order, channel conservation, eligibility and bounded reuse checks.
+PASS Optimization221: 44075 contract checks. No actual Unity rendering, shader compilation, Vulkan pixels or FPS measured.

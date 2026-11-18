@@ -1,0 +1,8980 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_GameObject:
+    fileID: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script:
+    fileID: 11500000
+    guid: c7e0cf534cd34580ac5bf5d188a36e61
+    type: 3
+  m_Name: Campaign_08
+  displayName: Старые знакомые
+  m_EditorClassIdentifier: ''
+  formatVersion: 6
+  campaignMission: 8
+  columns: 46
+  rows: 30
+  theme: 2
+  enabledInGame: true
+  useInQuickBattle: false
+  customDefenders: true
+  greenVehicleArrival: false
+  overrideBriefing: true
+  operationDescription: Барс вышел на след группы, которая преследовала нас в посёлке. Похоже, теперь мы знаем, где они остановились. Другого шанса сбросить этот хвост может не быть. Действуем сейчас.
+  expectedThreats: 'Группа вполне вероятно подготовлена куда лучше, чем те, с которыми мы сталкивались ранее. '
+  flag:
+    m_X: 42
+    m_Y: 15
+  playerSpawn:
+    m_X: 3
+    m_Y: 15
+  botSpawn:
+    m_X: 36
+    m_Y: 15
+  roof:
+  - x: 22
+    y: 3
+  - x: 23
+    y: 3
+  - x: 24
+    y: 3
+  - x: 25
+    y: 3
+  - x: 26
+    y: 3
+  - x: 27
+    y: 3
+  - x: 28
+    y: 3
+  - x: 29
+    y: 3
+  - x: 30
+    y: 3
+  - x: 35
+    y: 3
+  - x: 36
+    y: 3
+  - x: 37
+    y: 3
+  - x: 38
+    y: 3
+  - x: 22
+    y: 4
+  - x: 23
+    y: 4
+  - x: 24
+    y: 4
+  - x: 25
+    y: 4
+  - x: 26
+    y: 4
+  - x: 27
+    y: 4
+  - x: 28
+    y: 4
+  - x: 29
+    y: 4
+  - x: 30
+    y: 4
+  - x: 33
+    y: 4
+  - x: 34
+    y: 4
+  - x: 35
+    y: 4
+  - x: 36
+    y: 4
+  - x: 37
+    y: 4
+  - x: 38
+    y: 4
+  - x: 24
+    y: 5
+  - x: 25
+    y: 5
+  - x: 26
+    y: 5
+  - x: 27
+    y: 5
+  - x: 28
+    y: 5
+  - x: 29
+    y: 5
+  - x: 30
+    y: 5
+  - x: 31
+    y: 5
+  - x: 32
+    y: 5
+  - x: 33
+    y: 5
+  - x: 34
+    y: 5
+  - x: 35
+    y: 5
+  - x: 36
+    y: 5
+  - x: 37
+    y: 5
+  - x: 38
+    y: 5
+  - x: 22
+    y: 6
+  - x: 24
+    y: 6
+  - x: 25
+    y: 6
+  - x: 26
+    y: 6
+  - x: 27
+    y: 6
+  - x: 28
+    y: 6
+  - x: 29
+    y: 6
+  - x: 30
+    y: 6
+  - x: 31
+    y: 6
+  - x: 32
+    y: 6
+  - x: 33
+    y: 6
+  - x: 34
+    y: 6
+  - x: 35
+    y: 6
+  - x: 36
+    y: 6
+  - x: 37
+    y: 6
+  - x: 38
+    y: 6
+  - x: 22
+    y: 7
+  - x: 23
+    y: 7
+  - x: 24
+    y: 7
+  - x: 25
+    y: 7
+  - x: 26
+    y: 7
+  - x: 27
+    y: 7
+  - x: 28
+    y: 7
+  - x: 29
+    y: 7
+  - x: 30
+    y: 7
+  - x: 35
+    y: 7
+  - x: 36
+    y: 7
+  - x: 37
+    y: 7
+  - x: 38
+    y: 7
+  - x: 22
+    y: 8
+  - x: 23
+    y: 8
+  - x: 24
+    y: 8
+  - x: 25
+    y: 8
+  - x: 26
+    y: 8
+  - x: 27
+    y: 8
+  - x: 28
+    y: 8
+  - x: 29
+    y: 8
+  - x: 30
+    y: 8
+  - x: 34
+    y: 8
+  - x: 35
+    y: 8
+  - x: 36
+    y: 8
+  - x: 37
+    y: 8
+  - x: 38
+    y: 8
+  - x: 28
+    y: 9
+  - x: 29
+    y: 9
+  - x: 30
+    y: 9
+  - x: 34
+    y: 9
+  - x: 35
+    y: 9
+  - x: 36
+    y: 9
+  - x: 37
+    y: 9
+  - x: 38
+    y: 9
+  - x: 33
+    y: 10
+  - x: 34
+    y: 10
+  - x: 35
+    y: 10
+  - x: 36
+    y: 10
+  - x: 37
+    y: 10
+  - x: 38
+    y: 10
+  - x: 33
+    y: 11
+  - x: 34
+    y: 11
+  - x: 35
+    y: 11
+  - x: 36
+    y: 11
+  - x: 37
+    y: 11
+  - x: 38
+    y: 11
+  - x: 33
+    y: 12
+  - x: 35
+    y: 12
+  - x: 36
+    y: 12
+  - x: 37
+    y: 12
+  - x: 38
+    y: 12
+  - x: 33
+    y: 13
+  - x: 34
+    y: 13
+  - x: 35
+    y: 13
+  - x: 36
+    y: 13
+  - x: 37
+    y: 13
+  - x: 38
+    y: 13
+  - x: 33
+    y: 14
+  - x: 34
+    y: 14
+  - x: 35
+    y: 14
+  - x: 36
+    y: 14
+  - x: 37
+    y: 14
+  - x: 38
+    y: 21
+  - x: 33
+    y: 22
+  - x: 34
+    y: 22
+  - x: 35
+    y: 22
+  - x: 36
+    y: 22
+  - x: 37
+    y: 22
+  - x: 38
+    y: 22
+  - x: 31
+    y: 23
+  - x: 32
+    y: 23
+  - x: 33
+    y: 23
+  - x: 34
+    y: 23
+  - x: 35
+    y: 23
+  - x: 36
+    y: 23
+  - x: 37
+    y: 23
+  - x: 38
+    y: 23
+  - x: 39
+    y: 23
+  - x: 29
+    y: 24
+  - x: 30
+    y: 24
+  - x: 31
+    y: 24
+  - x: 32
+    y: 24
+  - x: 33
+    y: 24
+  - x: 34
+    y: 24
+  - x: 35
+    y: 24
+  - x: 36
+    y: 24
+  - x: 37
+    y: 24
+  - x: 38
+    y: 24
+  - x: 39
+    y: 24
+  - x: 28
+    y: 25
+  - x: 29
+    y: 25
+  - x: 30
+    y: 25
+  - x: 31
+    y: 25
+  - x: 32
+    y: 25
+  - x: 33
+    y: 25
+  - x: 34
+    y: 25
+  - x: 35
+    y: 25
+  - x: 36
+    y: 25
+  - x: 37
+    y: 25
+  - x: 38
+    y: 25
+  - x: 39
+    y: 25
+  - x: 28
+    y: 26
+  - x: 29
+    y: 26
+  - x: 30
+    y: 26
+  - x: 31
+    y: 26
+  - x: 32
+    y: 26
+  - x: 33
+    y: 26
+  - x: 34
+    y: 26
+  - x: 35
+    y: 26
+  - x: 36
+    y: 26
+  - x: 37
+    y: 26
+  - x: 38
+    y: 26
+  - x: 39
+    y: 26
+  - x: 29
+    y: 27
+  - x: 30
+    y: 27
+  - x: 31
+    y: 27
+  - x: 32
+    y: 27
+  - x: 33
+    y: 27
+  - x: 34
+    y: 27
+  - x: 35
+    y: 27
+  - x: 36
+    y: 27
+  - x: 37
+    y: 27
+  - x: 38
+    y: 27
+  objects:
+  - x: 22
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0000
+    assetId: corner-plaster-1
+    mirrored: false
+  - x: 23
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0001
+    assetId: S02-09
+    mirrored: false
+  - x: 24
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0002
+    assetId: S28-09
+    mirrored: false
+  - x: 25
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0003
+    assetId: S28-09
+    mirrored: false
+  - x: 26
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0004
+    assetId: S28-09
+    mirrored: false
+  - x: 27
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0005
+    assetId: wide-S12-09-x
+    mirrored: false
+  - x: 29
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0006
+    assetId: S28-09
+    mirrored: false
+  - x: 30
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0007
+    assetId: S02-09
+    mirrored: false
+  - x: 31
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0008
+    assetId: tee-plaster-4
+    mirrored: false
+  - x: 32
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0009
+    assetId: S30-09
+    mirrored: false
+  - x: 35
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0010
+    assetId: S30-09
+    mirrored: false
+  - x: 36
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0011
+    assetId: S28-09
+    mirrored: false
+  - x: 37
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0012
+    assetId: S02-09
+    mirrored: false
+  - x: 38
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0013
+    assetId: S28-09
+    mirrored: false
+  - x: 39
+    y: 2
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0014
+    assetId: corner-plaster-2
+    mirrored: false
+  - x: 22
+    y: 3
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0015
+    assetId: S28-10
+    mirrored: false
+  - x: 31
+    y: 3
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0016
+    assetId: wide-S12-09-y
+    mirrored: false
+  - x: 39
+    y: 3
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0017
+    assetId: S28-10
+    mirrored: false
+  - x: 22
+    y: 4
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0018
+    assetId: wide-S12-09-y
+    mirrored: false
+  - x: 39
+    y: 4
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0019
+    assetId: S28-10
+    mirrored: false
+  - x: 31
+    y: 5
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0020
+    assetId: S02-10
+    mirrored: false
+  - x: 39
+    y: 5
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0021
+    assetId: S28-10
+    mirrored: false
+  - x: 22
+    y: 6
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0022
+    assetId: S01-10
+    mirrored: false
+  - x: 31
+    y: 6
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0023
+    assetId: S01-10
+    mirrored: false
+  - x: 39
+    y: 6
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0024
+    assetId: S01-10
+    mirrored: false
+  - x: 22
+    y: 7
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0025
+    assetId: S28-10
+    mirrored: false
+  - x: 31
+    y: 7
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0026
+    assetId: S28-10
+    mirrored: false
+  - x: 39
+    y: 7
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0027
+    assetId: S28-10
+    mirrored: false
+  - x: 22
+    y: 8
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0028
+    assetId: S28-10
+    mirrored: false
+  - x: 31
+    y: 8
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0029
+    assetId: S28-10
+    mirrored: false
+  - x: 39
+    y: 8
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0030
+    assetId: S02-10
+    mirrored: false
+  - x: 22
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0031
+    assetId: S30-10
+    mirrored: false
+  - x: 27
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0032
+    assetId: S30-09
+    mirrored: false
+  - x: 28
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0033
+    assetId: S28-09
+    mirrored: false
+  - x: 29
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0034
+    assetId: S28-09
+    mirrored: false
+  - x: 30
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0035
+    assetId: S01-09
+    mirrored: false
+  - x: 31
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0036
+    assetId: corner-plaster-3
+    mirrored: false
+  - x: 39
+    y: 9
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0037
+    assetId: S28-10
+    mirrored: false
+  - x: 32
+    y: 10
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0038
+    assetId: S30-10
+    mirrored: false
+  - x: 39
+    y: 10
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0039
+    assetId: S28-10
+    mirrored: false
+  - x: 32
+    y: 11
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0040
+    assetId: S28-10
+    mirrored: false
+  - x: 39
+    y: 11
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0041
+    assetId: S28-10
+    mirrored: false
+  - x: 32
+    y: 12
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0042
+    assetId: S01-10
+    mirrored: false
+  - x: 39
+    y: 12
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0043
+    assetId: S01-10
+    mirrored: false
+  - x: 32
+    y: 13
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0044
+    assetId: S28-10
+    mirrored: false
+  - x: 39
+    y: 13
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0045
+    assetId: S28-10
+    mirrored: false
+  - x: 32
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0046
+    assetId: corner-plaster-4
+    mirrored: false
+  - x: 33
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0047
+    assetId: S28-09
+    mirrored: false
+  - x: 34
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0048
+    assetId: S02-09
+    mirrored: false
+  - x: 35
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0049
+    assetId: S28-09
+    mirrored: false
+  - x: 36
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0050
+    assetId: S01-09
+    mirrored: false
+  - x: 37
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0051
+    assetId: S28-09
+    mirrored: false
+  - x: 38
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0052
+    assetId: S28-09
+    mirrored: false
+  - x: 39
+    y: 14
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0053
+    assetId: corner-plaster-3
+    mirrored: false
+  - x: 27
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0054
+    assetId: W41-1-S30-02
+    mirrored: false
+  - x: 31
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0055
+    assetId: W41-1-S30-01
+    mirrored: false
+  - x: 32
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0056
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 33
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0057
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 34
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0058
+    assetId: W41-1-S02-01
+    mirrored: false
+  - x: 35
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0059
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 36
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0060
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 37
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0061
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 38
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0062
+    assetId: W41-1-wide-S12-01-x
+    mirrored: false
+  - x: 40
+    y: 21
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0063
+    assetId: W41-1-corner-concrete-2
+    mirrored: false
+  - x: 27
+    y: 22
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0064
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 40
+    y: 22
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0065
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 27
+    y: 23
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0066
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 40
+    y: 23
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0067
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 27
+    y: 24
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0068
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 40
+    y: 24
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0069
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 27
+    y: 25
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0070
+    assetId: W41-1-S01-02
+    mirrored: false
+  - x: 40
+    y: 25
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0071
+    assetId: W41-1-S01-02
+    mirrored: false
+  - x: 27
+    y: 26
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0072
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 40
+    y: 26
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0073
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 27
+    y: 27
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0074
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 40
+    y: 27
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0075
+    assetId: W41-1-S28-02
+    mirrored: false
+  - x: 27
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0076
+    assetId: W41-1-corner-concrete-4
+    mirrored: false
+  - x: 28
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0077
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 29
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0078
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 30
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0079
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 31
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0080
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 32
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0081
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 33
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0082
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 34
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0083
+    assetId: W41-1-S01-01
+    mirrored: false
+  - x: 35
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0084
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 36
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0085
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 37
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0086
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 38
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0087
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 39
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0088
+    assetId: W41-1-S28-01
+    mirrored: false
+  - x: 40
+    y: 28
+    kind: 5
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0089
+    assetId: W41-1-corner-concrete-3
+    mirrored: false
+  - x: 23
+    y: 3
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0090
+    assetId: B39-03
+    mirrored: false
+  - x: 29
+    y: 3
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0091
+    assetId: S25-01
+    mirrored: false
+  - x: 29
+    y: 3
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0092
+    assetId: D37-06
+    mirrored: false
+    parentUid: layout048-8-0091
+    offsetX: -0.22
+    offsetY: -0.12
+  - x: 29
+    y: 3
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0093
+    assetId: D37-23
+    mirrored: false
+    parentUid: layout048-8-0091
+    offsetX: 0.2
+    offsetY: 0.12
+  - x: 23
+    y: 8
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0094
+    assetId: D37-12
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 30
+    y: 5
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0095
+    assetId: S26-03
+    mirrored: false
+  - x: 32
+    y: 3
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0096
+    assetId: B39-03
+    mirrored: false
+  - x: 37
+    y: 8
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0097
+    assetId: S26-07
+    mirrored: false
+  - x: 37
+    y: 3
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0098
+    assetId: S25-01
+    mirrored: false
+  - x: 37
+    y: 3
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0099
+    assetId: D37-06
+    mirrored: false
+    parentUid: layout048-8-0098
+    offsetX: -0.22
+    offsetY: -0.12
+  - x: 37
+    y: 3
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0100
+    assetId: D37-23
+    mirrored: false
+    parentUid: layout048-8-0098
+    offsetX: 0.2
+    offsetY: 0.12
+  - x: 32
+    y: 8
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0101
+    assetId: D37-12
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 38
+    y: 5
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0102
+    assetId: S26-03
+    mirrored: false
+  - x: 33
+    y: 10
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0103
+    assetId: B39-03
+    mirrored: false
+  - x: 37
+    y: 13
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0104
+    assetId: S26-07
+    mirrored: false
+  - x: 37
+    y: 10
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0105
+    assetId: S25-01
+    mirrored: false
+  - x: 37
+    y: 10
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0106
+    assetId: D37-06
+    mirrored: false
+    parentUid: layout048-8-0105
+    offsetX: -0.22
+    offsetY: -0.12
+  - x: 37
+    y: 10
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0107
+    assetId: D37-23
+    mirrored: false
+    parentUid: layout048-8-0105
+    offsetX: 0.2
+    offsetY: 0.12
+  - x: 33
+    y: 13
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0108
+    assetId: D37-12
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 28
+    y: 22
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0109
+    assetId: B39-03
+    mirrored: false
+  - x: 38
+    y: 27
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0110
+    assetId: S26-07
+    mirrored: false
+  - x: 38
+    y: 22
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0111
+    assetId: S25-01
+    mirrored: false
+  - x: 38
+    y: 22
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0112
+    assetId: D37-06
+    mirrored: false
+    parentUid: layout048-8-0111
+    offsetX: -0.22
+    offsetY: -0.12
+  - x: 38
+    y: 22
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0113
+    assetId: D37-23
+    mirrored: false
+    parentUid: layout048-8-0111
+    offsetX: 0.2
+    offsetY: 0.12
+  - x: 28
+    y: 27
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0114
+    assetId: D37-12
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 39
+    y: 24
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0115
+    assetId: S26-03
+    mirrored: false
+  - x: 25
+    y: 6
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0116
+    assetId: B39-03
+    mirrored: false
+  - x: 34
+    y: 6
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0117
+    assetId: B39-03
+    mirrored: false
+  - x: 30
+    y: 25
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0118
+    assetId: B39-03
+    mirrored: false
+  - x: 35
+    y: 25
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0119
+    assetId: B39-03
+    mirrored: false
+  - x: 23
+    y: 9
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0120
+    assetId: debris042-68
+    mirrored: false
+    parentUid: ''
+    offsetX: 0.1046790494843653
+    offsetY: -0.18952063364105293
+  - x: 33
+    y: 2
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0135
+    assetId: debris042-69
+    mirrored: false
+    parentUid: ''
+    offsetX: 0.07400492418064952
+    offsetY: -0.2379915577225365
+  - x: 28
+    y: 21
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0142
+    assetId: debris042-81
+    mirrored: false
+    parentUid: ''
+    offsetX: 0.04502693880423525
+    offsetY: -0.23532892573414138
+  - x: 1
+    y: 6
+    kind: 103
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0153
+    assetId: legacy-103
+    mirrored: false
+  - x: 10
+    y: 9
+    kind: 103
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0154
+    assetId: legacy-103
+    mirrored: false
+  - x: 6
+    y: 3
+    kind: 104
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0155
+    assetId: legacy-104
+    mirrored: false
+  - x: 5
+    y: 8
+    kind: 105
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0157
+    assetId: legacy-105
+    mirrored: false
+  - x: 3
+    y: 1
+    kind: 106
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0159
+    assetId: legacy-106
+    mirrored: false
+  - x: 7
+    y: 28
+    kind: 104
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0160
+    assetId: legacy-104
+    mirrored: false
+  - x: 1
+    y: 27
+    kind: 105
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0161
+    assetId: legacy-105
+    mirrored: false
+  - x: 12
+    y: 24
+    kind: 106
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0162
+    assetId: legacy-106
+    mirrored: false
+  - x: 8
+    y: 25
+    kind: 102
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0163
+    assetId: legacy-102
+    mirrored: false
+  - x: 6
+    y: 23
+    kind: 101
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: layout048-8-0164
+    assetId: legacy-101
+    mirrored: false
+  - x: 21
+    y: 27
+    kind: 111
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00013
+    assetId: legacy-111
+    mirrored: false
+  - x: 20
+    y: 22
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00014
+    assetId: S00-01
+    mirrored: false
+  - x: 16
+    y: 8
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00020
+    assetId: C37-01
+    mirrored: false
+  - x: 9
+    y: 18
+    kind: 105
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00028
+    assetId: legacy-105
+    mirrored: false
+  - x: 17
+    y: 18
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00002
+    assetId: S25-03
+    mirrored: false
+  - x: 17
+    y: 18
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00003
+    assetId: D37-06
+    mirrored: false
+    parentUid: diversity051-8-00002
+    offsetX: -0.22
+    offsetY: -0.12
+  - x: 17
+    y: 18
+    kind: 0
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00004
+    assetId: D37-25
+    mirrored: false
+    parentUid: diversity051-8-00002
+    offsetX: 0.2
+    offsetY: 0.12
+  - x: 15
+    y: 21
+    kind: 1
+    rotationDegrees: 0
+    scaleX: 1
+    scaleY: 1
+    uid: diversity051-8-00005
+    assetId: S25-07
+    mirrored: false
+  - x: 19
+    y: 7
+    uid: 8b563204-dfe1-4c0c-9cec-888c2aa5e2cb
+    assetId: S10-02
+    kind: 1
+    mirrored: false
+  - x: 19
+    y: 9
+    uid: da787c69-0822-422f-9293-18612a90b7b0
+    assetId: S10-02
+    kind: 1
+    mirrored: false
+  - x: 25
+    y: 12
+    uid: 7fbd5637-9c27-48c4-9ad7-5fbef40f527e
+    assetId: S10-01
+    kind: 1
+    mirrored: false
+  - x: 23
+    y: 12
+    uid: 3eb10880-c360-4955-a476-ae7de5cbb8c4
+    assetId: S10-01
+    kind: 1
+    mirrored: false
+  - x: 29
+    y: 18
+    uid: 0a18021f-26d4-4799-9bfb-cfd10ac7839e
+    assetId: S10-01
+    kind: 1
+    mirrored: false
+  - x: 30
+    y: 12
+    uid: 7e833043-7b70-43d5-849a-3372cbc79a66
+    assetId: S10-04
+    kind: 1
+    mirrored: false
+  - x: 23
+    y: 11
+    uid: 957dac51-96c7-4294-a52d-bdfff3811f0e
+    assetId: S00-08
+    kind: 1
+    mirrored: false
+  - x: 19
+    y: 6
+    uid: c2b39059-7913-48e2-8815-3b9286167b1c
+    assetId: S00-08
+    kind: 1
+    mirrored: false
+  - x: 26
+    y: 9
+    uid: 09d700a5-df55-4fd5-8e3d-128bf68cbd91
+    assetId: debris042-60
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 27
+    y: 7
+    uid: 224cadb5-0d75-48f5-bf3a-b6d84e4e3529
+    assetId: debris042-60
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 31
+    y: 10
+    uid: 31472247-aa7b-41e1-99f2-4eb18f995cc7
+    assetId: debris042-60
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 31
+    y: 22
+    uid: 7e61f1a6-a51b-4d9a-92d0-d5da6ce10f7d
+    assetId: debris042-88
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 30
+    y: 23
+    uid: 2d3dd36c-b49b-40f3-a18a-eb724b9ba670
+    assetId: debris042-88
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 30
+    y: 21
+    uid: ddb2afa3-fc97-4abe-8f25-c098966ddd86
+    assetId: debris042-88
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 30
+    y: 22
+    uid: ad1e37d2-1c05-479e-8b68-1d6a680d9d4c
+    assetId: debris042-88
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 34
+    y: 22
+    uid: 278226d3-be66-4711-a83a-0f3260a62aaa
+    assetId: debris042-88
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 30
+    y: 23
+    uid: 3ef55255-c939-4d7a-b867-c07c74ed6ed5
+    assetId: debris042-91
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.25
+    offsetY: -0.15
+  - x: 35
+    y: 23
+    uid: 8a8464b2-b8a3-47f6-80bc-2f32772575c5
+    assetId: debris042-91
+    kind: 0
+    mirrored: false
+    parentUid: ''
+    offsetX: 0
+    offsetY: 0
+  - x: 9
+    y: 15
+    uid: 97628c4b-9d04-4f34-b309-659ad525111e
+    assetId: legacy-107
+    kind: 107
+    mirrored: false
+  - x: 17
+    y: 3
+    uid: 26ad7372-913a-4902-a9b5-4b5c731f6da2
+    assetId: legacy-107
+    kind: 107
+    mirrored: false
+  - x: 14
+    y: 16
+    uid: 87b10003-84b1-4240-92f2-6b3eea49be76
+    assetId: legacy-107
+    kind: 107
+    mirrored: false
+  - uid: finish053-8-1
+    assetId: debris042-68
+    kind: 0
+    x: 27
+    y: 10
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-2
+    assetId: debris042-69
+    kind: 0
+    x: 28
+    y: 3
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-3
+    assetId: debris042-70
+    kind: 0
+    x: 28
+    y: 3
+    mirrored: false
+    parentUid: ''
+    offsetX: 0.23
+    offsetY: -0.13
+  - uid: finish053-8-4
+    assetId: debris042-70
+    kind: 0
+    x: 32
+    y: 9
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-5
+    assetId: debris042-65
+    kind: 0
+    x: 21
+    y: 5
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-6
+    assetId: debris042-84
+    kind: 0
+    x: 31
+    y: 20
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-7
+    assetId: debris042-85
+    kind: 0
+    x: 39
+    y: 20
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-8
+    assetId: debris042-68
+    kind: 0
+    x: 34
+    y: 1
+    mirrored: false
+    parentUid: ''
+    offsetX: -0.2
+    offsetY: 0.11
+  - uid: finish053-8-9
+    assetId: debris042-69
+    kind: 0
+    x: 34
+    y: 1
+    mirrored: false
+    parentUid: ''
+    offsetX: 0.23
+    offsetY: -0.13
+  ground:
+  - x: 0
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 0
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 7
+    y: 0
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 8
+    y: 0
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 9
+    y: 0
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 10
+    y: 0
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 11
+    y: 0
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 12
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 0
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 0
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 1
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 7
+    y: 1
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 8
+    y: 1
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 9
+    y: 1
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 10
+    y: 1
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 11
+    y: 1
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 12
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 1
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 1
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 2
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 7
+    y: 2
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 8
+    y: 2
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 9
+    y: 2
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 10
+    y: 2
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 11
+    y: 2
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 12
+    y: 2
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 2
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 2
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 2
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 2
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 2
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 2
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 2
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 40
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 2
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 3
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 7
+    y: 3
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 8
+    y: 3
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 9
+    y: 3
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 10
+    y: 3
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 11
+    y: 3
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 12
+    y: 3
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 3
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 3
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 3
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 3
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 3
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 3
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 37
+    y: 3
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 38
+    y: 3
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 39
+    y: 3
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 3
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 4
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 7
+    y: 4
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 8
+    y: 4
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 9
+    y: 4
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 10
+    y: 4
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 11
+    y: 4
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 12
+    y: 4
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 4
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 4
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 4
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 4
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 4
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 4
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 37
+    y: 4
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 38
+    y: 4
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 39
+    y: 4
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 4
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 5
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 37
+    y: 5
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 38
+    y: 5
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 39
+    y: 5
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 41
+    y: 5
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 42
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 5
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 6
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 34
+    y: 6
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 35
+    y: 6
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 36
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 6
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 41
+    y: 6
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 42
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 6
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 7
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 34
+    y: 7
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 35
+    y: 7
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 36
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 7
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 41
+    y: 7
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 42
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 7
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 31
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 32
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 8
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 34
+    y: 8
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 35
+    y: 8
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 36
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 8
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 41
+    y: 8
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 42
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 8
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 23
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 24
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 25
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 26
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 27
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 28
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 29
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 30
+    y: 9
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 31
+    y: 9
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 32
+    y: 9
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 33
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 9
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 41
+    y: 9
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 42
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 9
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 25
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 26
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 27
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 28
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 29
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 30
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 10
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 33
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 10
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 10
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 43
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 44
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 45
+    y: 10
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 0
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 25
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 26
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 27
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 28
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 29
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 30
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 11
+    kind: 0
+    assetId: floor-wood-05
+    mirrored: false
+  - x: 33
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 11
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 11
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 43
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 44
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 45
+    y: 11
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 0
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 25
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 26
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 27
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 28
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 29
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 30
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 12
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 12
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 43
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 44
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 45
+    y: 12
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 0
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 25
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 26
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 27
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 28
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 29
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 30
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 13
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 13
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 43
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 44
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 45
+    y: 13
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 0
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 25
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 26
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 27
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 28
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 29
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 30
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 33
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 34
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 35
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 36
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 37
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 38
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 39
+    y: 14
+    kind: 0
+    assetId: floor-wood-10
+    mirrored: false
+  - x: 40
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 14
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 43
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 44
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 45
+    y: 14
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 0
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 15
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 15
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 16
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 16
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 17
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 17
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 18
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 18
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 13
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 14
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 15
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 16
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 17
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 18
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 31
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 32
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 33
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 34
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 35
+    y: 19
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 36
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 19
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 23
+    y: 20
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 24
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 28
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 29
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 30
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 33
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 34
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 35
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 36
+    y: 20
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 37
+    y: 20
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 38
+    y: 20
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 39
+    y: 20
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 40
+    y: 20
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 41
+    y: 20
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 42
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 20
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 23
+    y: 21
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 24
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 34
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 35
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 36
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 37
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 38
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 39
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 40
+    y: 21
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 41
+    y: 21
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 42
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 21
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 23
+    y: 22
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 24
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 34
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 35
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 36
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 37
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 38
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 39
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 40
+    y: 22
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 41
+    y: 22
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 42
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 22
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 23
+    y: 23
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 24
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 34
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 35
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 36
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 37
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 38
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 39
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 40
+    y: 23
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 41
+    y: 23
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 42
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 23
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 1
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 2
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 3
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 4
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 5
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 6
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 7
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 8
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 9
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 10
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 11
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 12
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 19
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 20
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 21
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 22
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 23
+    y: 24
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 24
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 25
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 26
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 27
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 34
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 35
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 36
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 37
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 38
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 39
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 40
+    y: 24
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 41
+    y: 24
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 42
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 43
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 44
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 45
+    y: 24
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 0
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 25
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 25
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 25
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 25
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 25
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 25
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 25
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 26
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 27
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 34
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 35
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 36
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 37
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 38
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 39
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 40
+    y: 25
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 41
+    y: 25
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 43
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 44
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 45
+    y: 25
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 0
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 26
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 26
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 26
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 26
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 26
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 26
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 25
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 26
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 27
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 34
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 35
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 36
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 37
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 38
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 39
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 40
+    y: 26
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 41
+    y: 26
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 43
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 44
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 45
+    y: 26
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 0
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 27
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 27
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 27
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 27
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 27
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 27
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 25
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 26
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 27
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 34
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 35
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 36
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 37
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 38
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 39
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 40
+    y: 27
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 41
+    y: 27
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 43
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 44
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 45
+    y: 27
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 0
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 28
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 28
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 28
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 28
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 28
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 28
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 25
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 26
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 27
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 28
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 29
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 30
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 31
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 32
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 33
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 34
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 35
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-03
+    mirrored: false
+  - x: 36
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 37
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 38
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 39
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 40
+    y: 28
+    kind: 0
+    assetId: floor-burnt-wood-10
+    mirrored: false
+  - x: 41
+    y: 28
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 43
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 44
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 45
+    y: 28
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 0
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 1
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 2
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 3
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 4
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 5
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 6
+    y: 29
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 7
+    y: 29
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 8
+    y: 29
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 9
+    y: 29
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 10
+    y: 29
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 11
+    y: 29
+    kind: 0
+    assetId: S05-01
+    mirrored: false
+  - x: 12
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 13
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 14
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 15
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 16
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 17
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 18
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 19
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 20
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 21
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 22
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 23
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 24
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 25
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 26
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 27
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 28
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 29
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 30
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 31
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 32
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 33
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 34
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 35
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 36
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 37
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 38
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 39
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 40
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 41
+    y: 29
+    kind: 0
+    assetId: S05-02
+    mirrored: false
+  - x: 42
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 43
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 44
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  - x: 45
+    y: 29
+    kind: 0
+    assetId: S05-04
+    mirrored: false
+  defenders:
+  - name: Основной отряд
+    position:
+      m_X: 36
+      m_Y: 8
+    arrivalSeconds: 0
+    holdRadius: 6
+    behavior: 1
+    legacyReserveTrigger: false
+    vehicleArrival: false
+    soldiers:
+    - name: ГРАНИТ
+      kit:
+        weapon: 0
+        extra: 0
+        armor: 0
+        rig: 1
+        grenade: 0
+        count: 2
+        grenade2: 0
+        count2: 0
+        grenade3: 0
+        count3: 0
+        bag:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+    - name: СЕВЕР
+      kit:
+        weapon: 0
+        extra: 2
+        armor: 0
+        rig: 1
+        grenade: 0
+        count: 0
+        grenade2: 0
+        count2: 0
+        grenade3: 0
+        count3: 0
+        bag:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 2
+        - 1
+        - 0
+        - 0
+        - 0
+        - 0
+    - name: ДЫМ
+      kit:
+        weapon: 0
+        extra: 1
+        armor: 0
+        rig: 1
+        grenade: 0
+        count: 0
+        grenade2: 0
+        count2: 0
+        grenade3: 0
+        count3: 0
+        bag:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+    - name: ШИП
+      kit:
+        weapon: 0
+        extra: 0
+        armor: 0
+        rig: 0
+        grenade: 1
+        count: 1
+        grenade2: 0
+        count2: 0
+        grenade3: 0
+        count3: 0
+        bag:
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0

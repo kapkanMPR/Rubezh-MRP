@@ -1,0 +1,23 @@
+[
+  {
+    "path": "Assets/Rubezh/Core/CoverWaitPolicy.cs",
+    "before221": "62d358596d0a5f8cc2a092552b44b0ebed579fd757ec7243b70ad4ea4426a69c",
+    "restored204": "4dd06e1406c48afc157a0b2e1885033e69a7dfbb81f62316eb4701e2ce7cdcd7",
+    "sourceArchive": "Rubezh-0.12.204-FULL-part1-of3.zip",
+    "sourceEntry": "Rubezh-0.12.204-ReadyForest/Assets/Rubezh/Core/CoverWaitPolicy.cs"
+  },
+  {
+    "path": "Assets/Rubezh/Core/TacticalAI.cs",
+    "before221": "bda58af394061b4ea533c05cdd836f11595bdf74d915c737edb9aaaba8bf89e3",
+    "restored204": "0791052fdc0cb95f2a7b67441e480d77d1b7641921c04314b156889c0210e9e4",
+    "sourceArchive": "Rubezh-0.12.204-FULL-part1-of3.zip",
+    "sourceEntry": "Rubezh-0.12.204-ReadyForest/Assets/Rubezh/Core/TacticalAI.cs"
+  },
+  {
+    "path": "Assets/Rubezh/Core/Soldier.cs",
+    "before221": "66cd977979c568d178fc16c823bba25e1852e43b5b456da8b59a3b55436869f6",
+    "restored204": "5c4e2598cfa2c0a0f72bc7fb3b0f135ce8614865a0e99c1e5b69f4b415cee992",
+    "sourceArchive": "Rubezh-0.12.204-FULL-part1-of3.zip",
+    "sourceEntry": "Rubezh-0.12.204-ReadyForest/Assets/Rubezh/Core/Soldier.cs"
+  }
+]

@@ -1,0 +1,422 @@
+[
+  {
+    "scenario": "first_map_battle",
+    "seed": 15100,
+    "time": 60.09937,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      3,
+      1,
+      5,
+      0,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1977,
+    "glass": 6,
+    "shots": 80,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 4276
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15101,
+    "time": 41.74965,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      3,
+      0,
+      2,
+      0,
+      1
+    ],
+    "wallLost": 393,
+    "roofRemaining": 1200,
+    "glass": 6,
+    "shots": 74,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 565
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15102,
+    "time": 28.349854,
+    "result": "GreenCaptured",
+    "rockets": 0,
+    "projectilesObserved": [
+      2,
+      0,
+      3,
+      0,
+      0
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1982,
+    "glass": 0,
+    "shots": 66,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 90
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15103,
+    "time": 58.84939,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      3,
+      0,
+      4,
+      1,
+      0
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1982,
+    "glass": 0,
+    "shots": 126,
+    "green": 4,
+    "red": 0,
+    "elapsedMs": 291
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15104,
+    "time": 65.949425,
+    "result": "GreenCaptured",
+    "rockets": 2,
+    "projectilesObserved": [
+      3,
+      1,
+      2,
+      1,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 117,
+    "glass": 6,
+    "shots": 49,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 252
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15105,
+    "time": 45.54959,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      3,
+      0,
+      2,
+      0,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1910,
+    "glass": 6,
+    "shots": 62,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 951
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15106,
+    "time": 52.24949,
+    "result": "GreenCaptured",
+    "rockets": 0,
+    "projectilesObserved": [
+      2,
+      0,
+      2,
+      0,
+      0
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1979,
+    "glass": 6,
+    "shots": 81,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 468
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15107,
+    "time": 67.1495,
+    "result": "GreenCaptured",
+    "rockets": 0,
+    "projectilesObserved": [
+      3,
+      1,
+      1,
+      0,
+      0
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1979,
+    "glass": 6,
+    "shots": 58,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 672
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15108,
+    "time": 26.049889,
+    "result": "GreenCaptured",
+    "rockets": 0,
+    "projectilesObserved": [
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1982,
+    "glass": 0,
+    "shots": 50,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 101
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15109,
+    "time": 52.19949,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      3,
+      2,
+      3,
+      0,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 145,
+    "glass": 6,
+    "shots": 71,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 1082
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15110,
+    "time": 91.45098,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      3,
+      1,
+      1,
+      1,
+      0
+    ],
+    "wallLost": 345,
+    "roofRemaining": 1562,
+    "glass": 6,
+    "shots": 188,
+    "green": 4,
+    "red": 0,
+    "elapsedMs": 1281
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15111,
+    "time": 62.74933,
+    "result": "GreenCaptured",
+    "rockets": 2,
+    "projectilesObserved": [
+      3,
+      0,
+      3,
+      1,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1897,
+    "glass": 6,
+    "shots": 153,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 943
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15112,
+    "time": 42.44964,
+    "result": "GreenCaptured",
+    "rockets": 0,
+    "projectilesObserved": [
+      1,
+      0,
+      2,
+      0,
+      0
+    ],
+    "wallLost": 42,
+    "roofRemaining": 1979,
+    "glass": 6,
+    "shots": 76,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 365
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15113,
+    "time": 20.09998,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1910,
+    "glass": 0,
+    "shots": 14,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 395
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15114,
+    "time": 84.300545,
+    "result": "GreenCaptured",
+    "rockets": 3,
+    "projectilesObserved": [
+      3,
+      1,
+      7,
+      1,
+      2
+    ],
+    "wallLost": 0,
+    "roofRemaining": 89,
+    "glass": 6,
+    "shots": 88,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 344
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15115,
+    "time": 36.39973,
+    "result": "GreenCaptured",
+    "rockets": 0,
+    "projectilesObserved": [
+      2,
+      0,
+      2,
+      0,
+      0
+    ],
+    "wallLost": 30,
+    "roofRemaining": 1979,
+    "glass": 2,
+    "shots": 94,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 438
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15116,
+    "time": 28.899845,
+    "result": "GreenCaptured",
+    "rockets": 2,
+    "projectilesObserved": [
+      2,
+      0,
+      2,
+      1,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1822,
+    "glass": 6,
+    "shots": 30,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 585
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15117,
+    "time": 46.24958,
+    "result": "GreenCaptured",
+    "rockets": 2,
+    "projectilesObserved": [
+      2,
+      0,
+      4,
+      1,
+      1
+    ],
+    "wallLost": 53,
+    "roofRemaining": 89,
+    "glass": 6,
+    "shots": 53,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 170
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15118,
+    "time": 54.89945,
+    "result": "GreenCaptured",
+    "rockets": 2,
+    "projectilesObserved": [
+      3,
+      0,
+      2,
+      1,
+      1
+    ],
+    "wallLost": 0,
+    "roofRemaining": 1800,
+    "glass": 6,
+    "shots": 62,
+    "green": 4,
+    "red": 0,
+    "elapsedMs": 1127
+  },
+  {
+    "scenario": "first_map_battle",
+    "seed": 15119,
+    "time": 36.099735,
+    "result": "GreenCaptured",
+    "rockets": 1,
+    "projectilesObserved": [
+      2,
+      0,
+      1,
+      0,
+      1
+    ],
+    "wallLost": 49,
+    "roofRemaining": 1887,
+    "glass": 6,
+    "shots": 61,
+    "green": 5,
+    "red": 0,
+    "elapsedMs": 665
+  }
+]

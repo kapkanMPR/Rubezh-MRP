@@ -1,0 +1,46 @@
+{
+  "reference": "204 +205 +207 +208 +combined213 +214; 210 not supplied yet",
+  "compared": 218,
+  "remainingDifferences": [
+    {
+      "path": "Assets/Rubezh/Core/BattleRenderer.cs",
+      "missing": false,
+      "oldSize": 60297,
+      "newSize": 60365,
+      "review": "RescuerId upper bounds checks retained"
+    },
+    {
+      "path": "Assets/Rubezh/Core/RoofMesh.cs",
+      "missing": false,
+      "oldSize": 1192,
+      "newSize": 1168,
+      "review": "Roof merge optimization, IEnumerable input retained"
+    },
+    {
+      "path": "Assets/Rubezh/Core/RoofSupport.cs",
+      "missing": false,
+      "oldSize": 3715,
+      "newSize": 3975,
+      "review": "RoofMask/ICollection compatibility; support algorithm retained"
+    },
+    {
+      "path": "Assets/Rubezh/Core/SpritePacks.cs",
+      "missing": false,
+      "oldSize": 14845,
+      "newSize": 14857,
+      "review": "Metadata-only sprites cannot masquerade as CPU-loaded pixels"
+    },
+    {
+      "path": "Assets/Rubezh/Core/StudioCatalog.Generated.cs",
+      "missing": false,
+      "oldSize": 1455011,
+      "newSize": 1473753,
+      "review": "937 d.Add data entries match; bounded initialization methods retained"
+    }
+  ],
+  "currentFiles": 220,
+  "addedFiles": {
+    "Assets/Rubezh/Core/NativeSpriteMetadata.cs": "GPU-only sprite dimensions and explicit CPU pixel availability",
+    "Assets/Rubezh/Core/ProceduralRoof.cs": "Compact roof cell state and merged/native roof path"
+  }
+}

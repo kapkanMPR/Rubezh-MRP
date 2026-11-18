@@ -1,0 +1,1 @@
+Structural test inputs only. Campaign_01.bytes and Campaign_20.bytes extracted unchanged from Rubezh-0.12.204-FULL-part2-of3.zip saved 2026-11-13. Both baseline220 and 221 use these identical inputs. They are not a copy freshly exported from the user device; no device-map identity or Android FPS equivalence is implied. Do not copy these fixtures over production maps.

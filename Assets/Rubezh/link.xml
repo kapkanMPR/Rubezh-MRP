@@ -1,0 +1,6 @@
+<linker>
+  <!-- Reflection-driven camp saves, catalogs, mission JSON and raid state. -->
+  <assembly fullname="Rubezh.Camp" preserve="all" />
+  <assembly fullname="Rubezh.Runtime" preserve="all" />
+  <assembly fullname="Rubezh.Core" preserve="all" />
+</linker>

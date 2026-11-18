@@ -1,0 +1,4 @@
+Unhandled exception. System.Exception: initial scene requests a fresh capture
+   at Optimization220Check.Check(Boolean value, String message)
+   at Optimization220Check.ExpectMiss(HdGpuRenderer r, String label)
+   at Optimization220Check.Main()

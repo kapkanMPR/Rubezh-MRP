@@ -1,0 +1,77 @@
+[
+  {
+    "scenario": "wall_blast",
+    "kind": 0,
+    "wallLost": 67,
+    "roofLost": 3,
+    "glass": 0
+  },
+  {
+    "scenario": "wall_blast",
+    "kind": 1,
+    "wallLost": 757,
+    "roofLost": 3,
+    "glass": 0
+  },
+  {
+    "scenario": "wall_blast",
+    "kind": 2,
+    "wallLost": 1233,
+    "roofLost": 1818,
+    "glass": 0
+  },
+  {
+    "scenario": "roof_blast",
+    "radius": 2.5,
+    "roofBefore": 1982,
+    "roofAfter": 1865
+  },
+  {
+    "scenario": "roof_blast",
+    "radius": 2.7,
+    "roofBefore": 1982,
+    "roofAfter": 1845
+  },
+  {
+    "scenario": "roof_blast",
+    "radius": 3.3,
+    "roofBefore": 1982,
+    "roofAfter": 181
+  },
+  {
+    "scenario": "roof_blast",
+    "radius": 4.3,
+    "roofBefore": 1982,
+    "roofAfter": 164
+  },
+  {
+    "scenario": "bullet_window",
+    "broken": true
+  },
+  {
+    "scenario": "indoor_windows",
+    "expected": 6,
+    "broken": 6
+  },
+  {
+    "scenario": "behind_wall",
+    "distance": 0.3,
+    "classified": true,
+    "damage": 14.461922,
+    "concussion": 0.97670937
+  },
+  {
+    "scenario": "behind_wall",
+    "distance": 0.79,
+    "classified": true,
+    "damage": 12.6903305,
+    "concussion": 0.8555104
+  },
+  {
+    "scenario": "behind_wall",
+    "distance": 0.81,
+    "classified": false,
+    "damage": 0.0,
+    "concussion": 0.0
+  }
+]

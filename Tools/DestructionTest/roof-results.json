@@ -1,0 +1,26 @@
+[
+  {
+    "scenario": "interior_rshg",
+    "x": 26.0,
+    "y": 4.0,
+    "before": 1982,
+    "after": 157,
+    "wallRemaining": 39852
+  },
+  {
+    "scenario": "interior_rshg",
+    "x": 28.0,
+    "y": 6.0,
+    "before": 1982,
+    "after": 216,
+    "wallRemaining": 39852
+  },
+  {
+    "scenario": "interior_rshg",
+    "x": 30.0,
+    "y": 8.0,
+    "before": 1982,
+    "after": 688,
+    "wallRemaining": 39852
+  }
+]

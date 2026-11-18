@@ -1,0 +1,174 @@
+{
+  "version": "AI-0.12.221-StableMovingRender",
+  "androidCode": 322,
+  "applyOver": "0.12.220",
+  "baselineArchiveSha256": "51a51869aff61c3be7c15abc9dec9e05f1a4c108173297078fff0d697b920b87",
+  "validation": "Portable C# contracts only; no Unity shader/device execution. Historical204 fixture map counts, not device FPS.",
+  "files": [
+    {
+      "path": "ProjectSettings/ProjectSettings.asset",
+      "sha256": "5133ed5c55d8457518fbbe42d7fd9f3b9853a9e5ed35e4e16828820d0f9ef84b",
+      "bytes": 22266
+    },
+    {
+      "path": "Tools/ProjectCheck/Contracts/BaseContract.cs",
+      "sha256": "057211e6e88b3b9ca7a4ad2d12b3e190624a4ab9d553788e2688fda2036b4af5",
+      "bytes": 25874
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/Benchmark221Check.cs",
+      "sha256": "cac79f545ed42e9ca47761550dea4e34ed73118d1eb25b5f7ecb97fa390639b7",
+      "bytes": 9210
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/run.py",
+      "sha256": "05ef923a9018f9dc7a8a2a72918b4b017e69c9d4042d0dfc5997963fddebda65",
+      "bytes": 6010
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/Optimization221Check.cs",
+      "sha256": "f09513eed1e834e49bda926ab52a1e6f3d247f94dd505f791105027d85205a29",
+      "bytes": 12192
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/README.txt",
+      "sha256": "eeb59acbdb89c47df49f4ddbf99213bacc5d0b9d2d2807bcb9b4d04bb846fa32",
+      "bytes": 3557
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/GroundPalette221Check.cs",
+      "sha256": "93fba1577d4ff3921640588fdb1a63c822a0c74990164fdbaf50eaabd27ad8fc",
+      "bytes": 9145
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/Primitive221Check.cs",
+      "sha256": "62f45ee1d11a9ad78dc46dedee57daf0724e81bdc50f1708510c6e691878bb60",
+      "bytes": 5480
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/Mask221Check.cs",
+      "sha256": "57377ccb79038d62993c2ab78d2cf8367832d0c75f68184590a52c5c56c983dc",
+      "bytes": 6273
+    },
+    {
+      "path": "Tools/ProjectCheck/Native214/Static219Check.cs",
+      "sha256": "86b8acd3045d5f2cc141c3f05c1217428c5601a5e322bcfd27e5a20b145cab9d",
+      "bytes": 7796
+    },
+    {
+      "path": "Tools/ProjectCheck/Optimization221/Fixtures/PROVENANCE.txt",
+      "sha256": "3c916a94efde4434b9fa7d9a944906e036d5a57ff71db352fff4fa915a06766b",
+      "bytes": 370
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.UnityScene.cs",
+      "sha256": "e30ea1f82861ded57e905592b129ae02cbe405a7c09bfcc58cbfc3672dc95322",
+      "bytes": 24964
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs",
+      "sha256": "cab8589ca6d75b659f66e35bf54561ceee4fbad9f11cfb8a7cfe3923d9cb3bb3",
+      "bytes": 19394
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.SolidRuns.cs.meta",
+      "sha256": "7e7ab9918c1bdf5be740a77c54146cbfc450be47a62dab69a4e9d0b2272c3d3d",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.cs",
+      "sha256": "99435ee1f74a32588d088c830c82aa09fabdd8cb98a691b5a103b5d290c9015a",
+      "bytes": 26418
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhPerf.cs",
+      "sha256": "82bbd06b1f42ee9c81e9133b27fa73772003453cd726f0bd250f8869be8c7f98",
+      "bytes": 15127
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.MaskCommands.cs",
+      "sha256": "34c802f454535461ef1cb8f17e818ab2ca1836889eb9f48a66465b4445f88396",
+      "bytes": 7305
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.MaskCache.cs",
+      "sha256": "f6f1dce01d404873270b601f15f132d3e05ce050645b7e8600829b3fa3c1d8db",
+      "bytes": 3451
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.MaskCommands.cs.meta",
+      "sha256": "19f5969d9edcdae40251436f69c655e331e281c45dd64428e890cb356a9f4bcb",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/NativeBattleDeveloper.cs",
+      "sha256": "91b31c83187d54ec662763e273770b536e28e5489f7a8d2970d1b2f67c2f6cd8",
+      "bytes": 2142
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/PerformanceReport.cs",
+      "sha256": "76ea0a4a7c17b2d0d6082340befc520ea1abc02b4b8a416c6506f977f5878e82",
+      "bytes": 27436
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhLoading.cs",
+      "sha256": "af1d638b9ad4c94cc045354e0356e5f12735f6b0fc9fae942ba40b2c08acd1a8",
+      "bytes": 5313
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.SolidRuns.cs",
+      "sha256": "2edc99fffc009eed3fd356bdc3b2c1ee0248af58ab1cfdceca6ef884a61c44d4",
+      "bytes": 1662
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.GroundChunks.cs",
+      "sha256": "a37383ed058d9c32dd1f11f2347ce587b2fb51030d1d20b83f5bd228f5cee212",
+      "bytes": 9517
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.GroundMaterials.cs",
+      "sha256": "eb52f434a1b8c745899f6f638e6ec6ee09ff390ef60ebac0ce102269d8dd5366",
+      "bytes": 5365
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.GroundMaterials.cs.meta",
+      "sha256": "1797ed422075926b92cd1c262ee3808ea14ae1c2e0cce163953343a2572e858e",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/RubezhHdGpu.StaticColor.cs",
+      "sha256": "d20ac8ceb42894518137157e48184ffcd0cdcbed09a53c9df9cb44c326872d81",
+      "bytes": 10390
+    },
+    {
+      "path": "Assets/Rubezh/Runtime/FixedBenchmarkCapture.cs",
+      "sha256": "251341794538f65125c0246e3097b9ab097af72a84494d228a5ba1efe48f0532",
+      "bytes": 5362
+    },
+    {
+      "path": "Assets/Rubezh/Resources/RubezhUnityForestMask.shader",
+      "sha256": "39bf2879de35daeb2b83fc7b95415d7b746b66ab6e05baa6a3c77d7c68a7c0e4",
+      "bytes": 2857
+    },
+    {
+      "path": "Assets/Rubezh/Resources/RubezhHdGpu.shader",
+      "sha256": "c0e8cc6a4601ed02de0b5867f93f5488b0e6f2cb242da75becf8e96a5e7b57e4",
+      "bytes": 5798
+    },
+    {
+      "path": "Assets/Rubezh/Resources/RubezhUnityTest.shader",
+      "sha256": "e5e49af9e92731ad52c9498edf73a3f683909549eb1970f0a9ff845fd4536089",
+      "bytes": 5465
+    },
+    {
+      "path": "Assets/Rubezh/Resources/RubezhStaticColorComposite.shader",
+      "sha256": "ddfa42ffd478fdf6d20e2e6a75f08f36dfe5da64983cad7f057db6f28c2b9b20",
+      "bytes": 741
+    },
+    {
+      "path": "Assets/Rubezh/Resources/RubezhStaticColorComposite.shader.meta",
+      "sha256": "500dda98f7738215e4acebcec2da9379349e2a92d7659bad16b863605af1fdb3",
+      "bytes": 60
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+Assets/Rubezh/Resources/Regenerated/Campaign_01.bytes: ground material runs 211 -> 151, compaction ms=8.13, portable render ms=738.82
+Static object runs 57 -> 57
+MEASURE staticCommands=170 visibleNodes=103 maskObject=-1 maskRoof=-1 maskMeshes=-1 maskBuilds=-1 legacyObjectMaskRuns=34 legacyRoofMaskRuns=15
+Assets/Rubezh/Resources/Regenerated/Campaign_20.bytes: ground material runs 5388 -> 5246, compaction ms=10.40, portable render ms=516.66
+Static object runs 1010 -> 1005
+MEASURE staticCommands=5596 visibleNodes=1074 maskObject=-1 maskRoof=-1 maskMeshes=-1 maskBuilds=-1 legacyObjectMaskRuns=984 legacyRoofMaskRuns=248
+PASS 1072506 checks. Real map geometry, portable Unity contracts; no GPU timings or pixel rendering.

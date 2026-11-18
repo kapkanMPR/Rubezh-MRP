@@ -1,0 +1,26 @@
+[
+  {
+    "from": "Assets/Rubezh/Resources/SpritePacks",
+    "to": "Assets/Rubezh/Editor/LegacySources/SpritePacks",
+    "fileCount": 562,
+    "allBytesPreserved": true
+  },
+  {
+    "from": "Assets/Rubezh/Resources/BuildingMaterialData",
+    "to": "Assets/Rubezh/Editor/LegacySources/BuildingMaterialData",
+    "fileCount": 624,
+    "allBytesPreserved": true
+  },
+  {
+    "from": "Assets/Rubezh/Resources/Exterior",
+    "to": "Assets/Rubezh/Editor/LegacySources/Exterior",
+    "fileCount": 192,
+    "allBytesPreserved": true
+  },
+  {
+    "from": "Assets/Rubezh/Resources/UnityTestForest",
+    "to": "Assets/Rubezh/Art/LegacyUnityForest",
+    "fileCount": 156,
+    "allBytesPreserved": true
+  }
+]

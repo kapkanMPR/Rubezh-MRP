@@ -1,0 +1,74 @@
+[
+  {
+    "scenario": "small_chip",
+    "distance": 0.0,
+    "height": 0.0,
+    "lost": 28
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.0,
+    "height": 1.35,
+    "lost": 67
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.0,
+    "height": 2.7,
+    "lost": 58
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.1,
+    "height": 0.0,
+    "lost": 20
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.1,
+    "height": 1.35,
+    "lost": 29
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.1,
+    "height": 2.7,
+    "lost": 43
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.17,
+    "height": 0.0,
+    "lost": 0
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.17,
+    "height": 1.35,
+    "lost": 0
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.17,
+    "height": 2.7,
+    "lost": 0
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.5,
+    "height": 0.0,
+    "lost": 0
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.5,
+    "height": 1.35,
+    "lost": 0
+  },
+  {
+    "scenario": "small_chip",
+    "distance": 0.5,
+    "height": 2.7,
+    "lost": 0
+  }
+]

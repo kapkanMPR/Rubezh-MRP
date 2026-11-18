@@ -1,0 +1,46 @@
+[
+  {
+    "scenario": "controlled_ai",
+    "launcher": 0,
+    "contact": true,
+    "allyNear": false,
+    "breach": true,
+    "launched": 1,
+    "wallLost": 702,
+    "reason": "Прицеливаюсь из гранатомёта",
+    "time": 2.8500001
+  },
+  {
+    "scenario": "controlled_ai",
+    "launcher": 1,
+    "contact": true,
+    "allyNear": false,
+    "breach": true,
+    "launched": 1,
+    "wallLost": 1149,
+    "reason": "Прицеливаюсь из гранатомёта",
+    "time": 2.8500001
+  },
+  {
+    "scenario": "controlled_ai",
+    "launcher": 0,
+    "contact": false,
+    "allyNear": false,
+    "breach": true,
+    "launched": 0,
+    "wallLost": 0,
+    "reason": "Ожидание задачи",
+    "time": 11.95
+  },
+  {
+    "scenario": "controlled_ai",
+    "launcher": 0,
+    "contact": true,
+    "allyNear": true,
+    "breach": true,
+    "launched": 0,
+    "wallLost": 0,
+    "reason": "Ожидание задачи",
+    "time": 11.95
+  }
+]

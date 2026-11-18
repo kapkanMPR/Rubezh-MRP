@@ -1,0 +1,26 @@
+[
+  {
+    "resource": "HybridRange/surface-wood",
+    "source": "Assets/Rubezh/Resources/ClosureWood.png",
+    "sha256": "22ee55da30ddc316bc3bc5c11cbe49f35fda6e5fc0e81dbbf7ba3a1d29b15110",
+    "resampled": false
+  },
+  {
+    "resource": "HybridRange/surface-roof",
+    "source": "Assets/Rubezh/Resources/RoofSurface.png",
+    "sha256": "c880c383098c531b322317ba7d8cbd76359713ed12e9aec7bfabdebf816ea2d0",
+    "resampled": false
+  },
+  {
+    "resource": "HybridRange/surface-rough",
+    "source": "Assets/Rubezh/Art/BuildingMaterialsSource/4816e7b3b4c05e4e0173dc7a.png",
+    "sha256": "4816e7b3b4c05e4e0173dc7ae560f6d09b719be9936a201b91fa13aeb333f6d0",
+    "resampled": false
+  },
+  {
+    "resource": "HybridRange/surface-brick",
+    "source": "Assets/Rubezh/Art/BuildingMaterialsSource/fcbe705eaef95b9f7183621f.png",
+    "sha256": "fcbe705eaef95b9f7183621fa7586c5196fc6e99737e860251cfb543eba29aaa",
+    "resampled": false
+  }
+]

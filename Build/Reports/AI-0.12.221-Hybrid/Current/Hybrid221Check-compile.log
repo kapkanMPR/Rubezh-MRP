@@ -1,0 +1,62 @@
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(12,1363): warning CS0108: 'Camera.enabled' hides inherited member 'MonoBehaviour.enabled'. Use the new keyword if hiding was intended.
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(24,1264): warning CS0108: 'Mesh.name' hides inherited member 'Object.name'. Use the new keyword if hiding was intended.
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(57,15): warning CS0660: 'Rect' defines operator == or operator != but does not override Object.Equals(object o)
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(57,15): warning CS0661: 'Rect' defines operator == or operator != but does not override Object.GetHashCode()
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(51,15): warning CS0660: 'Vector2' defines operator == or operator != but does not override Object.Equals(object o)
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(51,15): warning CS0661: 'Vector2' defines operator == or operator != but does not override Object.GetHashCode()
+warning CS1701: Assuming assembly reference 'System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' used by 'Newtonsoft.Json' matches identity 'System.Runtime, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' of 'System.Runtime', you may need to supply runtime policy
+Assets/Rubezh/Runtime/FieldCamp.cs(520,13): warning CS0162: Unreachable code detected
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(22,32): warning CS0649: Field 'HdGpuRenderer.commands' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(17,67): warning CS0649: Field 'HybridActors.AtlasData.width' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(23,23): warning CS0649: Field 'HdGpuRenderer.backgroundMesh' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(17,136): warning CS0649: Field 'HybridActors.AtlasData.frames' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,35): warning CS0649: Field 'HdGpuRenderer.Entry.Mip' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhMissionDialogue.cs(23,25): warning CS0649: Field 'RubezhApp.MissionDialogueLine.mortarSalvo' is never assigned to, and will always have its default value false
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(85,14): warning CS0169: The field 'HdGpuRenderer.depthView' is never used
+Assets/Rubezh/Runtime/RubezhMissionDialogue.cs(14,42): warning CS0649: Field 'RubezhApp.MissionDialogueData.lines' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,46): warning CS0649: Field 'HdGpuRenderer.Entry.OX' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(86,15): warning CS0169: The field 'HdGpuRenderer.depthZoomWidth' is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,43): warning CS0649: Field 'HdGpuRenderer.Entry.H' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(26,23): warning CS0649: Field 'HdGpuRenderer.mesh' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(16,77): warning CS0649: Field 'HybridActors.AtlasFrame.h' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.Direct.cs(16,31): warning CS0649: Field 'HdGpuRenderer.NativeDraw.Sequence' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(17,95): warning CS0649: Field 'HybridActors.AtlasData.pixelsPerBodyHeight' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(24,19): warning CS0649: Field 'HdGpuRenderer.frameProbe' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(16,80): warning CS0649: Field 'HybridActors.AtlasFrame.anchorX' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.Pictures.cs(5,332): warning CS0649: Field 'HdGpuRenderer.PictureGroup.LastUsed' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(88,19): warning CS0169: The field 'HdGpuRenderer.depthMap' is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,28): warning CS0649: Field 'HdGpuRenderer.Entry.Level' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(16,68): warning CS0649: Field 'HybridActors.AtlasFrame.x' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.Pictures.cs(5,362): warning CS0649: Field 'HdGpuRenderer.PictureGroup.Wanted' is never assigned to, and will always have its default value false
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(47,121): warning CS0067: The event 'Application.logMessageReceivedThreaded' is never used
+Assets/Rubezh/Runtime/RubezhMissionDialogue.cs(12,24): warning CS0649: Field 'RubezhApp.MissionDialogueData.mission' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(27,28): warning CS0649: Field 'HdGpuRenderer.occlusion' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(16,71): warning CS0649: Field 'HybridActors.AtlasFrame.y' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhMissionDialogue.cs(21,27): warning CS0649: Field 'RubezhApp.MissionDialogueLine.portrait' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(30,16): warning CS0169: The field 'HdGpuRenderer.cachedMap' is never used
+Build/Reports/AI-0.12.221-Hybrid/Current/BasePlayerContract.cs(47,61): warning CS0067: The event 'Application.lowMemory' is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.UnityScene.cs(130,102): warning CS0169: The field 'HdGpuRenderer.unityMaskVehicles' is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,54): warning CS0649: Field 'HdGpuRenderer.Entry.OW' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhMissionDialogue.cs(20,27): warning CS0649: Field 'RubezhApp.MissionDialogueLine.speaker' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(86,31): warning CS0169: The field 'HdGpuRenderer.depthZoomHeight' is never used
+Assets/Rubezh/Core/BattleRenderer.Exterior.cs(10,63): warning CS0649: Field 'BattleVisualRecipes.ExteriorProp.House' is never assigned to, and will always have its default value false
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(17,74): warning CS0649: Field 'HybridActors.AtlasData.height' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(16,74): warning CS0649: Field 'HybridActors.AtlasFrame.w' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/Hybrid/HybridActors.cs(16,89): warning CS0649: Field 'HybridActors.AtlasFrame.anchorY' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,24): warning CS0649: Field 'HdGpuRenderer.Entry.Id' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,40): warning CS0649: Field 'HdGpuRenderer.Entry.W' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(27,39): warning CS0649: Field 'HdGpuRenderer.foregroundOcclusion' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,58): warning CS0649: Field 'HdGpuRenderer.Entry.OH' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhMissionDialogue.cs(22,27): warning CS0649: Field 'RubezhApp.MissionDialogueLine.text' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(23,26): warning CS0649: Field 'HdGpuRenderer.MeshBatch.MergeHash' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(27,19): warning CS0649: Field 'HdGpuRenderer.scenery' is never assigned to, and will always have its default value null
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(39,50): warning CS0649: Field 'HdGpuRenderer.Entry.OY' is never assigned to, and will always have its default value 0
+Assets/Rubezh/Runtime/RubezhHdGpu.Pictures.cs(13,8): warning CS0414: The field 'HdGpuRenderer.pictureMemoryPressure' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhUI.cs(45,16): warning CS0414: The field 'RubezhApp.drawer' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(83,30): warning CS0414: The field 'HdGpuRenderer.depthDirty' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(31,13): warning CS0414: The field 'HdGpuRenderer.cachedRevision' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhApp.cs(17,16): warning CS0414: The field 'RubezhApp.pixels' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhApp.cs(148,14): warning CS0414: The field 'RubezhApp.devInput' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.UnityScene.cs(130,72): warning CS0414: The field 'HdGpuRenderer.unityVehicleMaskFrame' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.cs(25,14): warning CS0414: The field 'HdGpuRenderer.validateFrame' is assigned but its value is never used
+Assets/Rubezh/Runtime/RubezhHdGpu.NativeScene.cs(87,13): warning CS0414: The field 'HdGpuRenderer.depthRevision' is assigned but its value is never used

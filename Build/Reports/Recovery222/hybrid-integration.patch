@@ -1,0 +1,110 @@
+--- current/Assets/Rubezh/Runtime/RubezhApp.cs
++++ hybrid/Assets/Rubezh/Runtime/RubezhApp.cs
+@@ -279,6 +279,7 @@
+             try {
+             guiCpuMs=0;
+             UpdateAudio();
++            if(TickHybridRange())return;
+             UpdateStoryMortarAudio();
+             TrimPortraits();
+             long uiStarted=System.Diagnostics.Stopwatch.GetTimestamp();
+@@ -373,6 +374,7 @@
+ 
+         void OnApplicationPause(bool pause)
+         {
++            SuspendHybridRange(pause);
+             if (pause) CancelUnityTestPointers();
+             storyAppPaused = pause;
+             renderedBattle = null;
+@@ -388,6 +390,7 @@
+ 
+         void OnApplicationFocus(bool focus)
+         {
++            SuspendHybridRange(!focus,true);
+             if (!focus)
+             {
+                 CancelTouchInput();
+@@ -402,6 +405,7 @@
+ 
+         void OnDestroy()
+         {
++            DisposeHybridRange();
+             FinishFixedBenchmark(false);
+             HideNativeUtilityMenus();
+             DisposeNativeFormationMenu();
+--- current/Assets/Rubezh/Runtime/FieldCamp.cs
++++ hybrid/Assets/Rubezh/Runtime/FieldCamp.cs
+@@ -233,6 +233,7 @@
+                     nativeCamp = gameObject.AddComponent<NativeCampView>();
+                     nativeCamp.Initialize(campStore, DeveloperBuild.Enabled);
+                     nativeCamp.StartOperation = OpenNativeCampFormation;
++                    nativeCamp.StartHybridRange = OpenHybridRange;
+                     nativeCamp.SetOption = ApplyCampOption;
+                     nativeCamp.GetOptions = ReadNativeCampOptions;
+                     nativeCamp.ResetGame = () => ResetCareer(true);
+@@ -511,6 +512,7 @@
+ 
+         void StartCampBattle(CampOrder q)
+         {
++            if(q.mode=="test"||q.mode=="test-reference"){OpenHybridRange();return;}
+             if(q.mode=="raid"){StartRaid(q);return;}
+ #if UNITY_5_3_OR_NEWER
+             SetCampBattleContext(q);BeginNativeTestLoad(q);return;
+--- current/Assets/Rubezh/Runtime/Camp/NativeCampView.cs
++++ hybrid/Assets/Rubezh/Runtime/Camp/NativeCampView.cs
+@@ -30,6 +30,7 @@
+         }
+ 
+         public Action<CampOrder> StartOperation;
++        public Action StartHybridRange;
+         public Action<string, int> SetOption;
+         public Func<NativeCampOptions> GetOptions;
+         public Action ResetGame;
+--- current/Assets/Rubezh/Runtime/Camp/NativeCampPages.cs
++++ hybrid/Assets/Rubezh/Runtime/Camp/NativeCampPages.cs
+@@ -393,7 +393,7 @@
+         string OperationName()
+         {
+             var o = S.operation;
+-            return (o.mode == "test" || o.mode == "test-reference") ? (o.mission==20?"Тест · сюжет 20":"Тест · лес Просека") : o.mode == "raid" ? "Рейд · уровень "+M.S.raid.Start : o.mode == "story" ? M.Data.missions[o.mission - 1].name : "Блок " + o.block + " · " + M.Data.war[(o.block - 1) * 10].terrain;
++            return (o.mode == "test" || o.mode == "test-reference") ? "Тест · гибридный полигон" : o.mode == "raid" ? "Рейд · уровень "+M.S.raid.Start : o.mode == "story" ? M.Data.missions[o.mission - 1].name : "Блок " + o.block + " · " + M.Data.war[(o.block - 1) * 10].terrain;
+         }
+ 
+         void Operations()
+@@ -408,14 +408,11 @@
+             Button(switches,"Рейд",()=>SelectMode("raid"),o.mode=="raid"?"on":"");
+             Button(switches,"Тест",()=>SelectMode("test"),o.mode.StartsWith("test")?"on":"");
+             if(o.mode.StartsWith("test")){
+-                Label(board,"ТЕСТ · "+(o.mission==20?"СЮЖЕТ 20":"ЛЕС · ПРОСЕКА"), "op-title");
+-                var maps=Row(board,"op-actions");
+-                Button(maps,"Лес · Просека",()=>Change(()=>{S.operation.mission=1;S.operation.block=1;}),o.mission!=20?"on":"");
+-                Button(maps,"Сюжет · уровень 20",()=>Change(()=>{S.operation.mission=20;S.operation.block=1;}),o.mission==20?"on":"");
+-                Label(board,"Выбранная карта и текущий отряд. Без наград и изменения прогресса.","paragraph");
+-                Label(board,"Unity: меши сцены, камеры изображения и перекрытий. Лес — готовые атласы; дополнительные ресурсы сюжетной карты загружаются при старте. Тяжёлая карта может загружаться дольше.","paragraph");
++                Label(board,"ГИБРИДНЫЙ ПОЛИГОН · 36 × 24", "op-title");
++                Label(board,"Объёмные здания, крыши и предметы со спрайтовыми бойцами. Размер поля — как у первой миссии.","paragraph");
++                Label(board,"Осмотр, движение камеры, 10 / 50 / 100 демонстрационных бойцов и пролом стены. Это проверка графики, без боя, наград и изменения прогресса.","paragraph");
+                 var tests=Row(board,"op-actions");
+-                Button(tests,"Unity · начать",()=>{Change(()=>S.operation.mode="test");Navigate("battlePrep");},"gold");
++                Button(tests,"Открыть полигон",()=>StartHybridRange?.Invoke(),"gold");
+                 return;
+             }
+             if(o.mode=="raid"){RaidOperationCard(board);return;}
+@@ -468,7 +465,7 @@
+                 {
+                     mode = mode
+                 };
+-                if(mode=="test"){if(S.operation.mission!=20)S.operation.mission=1;S.operation.block=1;return;}
++                if(mode=="test"){S.operation.mission=1;S.operation.block=1;return;}
+                 if(mode=="raid"){S.operation.mission=S.raid.Start;return;}
+                 if (mode == "war")
+                 {
+@@ -503,7 +500,7 @@
+             Modal(OperationName(), (c, f) =>
+             {
+                 var o = S.operation;
+-                if(o.mode.StartsWith("test")){Label(c,"Тест выбранной карты. Тот же отряд и seed для сравнения способов отображения. Прогресс и имущество не изменяются.","paragraph");Button(f,"Подготовить отряд",()=>Navigate("battlePrep"),"gold");return;}
++                if(o.mode.StartsWith("test")){Label(c,"Гибридный полигон: объёмное окружение и демонстрационные бойцы. Прогресс и имущество не изменяются.","paragraph");Button(f,"Открыть полигон",()=>StartHybridRange?.Invoke(),"gold");return;}
+                 if(o.mode=="raid"){Label(c,"100 боёв на 50 локациях. Состояние отряда сохраняется между боями. Поддержка каждые 5 уровней; контрольные точки каждые 10. Повторной добычи нет.","paragraph");Button(f,"Подготовить отряд",()=>Navigate("battlePrep"),"gold");return;}
+                 if (o.mode == "story")
+                     Label(c, M.Data.missions[o.mission - 1].brief, "paragraph");

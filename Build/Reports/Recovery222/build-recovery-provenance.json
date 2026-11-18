@@ -1,0 +1,63 @@
+{
+  "version": "AI-0.12.222-RecoveredFull",
+  "androidCode": 323,
+  "previousRealUnityBuild": {
+    "version": "AI-0.12.221-StableMovingRender",
+    "editor": "6000.3.16f1",
+    "platform": "Android",
+    "result": "Failed",
+    "cause": "Eight shader diagnostics in Rubezh/BattleMasks cascade from HLSL reserved identifier point; resources audit had passed. SDK update source-list network warnings are also present.",
+    "resourceAudit": {
+      "passed": true,
+      "maps": 70,
+      "atlases": 281,
+      "sprites": 6718
+    },
+    "sourceEvidence": "AI-0.12.221-StableMovingRender-322-Developer-20261116-152523-427-f10f6a.zip"
+  },
+  "repairs": [
+    {
+      "files": [
+        "Assets/Rubezh/Editor/BuildResourcePreparation.cs",
+        "Assets/Rubezh/Editor/NativeUiPreparation.cs",
+        "Assets/Rubezh/Editor/NativeExteriorPreparation.cs"
+      ],
+      "source": "saved221c including221a/221b",
+      "change": "restore lossless backed-up resource-folder merge and merge-before-exterior-atlas-validation/rebuild"
+    },
+    {
+      "file": "Assets/Rubezh/Editor/NativeAtlasShapeFix.cs",
+      "source": "saved216AtlasTexture2Dhotfix",
+      "exactOriginalBytes": true,
+      "change": "restore Texture2D import enforcement and pre-build atlas repair"
+    },
+    {
+      "files": [
+        "Assets/Rubezh/Editor/NativeUiPreparation.cs",
+        "Assets/Rubezh/Editor/NativeExteriorPreparation.cs"
+      ],
+      "change": "also explicitly set Texture2D in both native atlas importers"
+    },
+    {
+      "file": "Assets/Rubezh/Resources/RubezhBattleMasks.shader",
+      "change": "rename point to worldPoint without changing shader calculations"
+    },
+    {
+      "files": [
+        "Assets/Rubezh/Runtime/RubezhLoading.cs",
+        "ProjectSettings/ProjectSettings.asset"
+      ],
+      "change": "consistent222 version andAndroid323"
+    }
+  ],
+  "currentVerificationScope": "Static guards plus portable Editor contracts run separately. Actual Unity shader compilation, build pipeline and Android APK are unavailable in this environment.",
+  "sha256": {
+    "Assets/Rubezh/Editor/BuildResourcePreparation.cs": "03fdbd8a96834e3e48d99e9e6acbd174a09c9bfcd5a3e4af750451b9a499280f",
+    "Assets/Rubezh/Editor/NativeUiPreparation.cs": "0c68b653872caa64fdbbb54e69b56c43965f81c0eab88201000fd1c27fb8199f",
+    "Assets/Rubezh/Editor/NativeExteriorPreparation.cs": "1dafcbab1259f1e3eb4ee13df7afde751c2b131a6a3bb8e7fd5fc84039facdad",
+    "Assets/Rubezh/Editor/NativeAtlasShapeFix.cs": "93a85de019c56eb3da362e745719cc9c7e3f7c0725db957b993ae5b577c01f31",
+    "Assets/Rubezh/Resources/RubezhBattleMasks.shader": "b8585a9048162163bcaa46dc59913d72c25756497625abbcff2044400f6a5efa",
+    "Assets/Rubezh/Runtime/RubezhLoading.cs": "12e6fbf169829fef960e78e8af0bc1ed44a8406dcc636d79792e8c12aff1da26",
+    "ProjectSettings/ProjectSettings.asset": "4c5d0a3b8a9f0c96a5776e9cb0eaae56b6a39935aa8d72fa0cff316bbeaef2b1"
+  }
+}

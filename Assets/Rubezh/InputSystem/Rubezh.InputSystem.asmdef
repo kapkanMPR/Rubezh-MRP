@@ -1,0 +1,1 @@
+{"name":"Rubezh.InputSystem","references":["Rubezh.Runtime","Unity.InputSystem"],"defineConstraints":["RUBEZH_INPUT_SYSTEM"],"versionDefines":[{"name":"com.unity.inputsystem","expression":"1.0.0","define":"RUBEZH_INPUT_SYSTEM"}]}

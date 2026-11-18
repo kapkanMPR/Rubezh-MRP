@@ -1,0 +1,2224 @@
+{
+  "materials": [
+    {
+      "id": "0023b155fe84f1c4b09d2a21",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0023b155fe84f1c4b09d2a21.jpg",
+      "sha256": "8e2b4f7214f02d3f68e6eba3474a2a599542b04db5f9c55fd2f4f3f736b8320e",
+      "bytes": 236140,
+      "alternatives": []
+    },
+    {
+      "id": "00578d9bf731e7ec02fae1d8",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/00578d9bf731e7ec02fae1d8.jpg",
+      "sha256": "6eb3abd26b7d986ed0e2d22211b4a3b5016c6d280e61915eea47a2a7670a1009",
+      "bytes": 293128,
+      "alternatives": []
+    },
+    {
+      "id": "00604942091686b35729a118",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/00604942091686b35729a118.jpg",
+      "sha256": "f2f065fd417f04328f29e5fc1af8b3ae6b4c47095fd2cdd9b1512ba917037b21",
+      "bytes": 330834,
+      "alternatives": []
+    },
+    {
+      "id": "00d885b9f9e5e3fbaefc8dec",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/00d885b9f9e5e3fbaefc8dec.jpg",
+      "sha256": "b541f715550264dc8c1cfae7a051fd1c1d8209eedce633be976ebc2e92c6b524",
+      "bytes": 286954,
+      "alternatives": []
+    },
+    {
+      "id": "0174a3c572ad6a72386fc855",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0174a3c572ad6a72386fc855.jpg",
+      "sha256": "5fe6293c34184da601169c346e17827756b9e417d185fe76a1b36ca0f37f5960",
+      "bytes": 316699,
+      "alternatives": []
+    },
+    {
+      "id": "028867f1fa59983a3c7806ea",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/028867f1fa59983a3c7806ea.jpg",
+      "sha256": "3d9a8aeb011daad1a0360da7ebc36de90fee291a37a548d2ed661915ddb284b6",
+      "bytes": 321267,
+      "alternatives": []
+    },
+    {
+      "id": "030914b74078088b1735bf10",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/030914b74078088b1735bf10.jpg",
+      "sha256": "4c6546edd03eca05dcefcaa0a3468f101d67553a7d1eea2a2906b70cc690d2ed",
+      "bytes": 269188,
+      "alternatives": []
+    },
+    {
+      "id": "0336f298486d884e544475d7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0336f298486d884e544475d7.jpg",
+      "sha256": "1676451d6c0735947532f89a1306d6d6d239924de9ba0b65cea9af7c59c304c5",
+      "bytes": 328726,
+      "alternatives": []
+    },
+    {
+      "id": "0428d56fbb583cb286f317b5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0428d56fbb583cb286f317b5.jpg",
+      "sha256": "7ad579ca178c0707dd565ce21496656bafdb2638efd5edcfeba896cb96af3027",
+      "bytes": 321416,
+      "alternatives": []
+    },
+    {
+      "id": "042d222f660d91c969b805dc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/042d222f660d91c969b805dc.jpg",
+      "sha256": "f85ca5c0e67254c0c919e6f2cab325aa2bf0145b5cc00e8dd93b135d83dc5384",
+      "bytes": 321535,
+      "alternatives": []
+    },
+    {
+      "id": "0556791b5e997fe435ec4a2b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0556791b5e997fe435ec4a2b.jpg",
+      "sha256": "b7bdf0e1170162ae76beff156e043a5878e9053212e33e2307b505f28efc4a94",
+      "bytes": 269207,
+      "alternatives": []
+    },
+    {
+      "id": "05b18e6bb1e1d96e0e1d99bd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/05b18e6bb1e1d96e0e1d99bd.jpg",
+      "sha256": "493abcfdd358333fddb5fe637298b1098b22a3930ce30c143f8b33cc09d7c6ad",
+      "bytes": 279741,
+      "alternatives": []
+    },
+    {
+      "id": "064a8ea0ab3f5a170cae37ad",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/064a8ea0ab3f5a170cae37ad.jpg",
+      "sha256": "decfef58cec604b4bdffd9cbba9f5ad03e3fc4a06bd21b6c4d5851bc930a14d4",
+      "bytes": 323319,
+      "alternatives": []
+    },
+    {
+      "id": "0666bf8888e6a7cabc01fdbe",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0666bf8888e6a7cabc01fdbe.jpg",
+      "sha256": "9d9d23480f7896ab7ba909c71acb1ae29263c08688b06f5ba55f2b43b8ac79a5",
+      "bytes": 216749,
+      "alternatives": []
+    },
+    {
+      "id": "0667f62099500a8f4cc4042e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0667f62099500a8f4cc4042e.jpg",
+      "sha256": "02a7719054cd560ca6046e61ad0260304bffc280e0946afe4ef9f31400c8b369",
+      "bytes": 287037,
+      "alternatives": []
+    },
+    {
+      "id": "06ac52e26a9560d8e289e533",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/06ac52e26a9560d8e289e533.jpg",
+      "sha256": "24490a9da78a5d1943bea48d6e7d12922c1b851b98c81457252532c9111269dc",
+      "bytes": 287187,
+      "alternatives": []
+    },
+    {
+      "id": "075d536a0b9bb7beb0353cd5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/075d536a0b9bb7beb0353cd5.jpg",
+      "sha256": "b0723ba2689be06cecf937df8466ba95537da2afc07914dedaefe8bf02b064ad",
+      "bytes": 321333,
+      "alternatives": []
+    },
+    {
+      "id": "0766cdfeae96180ae1a2386d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0766cdfeae96180ae1a2386d.jpg",
+      "sha256": "6a12b9402ddf70f805fb025d9f170a5f1e8f10a667d553007f6f4dd062bad48a",
+      "bytes": 186748,
+      "alternatives": []
+    },
+    {
+      "id": "0773e618c0db06cdc7352d1a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0773e618c0db06cdc7352d1a.jpg",
+      "sha256": "22ce4faf1cd7761c236ef440b67fab66b37d2e6995de7f5294740fd9d5c8421b",
+      "bytes": 293072,
+      "alternatives": []
+    },
+    {
+      "id": "077b75ad3600149b2ee5c89d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/077b75ad3600149b2ee5c89d.png",
+      "sha256": "077b75ad3600149b2ee5c89df8fc17e3c541f58f2eef8e1432abd32917d229f3",
+      "bytes": 1132394,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/077b75ad3600149b2ee5c89d.jpg"
+      ]
+    },
+    {
+      "id": "07eab39014e7515620a327e0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/07eab39014e7515620a327e0.jpg",
+      "sha256": "6ca11eb263c9694f0f03a0e221275f73a1ef5de4bca373d3a6770761c3408b7c",
+      "bytes": 316636,
+      "alternatives": []
+    },
+    {
+      "id": "08cb75cc713a5f45432eac2f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/08cb75cc713a5f45432eac2f.jpg",
+      "sha256": "d9cd59ddc2239588dcd56656f109dd7d4052eadda774221d8ee19fee1e6f6fd9",
+      "bytes": 287237,
+      "alternatives": []
+    },
+    {
+      "id": "098caff8afb1bfdc4263850f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/098caff8afb1bfdc4263850f.jpg",
+      "sha256": "9d8c5d3af644a665448075d598322398143e3e038d0528b35df357ea9e38f97f",
+      "bytes": 161666,
+      "alternatives": []
+    },
+    {
+      "id": "0b369bf3b9dc190c1fec62b7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0b369bf3b9dc190c1fec62b7.jpg",
+      "sha256": "9347ec9f768018e1e37c5d14afba94eb590777d6a07796896a86fb5786315700",
+      "bytes": 161576,
+      "alternatives": []
+    },
+    {
+      "id": "0c14973b39183edd555a7596",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0c14973b39183edd555a7596.jpg",
+      "sha256": "ee3696b12ff590ef97f7c163293602208fb7d43e47746a976ee65faa5a157f36",
+      "bytes": 286866,
+      "alternatives": []
+    },
+    {
+      "id": "0c4892eee7f657c057456ce6",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0c4892eee7f657c057456ce6.jpg",
+      "sha256": "cac93cd5ee5c9864fc65d611768120053e17342bb42185035e6622fe9ab3451f",
+      "bytes": 279795,
+      "alternatives": []
+    },
+    {
+      "id": "0d329a8e9d8b712121b62d09",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0d329a8e9d8b712121b62d09.jpg",
+      "sha256": "8f99ebf578371d195a51a1669e61417e45bbe13d244ec7d7774ed6a0137f4793",
+      "bytes": 187673,
+      "alternatives": []
+    },
+    {
+      "id": "0d7fdaab53af3f3bb9c35588",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0d7fdaab53af3f3bb9c35588.jpg",
+      "sha256": "c7bc6d8ae34a64ed7c0ae9a1b5121d9f809328377bd40462ee65bbec8667525e",
+      "bytes": 321556,
+      "alternatives": []
+    },
+    {
+      "id": "0e87028677f65169a5748e8c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0e87028677f65169a5748e8c.jpg",
+      "sha256": "c81249e868b99df2678fc2fef215bc43b0735c692478c670ece49bc8b96d98d6",
+      "bytes": 216724,
+      "alternatives": []
+    },
+    {
+      "id": "0eac0771b32866f89c8bf715",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0eac0771b32866f89c8bf715.jpg",
+      "sha256": "6bf6482490c0e10e18c0c9355547b53eac4d0e88e3e51855145f2dfc7907366f",
+      "bytes": 323483,
+      "alternatives": []
+    },
+    {
+      "id": "0eb9552f22d0349274cc7866",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0eb9552f22d0349274cc7866.jpg",
+      "sha256": "cf3cba8104f7e5c095e02f1f5028d7b4b7ad2327e369520e0d9552d508a84da4",
+      "bytes": 269186,
+      "alternatives": []
+    },
+    {
+      "id": "0f19f934e8cb23a052014167",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0f19f934e8cb23a052014167.jpg",
+      "sha256": "096474c5d431dfc44990887ec61e669342ebc669b51abb36dfa7dd2931fb1610",
+      "bytes": 187732,
+      "alternatives": []
+    },
+    {
+      "id": "0fd01c6ba3c62b605995d5be",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/0fd01c6ba3c62b605995d5be.jpg",
+      "sha256": "90e9e862d7d6399c92a6732dd6b0ed1c810eeb280e16aedfd5cd96dd64b6f777",
+      "bytes": 186648,
+      "alternatives": []
+    },
+    {
+      "id": "10847381bfaa260e295f9f9f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/10847381bfaa260e295f9f9f.jpg",
+      "sha256": "a1226a3a50ab96ba9ad0470918fa568907dd632adbd4a52d1c9522047f9c690a",
+      "bytes": 236138,
+      "alternatives": []
+    },
+    {
+      "id": "10c23652e5b53389bddde530",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/10c23652e5b53389bddde530.jpg",
+      "sha256": "a68f408a11d7dba7b485791e6f1da41de50427da1be74a6c231d7301a98d2bf5",
+      "bytes": 316581,
+      "alternatives": []
+    },
+    {
+      "id": "1147c7636304e4262f2bc9e8",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1147c7636304e4262f2bc9e8.jpg",
+      "sha256": "b61f8e7aa2fbac013ea8d3ee4fdaafc06c069cda48f3f3e281873d7c0425cc5a",
+      "bytes": 304854,
+      "alternatives": []
+    },
+    {
+      "id": "119c9dc86b19c7f01c11ec10",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/119c9dc86b19c7f01c11ec10.jpg",
+      "sha256": "88bce663d0e8d194d26ac490c0d220e9abfcc2d1be3a2362bec21c871a277493",
+      "bytes": 269274,
+      "alternatives": []
+    },
+    {
+      "id": "11e4f2c360388a391c346869",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/11e4f2c360388a391c346869.jpg",
+      "sha256": "2b9d5363120b84f8e26f426ca50739043da35d5faedbd7131b1336ff37831a0b",
+      "bytes": 293064,
+      "alternatives": []
+    },
+    {
+      "id": "1279fed0a1d54711c5c3646b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1279fed0a1d54711c5c3646b.jpg",
+      "sha256": "0c16f79d3277476ef4681959b30af106c24eab56585c636e68dcd73b545d4b3b",
+      "bytes": 267309,
+      "alternatives": []
+    },
+    {
+      "id": "12eea7267477c161e5dba861",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/12eea7267477c161e5dba861.jpg",
+      "sha256": "ce9b5d2ef73d527f1dc5a4731c680c997ac149444f32a81dc7209c7243b29f00",
+      "bytes": 323285,
+      "alternatives": []
+    },
+    {
+      "id": "139a4dc9117fcbce72bcf751",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/139a4dc9117fcbce72bcf751.jpg",
+      "sha256": "e28af684cafd1ead1154534cd2bc68cc891f5ca1d7948d48fb0455b6a2642f26",
+      "bytes": 267258,
+      "alternatives": []
+    },
+    {
+      "id": "17547332add17f27d075f04d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/17547332add17f27d075f04d.png",
+      "sha256": "17547332add17f27d075f04d0d8d56e0912cdeaeac22d99844e328c57af7411c",
+      "bytes": 20126,
+      "alternatives": []
+    },
+    {
+      "id": "17d253a52a3fea506543cf21",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/17d253a52a3fea506543cf21.jpg",
+      "sha256": "bfac742530221b39912d463d8030fa58377e956707761afd8c2cb2f2cb5c9c3d",
+      "bytes": 323409,
+      "alternatives": []
+    },
+    {
+      "id": "1973b1401487066d08e644f5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1973b1401487066d08e644f5.jpg",
+      "sha256": "9ee660d7c43d57578303dd85216905c534bb3b0b40e752def2afdfb8b3bf7997",
+      "bytes": 283038,
+      "alternatives": []
+    },
+    {
+      "id": "19753324902e753e1aace940",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/19753324902e753e1aace940.jpg",
+      "sha256": "cd2651fd66198518a13ed49ab8257e74124a22b889c9426f3afad40905967a09",
+      "bytes": 269132,
+      "alternatives": []
+    },
+    {
+      "id": "1ab2d90db07ed915f49cae25",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1ab2d90db07ed915f49cae25.jpg",
+      "sha256": "42c5de9aac0774792ebbd79417db1641b4b00e5e559e5926ed37777f454a339c",
+      "bytes": 316697,
+      "alternatives": []
+    },
+    {
+      "id": "1b4a3f952a1045e47ad9e31f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1b4a3f952a1045e47ad9e31f.jpg",
+      "sha256": "c024bf180e7b05a2e54370ae2156f73e7bf7102b52aa86479b99e1c914286c48",
+      "bytes": 287314,
+      "alternatives": []
+    },
+    {
+      "id": "1b7f6891dd471e5c1120d82a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1b7f6891dd471e5c1120d82a.png",
+      "sha256": "1b7f6891dd471e5c1120d82abaa6e3646a27326815f5100f83d6a5a2da555144",
+      "bytes": 1115404,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/1b7f6891dd471e5c1120d82a.jpg"
+      ]
+    },
+    {
+      "id": "1f6faa6510a879dc02b75795",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/1f6faa6510a879dc02b75795.jpg",
+      "sha256": "cbecdb46d585a04a8ec6fa5d40688c745769af02078f3de26237644148773c5c",
+      "bytes": 304904,
+      "alternatives": []
+    },
+    {
+      "id": "2026669741f80b80d7e628ab",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2026669741f80b80d7e628ab.jpg",
+      "sha256": "93adc00982aea238b7ad3bd1efb5c175a501a6ecf52b2ed06f8712ca32cc70de",
+      "bytes": 187609,
+      "alternatives": []
+    },
+    {
+      "id": "205fb48f1817eb30ce0ba7bd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/205fb48f1817eb30ce0ba7bd.jpg",
+      "sha256": "2cc73573bf71c7d43a838df5791cfefcc0bc7fc2a73cf34fec32812d273c097e",
+      "bytes": 293154,
+      "alternatives": []
+    },
+    {
+      "id": "20731db4aa854cadeab02e24",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/20731db4aa854cadeab02e24.jpg",
+      "sha256": "8bb8f072d1311bf3c6e9e7ded8d3e32a35091676d8515fabf0996775d75c581c",
+      "bytes": 304845,
+      "alternatives": []
+    },
+    {
+      "id": "210626bb77538fff9a2ae927",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/210626bb77538fff9a2ae927.jpg",
+      "sha256": "c7fea07a7ffbf3b58b408e3cf8f3e66334fbe5823ff66f7650ef14d71cea6bdc",
+      "bytes": 366613,
+      "alternatives": []
+    },
+    {
+      "id": "21753d183e9f8db093402ede",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/21753d183e9f8db093402ede.png",
+      "sha256": "21753d183e9f8db093402ede550eafe7d911c2147958d3e3247f3aff47e83514",
+      "bytes": 21045,
+      "alternatives": []
+    },
+    {
+      "id": "217c86b6b185b756f88467d1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/217c86b6b185b756f88467d1.jpg",
+      "sha256": "be7ec4e43a3a3c698a578d239b35b86972a47e774d65f3f38c96d09087458d11",
+      "bytes": 292968,
+      "alternatives": []
+    },
+    {
+      "id": "22e97cda540ad98afd055342",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/22e97cda540ad98afd055342.jpg",
+      "sha256": "275b3aea2f48c62e34f7a251886cc86d98bc28a16a4b0170b751b815b6425b0a",
+      "bytes": 269183,
+      "alternatives": []
+    },
+    {
+      "id": "23143d76f60089cbaad4e920",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/23143d76f60089cbaad4e920.jpg",
+      "sha256": "d0fe27e2f34cfdb89b29f31b789591ddd974590210850df92e6af20b08e8c08c",
+      "bytes": 216743,
+      "alternatives": []
+    },
+    {
+      "id": "24df61ecb237367c9d84c7fc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/24df61ecb237367c9d84c7fc.jpg",
+      "sha256": "2a5264522f6cc6ada9ecd9bb487772b18733429f1db0d869365a88e85af90bd2",
+      "bytes": 161514,
+      "alternatives": []
+    },
+    {
+      "id": "24e1a0973a75f287007726c1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/24e1a0973a75f287007726c1.jpg",
+      "sha256": "4687d9d4a10493160bcf16533a41d3947980c25934d3bc9abad3aa8249ad77d1",
+      "bytes": 236184,
+      "alternatives": []
+    },
+    {
+      "id": "24ee8ef112ec36826dced622",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/24ee8ef112ec36826dced622.png",
+      "sha256": "24ee8ef112ec36826dced62238ef919a8ad1c1f03de8c8d996049e036989564b",
+      "bytes": 1737288,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/24ee8ef112ec36826dced622.jpg"
+      ]
+    },
+    {
+      "id": "26a134f5696871bf40ad0e77",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/26a134f5696871bf40ad0e77.jpg",
+      "sha256": "3056f6a0653e4699d2f51525889cce6a1312dc42bac69ce00185e1cba480ce96",
+      "bytes": 269252,
+      "alternatives": []
+    },
+    {
+      "id": "26f822e8b7f519e51a82d2ea",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/26f822e8b7f519e51a82d2ea.png",
+      "sha256": "26f822e8b7f519e51a82d2ea39eeb2f3f9cbd814736e7d2dc0e8dcadcfafa935",
+      "bytes": 15422,
+      "alternatives": []
+    },
+    {
+      "id": "2843edb186f581e7670756b3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2843edb186f581e7670756b3.jpg",
+      "sha256": "e4687020a4a31afef4944d184555462473d44ce60930a9747662fc479c2db227",
+      "bytes": 316731,
+      "alternatives": []
+    },
+    {
+      "id": "28e4bf9ac6f98906a61d26b7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/28e4bf9ac6f98906a61d26b7.jpg",
+      "sha256": "3a87f493619fa72a773c63a6142a4355c9e160ecf1005cb4021e7d13b60a7bf1",
+      "bytes": 186780,
+      "alternatives": []
+    },
+    {
+      "id": "2987c7b9c077252579b5ca78",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2987c7b9c077252579b5ca78.jpg",
+      "sha256": "068c69332c40942804a9affb2041f1ccaf827265bf98043c703c4b08dd0b4379",
+      "bytes": 287190,
+      "alternatives": []
+    },
+    {
+      "id": "2b39a04a88298fe869c7a2d5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2b39a04a88298fe869c7a2d5.jpg",
+      "sha256": "8a4eb5496c3f0edf00ffe04596dca2c3c3988c7bbd146f58b82d9abf845fcb06",
+      "bytes": 366703,
+      "alternatives": []
+    },
+    {
+      "id": "2c8e741c35b5f7c11ba61787",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2c8e741c35b5f7c11ba61787.jpg",
+      "sha256": "171d451bb069d3f99f07b473fce2323051091d99190ed38adbf8a652f0d9fa02",
+      "bytes": 236008,
+      "alternatives": []
+    },
+    {
+      "id": "2d5618075a79374e437dbea9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2d5618075a79374e437dbea9.jpg",
+      "sha256": "1f6680265d9829eb39735cd6339c40bfc17e9661ad7715e4f0637dccd2a0a45f",
+      "bytes": 304883,
+      "alternatives": []
+    },
+    {
+      "id": "2ea0f0c9b70e2de3d30af96a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2ea0f0c9b70e2de3d30af96a.jpg",
+      "sha256": "31eede0feb6ff4d0f396359db0d108dcbc035d93c160518b2faaf2664f29ce57",
+      "bytes": 328855,
+      "alternatives": []
+    },
+    {
+      "id": "2f4f52fc67ee5d322f5ce62d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/2f4f52fc67ee5d322f5ce62d.jpg",
+      "sha256": "49b3a0294ba7a05f06c2dfb81a60f4bcc8dbdea23f1f317ab495e7ae715cb93d",
+      "bytes": 330831,
+      "alternatives": []
+    },
+    {
+      "id": "300c1e1aa622a94f4ed0e82d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/300c1e1aa622a94f4ed0e82d.jpg",
+      "sha256": "4525939762a02a9f12d09b120e4d9f2c16cc1099493ccd26690a8754206fd539",
+      "bytes": 293166,
+      "alternatives": []
+    },
+    {
+      "id": "319733bf3c65115cd34e2c78",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/319733bf3c65115cd34e2c78.jpg",
+      "sha256": "001879b455b13de45ece49d7565825ba1781284679c3cdeb04bd230328cdeb3e",
+      "bytes": 323404,
+      "alternatives": []
+    },
+    {
+      "id": "31a6415daec44e19e94045de",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/31a6415daec44e19e94045de.jpg",
+      "sha256": "279317eb9830382b0e233a263ea52f6be1efaee6e3b757e5f92e8cb51c825214",
+      "bytes": 267298,
+      "alternatives": []
+    },
+    {
+      "id": "31d47836e119722c47669576",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/31d47836e119722c47669576.jpg",
+      "sha256": "8305943d13374071d280ef75272407543bbe0380c06d969da4f2a560ce08ad1c",
+      "bytes": 316523,
+      "alternatives": []
+    },
+    {
+      "id": "32a70977c9f763f0e285f268",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/32a70977c9f763f0e285f268.jpg",
+      "sha256": "35aad60eabbfb2b655f72c3a3b1d28d0ee8e258c08ab676c548e6e294c9e5572",
+      "bytes": 235908,
+      "alternatives": []
+    },
+    {
+      "id": "3316d6fae664e943297652ca",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3316d6fae664e943297652ca.jpg",
+      "sha256": "85d604efe759b2e1f1f0ba236b2fd38f696ec3801c5332ca3901b4e31a785404",
+      "bytes": 236129,
+      "alternatives": []
+    },
+    {
+      "id": "3335dc79b45d84e1c6632248",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3335dc79b45d84e1c6632248.jpg",
+      "sha256": "12e5752ddd84eb8aefe2ad6ce2006013dae2aa62747dae55a953f425b381f376",
+      "bytes": 161589,
+      "alternatives": []
+    },
+    {
+      "id": "34cf1274b68ddf3c7c109cd5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/34cf1274b68ddf3c7c109cd5.jpg",
+      "sha256": "87b936fd620d765140874df450ad135274966c485413df18e63cb0b6008c35cc",
+      "bytes": 323300,
+      "alternatives": []
+    },
+    {
+      "id": "3541943964926956bc52d3d6",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3541943964926956bc52d3d6.png",
+      "sha256": "3541943964926956bc52d3d6563cff74fd7c8ab7a89f63a26a1cde9cd12432b2",
+      "bytes": 22049,
+      "alternatives": []
+    },
+    {
+      "id": "365de2a636034efe9a3d0ed8",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/365de2a636034efe9a3d0ed8.png",
+      "sha256": "365de2a636034efe9a3d0ed809f2373d2bdc60677f91ff82846fdcac5f481493",
+      "bytes": 16670,
+      "alternatives": []
+    },
+    {
+      "id": "36c51a6331ea71743f6e98a7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/36c51a6331ea71743f6e98a7.jpg",
+      "sha256": "7f14bb2a3b19e4e946dce754761dd7de0e66ceaef1d0d4a9a44a30ac1e04c2c1",
+      "bytes": 283089,
+      "alternatives": []
+    },
+    {
+      "id": "3736d9566b34bc0cdb1c772d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3736d9566b34bc0cdb1c772d.jpg",
+      "sha256": "d693f250f1e0a6ddca571abdae02dedcc40bb1c9cc8ad579940e20ec0bda9257",
+      "bytes": 236120,
+      "alternatives": []
+    },
+    {
+      "id": "37557b64642a646f36aa0fc0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/37557b64642a646f36aa0fc0.jpg",
+      "sha256": "8b634b401d894963930b688034e44e6800e14e179cee071c732fe186338b6ade",
+      "bytes": 304820,
+      "alternatives": []
+    },
+    {
+      "id": "379c8bf4a14df94c73f0994b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/379c8bf4a14df94c73f0994b.jpg",
+      "sha256": "3212d703338bca406d7bbd6d39e53c1f67f332477025ab1aa76d20071bfce434",
+      "bytes": 267344,
+      "alternatives": []
+    },
+    {
+      "id": "38fd2512e34d4ba3b3ca65ac",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/38fd2512e34d4ba3b3ca65ac.png",
+      "sha256": "38fd2512e34d4ba3b3ca65acb3dd5370a252aae33e17ce4b4fcaed14e55e618c",
+      "bytes": 1540916,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/38fd2512e34d4ba3b3ca65ac.jpg"
+      ]
+    },
+    {
+      "id": "3917f54456ea0f79fe72e8e9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3917f54456ea0f79fe72e8e9.jpg",
+      "sha256": "48706281ea7ad4d4d58c412923607cbbbb8a9ccd7bcad99b09deb30420d37c29",
+      "bytes": 328565,
+      "alternatives": []
+    },
+    {
+      "id": "394ed5599ff35043c5ebf241",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/394ed5599ff35043c5ebf241.jpg",
+      "sha256": "528f1a2b72e0b5af8ee2b3f51c1f869c46c0dbc394faabc2430b38799e22bf91",
+      "bytes": 267245,
+      "alternatives": []
+    },
+    {
+      "id": "39e77ec7d6e60b0963d911d9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/39e77ec7d6e60b0963d911d9.jpg",
+      "sha256": "e1faac901de404bc50b7c4b178194652fe3daa4e71c91c9f5df3308d89a17733",
+      "bytes": 186677,
+      "alternatives": []
+    },
+    {
+      "id": "39f45ad41b01377471b98a79",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/39f45ad41b01377471b98a79.jpg",
+      "sha256": "788d24591a897c027bfab292be45352636320ed728b9a933790f5ea508151dde",
+      "bytes": 304895,
+      "alternatives": []
+    },
+    {
+      "id": "3ac146bc45241f2864bdae40",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3ac146bc45241f2864bdae40.jpg",
+      "sha256": "ace9eb2a02d313cabb5676023017afd0346c0cc3f633745150604ebb23ed03f2",
+      "bytes": 283078,
+      "alternatives": []
+    },
+    {
+      "id": "3e00da2aaafbf0bfbd4cf230",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3e00da2aaafbf0bfbd4cf230.png",
+      "sha256": "3e00da2aaafbf0bfbd4cf2301f28980b319baa24631fad3a074a9a9e917d66e0",
+      "bytes": 21337,
+      "alternatives": []
+    },
+    {
+      "id": "3e2e1bd98c3cbc126bbaebdc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3e2e1bd98c3cbc126bbaebdc.png",
+      "sha256": "3e2e1bd98c3cbc126bbaebdc5dc3ddfad11329c1e4669a5a8671aae8eea0bc6a",
+      "bytes": 18922,
+      "alternatives": []
+    },
+    {
+      "id": "3ef3ffba9d43948982f5a936",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/3ef3ffba9d43948982f5a936.jpg",
+      "sha256": "21203ea08c867533896614fc9ca92fa3aafd371ebec6dfb4a9b9d25a46a42c0c",
+      "bytes": 366677,
+      "alternatives": []
+    },
+    {
+      "id": "400fb0b84d7152664914b8d3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/400fb0b84d7152664914b8d3.jpg",
+      "sha256": "ccde3b9c6e541831e9c1036e3dc440ed751c5deed5a72071466f8662fcb9ffb9",
+      "bytes": 328810,
+      "alternatives": []
+    },
+    {
+      "id": "404a3a252325a8f7af18b5f1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/404a3a252325a8f7af18b5f1.jpg",
+      "sha256": "79aeee8b761b4f7bc7b556687653ddc5c0fb34c029b16d529f2e770591f6125f",
+      "bytes": 287261,
+      "alternatives": []
+    },
+    {
+      "id": "41cca378785f54694eb7d3d4",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/41cca378785f54694eb7d3d4.png",
+      "sha256": "41cca378785f54694eb7d3d413e2dc0c932470d6ddd47e14fab1798897ebe0f2",
+      "bytes": 1229539,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/41cca378785f54694eb7d3d4.jpg"
+      ]
+    },
+    {
+      "id": "42aeb6dfa972965e565a3b86",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/42aeb6dfa972965e565a3b86.png",
+      "sha256": "42aeb6dfa972965e565a3b86a144687e586fd5d6ded6f2c277711c60b73aebfa",
+      "bytes": 20476,
+      "alternatives": []
+    },
+    {
+      "id": "433e2d9d791716d155f24127",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/433e2d9d791716d155f24127.jpg",
+      "sha256": "887272c48760d01026e8020a62711f315cf6a15c896cae783b9f3bda97235463",
+      "bytes": 186727,
+      "alternatives": []
+    },
+    {
+      "id": "4816e7b3b4c05e4e0173dc7a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4816e7b3b4c05e4e0173dc7a.png",
+      "sha256": "4816e7b3b4c05e4e0173dc7ae560f6d09b719be9936a201b91fa13aeb333f6d0",
+      "bytes": 3475958,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/4816e7b3b4c05e4e0173dc7a.jpg"
+      ]
+    },
+    {
+      "id": "48178a33eac1e57f31919d0c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/48178a33eac1e57f31919d0c.png",
+      "sha256": "48178a33eac1e57f31919d0cf16216989275f6ff6f9f2a3ded983024d608f4a0",
+      "bytes": 25761,
+      "alternatives": []
+    },
+    {
+      "id": "484973e10f04b7dd9f2187b9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/484973e10f04b7dd9f2187b9.jpg",
+      "sha256": "86f6c75573fc828179dd1ee7e20cf7478dcd368c7008c74621ae0d43ddf69d84",
+      "bytes": 236160,
+      "alternatives": []
+    },
+    {
+      "id": "48a519d89c5aea9b699c0dff",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/48a519d89c5aea9b699c0dff.png",
+      "sha256": "48a519d89c5aea9b699c0dff04d74f961a9cf8ed111d05363bc9d36cde6a81bf",
+      "bytes": 18965,
+      "alternatives": []
+    },
+    {
+      "id": "4a1b3b5a2caea6b62a8c0729",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4a1b3b5a2caea6b62a8c0729.jpg",
+      "sha256": "522a20f961e7375905dc9dd71807ffb1472f3e7cbc85c023c280b95a5ba6314e",
+      "bytes": 330804,
+      "alternatives": []
+    },
+    {
+      "id": "4a81b07edab0e171293946f0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4a81b07edab0e171293946f0.jpg",
+      "sha256": "97bfc7cd48a2cd1fdb0fd64c1820331aaeae350f7939b2d0e0ff8d03ee12edf8",
+      "bytes": 283048,
+      "alternatives": []
+    },
+    {
+      "id": "4c3d494d9c2fab485c47ad9c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4c3d494d9c2fab485c47ad9c.jpg",
+      "sha256": "84a4bf0ca9050e3c7a146080cb70c1f4e9e7967d75a56eab125004474cf63c1e",
+      "bytes": 282876,
+      "alternatives": []
+    },
+    {
+      "id": "4dd57fc899ff0b4cced0a26f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4dd57fc899ff0b4cced0a26f.jpg",
+      "sha256": "bcf7890f0e180acdfbae925ff078d7552154b9d6163496ae40dcc6eba36cd963",
+      "bytes": 267315,
+      "alternatives": []
+    },
+    {
+      "id": "4e192e2af920ed5b0804c765",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4e192e2af920ed5b0804c765.jpg",
+      "sha256": "5049ac8db7a38a8f0894fc9e2b5987fb0c19598f84c2511d03b223a2911fcad0",
+      "bytes": 216732,
+      "alternatives": []
+    },
+    {
+      "id": "4e3d66d095ef67328d1024d1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4e3d66d095ef67328d1024d1.jpg",
+      "sha256": "b506899472af273d2948526f8ca0d7a665253b6d8dc2e177260179c99eab18c6",
+      "bytes": 366610,
+      "alternatives": []
+    },
+    {
+      "id": "4e3e91aca198af29b7241e27",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4e3e91aca198af29b7241e27.jpg",
+      "sha256": "833b14dd14db1adee1aa6b7b76793b06355eff2d9bab0ba8d159beb07a004e69",
+      "bytes": 293149,
+      "alternatives": []
+    },
+    {
+      "id": "4e4a8b71b40482895cca5eb0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4e4a8b71b40482895cca5eb0.png",
+      "sha256": "4e4a8b71b40482895cca5eb0dc9f75b55ef099e2157ff996347aa39edb3b5591",
+      "bytes": 1485551,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/4e4a8b71b40482895cca5eb0.jpg"
+      ]
+    },
+    {
+      "id": "4f7c335620077ff36833f70d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/4f7c335620077ff36833f70d.jpg",
+      "sha256": "8ab27dd3078cfdefb9538a6aa2fcd27654dcb548f86cf698ed31b603e6d51c67",
+      "bytes": 366663,
+      "alternatives": []
+    },
+    {
+      "id": "5219e34eef4d992eb66c699f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5219e34eef4d992eb66c699f.jpg",
+      "sha256": "ef8088d6ea793e3fe573a9ab7effaab3afd91fa3cf34f7ddc41865bec4330073",
+      "bytes": 304861,
+      "alternatives": []
+    },
+    {
+      "id": "535a91f4ec34b7b016e8b85e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/535a91f4ec34b7b016e8b85e.png",
+      "sha256": "535a91f4ec34b7b016e8b85e59e25ef5ccbbe026e32de7d3babd7f578444dee8",
+      "bytes": 23018,
+      "alternatives": []
+    },
+    {
+      "id": "53785b76730560d0dfcf7a16",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/53785b76730560d0dfcf7a16.jpg",
+      "sha256": "4269555f8780e38832d887771bb839414b3c1248f7c60d7033d78fba536fd8f1",
+      "bytes": 279836,
+      "alternatives": []
+    },
+    {
+      "id": "53bfeabf00af1597235471ec",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/53bfeabf00af1597235471ec.jpg",
+      "sha256": "605c597ed4937a627de42cbc1d713d9547aff40cfb47100ddfd12930d8589800",
+      "bytes": 328728,
+      "alternatives": []
+    },
+    {
+      "id": "53e50b0fbcb0369c134c758c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/53e50b0fbcb0369c134c758c.jpg",
+      "sha256": "dcc0a46f374d75b76984d8ec8cec50c35addab48afb5a14eff0ffdbc9ffa18e5",
+      "bytes": 187724,
+      "alternatives": []
+    },
+    {
+      "id": "546c328ad8f0cc257fe053fb",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/546c328ad8f0cc257fe053fb.jpg",
+      "sha256": "8d0e5ac04a987e90f6343f42857ef598cb9da06e6bd384173ffbe6050da7b67f",
+      "bytes": 330950,
+      "alternatives": []
+    },
+    {
+      "id": "54c9d70f10b62f3934abe76e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/54c9d70f10b62f3934abe76e.png",
+      "sha256": "54c9d70f10b62f3934abe76efbaa04a009f6656243b2bd345fc79ebdfddf039f",
+      "bytes": 1025554,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/54c9d70f10b62f3934abe76e.jpg"
+      ]
+    },
+    {
+      "id": "5780556e64285ca7f77f6174",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5780556e64285ca7f77f6174.jpg",
+      "sha256": "efd1cc5d97eb05041916beda809ae03c1d3bc7f923206aedc776e2ca9bda5126",
+      "bytes": 216784,
+      "alternatives": []
+    },
+    {
+      "id": "57bc65b59e40384158050076",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/57bc65b59e40384158050076.jpg",
+      "sha256": "91e76fe7e6cc5ce7f38b0822c6f94313fca2e6a14f86a0542c73fbbb9c963aba",
+      "bytes": 236208,
+      "alternatives": []
+    },
+    {
+      "id": "58aee8bc04944c0128fa3960",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/58aee8bc04944c0128fa3960.png",
+      "sha256": "58aee8bc04944c0128fa3960c95f6fcc224d6859761f270af80e88aefb84a811",
+      "bytes": 1414142,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/58aee8bc04944c0128fa3960.jpg"
+      ]
+    },
+    {
+      "id": "58d38d044466d2c9653bd08a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/58d38d044466d2c9653bd08a.jpg",
+      "sha256": "011b6000e01b7dcd754ab388b3ebc5f96573327eb3567f08feac9e5c05335758",
+      "bytes": 267262,
+      "alternatives": []
+    },
+    {
+      "id": "5995f0f33f7b1a6e642e5a1f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5995f0f33f7b1a6e642e5a1f.jpg",
+      "sha256": "d104b04fb93c6463fe41d7fa8607a85b57043c17c2e488c33e78a95df810ea9c",
+      "bytes": 279860,
+      "alternatives": []
+    },
+    {
+      "id": "5a579618b90962ccd7d76f21",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5a579618b90962ccd7d76f21.jpg",
+      "sha256": "c71b3bfdecf6844a32cd8a9458bf761609254f90324c68077d1195d7751c6f23",
+      "bytes": 323455,
+      "alternatives": []
+    },
+    {
+      "id": "5d597be5f795fa3311c78184",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5d597be5f795fa3311c78184.png",
+      "sha256": "5d597be5f795fa3311c78184f8cc7e0dd287ef807c1a874e20e7ada10996b2b7",
+      "bytes": 21570,
+      "alternatives": []
+    },
+    {
+      "id": "5e73b901e999f4b77cabfb7f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5e73b901e999f4b77cabfb7f.png",
+      "sha256": "5e73b901e999f4b77cabfb7f71a6edd1c785da95bc379ba8aae94ede28680e63",
+      "bytes": 17860,
+      "alternatives": []
+    },
+    {
+      "id": "5f3253c878c1d3132eebdfde",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5f3253c878c1d3132eebdfde.jpg",
+      "sha256": "990d4dd48192f277283c24a73d111b133456894eff80e0ff7dbf61b027215381",
+      "bytes": 269116,
+      "alternatives": []
+    },
+    {
+      "id": "5f6388ec6f9f486024ee09f6",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/5f6388ec6f9f486024ee09f6.jpg",
+      "sha256": "6a6c0300db08f240c4d228b8f611291f4b537180a89b4b8f83c3384302489cfd",
+      "bytes": 279855,
+      "alternatives": []
+    },
+    {
+      "id": "60bf56c484d1d5081cd9b9a2",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/60bf56c484d1d5081cd9b9a2.png",
+      "sha256": "60bf56c484d1d5081cd9b9a2d5722a13182241b88de841752d097f2cc1f8abf0",
+      "bytes": 22079,
+      "alternatives": []
+    },
+    {
+      "id": "61da89beb7f2acabb5723adb",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/61da89beb7f2acabb5723adb.png",
+      "sha256": "61da89beb7f2acabb5723adbe7238a5e0c915688fc7f471a35065295d6ffd572",
+      "bytes": 1399501,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/61da89beb7f2acabb5723adb.jpg"
+      ]
+    },
+    {
+      "id": "61dd2eda3eb402317229d976",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/61dd2eda3eb402317229d976.png",
+      "sha256": "61dd2eda3eb402317229d97666d23081d1d5525a88ec2df7cc7ad38240c9d17d",
+      "bytes": 20801,
+      "alternatives": []
+    },
+    {
+      "id": "6319e1651ce92b078f759d27",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6319e1651ce92b078f759d27.jpg",
+      "sha256": "6e1dc6b3ad733344fa664ee7c9678424c46fb11a08a1faac7ab148970905d712",
+      "bytes": 187704,
+      "alternatives": []
+    },
+    {
+      "id": "6361ec8b5419d8c5ebcb8ef5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6361ec8b5419d8c5ebcb8ef5.jpg",
+      "sha256": "ed04672e97b1fe8ee1fb788af417ae2f51e16a7ea794fb1b161d29c4f038eced",
+      "bytes": 323023,
+      "alternatives": []
+    },
+    {
+      "id": "64243ebf2f8b2da8a0398f83",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/64243ebf2f8b2da8a0398f83.jpg",
+      "sha256": "2e316c7c7ff481b7f227d25d447dbd757319a6523da2e36731b53bf1fe233a7d",
+      "bytes": 269135,
+      "alternatives": []
+    },
+    {
+      "id": "66fb6599f185931b37b7fcfb",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/66fb6599f185931b37b7fcfb.jpg",
+      "sha256": "390de98e8a8f34c8101a7ea46db9c2c0157c09421ff2247b3e3a68c2d08e5ccf",
+      "bytes": 279710,
+      "alternatives": []
+    },
+    {
+      "id": "675b9be81c036c12eb205803",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/675b9be81c036c12eb205803.jpg",
+      "sha256": "e3c7c10a2eb5e127e444ce6a89c7a84a83a59883584206090d9dca99bf308d83",
+      "bytes": 216723,
+      "alternatives": []
+    },
+    {
+      "id": "67ecc08cd661666504ee3935",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/67ecc08cd661666504ee3935.jpg",
+      "sha256": "372ce19e4b5390a1a139f63f7cea59d354789019b0e801fc639c51fb1ff240e7",
+      "bytes": 304859,
+      "alternatives": []
+    },
+    {
+      "id": "68737ae40d4a81c7b2ca0fbd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/68737ae40d4a81c7b2ca0fbd.jpg",
+      "sha256": "b1c126f3cb45bf2ddc69376d9855869ccefe4d01c713144aeab3ba19dec3f1bb",
+      "bytes": 366712,
+      "alternatives": []
+    },
+    {
+      "id": "68e32f454d31bcfaba6e7d44",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/68e32f454d31bcfaba6e7d44.jpg",
+      "sha256": "ae07df11cac2573b6fbc418b9d7ddf9b7e68316def4eb6c87aa1de161137887e",
+      "bytes": 161618,
+      "alternatives": []
+    },
+    {
+      "id": "699437e4c4ef47147ce6adc1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/699437e4c4ef47147ce6adc1.jpg",
+      "sha256": "64a82805b478e50a675e4da235c02852716b5c7e33fb625f6104bbc16b085d8d",
+      "bytes": 279656,
+      "alternatives": []
+    },
+    {
+      "id": "6b61bb3da2e05cff075e3307",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6b61bb3da2e05cff075e3307.jpg",
+      "sha256": "6804b99ac96f40fbe5e30f5581b0b46d87db75f41a8e3398606af46576d70ca9",
+      "bytes": 304921,
+      "alternatives": []
+    },
+    {
+      "id": "6c000a61736282d4038eae65",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6c000a61736282d4038eae65.jpg",
+      "sha256": "9229317dbcae3f93aeb845c093cc03fc3e1d58fa1d8f384aec080ada43a4a80d",
+      "bytes": 279776,
+      "alternatives": []
+    },
+    {
+      "id": "6d7cd6b9ab7d3696aaf52d81",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6d7cd6b9ab7d3696aaf52d81.png",
+      "sha256": "6d7cd6b9ab7d3696aaf52d81ab156c2233a80b051c70a55bca11692e9b4cc18a",
+      "bytes": 23144,
+      "alternatives": []
+    },
+    {
+      "id": "6e2d714b5e4f021d6f0ab825",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6e2d714b5e4f021d6f0ab825.jpg",
+      "sha256": "ee53c13b77cd3181f110dee24a6557d626284be21af93bf25ea2281552833a8a",
+      "bytes": 316634,
+      "alternatives": []
+    },
+    {
+      "id": "6e740f15c0be8d5f93a166bf",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6e740f15c0be8d5f93a166bf.jpg",
+      "sha256": "1364d43eb915e33d9e5736c2b4be8896cf2584b98dfeb4a5385532e61f26f028",
+      "bytes": 216693,
+      "alternatives": []
+    },
+    {
+      "id": "6faa251c3982e1422ca5c55b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6faa251c3982e1422ca5c55b.jpg",
+      "sha256": "b125b30c836a54fcd3fa63e656b0e9c9168fb0a04596f5ddaf442692cc79bbb5",
+      "bytes": 287160,
+      "alternatives": []
+    },
+    {
+      "id": "6ffc6120b22d3fb36ea98025",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/6ffc6120b22d3fb36ea98025.jpg",
+      "sha256": "90431e08a21d87c11b74c060092080d4f3fb9eeaa754be6b61684d73b968b032",
+      "bytes": 269177,
+      "alternatives": []
+    },
+    {
+      "id": "70335842b5ba86e268f21cd8",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/70335842b5ba86e268f21cd8.jpg",
+      "sha256": "bd61efd3c89b2fbe8fedcb33263c75097dc1ec936bf86f6eba31113863ab6880",
+      "bytes": 187614,
+      "alternatives": []
+    },
+    {
+      "id": "703f659612c6800e59d1e3f6",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/703f659612c6800e59d1e3f6.jpg",
+      "sha256": "9545f344fe2e20ce45560c6a82a221905ee32f6ecc0d353edbb23fc71d599fff",
+      "bytes": 293104,
+      "alternatives": []
+    },
+    {
+      "id": "714c6991d4bb66568b63151c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/714c6991d4bb66568b63151c.png",
+      "sha256": "714c6991d4bb66568b63151c351566a06f3f6ef6a91ae6a39dd834f2b21af6c6",
+      "bytes": 911131,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/714c6991d4bb66568b63151c.jpg"
+      ]
+    },
+    {
+      "id": "7241dd64893beedbc9dc868b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7241dd64893beedbc9dc868b.jpg",
+      "sha256": "8adae782b816b83f8724a20d86df9b00ade64f39cc3a360ad95c5f27f6620068",
+      "bytes": 279804,
+      "alternatives": []
+    },
+    {
+      "id": "72820a807b365305f1202cd1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/72820a807b365305f1202cd1.png",
+      "sha256": "72820a807b365305f1202cd108bcae2766459f61c85622c2b475737c3577540d",
+      "bytes": 1009636,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/72820a807b365305f1202cd1.jpg"
+      ]
+    },
+    {
+      "id": "739e31fd6d4e0726348384de",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/739e31fd6d4e0726348384de.jpg",
+      "sha256": "1d2543514b758f4c075b1d9dd934869eece447cff219fa261a360cc41ee63833",
+      "bytes": 236145,
+      "alternatives": []
+    },
+    {
+      "id": "741d6c32b0b1035eafdfa9fc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/741d6c32b0b1035eafdfa9fc.jpg",
+      "sha256": "a9bb31b8fb733a19f0ddd7f5e37df9d7f698b988bf757e210928a738ab551696",
+      "bytes": 186636,
+      "alternatives": []
+    },
+    {
+      "id": "74c64dd073a378a70f186da7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/74c64dd073a378a70f186da7.jpg",
+      "sha256": "d4c7dd0e7cdacea0da5c96b61e8b38d7e3e60e3d2b83798db7c03dc51c2dbdbf",
+      "bytes": 267405,
+      "alternatives": []
+    },
+    {
+      "id": "74d4c2e2c97b8aa32f0999b9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/74d4c2e2c97b8aa32f0999b9.jpg",
+      "sha256": "7e088363dc649a785a5efc2fdd3df380a8088f666f8ed591231dfbe0cf3a7ac4",
+      "bytes": 216790,
+      "alternatives": []
+    },
+    {
+      "id": "7633b9feacb54d8cf24fe35a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7633b9feacb54d8cf24fe35a.jpg",
+      "sha256": "79909ad55a588f08b98477c8f7fe597c64045de953794d220f1852380d596839",
+      "bytes": 267444,
+      "alternatives": []
+    },
+    {
+      "id": "76c484f552da02c3b2c6871e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/76c484f552da02c3b2c6871e.jpg",
+      "sha256": "0040d56eaa087da29deec6a6432c8483a133dad4f57e313d14ee9f98450c1207",
+      "bytes": 186556,
+      "alternatives": []
+    },
+    {
+      "id": "777eb79b6a959bf7647d250b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/777eb79b6a959bf7647d250b.png",
+      "sha256": "777eb79b6a959bf7647d250bb8f6a6966ad9c067f72e3031d00557ad4d62ba7e",
+      "bytes": 1034706,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/777eb79b6a959bf7647d250b.jpg"
+      ]
+    },
+    {
+      "id": "7a09cb24a15bf8280197f559",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7a09cb24a15bf8280197f559.png",
+      "sha256": "7a09cb24a15bf8280197f559cc82dc649dda233ec61023e1b0f2f8e8437895f4",
+      "bytes": 1534717,
+      "alternatives": []
+    },
+    {
+      "id": "7ad61cc7557170367c9bbccc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7ad61cc7557170367c9bbccc.jpg",
+      "sha256": "bfb5f1358876ccfd15846150457fc9fb69f17ce2f2310dbd719d486384dfcf41",
+      "bytes": 316630,
+      "alternatives": []
+    },
+    {
+      "id": "7b8750a444ab718414a106ff",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7b8750a444ab718414a106ff.jpg",
+      "sha256": "7306fea357489542dc0913612136919c3b233c84375e70593c68905ecfbd2ddb",
+      "bytes": 316741,
+      "alternatives": []
+    },
+    {
+      "id": "7bd479e581f9cfee633f6e6e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7bd479e581f9cfee633f6e6e.jpg",
+      "sha256": "703eb5752628a69712d73e1bec4d741183ae8d42203e45e10fc9e9f80c942393",
+      "bytes": 304769,
+      "alternatives": []
+    },
+    {
+      "id": "7e7c2161f197997a29c6923b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7e7c2161f197997a29c6923b.jpg",
+      "sha256": "aeb82165eaa12e2706078251f445e3c26e113f3a196c67d6bb030b50206c25cc",
+      "bytes": 321430,
+      "alternatives": []
+    },
+    {
+      "id": "7f0dfb2b75cb72f61029a9b3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7f0dfb2b75cb72f61029a9b3.jpg",
+      "sha256": "f8e1cbf07f150935c40f7f604b8fec955bc3b4d7975699245124ebd151e8518a",
+      "bytes": 283046,
+      "alternatives": []
+    },
+    {
+      "id": "7f211605b634959d805f93d4",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/7f211605b634959d805f93d4.jpg",
+      "sha256": "e72e333edb959bcb568c04b9d570f59527083bf299243322a9f68992b8193ec9",
+      "bytes": 304765,
+      "alternatives": []
+    },
+    {
+      "id": "8094cb8ec31e5ca7bd853bac",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8094cb8ec31e5ca7bd853bac.jpg",
+      "sha256": "283f5116b689f047f4c62c3d1b474b3ee4c1cc20d1c561c2289ab18c7c18298d",
+      "bytes": 328742,
+      "alternatives": []
+    },
+    {
+      "id": "80fa9acf75b859de013de311",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/80fa9acf75b859de013de311.png",
+      "sha256": "80fa9acf75b859de013de311734b06b3c98c81d53c65f3c5efef3e2b71b69562",
+      "bytes": 19793,
+      "alternatives": []
+    },
+    {
+      "id": "829564435339614a978576ba",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/829564435339614a978576ba.jpg",
+      "sha256": "e8892f795bc8b44fc9c3802c263f4bc04aca688f1e5f3ce4ec22dbc7a5f4ea85",
+      "bytes": 330865,
+      "alternatives": []
+    },
+    {
+      "id": "8531ec983459027bec1a5615",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8531ec983459027bec1a5615.png",
+      "sha256": "8531ec983459027bec1a5615d338a1f7a3258e9162bba2f27b091bef17c77060",
+      "bytes": 1668509,
+      "alternatives": []
+    },
+    {
+      "id": "8717094c01e6d007761036f9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8717094c01e6d007761036f9.jpg",
+      "sha256": "75fb1b27facfb7f499d93d4dbd601955c39705496b35653921f2e249f50a1b8e",
+      "bytes": 236228,
+      "alternatives": []
+    },
+    {
+      "id": "876a8aa9a0747155358c0697",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/876a8aa9a0747155358c0697.png",
+      "sha256": "876a8aa9a0747155358c069733935a073bc942b5f8d240ae150ae2eefaa59ee0",
+      "bytes": 20768,
+      "alternatives": []
+    },
+    {
+      "id": "87d72dedf79ea213e91cc556",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/87d72dedf79ea213e91cc556.jpg",
+      "sha256": "50e6b1d84b79bcc63136c0a7b7f9f9808468cfa06bc60ff321db2ca7d4206754",
+      "bytes": 236147,
+      "alternatives": []
+    },
+    {
+      "id": "882a105d8b2d3bf358cf583b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/882a105d8b2d3bf358cf583b.jpg",
+      "sha256": "bce4e4025e495a5d1015034102ae32ef87f23691816c58fb3771c44e475ed4fb",
+      "bytes": 283050,
+      "alternatives": []
+    },
+    {
+      "id": "88473b7e93dcf5b32dfd53d9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/88473b7e93dcf5b32dfd53d9.jpg",
+      "sha256": "cb258b32bef396cde91c35602e621d7a6e53322d9ef1e88c74a4ed88f6f107ed",
+      "bytes": 287165,
+      "alternatives": []
+    },
+    {
+      "id": "88c5adb80f8d0e73f3446248",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/88c5adb80f8d0e73f3446248.jpg",
+      "sha256": "03da32e2612afedcb736b52454765d94c222301021528254413fbe3420451914",
+      "bytes": 323344,
+      "alternatives": []
+    },
+    {
+      "id": "8a480a7d4b4c58595e0719ea",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8a480a7d4b4c58595e0719ea.jpg",
+      "sha256": "5fea53c74570ba2f0d801f6264b43fb62ee8ebaf431fff31d10c7e5098476ab5",
+      "bytes": 321432,
+      "alternatives": []
+    },
+    {
+      "id": "8a80f4dc731fe775893e245a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8a80f4dc731fe775893e245a.jpg",
+      "sha256": "028f9675dd8e5af617903b6b77d8ce603492f5faf8d0b7f6598d59cd9f544f0d",
+      "bytes": 328859,
+      "alternatives": []
+    },
+    {
+      "id": "8bad34960af4fc119928d3d9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8bad34960af4fc119928d3d9.jpg",
+      "sha256": "47da9c02370554fab9e64750010a5e5064ddc192b7a4d934992b4b88d7b5878a",
+      "bytes": 267400,
+      "alternatives": []
+    },
+    {
+      "id": "8bb56699d6a236ced51f48b7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8bb56699d6a236ced51f48b7.jpg",
+      "sha256": "57c46585942771071500fc47c7f9c6f296715f9d81268af812a54a54bff54821",
+      "bytes": 330876,
+      "alternatives": []
+    },
+    {
+      "id": "8c06c0275a2969cbff08d77b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8c06c0275a2969cbff08d77b.jpg",
+      "sha256": "3aa78a1c7ff27969fc5cb75e74f5e038a960b61f64e93ed01ea5bb72c9b96eca",
+      "bytes": 323474,
+      "alternatives": []
+    },
+    {
+      "id": "8e1b12d6749d8f6f99b43ee6",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8e1b12d6749d8f6f99b43ee6.jpg",
+      "sha256": "75d5eeaf79b969326e8ac5a11cf63beb4b021873b3b6ddbfa89107653da95482",
+      "bytes": 267394,
+      "alternatives": []
+    },
+    {
+      "id": "8f5e6cae3908e5a6e951f8dd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8f5e6cae3908e5a6e951f8dd.jpg",
+      "sha256": "99bd7d9992d3d0a0a28ac4e11d70c15ec8d3347f0ee4af089a590b7133a9d49e",
+      "bytes": 235974,
+      "alternatives": []
+    },
+    {
+      "id": "8f5fa0013979c0b77991e2b3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8f5fa0013979c0b77991e2b3.png",
+      "sha256": "8f5fa0013979c0b77991e2b3f0f46bb2789b18c5c4b04fa56dfa505bf5a08982",
+      "bytes": 20400,
+      "alternatives": []
+    },
+    {
+      "id": "8f6f4eee78fbcfc63226b748",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8f6f4eee78fbcfc63226b748.jpg",
+      "sha256": "74eedebab2c6b9f6ca77e09af5760957d3f0e499c126226fba20903efa687164",
+      "bytes": 316733,
+      "alternatives": []
+    },
+    {
+      "id": "8f80022c98d2c6bef90a7381",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/8f80022c98d2c6bef90a7381.jpg",
+      "sha256": "c311a875b8ae30201cb835d9823f503194b824e633ea1da007039e7b28ff290e",
+      "bytes": 287182,
+      "alternatives": []
+    },
+    {
+      "id": "90b31636bd08670c0b075f3c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/90b31636bd08670c0b075f3c.jpg",
+      "sha256": "97a9b71cfcceee512533e138d32e069a9ebae1be9a2a38e23eb51316389e881f",
+      "bytes": 304860,
+      "alternatives": []
+    },
+    {
+      "id": "910943fdb3be2bf39aeeac70",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/910943fdb3be2bf39aeeac70.jpg",
+      "sha256": "1dfbd160769b2bbe7a4d18550a4c249257e65f378bcc2ac0551ca936e46b0101",
+      "bytes": 293108,
+      "alternatives": []
+    },
+    {
+      "id": "92ce3c3d8e300cd546bc3928",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/92ce3c3d8e300cd546bc3928.png",
+      "sha256": "92ce3c3d8e300cd546bc392823e3f766e3a0b308171c084f1e2e359289442bc8",
+      "bytes": 1331997,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/92ce3c3d8e300cd546bc3928.jpg"
+      ]
+    },
+    {
+      "id": "92e1a4628a172408b94750a8",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/92e1a4628a172408b94750a8.jpg",
+      "sha256": "bf3066b97456602cd57bc1742609065db355cd078a414048d60b030f07cf4fa7",
+      "bytes": 323348,
+      "alternatives": []
+    },
+    {
+      "id": "9582e5f85fefd3f6870d3396",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9582e5f85fefd3f6870d3396.jpg",
+      "sha256": "9309b1b498e3a81777cdedc73b434710bb9aafe0c793c0afafe7fd620e1e232e",
+      "bytes": 293202,
+      "alternatives": []
+    },
+    {
+      "id": "99b3a3e47d9ec65d2daf3c24",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/99b3a3e47d9ec65d2daf3c24.jpg",
+      "sha256": "4b7ba9af33b8aaa5bdae5e5b7f42bb88ed5e2f1e1bbd50f973778fa75eee3551",
+      "bytes": 161570,
+      "alternatives": []
+    },
+    {
+      "id": "99ee02baba0583bae050769e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/99ee02baba0583bae050769e.jpg",
+      "sha256": "21171eea23219eb71ea1f9c5d230fbf84eff963929a3bc01a17f66c1b51de247",
+      "bytes": 279752,
+      "alternatives": []
+    },
+    {
+      "id": "9ad011d8a46c954543c3c4d9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9ad011d8a46c954543c3c4d9.jpg",
+      "sha256": "4170321daf32bd3c45c1b2c4ba26023071afc7047bfd39830f688364d179c456",
+      "bytes": 283096,
+      "alternatives": []
+    },
+    {
+      "id": "9b051c8ad4b306e08bfda81f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9b051c8ad4b306e08bfda81f.jpg",
+      "sha256": "d935dbb80c4226bc2c1ac263f8dfa6499e14dc7077fe5ae34546e0d24852ddfc",
+      "bytes": 216624,
+      "alternatives": []
+    },
+    {
+      "id": "9cbba068a14594990f0f3e2d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9cbba068a14594990f0f3e2d.jpg",
+      "sha256": "121f197c23ebaa4ad3c8203b156f3aa6c2c3d9f0b9dbe6582c2d533add59fd57",
+      "bytes": 269214,
+      "alternatives": []
+    },
+    {
+      "id": "9d0691ff319504c3bce771a5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9d0691ff319504c3bce771a5.jpg",
+      "sha256": "dbc82586f68f48b49246319e1bd406c99ef3df71398cf75a6cd3323f659f615f",
+      "bytes": 323396,
+      "alternatives": []
+    },
+    {
+      "id": "9dacfdf9d763834a94021b58",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9dacfdf9d763834a94021b58.jpg",
+      "sha256": "79384abeb7bf34bc1c80ef94d487d10bda04b842555adcc87ed9d3619b89482f",
+      "bytes": 161612,
+      "alternatives": []
+    },
+    {
+      "id": "9ddbf437cefbba6866eb3530",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9ddbf437cefbba6866eb3530.jpg",
+      "sha256": "d0120148078f5c3e7759bcfa77b1e353e93b1c3f88c7ade4b556afd66ddca9d3",
+      "bytes": 283022,
+      "alternatives": []
+    },
+    {
+      "id": "9df7e81fefeaf305ca343cbe",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9df7e81fefeaf305ca343cbe.png",
+      "sha256": "9df7e81fefeaf305ca343cbea7536c310e4070d646b9227d646a24e589ab2c24",
+      "bytes": 23540,
+      "alternatives": []
+    },
+    {
+      "id": "9fc2c9576a573a1455423a05",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/9fc2c9576a573a1455423a05.png",
+      "sha256": "9fc2c9576a573a1455423a054d93b5e6c91eb38b311e2ee202d70f1254d46a61",
+      "bytes": 14913,
+      "alternatives": []
+    },
+    {
+      "id": "a0286d0814afef0328afa584",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a0286d0814afef0328afa584.jpg",
+      "sha256": "8c8e9431189c583be8b6e72aef644ffea01d90886123ca2d5106b10697f36c20",
+      "bytes": 287252,
+      "alternatives": []
+    },
+    {
+      "id": "a15b5900f2483b53efa9aabb",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a15b5900f2483b53efa9aabb.png",
+      "sha256": "a15b5900f2483b53efa9aabbce907e61b778f1d72deec9b4b79c2b9acfa4bb38",
+      "bytes": 21032,
+      "alternatives": []
+    },
+    {
+      "id": "a218b656fede5d32b6f8ad03",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a218b656fede5d32b6f8ad03.png",
+      "sha256": "a218b656fede5d32b6f8ad0335e3e48a0e7322a1a289faf5601dc084e8071310",
+      "bytes": 22826,
+      "alternatives": []
+    },
+    {
+      "id": "a2776a91bc729d1566f44416",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a2776a91bc729d1566f44416.jpg",
+      "sha256": "db85dcc1e331dca57503da7c23daf2ced15298e82c4efbb21136cce3d4c189b6",
+      "bytes": 316695,
+      "alternatives": []
+    },
+    {
+      "id": "a2d697354b5fd07cdf3dcc5a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a2d697354b5fd07cdf3dcc5a.jpg",
+      "sha256": "1ce3b688e3cfee6a9e879398753b6342adad68d28963787559cd16ccb95827f9",
+      "bytes": 161456,
+      "alternatives": []
+    },
+    {
+      "id": "a2fa674b80406752198fdeb2",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a2fa674b80406752198fdeb2.jpg",
+      "sha256": "8e598de892667817269e689888949973dc7b64616bd8d9a21711b7b43644ef99",
+      "bytes": 279867,
+      "alternatives": []
+    },
+    {
+      "id": "a3c4edee3fc3ee33051c76e1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a3c4edee3fc3ee33051c76e1.jpg",
+      "sha256": "01d8402e40f96cd9331da4ad759d92eb7283517259d6d9b6f9df8f594681c70a",
+      "bytes": 316739,
+      "alternatives": []
+    },
+    {
+      "id": "a3dc7a38a3748b380fdb9da2",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a3dc7a38a3748b380fdb9da2.jpg",
+      "sha256": "22f192583c7e34325e697ddcc8224d8ada64abbd40e2ee9df3dd6200f91b6266",
+      "bytes": 328858,
+      "alternatives": []
+    },
+    {
+      "id": "a52fe89d079e3c9ab70f6f9b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a52fe89d079e3c9ab70f6f9b.jpg",
+      "sha256": "7490cdb43e4bb5051bff95f426f1bf1a326cc58b77abfebaffc1c2af3f6b3217",
+      "bytes": 216665,
+      "alternatives": []
+    },
+    {
+      "id": "a6f546020850d5c4955e3596",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a6f546020850d5c4955e3596.jpg",
+      "sha256": "dd963d3a119840ee14a2a4aa5cf7aff6874fe9e4fe8dd1dfc2c7bc39f83a87b1",
+      "bytes": 186750,
+      "alternatives": []
+    },
+    {
+      "id": "a84ab02d9faa1be2bfcba5d6",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/a84ab02d9faa1be2bfcba5d6.jpg",
+      "sha256": "51e15f0136be61ce1c29eaf4de4c0d28a75ec5df0daf1694b9b956f20860ee2b",
+      "bytes": 283035,
+      "alternatives": []
+    },
+    {
+      "id": "aa3f9b467ff39b9cbbbf3751",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/aa3f9b467ff39b9cbbbf3751.png",
+      "sha256": "aa3f9b467ff39b9cbbbf3751b5deb16da884a0b8cc87ce5665d019ee4cdce6f5",
+      "bytes": 20691,
+      "alternatives": []
+    },
+    {
+      "id": "ac997d21f8dfc1586e920f78",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ac997d21f8dfc1586e920f78.png",
+      "sha256": "ac997d21f8dfc1586e920f78246278ca992a76356cc6f1177e0e4fad13c0b113",
+      "bytes": 1326557,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/ac997d21f8dfc1586e920f78.jpg"
+      ]
+    },
+    {
+      "id": "adaf90d170c1978f3e81d3b1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/adaf90d170c1978f3e81d3b1.png",
+      "sha256": "adaf90d170c1978f3e81d3b1b330103831f210e7426e432d6f2b02adf2175a7f",
+      "bytes": 20948,
+      "alternatives": []
+    },
+    {
+      "id": "af0a05bba306bfd7b31a4d66",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/af0a05bba306bfd7b31a4d66.jpg",
+      "sha256": "0a8f95ad530321413ad78beb402883fef59ab3a72028cf3df8165070ec846dec",
+      "bytes": 267424,
+      "alternatives": []
+    },
+    {
+      "id": "af77dda4bd6491daa5f4f7f3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/af77dda4bd6491daa5f4f7f3.jpg",
+      "sha256": "3509d444fb3ff06cd77c61339d6d7ec87b91bf2c469850d633417ef93032d5d7",
+      "bytes": 287276,
+      "alternatives": []
+    },
+    {
+      "id": "aff9b1bf4655fdd93c2e57bd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/aff9b1bf4655fdd93c2e57bd.jpg",
+      "sha256": "698733554991c3a143d65cd5ca38e57f288dbab9ae1847ab994b0d53c05509c9",
+      "bytes": 187680,
+      "alternatives": []
+    },
+    {
+      "id": "b344966e3c74d086f61f4868",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b344966e3c74d086f61f4868.jpg",
+      "sha256": "ea78512907c0071832f8bae5c3bf80866b5fd3088a84a2efe289e70646106962",
+      "bytes": 186744,
+      "alternatives": []
+    },
+    {
+      "id": "b370eb5b9f1777aac802fa89",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b370eb5b9f1777aac802fa89.jpg",
+      "sha256": "5698969f9b0f368d5252c0bff59f8a72b316d0287cb0fe7906cd584b0c0cac2b",
+      "bytes": 330838,
+      "alternatives": []
+    },
+    {
+      "id": "b3899155767388dc10718ec3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b3899155767388dc10718ec3.jpg",
+      "sha256": "1c6dc92de7e1c29b14a525ca2df3f7ecab2e11494bdd831811b3a291c419f863",
+      "bytes": 304811,
+      "alternatives": []
+    },
+    {
+      "id": "b46036b14983450ca69fe531",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b46036b14983450ca69fe531.jpg",
+      "sha256": "a99b6f9a7df84625ef58f7f10d8fe6314303912759a2a94fe269393700d5fca5",
+      "bytes": 330805,
+      "alternatives": []
+    },
+    {
+      "id": "b5edb7add519765c518cfc9a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b5edb7add519765c518cfc9a.jpg",
+      "sha256": "2aa57faa74e6f344997989856ec8fa051e8610fc4f36f53305263d89ab43e79b",
+      "bytes": 269254,
+      "alternatives": []
+    },
+    {
+      "id": "b6d7f553ae7182929a05a209",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b6d7f553ae7182929a05a209.jpg",
+      "sha256": "886fb0e3f921de7bdeba4dce41abdff1dad8b3aeb240945ccd466ad00aa472ee",
+      "bytes": 321486,
+      "alternatives": []
+    },
+    {
+      "id": "b76607feab015b121fc279d9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b76607feab015b121fc279d9.jpg",
+      "sha256": "87f8b3f60bed719fffe605432a2a6659d7dd28197b2b45fc7b27ba42cbe9effc",
+      "bytes": 236291,
+      "alternatives": []
+    },
+    {
+      "id": "b77ce1a97e8e37deb6063751",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b77ce1a97e8e37deb6063751.jpg",
+      "sha256": "0102efe0bd63cddd2e6f937f0912b3f2b82e5f9bced604865d8614606c001412",
+      "bytes": 287181,
+      "alternatives": []
+    },
+    {
+      "id": "b8d5c1ff0fc35b20714c5b1f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b8d5c1ff0fc35b20714c5b1f.jpg",
+      "sha256": "9117f11a77d4c4f3214eca7e9ff52311b89fe09a961f5578de8b4adc63e5a14f",
+      "bytes": 161597,
+      "alternatives": []
+    },
+    {
+      "id": "b9d8057acbdcfad7a330ebc3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/b9d8057acbdcfad7a330ebc3.jpg",
+      "sha256": "44037fd326a0006f6e3ff5c755cbeea1a02af3c8f50b202f8b1d6f4e30ede0f3",
+      "bytes": 316578,
+      "alternatives": []
+    },
+    {
+      "id": "bb4fc135a3e2610637d63cc4",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/bb4fc135a3e2610637d63cc4.jpg",
+      "sha256": "82b1b26bdc64e329c10dbe853563b0b82ced358c637a19466ea12c34115e4403",
+      "bytes": 293145,
+      "alternatives": []
+    },
+    {
+      "id": "bc9aaa85e0c47ca7bc6b6bcf",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/bc9aaa85e0c47ca7bc6b6bcf.jpg",
+      "sha256": "9001f7c3b31dce0511f6da2fdea55082b5c8d94bb875433f079d88c2da6fb39f",
+      "bytes": 267417,
+      "alternatives": []
+    },
+    {
+      "id": "bdba7d48af76652b80b76fdd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/bdba7d48af76652b80b76fdd.jpg",
+      "sha256": "d5cb2334827f54a72fa6a059e94542b68d5da308c934925bd39923e5e7324a37",
+      "bytes": 216626,
+      "alternatives": []
+    },
+    {
+      "id": "be00bfa1c158a85a7bd5c403",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/be00bfa1c158a85a7bd5c403.jpg",
+      "sha256": "2301b5f0de19ce16636a0e214f09e9d5cac6bd4610e7decf43cad0f0b4bb3ea7",
+      "bytes": 328682,
+      "alternatives": []
+    },
+    {
+      "id": "bec109a8201026d4e18a6345",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/bec109a8201026d4e18a6345.jpg",
+      "sha256": "de61db691bc6b2a01f43bb541b88ffc5e5e055c87a873e57506c518b17821a8b",
+      "bytes": 316734,
+      "alternatives": []
+    },
+    {
+      "id": "bf5066b1af47a68af43f4b04",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/bf5066b1af47a68af43f4b04.png",
+      "sha256": "bf5066b1af47a68af43f4b0464de785fd96f2e4cabe64c174e53a09136318932",
+      "bytes": 18574,
+      "alternatives": []
+    },
+    {
+      "id": "c09d9426138032dd0a21c99e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c09d9426138032dd0a21c99e.jpg",
+      "sha256": "1fc015db754726d983cc61dd07c2165228c317d905ee7035803b538ef1b4d30a",
+      "bytes": 321531,
+      "alternatives": []
+    },
+    {
+      "id": "c16010d92f34bd275222414f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c16010d92f34bd275222414f.jpg",
+      "sha256": "3ab5a69b86879bee96190c1eee4fcfe11e0560987c02d77fc2f5ffc21571803d",
+      "bytes": 330853,
+      "alternatives": []
+    },
+    {
+      "id": "c178443d9f71e875fa1c6806",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c178443d9f71e875fa1c6806.jpg",
+      "sha256": "9e2c43726edf8d5ef7d81e56a161f77e60e73bae7da6aa55b4f7ede7931dc354",
+      "bytes": 187742,
+      "alternatives": []
+    },
+    {
+      "id": "c331d11d7a6bbf575ee45cb4",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c331d11d7a6bbf575ee45cb4.jpg",
+      "sha256": "38ef6fbc384829f10c9300b1a356eab51e3e63c622f8407b9e5c1b72705d56de",
+      "bytes": 366594,
+      "alternatives": []
+    },
+    {
+      "id": "c3d7750b65e54c14d6e8cda0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c3d7750b65e54c14d6e8cda0.jpg",
+      "sha256": "4ebffc7f8342efae6009e60d5bbc243e8db8fe7db5d02c4004f1632a9f210f41",
+      "bytes": 323129,
+      "alternatives": []
+    },
+    {
+      "id": "c4cf4f5630357fb5a21c19c5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c4cf4f5630357fb5a21c19c5.jpg",
+      "sha256": "d13f472f9fffc4931f350f837355ff1707bc37937b769f9f9db6be7513898601",
+      "bytes": 216731,
+      "alternatives": []
+    },
+    {
+      "id": "c4ff4989e39e0baa2cef3c4c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c4ff4989e39e0baa2cef3c4c.jpg",
+      "sha256": "2d7e08b3ec533a2522a9ac56422b600a3de712b7dadde9cb45bbc5aa29db1d67",
+      "bytes": 267315,
+      "alternatives": []
+    },
+    {
+      "id": "c68531d1147509105a3d4aa9",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c68531d1147509105a3d4aa9.png",
+      "sha256": "c68531d1147509105a3d4aa9e88e6e56d2a2c7973e571a418875cecd32c87d8c",
+      "bytes": 1556798,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/c68531d1147509105a3d4aa9.jpg"
+      ]
+    },
+    {
+      "id": "c8373bbb690dd2578ef4c72b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c8373bbb690dd2578ef4c72b.jpg",
+      "sha256": "f186b44761a5fc98dcdd8236d3b81c20b934e135d325e1af48db0936953519fc",
+      "bytes": 283013,
+      "alternatives": []
+    },
+    {
+      "id": "c84ad7e7c972c73f3fdc0c35",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c84ad7e7c972c73f3fdc0c35.jpg",
+      "sha256": "281314436f4056aa00d25caf4070574625636a67bb2d8b073cb5d543c8cbd9c4",
+      "bytes": 328868,
+      "alternatives": []
+    },
+    {
+      "id": "c895a6be3784dbf859b0f7dc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c895a6be3784dbf859b0f7dc.png",
+      "sha256": "c895a6be3784dbf859b0f7dc1c2c622bdcbf6198294435be7cd561a91d6cbd32",
+      "bytes": 20602,
+      "alternatives": []
+    },
+    {
+      "id": "c8be0345965efaca5c50829c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c8be0345965efaca5c50829c.jpg",
+      "sha256": "8febcf2be2819079a6e2e4c281c9e6d2a33c2452eeb34fed9be6d4bf400ab187",
+      "bytes": 279695,
+      "alternatives": []
+    },
+    {
+      "id": "c9043508275a0acd6727d11e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c9043508275a0acd6727d11e.png",
+      "sha256": "c9043508275a0acd6727d11e9026338751cec5e2eacbb4832aa9c42a9a54e954",
+      "bytes": 22345,
+      "alternatives": []
+    },
+    {
+      "id": "c91f7f3a963e4ef85728ae86",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c91f7f3a963e4ef85728ae86.jpg",
+      "sha256": "c462d2a9b5b357776f9c24314c828fe07e479c7cbd4b794ea0aa53c66326ebf1",
+      "bytes": 186667,
+      "alternatives": []
+    },
+    {
+      "id": "c9f5ae758d14bd27d843f49a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/c9f5ae758d14bd27d843f49a.jpg",
+      "sha256": "cbaca41e6a6e1af71e5b2b07a2cd030882d931511700dea15dd26df76a00bf42",
+      "bytes": 186830,
+      "alternatives": []
+    },
+    {
+      "id": "ca067b9b2276a36e88667130",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ca067b9b2276a36e88667130.jpg",
+      "sha256": "73826b79245f08a5536688e3f7781d96466cd636e883b3cb2fb107676c1170c5",
+      "bytes": 316695,
+      "alternatives": []
+    },
+    {
+      "id": "ca66f4ab799767ff83db81c5",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ca66f4ab799767ff83db81c5.jpg",
+      "sha256": "a54627aa909184c75a75f12ca3e4196fa4475f47087b195cea7f52ce192ac2c2",
+      "bytes": 269146,
+      "alternatives": []
+    },
+    {
+      "id": "cadeadd4953a6787d88eeddd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/cadeadd4953a6787d88eeddd.jpg",
+      "sha256": "e0f29b4750019b61545292c5301e49f7ac4e2da806035c8806d85f65875034b1",
+      "bytes": 305013,
+      "alternatives": []
+    },
+    {
+      "id": "cbb68f032e2a8e49e0f687c1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/cbb68f032e2a8e49e0f687c1.jpg",
+      "sha256": "1c73f0b665b05f10c316bc38d8c683fecb28761a60a1c3fce18b2b8606ddc46d",
+      "bytes": 293129,
+      "alternatives": []
+    },
+    {
+      "id": "cbbb66353625ebf8bda427da",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/cbbb66353625ebf8bda427da.jpg",
+      "sha256": "1b82e7eedeb550011deb2ce0858c2b0e74f5a601c0e8f76bf450ec6fa13f7bf1",
+      "bytes": 323434,
+      "alternatives": []
+    },
+    {
+      "id": "cbe005fdc613c2070d08c0cf",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/cbe005fdc613c2070d08c0cf.jpg",
+      "sha256": "fc84f6bd0c52277662b1b4c187f7768e0d53b1f4e6b9278f38ab9e35bc1a8493",
+      "bytes": 323390,
+      "alternatives": []
+    },
+    {
+      "id": "ccfd51d9b3dbcd6271b07265",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ccfd51d9b3dbcd6271b07265.jpg",
+      "sha256": "55eb21fe83deb7e1b22e03f10d0f8350f3b688e77db69c337c20d374e0717a81",
+      "bytes": 304893,
+      "alternatives": []
+    },
+    {
+      "id": "cd5ce539d57910b70c151ab7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/cd5ce539d57910b70c151ab7.png",
+      "sha256": "cd5ce539d57910b70c151ab7ad44fd0e28a4b2baa8d6f9e710d7e8b16cb3104e",
+      "bytes": 19743,
+      "alternatives": []
+    },
+    {
+      "id": "ce5746f6c95cce286340e2c3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ce5746f6c95cce286340e2c3.jpg",
+      "sha256": "16d3465962f72152c9a2b9b386ebb49caa54db87f6780202264a27b2944128dc",
+      "bytes": 366684,
+      "alternatives": []
+    },
+    {
+      "id": "d08221de71977f98270d5ed0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d08221de71977f98270d5ed0.jpg",
+      "sha256": "6f3f298517440e785256462cb15e914447087c6c4fc7ddc50221876d3a574814",
+      "bytes": 282816,
+      "alternatives": []
+    },
+    {
+      "id": "d08c415830a024885707e97b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d08c415830a024885707e97b.jpg",
+      "sha256": "8e8e9d306179f430940aa8998a4cc745f032f1ff2648961cb08aa3454f1a506a",
+      "bytes": 366718,
+      "alternatives": []
+    },
+    {
+      "id": "d1f0e000ab07a2e9616108a1",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d1f0e000ab07a2e9616108a1.jpg",
+      "sha256": "ba87e1ab54ef8ef88a93651188168234dda43f6b4f0f3056abf025bad02c800e",
+      "bytes": 293147,
+      "alternatives": []
+    },
+    {
+      "id": "d385a7b50796fb176c887715",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d385a7b50796fb176c887715.jpg",
+      "sha256": "adc0b614f6218d12f7699fd3c6228ec95486aa31df680aa297b347adfab90e19",
+      "bytes": 236203,
+      "alternatives": []
+    },
+    {
+      "id": "d391fe578a50e27176ace980",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d391fe578a50e27176ace980.png",
+      "sha256": "d391fe578a50e27176ace98087e078abe2dcf6eedb601f2cfedf458104c96952",
+      "bytes": 17054,
+      "alternatives": []
+    },
+    {
+      "id": "d4cafa374305a01d250d1909",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d4cafa374305a01d250d1909.png",
+      "sha256": "d4cafa374305a01d250d1909579439c0cf1d5973a629c0418e7ce671ca2e904e",
+      "bytes": 16721,
+      "alternatives": []
+    },
+    {
+      "id": "d4f0a56cbe3e3229c09998b3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d4f0a56cbe3e3229c09998b3.jpg",
+      "sha256": "1f76939e347758beb8f686bcc1e55c0a7f326714b18af3563cfabfca4faf87f7",
+      "bytes": 279778,
+      "alternatives": []
+    },
+    {
+      "id": "d6bc1b33796f01dea2eedbf7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d6bc1b33796f01dea2eedbf7.jpg",
+      "sha256": "4ec340ea242f9f84b44546633873e2a89060860dede519679b2bffdf9e463402",
+      "bytes": 187668,
+      "alternatives": []
+    },
+    {
+      "id": "d77efb5d869b7d28d208a78f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d77efb5d869b7d28d208a78f.jpg",
+      "sha256": "b0d696ae5341eb34790248f3bb8c2a44d20990870af522fabad6edab758b126d",
+      "bytes": 216740,
+      "alternatives": []
+    },
+    {
+      "id": "d7a5a8de82749ddc8fb17be4",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d7a5a8de82749ddc8fb17be4.jpg",
+      "sha256": "5143b55c12ddb05d6323c16accc9351ee63bb286468981062604f7fbb9b7cc3d",
+      "bytes": 293179,
+      "alternatives": []
+    },
+    {
+      "id": "d7b8392a6d7f577539f0dc8e",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d7b8392a6d7f577539f0dc8e.jpg",
+      "sha256": "cd1ad6d477befe2a8b918cc169cbed853d55dc5be19423dea7a118781941884c",
+      "bytes": 279580,
+      "alternatives": []
+    },
+    {
+      "id": "d7e25baceea34346e62b07a3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d7e25baceea34346e62b07a3.jpg",
+      "sha256": "ab29e0b0cfd7a76aacd0a688f5faf2eade6f76210f46324a34e5feb67ee30565",
+      "bytes": 187576,
+      "alternatives": []
+    },
+    {
+      "id": "d89735322521b1fc76ca7d17",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d89735322521b1fc76ca7d17.jpg",
+      "sha256": "52316c256c3a688e3e39031d63f4e82768b789110fb445fa00598ee3f71816e7",
+      "bytes": 287300,
+      "alternatives": []
+    },
+    {
+      "id": "d8ac01dda6abf3e89c6fa500",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d8ac01dda6abf3e89c6fa500.jpg",
+      "sha256": "30f6bde5e852d227e6afdd0b8346299740e6d1c6ada96b29d9545f94a4e4ec39",
+      "bytes": 321414,
+      "alternatives": []
+    },
+    {
+      "id": "d94d8aebd1d75c19df144875",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d94d8aebd1d75c19df144875.jpg",
+      "sha256": "085ea95f080da61023332463334377ba4dc1100a1b13b65b7fa00e373c406de8",
+      "bytes": 366624,
+      "alternatives": []
+    },
+    {
+      "id": "d98b930ad4729459b167a1da",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/d98b930ad4729459b167a1da.jpg",
+      "sha256": "db5049b1b340da36f952c5474847d54f838338860c5da7c8f6a328727b70ecdb",
+      "bytes": 187731,
+      "alternatives": []
+    },
+    {
+      "id": "da7ce7040558da1e65a48ffd",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/da7ce7040558da1e65a48ffd.png",
+      "sha256": "da7ce7040558da1e65a48ffdf3761a9bc0c6cb14f4395c890010727e6db9ea88",
+      "bytes": 1454070,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/da7ce7040558da1e65a48ffd.jpg"
+      ]
+    },
+    {
+      "id": "db769f8753584c8198b34f50",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/db769f8753584c8198b34f50.jpg",
+      "sha256": "14e5ed9447a1dcc78911ef3ef8550eaa34a3c90aab0f6f8a90223e67e988d804",
+      "bytes": 328789,
+      "alternatives": []
+    },
+    {
+      "id": "dc889fcc4891ae5c4182ec82",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/dc889fcc4891ae5c4182ec82.jpg",
+      "sha256": "e175d29f81166cd934dc952f352f07a4f5f9447c1f35d262608ea19cdee2298f",
+      "bytes": 187759,
+      "alternatives": []
+    },
+    {
+      "id": "dce12eb58fcbe3a5978474a0",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/dce12eb58fcbe3a5978474a0.png",
+      "sha256": "dce12eb58fcbe3a5978474a02715bc206753e2631456920a9e1ab90922b0be9c",
+      "bytes": 19489,
+      "alternatives": []
+    },
+    {
+      "id": "dde4c293d8f865d83f84bd6a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/dde4c293d8f865d83f84bd6a.jpg",
+      "sha256": "e11b93ad7b93595cf0cc93c099ccaff2f25259bee2aa5d55197409e6f4ed9cdd",
+      "bytes": 366645,
+      "alternatives": []
+    },
+    {
+      "id": "de182ab7ee727017d3ceaa1b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/de182ab7ee727017d3ceaa1b.jpg",
+      "sha256": "0c92ea8c42d08050c9de673f92ac309d16277fa14ca4b4f0d831d532d776ca39",
+      "bytes": 330888,
+      "alternatives": []
+    },
+    {
+      "id": "df4d4c8df1f0c46d712804f2",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/df4d4c8df1f0c46d712804f2.jpg",
+      "sha256": "14aec1fc0c72661e84bc323e55bb8693b0552d413d2753bd27f65831101bfa13",
+      "bytes": 293203,
+      "alternatives": []
+    },
+    {
+      "id": "dfd4a12f9563a839f6bbe677",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/dfd4a12f9563a839f6bbe677.png",
+      "sha256": "dfd4a12f9563a839f6bbe6771ab156606d887d81faa18b773e082f9970d90f62",
+      "bytes": 20400,
+      "alternatives": []
+    },
+    {
+      "id": "e01a466cd588814c657804e8",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e01a466cd588814c657804e8.jpg",
+      "sha256": "eb6e06ec4839974b495fbc41b7e63b99da50be6324c9817c97c1e70ae51552e1",
+      "bytes": 321533,
+      "alternatives": []
+    },
+    {
+      "id": "e343f5363493acc46e988831",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e343f5363493acc46e988831.jpg",
+      "sha256": "9b1699cd9cd9b565cf0a144ecd56e3bad6d6e4b43f2bc0b7a04a78ed631e2984",
+      "bytes": 216818,
+      "alternatives": []
+    },
+    {
+      "id": "e45fbcc36638a94fa5b2fe71",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e45fbcc36638a94fa5b2fe71.jpg",
+      "sha256": "aedaab274abc4c26d53d956a0d2956ec5ea3069e047c7a13241607e02c562654",
+      "bytes": 321427,
+      "alternatives": []
+    },
+    {
+      "id": "e48d12a0e213c35ed2997750",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e48d12a0e213c35ed2997750.jpg",
+      "sha256": "969aacd91287cb4e7411127a2d3b4c33eb72ff9918ea16bd1fdde3b14aa03eb2",
+      "bytes": 282923,
+      "alternatives": []
+    },
+    {
+      "id": "e523e1a80bc249c09cf16909",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e523e1a80bc249c09cf16909.jpg",
+      "sha256": "238c4105a75d3681b3fa52fbc7a49f2cf02ebe22c1d552ee6fddd6c8be591a53",
+      "bytes": 216744,
+      "alternatives": []
+    },
+    {
+      "id": "e588ce848e2588fb0c979386",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e588ce848e2588fb0c979386.jpg",
+      "sha256": "42afd4cdea68f0de9f1755b8bfcb434e6a0b05a98e6118fcf02fa9c2e01f8a3b",
+      "bytes": 366689,
+      "alternatives": []
+    },
+    {
+      "id": "e60dba30b38cd1ac1c906647",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e60dba30b38cd1ac1c906647.jpg",
+      "sha256": "66715052ffbfb0376bdf3277ac2a862aaf280a1af5c14ea4f56df7245a925066",
+      "bytes": 328743,
+      "alternatives": []
+    },
+    {
+      "id": "e79dd4ef4b40cbb99377ba57",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e79dd4ef4b40cbb99377ba57.jpg",
+      "sha256": "328153cc5bcc2b80fa2a81fa160436ec62da8be3a0c7e3dd337f32c42b350d7b",
+      "bytes": 267181,
+      "alternatives": []
+    },
+    {
+      "id": "e91e0ad8d3115b163cc1ff9b",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/e91e0ad8d3115b163cc1ff9b.jpg",
+      "sha256": "9f104d11e4c60bf1dab3bfe9f45fe59209225a4d6512b56c139192ec9232b3dd",
+      "bytes": 269276,
+      "alternatives": []
+    },
+    {
+      "id": "eae2dfce454cdd2977ba802a",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/eae2dfce454cdd2977ba802a.jpg",
+      "sha256": "1d67a3054b0fee78ece19d1110ce8649b983b6f0825256293235fa4d127de76c",
+      "bytes": 283078,
+      "alternatives": []
+    },
+    {
+      "id": "eb8bb7ac7702a81a7cda6f77",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/eb8bb7ac7702a81a7cda6f77.jpg",
+      "sha256": "8b8f311d4bdf2f7816a6b9ce77e60a4a8127bdedf05254aa44849ca85549878c",
+      "bytes": 330784,
+      "alternatives": []
+    },
+    {
+      "id": "eba6ec2061d8dd1d6e327efa",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/eba6ec2061d8dd1d6e327efa.jpg",
+      "sha256": "43a0c262e2bbe1ba25b3f5ce837e8ee8960f49d64a8c068a50927515e02d7b30",
+      "bytes": 328773,
+      "alternatives": []
+    },
+    {
+      "id": "ec1d1c845182e61a4fc660ef",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ec1d1c845182e61a4fc660ef.jpg",
+      "sha256": "5e27a87427370c90c33db58707c0c9ae3889a0e83466f7ae7420cbceec1a9280",
+      "bytes": 330835,
+      "alternatives": []
+    },
+    {
+      "id": "ec55ee4d6521a9cee5f1ec73",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ec55ee4d6521a9cee5f1ec73.png",
+      "sha256": "ec55ee4d6521a9cee5f1ec73121850c6673d152eead246f76d92bfd0f207bbbd",
+      "bytes": 16406,
+      "alternatives": []
+    },
+    {
+      "id": "f00a068a6d122f8ac524a5f7",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f00a068a6d122f8ac524a5f7.jpg",
+      "sha256": "adab320897ba30ae14d757d78dd93c81598cae7ea64c8bf8915621437b4ab148",
+      "bytes": 187699,
+      "alternatives": []
+    },
+    {
+      "id": "f1809c333229301346afe79d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f1809c333229301346afe79d.jpg",
+      "sha256": "bec0c2765afc283199f3a5ff362a5e5cac27b5d617fe72c522403aaf9a537d44",
+      "bytes": 279848,
+      "alternatives": []
+    },
+    {
+      "id": "f191050fdd7dd6daafe71b65",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f191050fdd7dd6daafe71b65.jpg",
+      "sha256": "c3953872c3a10c6aaeedc5c5b1717b7cb04299ba8b7cc08be7b5b85cbf482d8c",
+      "bytes": 328832,
+      "alternatives": []
+    },
+    {
+      "id": "f24787638198f588360d9227",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f24787638198f588360d9227.jpg",
+      "sha256": "cd413798aec104acd2e2817eb61b4fed960fafcd547f839d9f906b73c1c36446",
+      "bytes": 282992,
+      "alternatives": []
+    },
+    {
+      "id": "f2b5c082f84f055ca7ae908d",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f2b5c082f84f055ca7ae908d.jpg",
+      "sha256": "f4b4a0f89d862665e4ee4f574039caef72accb62db567ef0656ff38dc842a13b",
+      "bytes": 321554,
+      "alternatives": []
+    },
+    {
+      "id": "f570bec4f9542b96172df90c",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f570bec4f9542b96172df90c.jpg",
+      "sha256": "4f6b16933925164f4020fadee333b85d42e00036965eb2acf5c2419b89036e50",
+      "bytes": 269182,
+      "alternatives": []
+    },
+    {
+      "id": "f591788a686590cb4a746647",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f591788a686590cb4a746647.jpg",
+      "sha256": "db29a1e461f581f6e650750c7a9ce2ec0de9487b9a5ad7e4de027ca47a955037",
+      "bytes": 161617,
+      "alternatives": []
+    },
+    {
+      "id": "f75ea14b5f18a28d3be7b240",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f75ea14b5f18a28d3be7b240.jpg",
+      "sha256": "bc5febbc9f336ad39f25727e2ebc81ab7db1d73b73fd3d37e9960b97c91a98e8",
+      "bytes": 321426,
+      "alternatives": []
+    },
+    {
+      "id": "f7a218e21ee8ca930b5df22f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/f7a218e21ee8ca930b5df22f.jpg",
+      "sha256": "d6e5667f23e829a2e57b9be27d60fbd0beb0d193af4c35ef961dd770224f75e0",
+      "bytes": 187654,
+      "alternatives": []
+    },
+    {
+      "id": "fcbe705eaef95b9f7183621f",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/fcbe705eaef95b9f7183621f.png",
+      "sha256": "fcbe705eaef95b9f7183621fa7586c5196fc6e99737e860251cfb543eba29aaa",
+      "bytes": 1358072,
+      "alternatives": [
+        "Assets/Rubezh/Resources/BuildingMaterials/fcbe705eaef95b9f7183621f.jpg"
+      ]
+    },
+    {
+      "id": "fd2d8b5e937e67e2a1634236",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/fd2d8b5e937e67e2a1634236.png",
+      "sha256": "fd2d8b5e937e67e2a1634236532628b28c5ebaa7f3d50ca268dcb41cc8066f9f",
+      "bytes": 21917,
+      "alternatives": []
+    },
+    {
+      "id": "fdb365d5b05445918625ff04",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/fdb365d5b05445918625ff04.jpg",
+      "sha256": "414d5ab42c418e0c499d7ea6c8c9a574aa163a4dd957151ea54ee6fb01a562e9",
+      "bytes": 161613,
+      "alternatives": []
+    },
+    {
+      "id": "fee6618ebcab0aa322332339",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/fee6618ebcab0aa322332339.jpg",
+      "sha256": "328478b4da014cf6f19c8e075558bd34b69b0fde63a93a105d8cda2fcc16dd6b",
+      "bytes": 321430,
+      "alternatives": []
+    },
+    {
+      "id": "ff03cc8b2b039a2e11553948",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ff03cc8b2b039a2e11553948.png",
+      "sha256": "ff03cc8b2b039a2e11553948cc47b2ce3516a1af0b98c121fe87e9791b097e87",
+      "bytes": 20924,
+      "alternatives": []
+    },
+    {
+      "id": "ff6911220e20f219b7f42ddc",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ff6911220e20f219b7f42ddc.jpg",
+      "sha256": "e580f3803e57dac27a0ff945550a6ea101f3b346e92924f8989f9a66fd2d0080",
+      "bytes": 187744,
+      "alternatives": []
+    },
+    {
+      "id": "ff9d7c5d9077e334fa8fcfd3",
+      "source": "Assets/Rubezh/Resources/BuildingMaterials/ff9d7c5d9077e334fa8fcfd3.jpg",
+      "sha256": "6e960f5f94a523c8040a9be7b92b9589aa72177d3ebb8d0884e66cf0d0d8101a",
+      "bytes": 328767,
+      "alternatives": []
+    }
+  ]
+}

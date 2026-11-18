@@ -1,0 +1,19 @@
+RETAINED scene: root toggles=0, material copies=0, static segment reuses=100
+{
+  "result": "PASS",
+  "checks": 17917,
+  "cycles": 100,
+  "newSimulationCycles": 10,
+  "maxFrames": 5,
+  "maxActors": 5,
+  "maxRoots": 5,
+  "maxGroups": 18,
+  "maxNodes": 183,
+  "finalFrames": 0,
+  "finalActors": 0,
+  "finalRoots": 0,
+  "finalGroups": 3,
+  "finalNodes": 41,
+  "finalActorNodes": 0,
+  "note": "Synthetic same-BattleSimulation roster stress; actual raid creates a new simulation each wave."
+}

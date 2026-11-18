@@ -1,0 +1,9 @@
+Assets/Rubezh/Resources/Regenerated/Campaign_01.bytes: ground material runs 211 -> 86, compaction ms=32.94, portable render ms=353.43
+GROUND PALETTES 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 PAGE RUNS 38:73,77:11,78:2
+Static object runs 57 -> 57
+MEASURE staticCommands=109 visibleNodes=103 maskObject=11 maskRoof=6 maskMeshes=17 maskBuilds=1 legacyObjectMaskRuns=34 legacyRoofMaskRuns=15
+Assets/Rubezh/Resources/Regenerated/Campaign_20.bytes: ground material runs 5388 -> 258, compaction ms=111.79, portable render ms=1186.48
+GROUND PALETTES 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,5,10,1,1,1,1,1,1,1,1,1,1,2,2,3,2,7,4,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,5,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 PAGE RUNS 97:68,94:57,103:27,96:15,95:11,99:11,109:8,101:7,105:6,100:5,106:5,42:4,110:4,113:4,108:3,115:3,116:3,98:2,102:2,104:2,112:2,45:2,114:2,117:2,107:1,111:1,40:1
+Static object runs 1010 -> 1005
+MEASURE staticCommands=1219 visibleNodes=1074 maskObject=174 maskRoof=88 maskMeshes=262 maskBuilds=1 legacyObjectMaskRuns=984 legacyRoofMaskRuns=248
+PASS 1072506 checks. Real map geometry, portable Unity contracts; no GPU timings or pixel rendering.

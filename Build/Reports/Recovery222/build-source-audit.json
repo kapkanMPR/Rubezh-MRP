@@ -1,0 +1,19 @@
+{
+  "version": "AI-0.12.222-RecoveredFull",
+  "androidCode": 323,
+  "shaderSourcesInspected": 9,
+  "passed": true,
+  "errors": [],
+  "scope": "Static HLSL reserved-name and release configuration guards only; no Unity shader compilation or APK execution.",
+  "sha256": {
+    "Assets/Rubezh/Resources/Loading/FireReveal.shader": "51b283f100ea4de09c88f7dcec85fbb2434aa0501478f8d6f996babab0ac89cc",
+    "Assets/Rubezh/Resources/RubezhBattleMasks.shader": "b8585a9048162163bcaa46dc59913d72c25756497625abbcff2044400f6a5efa",
+    "Assets/Rubezh/Resources/RubezhBuildingMask.cginc": "cd0b38d2b28cb35ade5a8dec8c5af326facbb17a831d3dce9df7de9d48edf661",
+    "Assets/Rubezh/Resources/RubezhHdGpu.shader": "c0e8cc6a4601ed02de0b5867f93f5488b0e6f2cb242da75becf8e96a5e7b57e4",
+    "Assets/Rubezh/Resources/RubezhNativeDepth.shader": "9a40aef36a08f3bc24ccfe589eca0193ba3b7902637a6b542723afba31dd17d4",
+    "Assets/Rubezh/Resources/RubezhNativeEffect.shader": "7a5fd553f0a8b35a054c16c45b5f02dab0c0b84b241fef527a2455f5619aaece",
+    "Assets/Rubezh/Resources/RubezhStaticColorComposite.shader": "ddfa42ffd478fdf6d20e2e6a75f08f36dfe5da64983cad7f057db6f28c2b9b20",
+    "Assets/Rubezh/Resources/RubezhUnityForestMask.shader": "39bf2879de35daeb2b83fc7b95415d7b746b66ab6e05baa6a3c77d7c68a7c0e4",
+    "Assets/Rubezh/Resources/RubezhUnityTest.shader": "e5e49af9e92731ad52c9498edf73a3f683909549eb1970f0a9ff845fd4536089"
+  }
+}

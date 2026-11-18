@@ -1,0 +1,6 @@
+Layout: 35 material/chunk groups; 17140 vertices; 7496 triangles.
+Wall: 16x6 cells; local breach removed 12 cells.
+Materials: sharing, normal disposal, repeated disposal and failure cleanup verified.
+Actors: exact atlas layout, 0/10/50/100, depth order, grounded quads, pause reuse and resource lifecycle verified.
+Range: full-resolution RT, automatic 3-phase report, state restore, focus cancellation, resize and failure/disposal verified.
+PASS 114211 hybrid geometry checks; portable API contracts only, Unity GPU/build validation pending.

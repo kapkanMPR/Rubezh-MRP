@@ -1,0 +1,18 @@
+PASS no legacy directory
+PASS whole-folder migration keeps GUIDs
+PASS identical duplicates and repeat preparation
+PASS different copies retain both and use active copy
+PASS unique files and nested directories keep GUIDs
+PASS PNG originals regenerate packed data after merge
+PASS metadata-only overlay restores payload
+PASS backup failure leaves both original trees untouched
+PASS failed move and retry
+PASS failed deletion and retry
+PASS file-directory conflict retains originals
+PASS missing maps still fail and permit later retry
+PASS editor startup notices packed-only legacy folder
+PASS overlay SpritePacks
+PASS overlay UnityTestForest
+PASS overlay Exterior
+PASS overlay BuildingMaterials
+PASS 17 scenarios; 61 assertions. Real temporary files, production Prepare(); Unity AssetDatabase is a file-backed contract.

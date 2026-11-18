@@ -1,0 +1,79 @@
+{
+  "width": 3176,
+  "height": 1912,
+  "frames": [
+    {
+      "x": 16,
+      "y": 1126,
+      "w": 700,
+      "h": 770,
+      "anchorX": 279,
+      "anchorY": 37
+    },
+    {
+      "x": 810,
+      "y": 1146,
+      "w": 762,
+      "h": 750,
+      "anchorX": 285,
+      "anchorY": 17
+    },
+    {
+      "x": 1604,
+      "y": 1146,
+      "w": 704,
+      "h": 750,
+      "anchorX": 255,
+      "anchorY": 17
+    },
+    {
+      "x": 2398,
+      "y": 1146,
+      "w": 762,
+      "h": 750,
+      "anchorX": 476,
+      "anchorY": 17
+    },
+    {
+      "x": 16,
+      "y": 16,
+      "w": 701,
+      "h": 924,
+      "anchorX": 267,
+      "anchorY": 189
+    },
+    {
+      "x": 810,
+      "y": 186,
+      "w": 762,
+      "h": 754,
+      "anchorX": 285,
+      "anchorY": 19
+    },
+    {
+      "x": 1604,
+      "y": 176,
+      "w": 709,
+      "h": 764,
+      "anchorX": 277,
+      "anchorY": 29
+    },
+    {
+      "x": 2398,
+      "y": 186,
+      "w": 762,
+      "h": 754,
+      "anchorX": 476,
+      "anchorY": 19
+    }
+  ],
+  "pixelsPerBodyHeight": 753.525,
+  "sourceFrames": [
+    "front",
+    "right",
+    "back",
+    "left"
+  ],
+  "coreSha256": "8a0518c8215cb33631a45d4c98fe5181120deaae0707a0c12d1068155dac1b0a",
+  "note": "Exact existing DrawSoldier body-section recipe: torso/head + rifle + hands. Current battlefield art has no leg layer. Demonstration mannequins, no combat simulation. Constant body scale; 3D renderer raises any below-ground part of each pose to ground level without rescaling."
+}

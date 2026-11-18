@@ -1,0 +1,83 @@
+PASS story20 native metadata: 1737 layers, 1865 pieces, 76 atlas pages, zero CPU pixel/depth arrays. Metadata fixture, not Unity import.
+PASS Building213Check: 1718583 mask/texel/cap invariants; GPU shader visual validation still required.
+MAP story 1: 36x24, sprites=331, prebaked wall-source sprites=0
+MAP story 2: 44x28, sprites=374, prebaked wall-source sprites=0
+MAP story 3: 48x24, sprites=384, prebaked wall-source sprites=0
+MAP story 4: 42x32, sprites=377, prebaked wall-source sprites=0
+MAP story 5: 46x28, sprites=371, prebaked wall-source sprites=0
+MAP story 6: 56x25, sprites=585, prebaked wall-source sprites=36
+MAP story 7: 56x26, sprites=363, prebaked wall-source sprites=0
+MAP story 8: 46x30, sprites=379, prebaked wall-source sprites=0
+MAP story 9: 54x30, sprites=262, prebaked wall-source sprites=0
+MAP story 10: 54x34, sprites=388, prebaked wall-source sprites=0
+MAP story 11: 58x30, sprites=467, prebaked wall-source sprites=22
+MAP story 12: 60x24, sprites=462, prebaked wall-source sprites=42
+MAP story 13: 54x36, sprites=329, prebaked wall-source sprites=0
+MAP story 14: 58x34, sprites=383, prebaked wall-source sprites=42
+MAP story 15: 62x28, sprites=455, prebaked wall-source sprites=42
+MAP story 16: 56x38, sprites=412, prebaked wall-source sprites=0
+MAP story 17: 64x32, sprites=449, prebaked wall-source sprites=42
+MAP story 18: 96x56, sprites=486, prebaked wall-source sprites=42
+MAP story 19: 112x64, sprites=543, prebaked wall-source sprites=42
+MAP story 20: 136x80, sprites=585, prebaked wall-source sprites=42
+MAP war 1: 40x28, sprites=270, prebaked wall-source sprites=0
+MAP war 2: 40x28, sprites=270, prebaked wall-source sprites=0
+MAP war 3: 40x28, sprites=266, prebaked wall-source sprites=0
+MAP war 4: 42x28, sprites=270, prebaked wall-source sprites=0
+MAP war 5: 42x28, sprites=270, prebaked wall-source sprites=0
+MAP war 6: 42x28, sprites=270, prebaked wall-source sprites=0
+MAP war 7: 44x28, sprites=270, prebaked wall-source sprites=0
+MAP war 8: 44x28, sprites=270, prebaked wall-source sprites=0
+MAP war 9: 44x28, sprites=270, prebaked wall-source sprites=0
+MAP war 10: 46x28, sprites=270, prebaked wall-source sprites=0
+MAP war 11: 52x32, sprites=304, prebaked wall-source sprites=0
+MAP war 12: 52x32, sprites=303, prebaked wall-source sprites=0
+MAP war 13: 52x32, sprites=298, prebaked wall-source sprites=0
+MAP war 14: 54x32, sprites=297, prebaked wall-source sprites=0
+MAP war 15: 54x32, sprites=298, prebaked wall-source sprites=0
+MAP war 16: 54x32, sprites=298, prebaked wall-source sprites=0
+MAP war 17: 56x32, sprites=304, prebaked wall-source sprites=0
+MAP war 18: 56x32, sprites=298, prebaked wall-source sprites=0
+MAP war 19: 56x32, sprites=298, prebaked wall-source sprites=0
+MAP war 20: 58x32, sprites=294, prebaked wall-source sprites=0
+MAP war 21: 64x36, sprites=318, prebaked wall-source sprites=0
+MAP war 22: 64x36, sprites=314, prebaked wall-source sprites=0
+MAP war 23: 64x36, sprites=318, prebaked wall-source sprites=0
+MAP war 24: 66x36, sprites=314, prebaked wall-source sprites=0
+MAP war 25: 66x36, sprites=318, prebaked wall-source sprites=0
+MAP war 26: 66x36, sprites=314, prebaked wall-source sprites=0
+MAP war 27: 68x36, sprites=318, prebaked wall-source sprites=0
+MAP war 28: 68x36, sprites=314, prebaked wall-source sprites=0
+MAP war 29: 68x36, sprites=318, prebaked wall-source sprites=0
+MAP war 30: 70x36, sprites=318, prebaked wall-source sprites=0
+MAP war 31: 76x40, sprites=331, prebaked wall-source sprites=0
+MAP war 32: 76x40, sprites=327, prebaked wall-source sprites=0
+MAP war 33: 76x40, sprites=331, prebaked wall-source sprites=0
+MAP war 34: 78x40, sprites=331, prebaked wall-source sprites=0
+MAP war 35: 78x40, sprites=331, prebaked wall-source sprites=0
+MAP war 36: 78x40, sprites=327, prebaked wall-source sprites=0
+MAP war 37: 80x40, sprites=331, prebaked wall-source sprites=0
+MAP war 38: 80x40, sprites=331, prebaked wall-source sprites=0
+MAP war 39: 80x40, sprites=331, prebaked wall-source sprites=0
+MAP war 40: 82x40, sprites=327, prebaked wall-source sprites=0
+MAP war 41: 88x44, sprites=305, prebaked wall-source sprites=0
+MAP war 42: 88x44, sprites=301, prebaked wall-source sprites=0
+MAP war 43: 88x44, sprites=301, prebaked wall-source sprites=0
+MAP war 44: 90x44, sprites=305, prebaked wall-source sprites=0
+MAP war 45: 90x44, sprites=301, prebaked wall-source sprites=0
+MAP war 46: 90x44, sprites=305, prebaked wall-source sprites=0
+MAP war 47: 92x44, sprites=305, prebaked wall-source sprites=0
+MAP war 48: 92x44, sprites=305, prebaked wall-source sprites=0
+MAP war 49: 92x44, sprites=305, prebaked wall-source sprites=0
+MAP war 50: 94x44, sprites=305, prebaked wall-source sprites=0
+PASS retained HUD: fighter inspection, choice resize, settings, resource release.
+Roof exact vertex compaction Assets/Rubezh/Resources/War/war-01.bytes: 0 -> 0
+Roof mask shared meshes Assets/Rubezh/Resources/War/war-01.bytes: 42 / 42
+PASS actor retention: idle ticks, no unnecessary sort, health/stance invalidation, visibility reactivation.
+PASS NativeEffects213Check: immutable geometry, simulation-time update, camera cache, no CPU crater data, pool expiry, no core mutation. GPU validation pending.
+PASS retained HUD: fighter inspection, choice resize, settings, resource release.
+Roof exact vertex compaction Assets/Rubezh/Resources/Regenerated/Campaign_20.bytes: 96124 -> 55991
+Roof mask shared meshes Assets/Rubezh/Resources/Regenerated/Campaign_20.bytes: 212 / 227
+PASS actor retention: idle ticks, no unnecessary sort, health/stance invalidation, visibility reactivation.
+PASS NativeEffects213Check: immutable geometry, simulation-time update, camera cache, no CPU crater data, pool expiry, no core mutation. GPU validation pending.
+PASS Native214RegressionCheck: 6606 checks. Native Unity visual/import/device validation still required.
