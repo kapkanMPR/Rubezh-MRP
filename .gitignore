@@ -1,0 +1,14 @@
+/Library/
+/Temp/
+/Obj/
+/Logs/
+/UserSettings/
+/Builds/
+*.apk
+*.aab
+*.keystore
+*.jks
+.env
+**/bin/
+**/obj/
+**/__pycache__/
