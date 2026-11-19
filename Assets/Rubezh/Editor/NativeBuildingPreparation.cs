@@ -24,6 +24,7 @@ namespace Rubezh.UnityPort.Editor
                 return;
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Default;
+            importer.textureShape = TextureImporterShape.Texture2D;
             importer.mipmapEnabled = false;
             importer.isReadable = false;
             importer.sRGBTexture = false;
