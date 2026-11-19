@@ -21,7 +21,7 @@ namespace Rubezh.UnityPort.Editor
     public static class NativeContentAudit
     {
         public const string Root = "Assets/Rubezh/NativeContent";
-        public const string Recipe = "native-213-retained-buildings-ui-1";
+        public const string Recipe = "native-223-draw-order-buildings";
 
         [Serializable]
         public sealed class MapEntry
@@ -102,6 +102,7 @@ namespace Rubezh.UnityPort.Editor
             tree(NativeExteriorPreparation.Source);
             file("Assets/Rubezh/Editor/NativeExteriorPreparation.cs");
             file("Assets/Rubezh/Editor/NativeBuildingPreparation.cs");
+            file("Assets/Rubezh/Core/AtlasLayout.cs");
             file("Assets/Rubezh/Editor/NativeSurfaceImport.cs");
             file("Assets/Rubezh/Editor/NativeUiPreparation.cs");
             file("Assets/Rubezh/Runtime/NativeUiRecipe.cs");

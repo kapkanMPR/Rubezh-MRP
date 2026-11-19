@@ -32,6 +32,7 @@ namespace Rubezh.UnityPort
         readonly Dictionary<int, int[]> groundMaterialPalettes = new Dictionary<int, int[]>();
         public int GroundPaletteMaterials => groundMaterialPages.Count;
         public long GroundPaletteRunsSaved { get; private set; }
+        public long SceneryPaletteRunsSaved { get; private set; }
 
         bool OrdinaryGroundPage(int page)
         {
@@ -81,26 +82,54 @@ namespace Rubezh.UnityPort
         // and texture resolution remain unchanged. No texture copy or rescale occurs.
         List<Vector2> CompactGroundMaterialRuns()
         {
+            return CompactTexturePaletteRuns(false);
+        }
+
+        List<Vector2> CompactStaticMaterialRuns() => CompactTexturePaletteRuns(true);
+
+        List<Vector2> CompactTexturePaletteRuns(bool scenery)
+        {
             if (!nativeAtlasMode || !UnityOwnedScene || runs.Items.Count < 2)
                 return null;
-            for (int i = 0; i < depths.Count; i++)
-                if (depths[i].y != 0 && depths[i].y != -1)
-                    return null;
-            var original = runs.Items.ToArray();
-            // The ground producer emits independent quads. If a future producer
-            // shares a vertex between material runs, its sampler slot might differ
-            // between palettes. Keep that geometry on the original safe path.
-            var owner = new int[vertices.Count];
-            for (int i = 0; i < owner.Length; i++)
-                owner[i] = -1;
-            for (int r = 0; r < original.Length; r++)
-            for (int n = original[r].Start; n < original[r].Start + original[r].Count; n++)
+            var sourceRuns = runs.Items;
+            var eligible = new bool[sourceRuns.Count];
+            bool canMerge = false;
+            for (int r = 0; r < sourceRuns.Count; r++)
             {
-                int vertex = indices[n];
-                if (owner[vertex] >= 0 && owner[vertex] != r)
-                    return null;
-                owner[vertex] = r;
+                var run = sourceRuns[r];
+                if (!OrdinaryGroundPage(run.Page))
+                    continue;
+                eligible[r] = true;
+                for (int n = run.Start; n < run.Start + run.Count; n++)
+                {
+                    // Procedural depth, roof reveal and patterned shadows use additional
+                    // material inputs. Keep those draws on their original material.
+                    float mode = depths[indices[n]].y;
+                    if (mode == 0 || mode == -1 || (scenery && mode == 1))
+                        continue;
+                    eligible[r] = false;
+                    break;
+                }
+                canMerge |= r > 0 && eligible[r - 1] && eligible[r];
             }
+            if (!canMerge)
+                return null;
+
+            // A shared vertex cannot select different samplers in different runs.
+            // Emit the original draws if a future producer welds across materials.
+            var owner = new int[vertices.Count];
+            for (int r = 0; r < sourceRuns.Count; r++)
+            {
+                var run = sourceRuns[r];
+                for (int n = run.Start; n < run.Start + run.Count; n++)
+                {
+                    int vertex = indices[n];
+                    if (owner[vertex] != 0 && owner[vertex] != r + 1)
+                        return null;
+                    owner[vertex] = r + 1;
+                }
+            }
+            var original = sourceRuns.ToArray();
             var slots = new List<Vector2>(vertices.Count);
             for (int i = 0; i < vertices.Count; i++)
                 slots.Add(new Vector2(0, 0));
@@ -110,7 +139,7 @@ namespace Rubezh.UnityPort
             {
                 palette.Clear();
                 int end = first;
-                while (end < original.Length && OrdinaryGroundPage(original[end].Page))
+                while (end < original.Length && eligible[end])
                 {
                     int source = original[end].Page;
                     if (!palette.Contains(source))
@@ -135,7 +164,10 @@ namespace Rubezh.UnityPort
                 }
                 first = end;
             }
-            GroundPaletteRunsSaved += original.Length - runs.Items.Count;
+            if (scenery)
+                SceneryPaletteRunsSaved += original.Length - runs.Items.Count;
+            else
+                GroundPaletteRunsSaved += original.Length - runs.Items.Count;
             return original.Length == runs.Items.Count ? null : slots;
         }
     }

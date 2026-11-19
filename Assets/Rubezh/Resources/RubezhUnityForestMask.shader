@@ -2,6 +2,10 @@ Shader "Rubezh/Unity Forest Mask"
 {
     Properties
     {
+        [HideInInspector] _GroundMultiTex("Scenery texture palette", Float) = 0
+        _GroundTex1("Scenery atlas 1", 2D) = "white" {}
+        _GroundTex2("Scenery atlas 2", 2D) = "white" {}
+        _GroundTex3("Scenery atlas 3", 2D) = "white" {}
         [HideInInspector] _ActorRootDepth("Actor root depth offset", Float) = 0
         [HideInInspector] _NativeInstance("Native instance", Float) = 0
         [HideInInspector] _InstanceData("Native depth and clip", Vector) = (0, 0, 0, 0)
@@ -23,7 +27,7 @@ Shader "Rubezh/Unity Forest Mask"
         {
             Blend One One
             BlendOp Max
-            ColorMask R
+            ColorMask RG
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -31,7 +35,8 @@ Shader "Rubezh/Unity Forest Mask"
             #pragma multi_compile_instancing
             #include "UnityCG.cginc"
             #include "RubezhBuildingMask.cginc"
-            sampler2D _MainTex, _PictureDepth;
+            #include "RubezhSceneryAtlas.cginc"
+            sampler2D _PictureDepth;
             UNITY_INSTANCING_BUFFER_START(NativeProps)
             UNITY_DEFINE_INSTANCED_PROP(float, _NativeInstance)
             UNITY_DEFINE_INSTANCED_PROP(float, _ActorRootDepth)
@@ -44,6 +49,8 @@ Shader "Rubezh/Unity Forest Mask"
                 float2 uv : TEXCOORD0;
                 float2 depth : TEXCOORD1;
                 float2 clipRange : TEXCOORD2;
+                float2 atlasSlot : TEXCOORD3;
+                float2 membership : TEXCOORD4;
                 float4 color : COLOR;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -54,6 +61,8 @@ Shader "Rubezh/Unity Forest Mask"
                 float2 depth : TEXCOORD1;
                 float2 clipRange : TEXCOORD2;
                 float canvasX : TEXCOORD3;
+                float atlasSlot : TEXCOORD4;
+                float roofMember : TEXCOORD5;
                 float4 color : COLOR;
             };
             v2f vert(appdata v)
@@ -65,6 +74,8 @@ Shader "Rubezh/Unity Forest Mask"
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.atlasSlot = v.atlasSlot.x;
+                o.roofMember = nativeInstance > .5 ? 0 : v.membership.x;
                 o.depth = nativeInstance > .5 ? data.xy : v.depth;
                 if (nativeInstance > .5 && UNITY_ACCESS_INSTANCED_PROP(NativeProps, _ActorRootDepth) > .5)
                     o.depth.x += mul(unity_ObjectToWorld, v.vertex).z * 1024.0;
@@ -83,11 +94,11 @@ Shader "Rubezh/Unity Forest Mask"
                     clip(i.color.a - .5);
                 else
                 {
-                    clip(tex2D(_MainTex, i.uv).a * i.color.a - .5);
+                    clip(SampleSceneryAtlas(i.uv, i.atlasSlot).a * i.color.a - .5);
                     ClipBuilding(i.uv, i.color);
                 }
                 float z = i.depth.y > 1.5 ? tex2D(_PictureDepth, i.uv).r : i.depth.x;
-                return float4(z, 0, 0, 1);
+                return float4(z, i.roofMember > .5 ? z : 0, 0, 1);
             }
             ENDCG
         }

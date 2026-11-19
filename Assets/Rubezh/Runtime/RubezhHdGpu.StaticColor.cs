@@ -45,9 +45,11 @@ namespace Rubezh.UnityPort
             public long FullUploads,
                 RegionUploads;
             public Color Background;
+            public Rect View;
 
             public bool Same(StaticColorStamp other) =>
-                Commands == other.Commands
+                View == other.View
+                && Commands == other.Commands
                 && Masks == other.Masks
                 && BuildingMasks == other.BuildingMasks
                 && Materials == other.Materials
@@ -71,6 +73,7 @@ namespace Rubezh.UnityPort
                 FullUploads = PictureFullUploads,
                 RegionUploads = PictureRegionUploads,
                 Background = unityCamera.backgroundColor,
+                View = unityCommandsView,
             };
 
         void ReleaseStaticColorCache()

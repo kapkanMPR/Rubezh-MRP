@@ -159,7 +159,8 @@ namespace Rubezh.UnityPort
             roofPanels,
             roofPanelRebuilds;
         public long roofCompactPayloadBytes;
-        public bool unityMergedMaskCommands;
+        public bool unityMergedMaskCommands,
+            unityPackedMasks;
         public int unityMaskMergedMeshes;
         public string unityStaticColorFailure;
         public double unityStaticColorRenderMs;
@@ -189,6 +190,7 @@ namespace Rubezh.UnityPort
             materialCopies;
         public bool unitySceneTest;
         public int unitySceneNodes,
+            unityStaticRendererNodes,
             importedUnityPages;
         public int unityExplicitDraws;
         public bool unityCompatibilityDraw;
@@ -530,6 +532,7 @@ namespace Rubezh.UnityPort
                 groundPaletteRunsSaved = hdBattle == null ? 0 : hdBattle.GroundPaletteRunsSaved,
                 unityStaticColorDeferred = hdBattle != null && hdBattle.UnityStaticColorDeferred,
                 unityMergedMaskCommands = hdBattle != null && hdBattle.UnityMergedMaskCommands,
+                unityPackedMasks = hdBattle != null && hdBattle.UnityPackedMasks,
                 unityMaskMergedMeshes = hdBattle == null ? 0 : hdBattle.UnityMaskMergedMeshes,
                 unityStaticColorFailure = hdBattle == null ? null : hdBattle.UnityStaticColorFailure,
                 unityStaticColorRenderMs = hdBattle == null ? 0 : hdBattle.UnityStaticColorRenderMs,
@@ -608,6 +611,7 @@ namespace Rubezh.UnityPort
                 unityCompatibilityDraw = hdBattle != null && hdBattle.UnityCompatibilityDraw,
                 unitySceneTest = unityTestBattle,
                 unitySceneNodes = hdBattle == null ? 0 : hdBattle.UnitySceneNodes,
+                unityStaticRendererNodes = hdBattle == null ? 0 : hdBattle.UnityStaticRendererNodes,
                 importedUnityPages = hdBattle == null ? 0 : hdBattle.ImportedUnityPages,
                 testError = unityTestError,
                 updateCpuMs = fullUpdateCpuMs,

@@ -110,6 +110,75 @@ namespace SilentOrders.Rendering
             return best;
         }
 
+        // Building regions arrive in painter order. Keep consecutive regions on one
+        // page where possible, while using the regular size-sorted packer inside a page.
+        public static Layout PackBuildingPages(List<Size> sizes)
+        {
+            const int limit = 2048;
+            var dense = Pack(sizes, 1024);
+            if (dense.Pages.Length < 2)
+                return dense;
+            var placements = new Placement[sizes.Count];
+            var pages = new List<Size>();
+            long pixels = 0;
+            for (int start = 0; start < sizes.Count; )
+            {
+                int end = start;
+                long area = 16;
+                while (end < sizes.Count && end - start < limit)
+                {
+                    var size = sizes[end];
+                    area += (long)(size.W + 2) * (size.H + 2);
+                    if (area > (long)limit * limit)
+                        break;
+                    end++;
+                }
+                int maximum = Math.Max(1, end - start);
+                var best = Pack(sizes.GetRange(start, maximum), limit);
+                if (best.Pages.Length != 1)
+                {
+                    best = Pack(sizes.GetRange(start, 1), limit);
+                    int low = 2,
+                        high = maximum - 1;
+                    while (low <= high)
+                    {
+                        int length = low + (high - low) / 2;
+                        var trial = Pack(sizes.GetRange(start, length), limit);
+                        if (trial.Pages.Length == 1)
+                        {
+                            best = trial;
+                            low = length + 1;
+                        }
+                        else
+                            high = length - 1;
+                    }
+                }
+                for (int i = 0; i < best.Items.Length; i++)
+                {
+                    var item = best.Items[i];
+                    item.Page = pages.Count;
+                    placements[start + i] = item;
+                }
+                pages.Add(best.Pages[0]);
+                pixels += best.PixelCount;
+                start += best.Items.Length;
+            }
+            if (pages.Count > dense.Pages.Length || pixels > dense.PixelCount + dense.PixelCount / 16)
+                return dense;
+            int denseRuns = 1;
+            for (int i = 1; i < dense.Items.Length; i++)
+                if (dense.Items[i].Page != dense.Items[i - 1].Page)
+                    denseRuns++;
+            return pages.Count < denseRuns
+                ? new Layout
+                {
+                    Items = placements,
+                    Pages = pages.ToArray(),
+                    PixelCount = pixels,
+                }
+                : dense;
+        }
+
         static Layout PackWidth(IList<Size> sizes, int width, int limit)
         {
             var order = new List<int>();

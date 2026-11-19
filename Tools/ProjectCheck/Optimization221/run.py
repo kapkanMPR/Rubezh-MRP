@@ -83,6 +83,7 @@ if "--baseline" not in sys.argv:
     ]
 prod += [
     extra / "Optimization221Check.cs",
+    extra / "BuildingAtlas223Check.cs",
     extra / "Primitive221Check.cs",
     extra / "Benchmark221Check.cs",
     extra / "Mask221Check.cs",
@@ -105,6 +106,7 @@ if unity_compile:
             "Native214RegressionCheck.cs",
             "Native214PrimitiveCheck.cs",
             "Optimization221Check.cs",
+            "BuildingAtlas223Check.cs",
             "Primitive221Check.cs",
             "Benchmark221Check.cs",
             "Mask221Check.cs",
