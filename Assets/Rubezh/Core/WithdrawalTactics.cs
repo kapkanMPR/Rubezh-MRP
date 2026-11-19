@@ -9,14 +9,23 @@ namespace SilentOrders.Core
         public int MoverId = -1; // compatibility: first member of the current moving element
         public readonly List<int> Movers = new List<int>();
         public readonly HashSet<int> LastMovers = new HashSet<int>();
-        public int MaxConcurrent, GroupBounds;
+        public int MaxConcurrent,
+            GroupBounds;
         public string Composition = "";
-        public float BoundStarted, NextBoundAt;
-        public int Bounds, TotalBounds, Completed, Interrupted, CoverWaits, CohesionWaits, NoRoute;
+        public float BoundStarted,
+            NextBoundAt;
+        public int Bounds,
+            TotalBounds,
+            Completed,
+            Interrupted,
+            CoverWaits,
+            CohesionWaits,
+            NoRoute;
         public bool Initialized;
         public V2 Rear;
         public float NextReport;
         public int LastMover = -1;
+
         public void Clear()
         {
             Movers.Clear();
@@ -32,7 +41,9 @@ namespace SilentOrders.Core
 
     public static class WithdrawalTactics
     {
-        const float Reach = .35f, MaxStage = 5.2f;
+        const float Reach = .35f,
+            MaxStage = 5.2f;
+
         public static bool Active(Squad q)
         {
             return q.Style == CombatStyle.Withdraw && !TacticalOrders.Emergency(q);
@@ -40,12 +51,32 @@ namespace SilentOrders.Core
 
         static bool Mobile(BattleSimulation b, Soldier s)
         {
-            return s.Available && !s.Busy && !s.Broken && s.Health >= 25 && s.Suppression < .82f && s.ReloadUntil <= b.Time && !TacticalOrders.ServiceActive(s) && !s.GrenadeEscape.Active && s.HelpUntil <= b.Time && s.HelpRetreatUntil <= b.Time;
+            return s.Available
+                && !s.Busy
+                && !s.Broken
+                && s.Health >= 25
+                && s.Suppression < .82f
+                && s.ReloadUntil <= b.Time
+                && !TacticalOrders.ServiceActive(s)
+                && !s.GrenadeEscape.Active
+                && s.HelpUntil <= b.Time
+                && s.HelpRetreatUntil <= b.Time;
         }
 
         public static bool CanCover(BattleSimulation b, Soldier s)
         {
-            return s.Available && !s.Moving && !s.Busy && !s.Broken && s.Health >= 25 && s.Suppression < .64f && s.Ammo > 0 && s.ReloadUntil <= b.Time && s.HelpTargetId < 0 && s.RescueTargetId < 0 && !TacticalOrders.ServiceActive(s) && !s.GrenadeEscape.Active;
+            return s.Available
+                && !s.Moving
+                && !s.Busy
+                && !s.Broken
+                && s.Health >= 25
+                && s.Suppression < .64f
+                && s.Ammo > 0
+                && s.ReloadUntil <= b.Time
+                && s.HelpTargetId < 0
+                && s.RescueTargetId < 0
+                && !TacticalOrders.ServiceActive(s)
+                && !s.GrenadeEscape.Active;
         }
 
         public static bool HasCover(BattleSimulation b, Soldier mover)
@@ -69,7 +100,16 @@ namespace SilentOrders.Core
             if (!exposed)
                 return true;
             foreach (var ally in b.Soldiers)
-                if (ally != mover && (excluded == null || !excluded.Contains(ally.Id)) && !b.Team(mover).Withdrawal.Movers.Contains(ally.Id) && ally.Side == mover.Side && ally.Deployed && CanCover(b, ally) && ally.PathCursor >= ally.Path.Count && PositionLogic.UsefulSupport(b, ally, mover, end))
+                if (
+                    ally != mover
+                    && (excluded == null || !excluded.Contains(ally.Id))
+                    && !b.Team(mover).Withdrawal.Movers.Contains(ally.Id)
+                    && ally.Side == mover.Side
+                    && ally.Deployed
+                    && CanCover(b, ally)
+                    && ally.PathCursor >= ally.Path.Count
+                    && PositionLogic.UsefulSupport(b, ally, mover, end)
+                )
                     return true;
             return false;
         }
@@ -81,13 +121,19 @@ namespace SilentOrders.Core
             foreach (var ally in b.Soldiers)
                 if (ally != mover && q.Contains(ally) && ally.Alive && ally.Deployed)
                 {
-                    bool vulnerable = ally.Incapacitated || ally.Broken || ally.Bleeding || TacticalOrders.ServiceActive(ally);
+                    bool vulnerable =
+                        ally.Incapacitated || ally.Broken || ally.Bleeding || TacticalOrders.ServiceActive(ally);
                     float max = vulnerable ? 7 : 11;
                     // Do not increase an existing gap. A separated member may still rejoin.
-                    float old = V2.Dot(mover.Position - ally.Position, rear), next = V2.Dot(goal - ally.Position, rear);
+                    float old = V2.Dot(mover.Position - ally.Position, rear),
+                        next = V2.Dot(goal - ally.Position, rear);
                     if (next > max && next > old + .2f)
                         return false;
-                    if (vulnerable && V2.Distance(goal, ally.Position) > 12 && V2.Distance(goal, ally.Position) > V2.Distance(mover.Position, ally.Position) + .2f)
+                    if (
+                        vulnerable
+                        && V2.Distance(goal, ally.Position) > 12
+                        && V2.Distance(goal, ally.Position) > V2.Distance(mover.Position, ally.Position) + .2f
+                    )
                         return false;
                 }
 
@@ -124,7 +170,13 @@ namespace SilentOrders.Core
             if (p.Rear.Length < .1f)
                 p.Rear = TacticalOrders.Axis(b, q.Side) * -1;
             foreach (var s in b.Soldiers)
-                if (q.Contains(s) && s.Available && !TacticalOrders.ServiceActive(s) && !s.GrenadeEscape.Active && !s.Busy)
+                if (
+                    q.Contains(s)
+                    && s.Available
+                    && !TacticalOrders.ServiceActive(s)
+                    && !s.GrenadeEscape.Active
+                    && !s.Busy
+                )
                 {
                     TacticalAI.Stop(s);
                     s.OrderAnchor = s.Destination = s.Position;
@@ -191,7 +243,8 @@ namespace SilentOrders.Core
                         candidates.Add(unit);
                 candidates.Sort((a, z) => V2.Dot(a.Position, p.Rear).CompareTo(V2.Dot(z.Position, p.Rear)));
                 // First correct an isolated forward member before pulling the entire line back.
-                bool isolated = candidates.Count > 1 && V2.Dot(candidates[1].Position - candidates[0].Position, p.Rear) > 4;
+                bool isolated =
+                    candidates.Count > 1 && V2.Dot(candidates[1].Position - candidates[0].Position, p.Rear) > 4;
                 var proposals = new List<List<Soldier>>();
                 int count = Math.Min(8, candidates.Count);
                 for (int i = 0; i < count; i++)
@@ -248,8 +301,21 @@ namespace SilentOrders.Core
                     p.MaxConcurrent = Math.Max(p.MaxConcurrent, p.Movers.Count);
                     q.Revision++;
                     b.Stats.Bounds++;
-                    TacticalOrders.TrySmoke(b, b.Soldiers[p.MoverId], TacticalOrders.ClosestKnown(b, b.Soldiers[p.MoverId]));
-                    b.History.Event(b, "withdrawalElement", q.LeaderId, p.MoverId, b.Soldiers[p.MoverId].Position, b.Soldiers[p.MoverId].Destination, p.Movers.Count, p.Composition);
+                    TacticalOrders.TrySmoke(
+                        b,
+                        b.Soldiers[p.MoverId],
+                        TacticalOrders.ClosestKnown(b, b.Soldiers[p.MoverId])
+                    );
+                    b.History.Event(
+                        b,
+                        "withdrawalElement",
+                        q.LeaderId,
+                        p.MoverId,
+                        b.Soldiers[p.MoverId].Position,
+                        b.Soldiers[p.MoverId].Destination,
+                        p.Movers.Count,
+                        p.Composition
+                    );
                 }
                 else
                 {
@@ -257,14 +323,32 @@ namespace SilentOrders.Core
                     if (candidates.Count > 0 && b.Time >= p.NextReport)
                     {
                         p.NextReport = b.Time + 8;
-                        SmokeTactics.Request(b, q, candidates[0], candidates[0].Position + p.Rear * 3, SmokePurpose.Withdrawal);
-                        b.History.Event(b, "withdrawalWait", q.LeaderId, candidates[0].Id, candidates[0].Position, candidates[0].Position, 0, "Отход задержан: прикрытие, отставшие или маршрут");
+                        SmokeTactics.Request(
+                            b,
+                            q,
+                            candidates[0],
+                            candidates[0].Position + p.Rear * 3,
+                            SmokePurpose.Withdrawal
+                        );
+                        b.History.Event(
+                            b,
+                            "withdrawalWait",
+                            q.LeaderId,
+                            candidates[0].Id,
+                            candidates[0].Position,
+                            candidates[0].Position,
+                            0,
+                            "Отход задержан: прикрытие, отставшие или маршрут"
+                        );
                     }
                 }
             }
 
             q.Phase = p.Movers.Count == 0 ? ManeuverPhase.Prepare : ManeuverPhase.Move;
-            q.Plan = q.Execution = p.Movers.Count > 0 ? "Отход: перемещаются " + p.Movers.Count + ", остальные прикрывают" : "Отход: готовим следующую прикрытую перебежку";
+            q.Plan = q.Execution =
+                p.Movers.Count > 0
+                    ? "Отход: перемещаются " + p.Movers.Count + ", остальные прикрывают"
+                    : "Отход: готовим следующую прикрытую перебежку";
             return true;
         }
 
@@ -273,14 +357,24 @@ namespace SilentOrders.Core
             var q = b.Team(s);
             if (!Active(q))
                 return false;
-            if (!s.Available || s.Broken || TacticalOrders.ServiceActive(s) || s.GrenadeEscape.Active || s.Busy || s.HelpUntil > b.Time || s.HelpRetreatUntil > b.Time)
+            if (
+                !s.Available
+                || s.Broken
+                || TacticalOrders.ServiceActive(s)
+                || s.GrenadeEscape.Active
+                || s.Busy
+                || s.HelpUntil > b.Time
+                || s.HelpRetreatUntil > b.Time
+            )
                 return false; // existing patient/panic AI retains control
             if (q.Withdrawal.Movers.Contains(s.Id))
             {
                 s.Job = Job.Reposition;
                 s.MoveAuthorized = HasCover(b, s);
                 s.ManeuverPaused = false;
-                s.Reason = s.MoveAuthorized ? "Отхожу к следующему укрытию под прикрытием" : "Жду возможности безопасной перебежки";
+                s.Reason = s.MoveAuthorized
+                    ? "Отхожу к следующему укрытию под прикрытием"
+                    : "Жду возможности безопасной перебежки";
             }
             else
             {
@@ -317,7 +411,13 @@ namespace SilentOrders.Core
                     return false;
             int watchers = 0;
             foreach (var s in b.Soldiers)
-                if (q.Contains(s) && s.Deployed && !moving.Contains(s.Id) && CanCover(b, s) && s.PathCursor >= s.Path.Count)
+                if (
+                    q.Contains(s)
+                    && s.Deployed
+                    && !moving.Contains(s.Id)
+                    && CanCover(b, s)
+                    && s.PathCursor >= s.Path.Count
+                )
                     watchers++;
             if (group.Count > 1 && watchers < 1)
                 return false;
@@ -377,7 +477,11 @@ namespace SilentOrders.Core
                 float depth = i < 3 ? 3.3f : MaxStage;
                 float spread = ((i % 3) - 1) * 2.0f;
                 V2 post = TacticalOrders.Open(b, s.Position + rear * depth + lateral * spread);
-                if (!b.Map.Walkable(post) || PositionLogic.Occupied(b, s, post) || V2.Dot(post - s.Position, rear) < 1.7f)
+                if (
+                    !b.Map.Walkable(post)
+                    || PositionLogic.Occupied(b, s, post)
+                    || V2.Dot(post - s.Position, rear) < 1.7f
+                )
                     continue;
                 if (!Cohesive(b, s, post))
                 {
@@ -409,7 +513,11 @@ namespace SilentOrders.Core
                     continue;
                 }
 
-                float score = (sheltered ? 8f : 0f) - risk * 5f + V2.Dot(post - s.Position, rear) * .45f - SupportAI.PathLength(s.Position, path) * .15f;
+                float score =
+                    (sheltered ? 8f : 0f)
+                    - risk * 5f
+                    + V2.Dot(post - s.Position, rear) * .45f
+                    - SupportAI.PathLength(s.Position, path) * .15f;
                 if (score > best)
                 {
                     best = score;

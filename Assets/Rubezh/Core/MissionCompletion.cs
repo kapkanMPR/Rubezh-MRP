@@ -7,6 +7,7 @@ namespace SilentOrders.Core
     public static class MissionCompletion
     {
         public const float ClearDelay = 5f;
+
         public static bool EnemyCompletelyEliminated(BattleSimulation b)
         {
             if (b.CampaignReserve > 0)

@@ -14,12 +14,14 @@ namespace SilentOrders.Core
     {
         public StudioPlaced Target;
         public int Revision;
-        public float Retry, Until;
+        public float Retry,
+            Until;
     }
 
     public static class SceneEquipment
     {
         public static V2 Position(StudioPlaced p) => new V2(p.X + .5f + p.OffsetX, p.Y + .5f + p.OffsetY);
+
         public static void Bind(BattleSimulation b)
         {
             b.SceneEquipment = new SceneEquipmentState();
@@ -44,9 +46,35 @@ namespace SilentOrders.Core
                 b.SceneEquipment.Items.Add(p);
                 var at = Position(p);
                 if (a.EquipmentKind == "firearm")
-                    b.GroundWeapons.Add(new GroundWeapon { Id = b.GroundWeapons.Count, FromSoldierId = -1, Scene = p, GunRole = a.EquipmentVariant % 6 == 1 ? Role.MachineGunner : a.EquipmentVariant % 6 >= 4 ? Role.Sniper : Role.Rifleman, Variant = a.EquipmentVariant, Magazine = WeaponBalance.Profiles[a.EquipmentVariant].Magazine, From = at, To = at });
+                    b.GroundWeapons.Add(
+                        new GroundWeapon
+                        {
+                            Id = b.GroundWeapons.Count,
+                            FromSoldierId = -1,
+                            Scene = p,
+                            GunRole =
+                                a.EquipmentVariant % 6 == 1 ? Role.MachineGunner
+                                : a.EquipmentVariant % 6 >= 4 ? Role.Sniper
+                                : Role.Rifleman,
+                            Variant = a.EquipmentVariant,
+                            Magazine = WeaponBalance.Profiles[a.EquipmentVariant].Magazine,
+                            From = at,
+                            To = at,
+                        }
+                    );
                 else if (a.EquipmentKind == "launcher")
-                    b.GroundLaunchers.Add(new GroundLauncher { Id = b.GroundLaunchers.Count, FromSoldierId = -1, Scene = p, Kind = a.EquipmentVariant, Loaded = true, From = at, To = at });
+                    b.GroundLaunchers.Add(
+                        new GroundLauncher
+                        {
+                            Id = b.GroundLaunchers.Count,
+                            FromSoldierId = -1,
+                            Scene = p,
+                            Kind = a.EquipmentVariant,
+                            Loaded = true,
+                            From = at,
+                            To = at,
+                        }
+                    );
             }
         }
 
@@ -58,11 +86,13 @@ namespace SilentOrders.Core
                 return false;
             // Only the item's own low support may be crossed by the hand. Never skip a wall or another prop.
             int steps = Math.Max(1, (int)Math.Ceiling(V2.Distance(from, to) * 12));
-            int lastX = (int)Math.Floor(from.X), lastY = (int)Math.Floor(from.Y);
+            int lastX = (int)Math.Floor(from.X),
+                lastY = (int)Math.Floor(from.Y);
             for (int i = 0; i <= steps; i++)
             {
                 var v = from + (to - from) * (i / (float)steps);
-                int x = (int)Math.Floor(v.X), y = (int)Math.Floor(v.Y);
+                int x = (int)Math.Floor(v.X),
+                    y = (int)Math.Floor(v.Y);
                 if (!b.Map.Inside(x, y))
                     return false;
                 if (x != lastX && y != lastY && (!HandCell(b, p, x, lastY) || !HandCell(b, p, lastX, y)))
@@ -84,7 +114,8 @@ namespace SilentOrders.Core
             if (!b.Map.Inside(x, y))
                 return false;
             var own = b.Map.Studio.Cells[y * b.Map.Columns + x];
-            return own != null && own == p.Support && !own.Destroyed || b.Map.Walkable(new V2(x + .5f, y + .5f)) && b.Map.At(new V2(x + .5f, y + .5f)) != Tile.Wall;
+            return own != null && own == p.Support && !own.Destroyed
+                || b.Map.Walkable(new V2(x + .5f, y + .5f)) && b.Map.At(new V2(x + .5f, y + .5f)) != Tile.Wall;
         }
 
         public static V2 Approach(BattleSimulation b, Soldier s, StudioPlaced p)
@@ -95,18 +126,18 @@ namespace SilentOrders.Core
             V2 best = new V2(float.NaN, float.NaN);
             float score = float.MaxValue;
             for (int y = p.Y - 1; y <= p.Y + 1; y++)
-                for (int x = p.X - 1; x <= p.X + 1; x++)
+            for (int x = p.X - 1; x <= p.X + 1; x++)
+            {
+                var v = new V2(x + .5f, y + .5f);
+                if (!Reach(b, v, at, p, 1.55f))
+                    continue;
+                float d = V2.Distance(s.Position, v);
+                if (d < score)
                 {
-                    var v = new V2(x + .5f, y + .5f);
-                    if (!Reach(b, v, at, p, 1.55f))
-                        continue;
-                    float d = V2.Distance(s.Position, v);
-                    if (d < score)
-                    {
-                        best = v;
-                        score = d;
-                    }
+                    best = v;
+                    score = d;
                 }
+            }
 
             return best;
         }
@@ -119,7 +150,29 @@ namespace SilentOrders.Core
             b.Map.SceneryChanges.Record(b.Map, new[] { b.Map.Tiles.Length + b.Map.Studio.Decorations.IndexOf(p) });
         }
 
-        static bool Ready(BattleSimulation b, Soldier s, bool bandage = false) => s != null && s.Available && s.Deployed && !s.Broken && !s.Busy && (!s.Bleeding || bandage) && s.HandsBusyUntil <= b.Time && s.ReloadUntil <= b.Time && s.Suppression < .45f && s.Morale >= .3f && b.Time - s.LastIncoming >= 3 && CombatTraining.Skill(s, 2, "loot") && !TacticalOrders.Emergency(b.Team(s)) && !TacticalOrders.ServiceActive(s) && !ExecutionReview.ProtectedTask(b, s) && !SupplyRecovery.Active(s) && !BuddyActions.Active(s) && !HandLauncher.Active(s) && !s.GrenadeEscape.Active && !s.VehicleRally && !s.VehicleDisperse;
+        static bool Ready(BattleSimulation b, Soldier s, bool bandage = false) =>
+            s != null
+            && s.Available
+            && s.Deployed
+            && !s.Broken
+            && !s.Busy
+            && (!s.Bleeding || bandage)
+            && s.HandsBusyUntil <= b.Time
+            && s.ReloadUntil <= b.Time
+            && s.Suppression < .45f
+            && s.Morale >= .3f
+            && b.Time - s.LastIncoming >= 3
+            && CombatTraining.Skill(s, 2, "loot")
+            && !TacticalOrders.Emergency(b.Team(s))
+            && !TacticalOrders.ServiceActive(s)
+            && !ExecutionReview.ProtectedTask(b, s)
+            && !SupplyRecovery.Active(s)
+            && !BuddyActions.Active(s)
+            && !HandLauncher.Active(s)
+            && !s.GrenadeEscape.Active
+            && !s.VehicleRally
+            && !s.VehicleDisperse;
+
         static bool Wants(BattleSimulation b, Soldier s, StudioPlaced p)
         {
             if (p == null || p.Destroyed)
@@ -127,9 +180,15 @@ namespace SilentOrders.Core
             switch (p.Asset.EquipmentKind)
             {
                 case "firearm":
-                    return SquadLoadout.ClassKit(s.Role, p.Asset.EquipmentVariant % 6, 0) && s.Ammo + s.Reserve == 0 && !s.HasBackWeapon;
+                    return SquadLoadout.ClassKit(s.Role, p.Asset.EquipmentVariant % 6, 0)
+                        && s.Ammo + s.Reserve == 0
+                        && !s.HasBackWeapon;
                 case "launcher":
-                    return (p.Asset.EquipmentVariant != 1 || SquadLoadout.ClassKit(s.Role, 0, 4)) && s.Rockets == 0 && !s.SupplyPack && !SupplyRecovery.Medical(s) && (s.Role == Role.Commander || s.Role == Role.Grenadier || s.Contacts.Count > 0);
+                    return (p.Asset.EquipmentVariant != 1 || SquadLoadout.ClassKit(s.Role, 0, 4))
+                        && s.Rockets == 0
+                        && !s.SupplyPack
+                        && !SupplyRecovery.Medical(s)
+                        && (s.Role == Role.Commander || s.Role == Role.Grenadier || s.Contacts.Count > 0);
                 case "tourniquet":
                     return s.Tourniquets == 0;
                 case "medkit":
@@ -141,7 +200,11 @@ namespace SilentOrders.Core
 
         public static bool Collect(BattleSimulation b, Soldier s, StudioPlaced p)
         {
-            if (!Ready(b, s, p?.Asset.EquipmentKind == "tourniquet") || !Wants(b, s, p) || !Reach(b, s.Position, Position(p), p, 1.55f))
+            if (
+                !Ready(b, s, p?.Asset.EquipmentKind == "tourniquet")
+                || !Wants(b, s, p)
+                || !Reach(b, s.Position, Position(p), p, 1.55f)
+            )
                 return false;
             if (p.Asset.EquipmentKind == "firearm")
             {
@@ -186,7 +249,9 @@ namespace SilentOrders.Core
             return true;
         }
 
-        static bool Safe(BattleSimulation b, Soldier s, V2 p) => CommandPosture.Inside(b, s, p) && StraightAdvance.Inside(b, s, p) && PositionLogic.Exposure(b, s, p) < .45f;
+        static bool Safe(BattleSimulation b, Soldier s, V2 p) =>
+            CommandPosture.Inside(b, s, p) && StraightAdvance.Inside(b, s, p) && PositionLogic.Exposure(b, s, p) < .45f;
+
         public static bool TryUpdate(BattleSimulation b, Soldier s)
         {
             var state = b.SceneEquipment;
@@ -205,7 +270,14 @@ namespace SilentOrders.Core
 
             if (plan.Target != null)
             {
-                if (!Ready(b, s) || !Wants(b, s, plan.Target) || b.Team(s).Revision != plan.Revision || b.Time > plan.Until || !Safe(b, s, s.Position) || (s.PathCursor < s.Path.Count && !Safe(b, s, s.Path[s.PathCursor])))
+                if (
+                    !Ready(b, s)
+                    || !Wants(b, s, plan.Target)
+                    || b.Team(s).Revision != plan.Revision
+                    || b.Time > plan.Until
+                    || !Safe(b, s, s.Position)
+                    || (s.PathCursor < s.Path.Count && !Safe(b, s, s.Path[s.PathCursor]))
+                )
                 {
                     plan.Target = null;
                     plan.Retry = b.Time + 2;

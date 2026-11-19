@@ -5,11 +5,19 @@ namespace SilentOrders.Core
 {
     public static class WallTravel
     {
-        static bool Wall(BattleSimulation b, V2 p) => b.Map.Inside((int)Math.Floor(p.X), (int)Math.Floor(p.Y)) && b.Map.At(p) == Tile.Wall;
+        static bool Wall(BattleSimulation b, V2 p) =>
+            b.Map.Inside((int)Math.Floor(p.X), (int)Math.Floor(p.Y)) && b.Map.At(p) == Tile.Wall;
+
         static bool ClearKnown(BattleSimulation b, Soldier s, V2 p)
         {
             foreach (var c in Knowledge.Contacts(b, s))
-                if (c.Confidence >= .25f && b.Time - c.SeenAt <= 25 && PositionLogic.Relevant(b, c, p) && b.Map.LineOfSight(c.Position, p) && b.SmokeTransmission(c.Position, p) > .3f)
+                if (
+                    c.Confidence >= .25f
+                    && b.Time - c.SeenAt <= 25
+                    && PositionLogic.Relevant(b, c, p)
+                    && b.Map.LineOfSight(c.Position, p)
+                    && b.SmokeTransmission(c.Position, p) > .3f
+                )
                     return false;
             return true;
         }
@@ -23,15 +31,7 @@ namespace SilentOrders.Core
                 return false;
             if (delta.Length > 12 || !Locomotion.WalkableSegment(b, s.Position, goal))
                 return false;
-            foreach (var side in new[]
-            {
-                new V2(1, 0),
-                new V2(-1, 0),
-                new V2(0, 1),
-                new V2(0, -1)
-            }
-
-            )
+            foreach (var side in new[] { new V2(1, 0), new V2(-1, 0), new V2(0, 1), new V2(0, -1) })
             {
                 if (Math.Abs(V2.Dot(side, delta.Normalized)) > .25f || !Wall(b, s.Position + side))
                     continue;
@@ -88,7 +88,12 @@ namespace SilentOrders.Core
             if (!CombatTraining.Skill(s, 2, "wall"))
                 return false;
             var m = s.Motion;
-            if (m.WallUntil <= b.Time || m.WallRevision != b.Map.Revision || !MotionCombat.HasRoute(s) || V2.Distance(s.Destination, m.WallGoal) > .2f)
+            if (
+                m.WallUntil <= b.Time
+                || m.WallRevision != b.Map.Revision
+                || !MotionCombat.HasRoute(s)
+                || V2.Distance(s.Destination, m.WallGoal) > .2f
+            )
                 return false;
             if (!ClearKnown(b, s, s.Position) || !ClearKnown(b, s, s.Path[s.PathCursor]))
             {

@@ -6,21 +6,40 @@ namespace SilentOrders.Rendering
     public sealed class PixelCanvas
     {
         public float[] RoofOcclusion;
-        public bool RoofBlocker=true;
-        public void StoreDepth(int index,float depth){Occlusion[index]=depth;if(RoofBlocker&&RoofOcclusion!=null&&depth>RoofOcclusion[index])RoofOcclusion[index]=depth;}
+        public bool RoofBlocker = true;
+
+        public void StoreDepth(int index, float depth)
+        {
+            Occlusion[index] = depth;
+            if (RoofBlocker && RoofOcclusion != null && depth > RoofOcclusion[index])
+                RoofOcclusion[index] = depth;
+        }
+
         public readonly int Width;
         public readonly int Height;
         public readonly float Scale;
         uint[] pixelStorage;
         public uint[] Pixels => pixelStorage ?? (pixelStorage = new uint[Width * Height]);
         public long AllocatedPixelBytes => pixelStorage == null ? 0 : (long)pixelStorage.Length * 4;
-        public void ReleasePixels() { pixelStorage = null; }
+
+        public void ReleasePixels()
+        {
+            pixelStorage = null;
+        }
+
         public ICanvasGpu Gpu;
+
         // Retained native actors keep local geometry independent of fractional world position.
         // Global pixel rounding would otherwise change thin marker topology while walking.
         public bool RetainedObjectGeometry;
         bool objectTransform;
-        float pivotX, pivotY, objectX, objectY, objectCos, objectSin;
+        float pivotX,
+            pivotY,
+            objectX,
+            objectY,
+            objectCos,
+            objectSin;
+
         public void ClearObjectTransform()
         {
             objectTransform = false;
@@ -39,17 +58,31 @@ namespace SilentOrders.Rendering
 
         public void TransformSprite(ref float x, ref float y, ref float w, ref float h)
         {
-            if (!objectTransform) return;
-            float px = pivotX / Scale, py = pivotY / Scale;
-            x = px + (x - px) * objectX; y = py + (y - py) * objectY;
-            w *= objectX; h *= objectY;
+            if (!objectTransform)
+                return;
+            float px = pivotX / Scale,
+                py = pivotY / Scale;
+            x = px + (x - px) * objectX;
+            y = py + (y - py) * objectY;
+            w *= objectX;
+            h *= objectY;
         }
 
         void ObjectRect(float x, float y, float w, float h, uint color)
         {
-            if (Gpu != null && objectSin == 0 && objectX > 0 && objectY > 0) {
-                if (RetainedObjectGeometry) {
-                    Gpu.Rect(pivotX+(x-pivotX)*objectX,pivotY+(y-pivotY)*objectY,w*objectX,h*objectY,color,Depth,TestDepth);
+            if (Gpu != null && objectSin == 0 && objectX > 0 && objectY > 0)
+            {
+                if (RetainedObjectGeometry)
+                {
+                    Gpu.Rect(
+                        pivotX + (x - pivotX) * objectX,
+                        pivotY + (y - pivotY) * objectY,
+                        w * objectX,
+                        h * objectY,
+                        color,
+                        Depth,
+                        TestDepth
+                    );
                     return;
                 }
                 int left = (int)Math.Round(pivotX + (x - pivotX) * objectX);
@@ -59,11 +92,16 @@ namespace SilentOrders.Rendering
                 Gpu.Rect(left, top, right - left, bottom - top, color, Depth, TestDepth);
                 return;
             }
-            float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+            float minX = float.MaxValue,
+                minY = float.MaxValue,
+                maxX = float.MinValue,
+                maxY = float.MinValue;
             for (int k = 0; k < 4; k++)
             {
-                float dx = (x + (k % 2) * w - pivotX) * objectX, dy = (y + (k / 2) * h - pivotY) * objectY;
-                float tx = pivotX + dx * objectCos - dy * objectSin, ty = pivotY + dx * objectSin + dy * objectCos;
+                float dx = (x + (k % 2) * w - pivotX) * objectX,
+                    dy = (y + (k / 2) * h - pivotY) * objectY;
+                float tx = pivotX + dx * objectCos - dy * objectSin,
+                    ty = pivotY + dx * objectSin + dy * objectCos;
                 minX = Math.Min(minX, tx);
                 maxX = Math.Max(maxX, tx);
                 minY = Math.Min(minY, ty);
@@ -75,11 +113,14 @@ namespace SilentOrders.Rendering
             {
                 for (int py = Math.Max(0, (int)Math.Floor(minY)); py < Math.Min(Height, (int)Math.Ceiling(maxY)); py++)
                 {
-                    int run = -1, end = Math.Min(Width, (int)Math.Ceiling(maxX));
+                    int run = -1,
+                        end = Math.Min(Width, (int)Math.Ceiling(maxX));
                     for (int px = Math.Max(0, (int)Math.Floor(minX)); px <= end; px++)
                     {
-                        float dx = px + .5f - pivotX, dy = py + .5f - pivotY;
-                        float sourceX = pivotX + (dx * objectCos + dy * objectSin) / objectX, sourceY = pivotY + (-dx * objectSin + dy * objectCos) / objectY;
+                        float dx = px + .5f - pivotX,
+                            dy = py + .5f - pivotY;
+                        float sourceX = pivotX + (dx * objectCos + dy * objectSin) / objectX,
+                            sourceY = pivotY + (-dx * objectSin + dy * objectCos) / objectY;
                         bool inside = px < end && sourceX >= x && sourceX < x + w && sourceY >= y && sourceY < y + h;
                         if (inside && run < 0)
                             run = px;
@@ -103,15 +144,20 @@ namespace SilentOrders.Rendering
 
         public float[] Occlusion;
         public float Depth;
-        public int LayerLeft, LayerRight = int.MaxValue;
-        public int ClipLeft,ClipTop,ClipRight=int.MaxValue,ClipBottom=int.MaxValue;
+        public int LayerLeft,
+            LayerRight = int.MaxValue;
+        public int ClipLeft,
+            ClipTop,
+            ClipRight = int.MaxValue,
+            ClipBottom = int.MaxValue;
         public bool RecordDepth;
         public bool TestDepth;
+
         public PixelCanvas(int width, int height, float scale = 1f)
         {
             Scale = scale;
-            Width = (int)System.Math.Round((float)width * scale);
-            Height = (int)System.Math.Round((float)height * scale);
+            Width = (int)Math.Round((float)width * scale);
+            Height = (int)Math.Round((float)height * scale);
         }
 
         public static uint RGB(int r, int g, int b)
@@ -146,17 +192,17 @@ namespace SilentOrders.Rendering
                 return;
             }
 
-            if (x >= ClipLeft && y >= ClipTop && x < Math.Min(Width,ClipRight) && y < Math.Min(Height,ClipBottom))
+            if (x >= ClipLeft && y >= ClipTop && x < Math.Min(Width, ClipRight) && y < Math.Min(Height, ClipBottom))
             {
-                int num = y * Width + x;
-                if (!TestDepth || Occlusion[num] <= Depth)
+                int pixelIndex = y * Width + x;
+                if (!TestDepth || Occlusion[pixelIndex] <= Depth)
                 {
-                    Pixels[num] = c;
+                    Pixels[pixelIndex] = c;
                 }
 
                 if (RecordDepth)
                 {
-                    StoreDepth(num,Depth);
+                    StoreDepth(pixelIndex, Depth);
                 }
             }
         }
@@ -171,24 +217,41 @@ namespace SilentOrders.Rendering
 
             if (Gpu != null)
             {
-                int left = (int)System.Math.Round(x * Scale), top = (int)System.Math.Round(y * Scale);
-                Gpu.Rect(left, top, (int)System.Math.Round((x + w) * Scale) - left, (int)System.Math.Round((y + h) * Scale) - top, c, Depth, TestDepth);
+                int left = (int)Math.Round(x * Scale),
+                    top = (int)Math.Round(y * Scale);
+                Gpu.Rect(
+                    left,
+                    top,
+                    (int)Math.Round((x + w) * Scale) - left,
+                    (int)Math.Round((y + h) * Scale) - top,
+                    c,
+                    Depth,
+                    TestDepth
+                );
                 return;
             }
 
-            for (int i = System.Math.Max((int)System.Math.Round((float)y * Scale), ClipTop); i < System.Math.Min((int)System.Math.Round((float)(y + h) * Scale), Math.Min(Height,ClipBottom)); i++)
+            for (
+                int i = Math.Max((int)Math.Round((float)y * Scale), ClipTop);
+                i < Math.Min((int)Math.Round((float)(y + h) * Scale), Math.Min(Height, ClipBottom));
+                i++
+            )
             {
-                for (int j = System.Math.Max((int)System.Math.Round((float)x * Scale), ClipLeft); j < System.Math.Min((int)System.Math.Round((float)(x + w) * Scale), Math.Min(Width,ClipRight)); j++)
+                for (
+                    int j = Math.Max((int)Math.Round((float)x * Scale), ClipLeft);
+                    j < Math.Min((int)Math.Round((float)(x + w) * Scale), Math.Min(Width, ClipRight));
+                    j++
+                )
                 {
-                    int num = i * Width + j;
-                    if (!TestDepth || Occlusion[num] <= Depth)
+                    int pixelIndex = i * Width + j;
+                    if (!TestDepth || Occlusion[pixelIndex] <= Depth)
                     {
-                        Pixels[num] = c;
+                        Pixels[pixelIndex] = c;
                     }
 
                     if (RecordDepth)
                     {
-                        StoreDepth(num,Depth);
+                        StoreDepth(pixelIndex, Depth);
                     }
                 }
             }
@@ -205,12 +268,17 @@ namespace SilentOrders.Rendering
         public void Line(int x0, int y0, int x1, int y1, uint color)
         {
             var vector = Gpu as IVectorCanvasGpu;
-            if (vector != null && !objectTransform && vector.Line(x0 * Scale, y0 * Scale, x1 * Scale, y1 * Scale, Scale, color, Depth, TestDepth)) return;
-            int num = System.Math.Abs(x1 - x0);
-            int num2 = ((x0 < x1) ? 1 : (-1));
-            int num3 = -System.Math.Abs(y1 - y0);
-            int num4 = ((y0 < y1) ? 1 : (-1));
-            int num5 = num + num3;
+            if (
+                vector != null
+                && !objectTransform
+                && vector.Line(x0 * Scale, y0 * Scale, x1 * Scale, y1 * Scale, Scale, color, Depth, TestDepth)
+            )
+                return;
+            int deltaX = Math.Abs(x1 - x0);
+            int stepX = ((x0 < x1) ? 1 : (-1));
+            int deltaY = -Math.Abs(y1 - y0);
+            int stepY = ((y0 < y1) ? 1 : (-1));
+            int error = deltaX + deltaY;
             while (true)
             {
                 Dot(x0, y0, color);
@@ -219,49 +287,51 @@ namespace SilentOrders.Rendering
                     break;
                 }
 
-                int num6 = 2 * num5;
-                if (num6 >= num3)
+                int twiceError = 2 * error;
+                if (twiceError >= deltaY)
                 {
-                    num5 += num3;
-                    x0 += num2;
+                    error += deltaY;
+                    x0 += stepX;
                 }
 
-                if (num6 <= num)
+                if (twiceError <= deltaX)
                 {
-                    num5 += num;
-                    y0 += num4;
+                    error += deltaX;
+                    y0 += stepY;
                 }
             }
         }
 
         public void Polygon(int[] xs, int[] ys, uint c)
         {
-            int num = (int)System.Math.Round((float)Height / Scale) - 1;
-            int num2 = 0;
+            int minY = (int)Math.Round((float)Height / Scale) - 1;
+            int maxY = 0;
             for (int i = 0; i < ys.Length; i++)
             {
-                num = System.Math.Min(num, ys[i]);
-                num2 = System.Math.Max(num2, ys[i]);
+                minY = Math.Min(minY, ys[i]);
+                maxY = Math.Max(maxY, ys[i]);
             }
 
             int[] array = new int[xs.Length];
-            for (int j = System.Math.Max(0, num); j <= System.Math.Min((int)System.Math.Round((float)Height / Scale) - 1, num2); j++)
+            for (int j = Math.Max(0, minY); j <= Math.Min((int)Math.Round((float)Height / Scale) - 1, maxY); j++)
             {
-                int num3 = 0;
-                int num4 = 0;
-                int num5 = xs.Length - 1;
-                while (num4 < xs.Length)
+                int intersectionCount = 0;
+                int vertex = 0;
+                int previousVertex = xs.Length - 1;
+                while (vertex < xs.Length)
                 {
-                    if ((ys[num4] <= j && ys[num5] > j) || (ys[num5] <= j && ys[num4] > j))
+                    if ((ys[vertex] <= j && ys[previousVertex] > j) || (ys[previousVertex] <= j && ys[vertex] > j))
                     {
-                        array[num3++] = xs[num4] + (j - ys[num4]) * (xs[num5] - xs[num4]) / (ys[num5] - ys[num4]);
+                        array[intersectionCount++] =
+                            xs[vertex]
+                            + (j - ys[vertex]) * (xs[previousVertex] - xs[vertex]) / (ys[previousVertex] - ys[vertex]);
                     }
 
-                    num5 = num4++;
+                    previousVertex = vertex++;
                 }
 
-                System.Array.Sort(array, 0, num3);
-                for (int k = 0; k + 1 < num3; k += 2)
+                Array.Sort(array, 0, intersectionCount);
+                for (int k = 0; k + 1 < intersectionCount; k += 2)
                 {
                     Rect(array[k], j, array[k + 1] - array[k] + 1, 1, c);
                 }
@@ -276,11 +346,19 @@ namespace SilentOrders.Rendering
         public void Ellipse(int x, int y, int rx, int ry, uint c)
         {
             var vector = Gpu as IVectorCanvasGpu;
-            if (vector != null && RetainedObjectGeometry && objectTransform && objectSin == 0 && objectX == objectY) {
-                float cx=pivotX+(x*Scale-pivotX)*objectX,cy=pivotY+(y*Scale-pivotY)*objectY;
-                if(vector.Ellipse(cx,cy,rx,ry,Scale*objectX,c,Depth,TestDepth))return;
+            if (vector != null && RetainedObjectGeometry && objectTransform && objectSin == 0 && objectX == objectY)
+            {
+                float cx = pivotX + (x * Scale - pivotX) * objectX,
+                    cy = pivotY + (y * Scale - pivotY) * objectY;
+                if (vector.Ellipse(cx, cy, rx, ry, Scale * objectX, c, Depth, TestDepth))
+                    return;
             }
-            if (vector != null && !objectTransform && vector.Ellipse(x * Scale, y * Scale, rx, ry, Scale, c, Depth, TestDepth)) return;
+            if (
+                vector != null
+                && !objectTransform
+                && vector.Ellipse(x * Scale, y * Scale, rx, ry, Scale, c, Depth, TestDepth)
+            )
+                return;
             if (Gpu != null)
             {
                 if (rx <= 0 || ry <= 0)

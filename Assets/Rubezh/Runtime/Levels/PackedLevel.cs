@@ -12,7 +12,8 @@ namespace Rubezh.UnityPort
 
         public static string Decode(byte[] data)
         {
-            if (data == null) throw new InvalidDataException("Missing level data");
+            if (data == null)
+                throw new InvalidDataException("Missing level data");
             if (data.Length >= 2 && data[0] == 0x1f && data[1] == 0x8b)
             {
                 using (var input = new MemoryStream(data, false))

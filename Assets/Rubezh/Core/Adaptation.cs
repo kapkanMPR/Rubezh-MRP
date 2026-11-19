@@ -8,6 +8,6 @@ namespace SilentOrders.Core
         None,
         Flank,
         Split,
-        Withdraw
+        Withdraw,
     }
 }

@@ -8,24 +8,9 @@ namespace Rubezh.UnityPort
     public sealed partial class RubezhApp
     {
         int formationPickerSlot = -1;
-        static readonly string[] FormationChoice =
-        {
-            "Ближе",
-            "Баланс",
-            "Шире"
-        };
-        static readonly string[] FormationDepthChoice =
-        {
-            "Меньше",
-            "Баланс",
-            "Больше"
-        };
-        static readonly string[] FormationPositions =
-        {
-            "ВПЕРЕДИ",
-            "ЦЕНТР",
-            "ПОЗАДИ"
-        };
+        static readonly string[] FormationChoice = { "Ближе", "Баланс", "Шире" };
+        static readonly string[] FormationDepthChoice = { "Меньше", "Баланс", "Больше" };
+        static readonly string[] FormationPositions = { "ВПЕРЕДИ", "ЦЕНТР", "ПОЗАДИ" };
         FormationSettings FormationForMenu
         {
             get
@@ -78,7 +63,9 @@ namespace Rubezh.UnityPort
 
         bool FormationWounded(int i)
         {
-            return formationOrder == null ? WoundedSlot(i) : !editingSquadFormation && formationOrder.mode == "story" && formationOrder.mission == 6 && i == 4;
+            return formationOrder == null
+                ? WoundedSlot(i)
+                : !editingSquadFormation && formationOrder.mode == "story" && formationOrder.mission == 6 && i == 4;
         }
 
         string FormationName(int i)
@@ -93,12 +80,13 @@ namespace Rubezh.UnityPort
 
         bool FormationReady(FormationSettings f)
         {
-            return f != null && f.Valid() && (f.pairing != 4 || f.ManualComplete() || FormationWounded(4) && f.Valid() && new[]
-            {
-                1,
-                2,
-                3
-            }.All(id => f.pairSlots.Contains(id)));
+            return f != null
+                && f.Valid()
+                && (
+                    f.pairing != 4
+                    || f.ManualComplete()
+                    || FormationWounded(4) && f.Valid() && new[] { 1, 2, 3 }.All(id => f.pairSlots.Contains(id))
+                );
         }
 
         // Retained UI implementation lives in NativeFormationMenu.cs.

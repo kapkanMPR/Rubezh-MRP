@@ -7,7 +7,17 @@ namespace SilentOrders.Core
     {
         static bool Ready(BattleSimulation b, Soldier s)
         {
-            return s != null && s.Available && !s.Busy && !s.Broken && !s.Moving && s.PathCursor >= s.Path.Count && s.Ammo >= 3 && s.ReloadUntil <= b.Time && s.HandsBusyUntil <= b.Time && s.Suppression < .55f && !CommandPosture.Service(b, s);
+            return s != null
+                && s.Available
+                && !s.Busy
+                && !s.Broken
+                && !s.Moving
+                && s.PathCursor >= s.Path.Count
+                && s.Ammo >= 3
+                && s.ReloadUntil <= b.Time
+                && s.HandsBusyUntil <= b.Time
+                && s.Suppression < .55f
+                && !CommandPosture.Service(b, s);
         }
 
         public static bool CoverReady(BattleSimulation b, Soldier s, int id)
@@ -21,9 +31,22 @@ namespace SilentOrders.Core
         // This is a one-way lateral transfer, never a movement style along the flank.
         public static bool NeedsShift(BattleSimulation b, Squad q, PairCommandPlan pair, Soldier s)
         {
-            if (pair == null || pair.Duty != PairDuty.Maneuver || pair.LateralComplete || pair.IntentKey != (int)q.Intent || q.Intent == ManeuverIntent.Center || (q.Intent == ManeuverIntent.Straight || q.Intent == ManeuverIntent.Front) || q.Intent == ManeuverIntent.Breakthrough || q.Style == CombatStyle.Passive || q.Style == CombatStyle.Withdraw || b.Time >= pair.LateralDeadline || pair.ManeuverSide == 0)
+            if (
+                pair == null
+                || pair.Duty != PairDuty.Maneuver
+                || pair.LateralComplete
+                || pair.IntentKey != (int)q.Intent
+                || q.Intent == ManeuverIntent.Center
+                || (q.Intent == ManeuverIntent.Straight || q.Intent == ManeuverIntent.Front)
+                || q.Intent == ManeuverIntent.Breakthrough
+                || q.Style == CombatStyle.Passive
+                || q.Style == CombatStyle.Withdraw
+                || b.Time >= pair.LateralDeadline
+                || pair.ManeuverSide == 0
+            )
                 return false;
-            return V2.Dot(s.Position - b.Map.Entry, TacticalOrders.Lateral(b)) * pair.ManeuverSide < pair.LateralTarget - .8f;
+            return V2.Dot(s.Position - b.Map.Entry, TacticalOrders.Lateral(b)) * pair.ManeuverSide
+                < pair.LateralTarget - .8f;
         }
 
         public static bool Sprint(BattleSimulation b, Soldier s)
@@ -32,10 +55,28 @@ namespace SilentOrders.Core
             var q = b.Team(s);
             if (!NeedsShift(b, q, CommandHierarchy.Pair(q, a.PairId), s))
                 return false;
-            return a.Active && a.IsBound && a.SnailBound && s.PathCursor < s.Path.Count && s.MoveAuthorized && !CommandPosture.Service(b, s) && s.Suppression < .55f && s.Morale > .4f && s.ReloadUntil <= b.Time && V2.Distance(s.Destination, a.Goal) < .3f && CoverReady(b, s, a.CoverId);
+            return a.Active
+                && a.IsBound
+                && a.SnailBound
+                && s.PathCursor < s.Path.Count
+                && s.MoveAuthorized
+                && !CommandPosture.Service(b, s)
+                && s.Suppression < .55f
+                && s.Morale > .4f
+                && s.ReloadUntil <= b.Time
+                && V2.Distance(s.Destination, a.Goal) < .3f
+                && CoverReady(b, s, a.CoverId);
         }
 
-        public static bool TryRoute(BattleSimulation b, Squad q, PairCommandPlan pair, Soldier mover, out V2 goal, out List<V2> route, out int coverId)
+        public static bool TryRoute(
+            BattleSimulation b,
+            Squad q,
+            PairCommandPlan pair,
+            Soldier mover,
+            out V2 goal,
+            out List<V2> route,
+            out int coverId
+        )
         {
             goal = mover.Position;
             route = null;
@@ -49,7 +90,8 @@ namespace SilentOrders.Core
             if (V2.Distance(cover.Position, mover.Position) > 9)
                 return false;
             var contact = TacticalOrders.ClosestKnown(b, cover);
-            V2 facing = contact == null ? TacticalOrders.Axis(b, q.Side) : (contact.Position - cover.Position).Normalized;
+            V2 facing =
+                contact == null ? TacticalOrders.Axis(b, q.Side) : (contact.Position - cover.Position).Normalized;
             if (facing.Length < .1f)
                 facing = TacticalOrders.Axis(b, q.Side);
             V2 lateral = TacticalOrders.Lateral(b);
@@ -64,13 +106,27 @@ namespace SilentOrders.Core
             if (length <= 0)
                 return false;
             var wanted = TacticalOrders.Open(b, rear + lateral * sign * length);
-            if (PositionLogic.Occupied(b, mover, wanted) || V2.Dot(wanted - mover.Position, lateral) * sign < 3 || V2.Dot(wanted - b.Map.Entry, lateral) * sign > pair.LateralTarget + .8f)
+            if (
+                PositionLogic.Occupied(b, mover, wanted)
+                || V2.Dot(wanted - mover.Position, lateral) * sign < 3
+                || V2.Dot(wanted - b.Map.Entry, lateral) * sign > pair.LateralTarget + .8f
+            )
                 return false;
-            var first = LossMemory.Find(b, mover, rear, v => PositionLogic.Exposure(b, mover, v) * 4 + FireLaneSafety.PathCost(b, mover, v));
+            var first = LossMemory.Find(
+                b,
+                mover,
+                rear,
+                v => PositionLogic.Exposure(b, mover, v) * 4 + FireLaneSafety.PathCost(b, mover, v)
+            );
             b.Stats.Paths++;
             if (first.Count == 0 && V2.Distance(mover.Position, rear) > .6f)
                 return false;
-            var second = Pathfinder.Find(b.Map, rear, wanted, v => PositionLogic.Exposure(b, mover, v) * 4 + FireLaneSafety.PathCost(b, mover, v));
+            var second = Pathfinder.Find(
+                b.Map,
+                rear,
+                wanted,
+                v => PositionLogic.Exposure(b, mover, v) * 4 + FireLaneSafety.PathCost(b, mover, v)
+            );
             b.Stats.Paths++;
             if (second.Count == 0)
                 return false;

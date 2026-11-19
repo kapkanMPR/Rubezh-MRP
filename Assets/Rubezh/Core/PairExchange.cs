@@ -4,21 +4,47 @@ namespace SilentOrders.Core
 {
     public sealed class PairExchangeState
     {
-        public int Partner = -1, OldFront = -1, Revision, Started, Completed, Cancelled;
+        public int Partner = -1,
+            OldFront = -1,
+            Revision,
+            Started,
+            Completed,
+            Cancelled;
         public bool Done;
-        public float StartAt, EndAt, NextAt;
-        public V2 From, To, Visual;
+        public float StartAt,
+            EndAt,
+            NextAt;
+        public V2 From,
+            To,
+            Visual;
         public string Reason = "";
     }
 
     public static class PairExchange
     {
         static Soldier Unit(BattleSimulation b, int id) => id >= 0 && id < b.Soldiers.Count ? b.Soldiers[id] : null;
+
         public static bool Active(BattleSimulation b, Soldier s) => s.Exchange.Partner >= 0;
-        static bool Mobile(Soldier s) => s != null && s.Alive && s.Deployed && !s.Incapacitated && s.RescuerId < 0 && s.RescueTargetId < 0 && !s.Busy && !TacticalOrders.ServiceActive(s) && !s.GrenadeEscape.Active && !s.VehicleDisperse && !s.VehicleRally;
+
+        static bool Mobile(Soldier s) =>
+            s != null
+            && s.Alive
+            && s.Deployed
+            && !s.Incapacitated
+            && s.RescuerId < 0
+            && s.RescueTargetId < 0
+            && !s.Busy
+            && !TacticalOrders.ServiceActive(s)
+            && !s.GrenadeEscape.Active
+            && !s.VehicleDisperse
+            && !s.VehicleRally;
+
         public static string Need(BattleSimulation b, Soldier front, Soldier rear)
         {
-            if ((front.Suppression >= .7f && rear.Suppression < front.Suppression - .15f) || (front.Broken && !rear.Broken))
+            if (
+                (front.Suppression >= .7f && rear.Suppression < front.Suppression - .15f)
+                || (front.Broken && !rear.Broken)
+            )
                 return "Первый номер подавлен";
             if (front.Morale < .3f && rear.Morale > front.Morale + .2f)
                 return "Первому номеру нужно восстановить мораль";
@@ -27,7 +53,25 @@ namespace SilentOrders.Core
             if ((front.Ammo <= 0 || front.ReloadUntil > b.Time + .5f) && rear.Ammo > 0)
                 return "Первый номер меняет магазин";
             var c = TacticalOrders.ClosestKnown(b, rear);
-            if (c != null && b.Time - c.SeenAt < 4 && V2.Distance(rear.Position, c.Position) > 4.5f && V2.Distance(rear.Position, c.Position) <= SpecialWeapons.Range(b) && (rear.Rockets > 0 && rear.Role == Role.Grenadier && !(front.Role == Role.Grenadier && front.Rockets > 0) || rear.Underbarrel && GrenadePockets.Count(rear, 2) > 0 && !(front.Underbarrel && GrenadePockets.Count(front, 2) > 0)) && (b.Map.Protection(c.Position, rear.Position) > .5f || rear.RocketAimTarget >= 0 || !b.Map.LineOfSight(rear.Position, c.Position) && rear.Underbarrel))
+            if (
+                c != null
+                && b.Time - c.SeenAt < 4
+                && V2.Distance(rear.Position, c.Position) > 4.5f
+                && V2.Distance(rear.Position, c.Position) <= SpecialWeapons.Range(b)
+                && (
+                    rear.Rockets > 0
+                        && rear.Role == Role.Grenadier
+                        && !(front.Role == Role.Grenadier && front.Rockets > 0)
+                    || rear.Underbarrel
+                        && GrenadePockets.Count(rear, 2) > 0
+                        && !(front.Underbarrel && GrenadePockets.Count(front, 2) > 0)
+                )
+                && (
+                    b.Map.Protection(c.Position, rear.Position) > .5f
+                    || rear.RocketAimTarget >= 0
+                    || !b.Map.LineOfSight(rear.Position, c.Position) && rear.Underbarrel
+                )
+            )
                 return "Второй номер выводит гранатомёт вперёд";
             return "";
         }
@@ -44,7 +88,25 @@ namespace SilentOrders.Core
 
         public static bool TryStart(BattleSimulation b, Soldier front, Soldier rear)
         {
-            if (front == null || rear == null || front == rear || front.Side != rear.Side || front.DefenderGroup != rear.DefenderGroup || !Mobile(front) || !Mobile(rear) || rear.Broken || rear.Suppression >= .7f || rear.ReloadUntil > b.Time || rear.HandsBusyUntil > b.Time || Active(b, front) || Active(b, rear) || b.Time < front.Exchange.NextAt || b.Time < rear.Exchange.NextAt || MotionCombat.HasRoute(front) || MotionCombat.HasRoute(rear))
+            if (
+                front == null
+                || rear == null
+                || front == rear
+                || front.Side != rear.Side
+                || front.DefenderGroup != rear.DefenderGroup
+                || !Mobile(front)
+                || !Mobile(rear)
+                || rear.Broken
+                || rear.Suppression >= .7f
+                || rear.ReloadUntil > b.Time
+                || rear.HandsBusyUntil > b.Time
+                || Active(b, front)
+                || Active(b, rear)
+                || b.Time < front.Exchange.NextAt
+                || b.Time < rear.Exchange.NextAt
+                || MotionCombat.HasRoute(front)
+                || MotionCombat.HasRoute(rear)
+            )
                 return false;
             if (rear.Motion.FrontId != front.Id || !ShoulderPair.Linked(b, rear))
                 return false;
@@ -62,13 +124,7 @@ namespace SilentOrders.Core
             CombatCrouch.Rise(b, front);
             CombatCrouch.Rise(b, rear);
             float start = Math.Max(b.Time, Math.Max(front.Crouch.StandUntil, rear.Crouch.StandUntil));
-            foreach (var s in new[]
-            {
-                front,
-                rear
-            }
-
-            )
+            foreach (var s in new[] { front, rear })
             {
                 var partner = s == front ? rear : front;
                 var e = s.Exchange;
@@ -105,13 +161,7 @@ namespace SilentOrders.Core
         public static void Cancel(BattleSimulation b, Soldier s)
         {
             var partner = Unit(b, s.Exchange.Partner);
-            foreach (var u in new[]
-            {
-                s,
-                partner
-            }
-
-            )
+            foreach (var u in new[] { s, partner })
                 if (u != null)
                 {
                     u.Exchange.Partner = -1;
@@ -129,7 +179,13 @@ namespace SilentOrders.Core
             if (!Active(b, s))
                 return false;
             var partner = Unit(b, e.Partner);
-            if (!Mobile(s) || !Mobile(partner) || b.Team(s).Revision != e.Revision || MotionCombat.HasRoute(s) || MotionCombat.HasRoute(partner))
+            if (
+                !Mobile(s)
+                || !Mobile(partner)
+                || b.Team(s).Revision != e.Revision
+                || MotionCombat.HasRoute(s)
+                || MotionCombat.HasRoute(partner)
+            )
             {
                 Cancel(b, s);
                 return false;
@@ -169,13 +225,7 @@ namespace SilentOrders.Core
             {
                 var old = Unit(b, e.OldFront);
                 var now = old == s ? partner : s;
-                foreach (var u in new[]
-                {
-                    s,
-                    partner
-                }
-
-                )
+                foreach (var u in new[] { s, partner })
                 {
                     u.Exchange.Partner = -1;
                     u.Exchange.Visual = new V2();
@@ -206,7 +256,12 @@ namespace SilentOrders.Core
         public static bool Reserved(BattleSimulation b, Soldier mover, V2 point)
         {
             foreach (var u in b.Soldiers)
-                if (Active(b, u) && u != mover && u.Exchange.Partner != mover.Id && V2.SegmentDistance(point, u.Exchange.From, u.Exchange.To) < .5f)
+                if (
+                    Active(b, u)
+                    && u != mover
+                    && u.Exchange.Partner != mover.Id
+                    && V2.SegmentDistance(point, u.Exchange.From, u.Exchange.To) < .5f
+                )
                     return true;
             return false;
         }

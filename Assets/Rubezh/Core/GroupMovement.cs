@@ -6,15 +6,33 @@ namespace SilentOrders.Core
     public static class GroupMovement
     {
         public const int Maximum = 3;
-        public static bool Ordinary(BattleSimulation b, Soldier s) => s.Available && !s.Broken && !s.Busy && !s.GrenadeEscape.Active && !s.VehicleRally && !s.VehicleDisperse && (!TacticalOrders.ServiceActive(s) || BuddyActions.Active(s) || SupplyRecovery.Active(s)) && s.CounterSniper.Phase == CounterSniperPhase.None && s.HelpUntil <= b.Time && s.HelpRetreatUntil <= b.Time && s.TrafficYieldUntil <= b.Time;
+
+        public static bool Ordinary(BattleSimulation b, Soldier s) =>
+            s.Available
+            && !s.Broken
+            && !s.Busy
+            && !s.GrenadeEscape.Active
+            && !s.VehicleRally
+            && !s.VehicleDisperse
+            && (!TacticalOrders.ServiceActive(s) || BuddyActions.Active(s) || SupplyRecovery.Active(s))
+            && s.CounterSniper.Phase == CounterSniperPhase.None
+            && s.HelpUntil <= b.Time
+            && s.HelpRetreatUntil <= b.Time
+            && s.TrafficYieldUntil <= b.Time;
+
         public static void Sample(BattleSimulation b)
         {
             var counts = b.MovementCounts;
             counts.Clear();
-            int green = 0, red = 0;
+            int green = 0,
+                red = 0;
             foreach (var v in b.Soldiers)
             {
-                if (v.Motion.StepAt != b.Time || v.Motion.ExemptStep || !(V2.Distance(v.Motion.Previous, v.Position) > .00001f))
+                if (
+                    v.Motion.StepAt != b.Time
+                    || v.Motion.ExemptStep
+                    || !(V2.Distance(v.Motion.Previous, v.Position) > .00001f)
+                )
                     continue;
                 if (v.DefenderGroup == null)
                 {
@@ -79,7 +97,16 @@ namespace SilentOrders.Core
         {
             int n = 0;
             foreach (var s in b.Soldiers)
-                if (q.Contains(s) && s.Available && !s.Busy && (!TacticalOrders.ServiceActive(s) && MotionCombat.HasRoute(s) && s.MoveAuthorized || BuddyActions.Active(s) && s.BuddyAction.Approaching || SupplyRecovery.Active(s) && s.Mechanics.UnpackAt < 0))
+                if (
+                    q.Contains(s)
+                    && s.Available
+                    && !s.Busy
+                    && (
+                        !TacticalOrders.ServiceActive(s) && MotionCombat.HasRoute(s) && s.MoveAuthorized
+                        || BuddyActions.Active(s) && s.BuddyAction.Approaching
+                        || SupplyRecovery.Active(s) && s.Mechanics.UnpackAt < 0
+                    )
+                )
                     n++;
             return n;
         }
@@ -99,7 +126,16 @@ namespace SilentOrders.Core
             if (!danger)
                 return true;
             foreach (var s in b.Soldiers)
-                if (s != mover && b.Team(mover).Contains(s) && (excluded == null || !excluded.Contains(s.Id)) && s.Available && !s.Busy && !s.Moving && !MotionCombat.HasRoute(s) && PositionLogic.UsefulSupport(b, s, mover, goal))
+                if (
+                    s != mover
+                    && b.Team(mover).Contains(s)
+                    && (excluded == null || !excluded.Contains(s.Id))
+                    && s.Available
+                    && !s.Busy
+                    && !s.Moving
+                    && !MotionCombat.HasRoute(s)
+                    && PositionLogic.UsefulSupport(b, s, mover, goal)
+                )
                     return true;
             return false;
         }
@@ -109,9 +145,16 @@ namespace SilentOrders.Core
         // line, while retaining the shared movement capacity and safety checks.
         public static bool CanStart(BattleSimulation b, Soldier s, V2 goal, List<V2> limitedRoute)
         {
-            return CanStart(b, s, goal) || limitedRoute != null && limitedRoute.Count > 0 && V2.Distance(goal, limitedRoute[limitedRoute.Count - 1]) < .001f && Count(b, b.Team(s)) < Maximum && PositionLogic.ShelterEligible(b, s) && CommandHierarchy.LimitedBoundSafe(b, s, limitedRoute);
+            return CanStart(b, s, goal)
+                || limitedRoute != null
+                    && limitedRoute.Count > 0
+                    && V2.Distance(goal, limitedRoute[limitedRoute.Count - 1]) < .001f
+                    && Count(b, b.Team(s)) < Maximum
+                    && PositionLogic.ShelterEligible(b, s)
+                    && CommandHierarchy.LimitedBoundSafe(b, s, limitedRoute);
         }
 
-        public static bool CanStart(BattleSimulation b, Soldier s, V2 goal) => TacticalMarch.Quiet(b, b.Team(s)) || Count(b, b.Team(s)) < Maximum && Covered(b, s, goal);
+        public static bool CanStart(BattleSimulation b, Soldier s, V2 goal) =>
+            TacticalMarch.Quiet(b, b.Team(s)) || Count(b, b.Team(s)) < Maximum && Covered(b, s, goal);
     }
 }

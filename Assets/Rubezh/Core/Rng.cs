@@ -6,6 +6,7 @@ namespace SilentOrders.Core
     public sealed class Rng
     {
         private uint state;
+
         public Rng(int seed)
         {
             Reseed(seed);

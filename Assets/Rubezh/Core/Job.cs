@@ -11,6 +11,6 @@ namespace SilentOrders.Core
         Hold,
         Reposition,
         Rally,
-        Command
+        Command,
     }
 }

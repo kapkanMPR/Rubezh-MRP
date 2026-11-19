@@ -8,8 +8,12 @@ namespace SilentOrders.Core
     public sealed class MagazineStore
     {
         readonly List<int> rounds = new List<int>();
-        int initial, totalRounds, bestRound;
-        bool ready, bestValid;
+        int initial,
+            totalRounds,
+            bestRound;
+        bool ready,
+            bestValid;
+
         public MagazineStore(int initialRounds = 0)
         {
             initial = initialRounds;
@@ -114,7 +118,8 @@ namespace SilentOrders.Core
             int remove = -difference;
             while (remove > 0 && rounds.Count > 0)
             {
-                int i = rounds.Count - 1, n = Math.Min(rounds[i], remove);
+                int i = rounds.Count - 1,
+                    n = Math.Min(rounds[i], remove);
                 rounds[i] -= n;
                 unchecked
                 {
@@ -132,6 +137,7 @@ namespace SilentOrders.Core
     public static class MagazineSystem
     {
         public static bool BetterMagazine(Soldier s) => s.Magazines.Best(s) > s.Ammo;
+
         public static void Reload(BattleSimulation b, Soldier s)
         {
             int next = s.Magazines.TakeBest(s);
@@ -154,7 +160,23 @@ namespace SilentOrders.Core
             V2 to = s.Position + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * .45f;
             if (!b.Map.Walkable(to))
                 to = s.Position;
-            b.GroundAmmo.Add(new GroundAmmo { Id = serial, FromSoldierId = s.Id, IntendedFor = -1, Family = AmmoLogistics.Family(s), Side = s.Side, Box = AmmoLogistics.Box(s), Rounds = 0, Empty = true, From = s.Position, To = to, Born = b.Time, Duration = .32f });
+            b.GroundAmmo.Add(
+                new GroundAmmo
+                {
+                    Id = serial,
+                    FromSoldierId = s.Id,
+                    IntendedFor = -1,
+                    Family = AmmoLogistics.Family(s),
+                    Side = s.Side,
+                    Box = AmmoLogistics.Box(s),
+                    Rounds = 0,
+                    Empty = true,
+                    From = s.Position,
+                    To = to,
+                    Born = b.Time,
+                    Duration = .32f,
+                }
+            );
             // Bound decorative litter without removing or renumbering real supply items.
             int empty = 0;
             for (int i = b.GroundAmmo.Count - 1; i >= 0; i--)
@@ -162,6 +184,10 @@ namespace SilentOrders.Core
                     b.GroundAmmo[i].Collected = true;
         }
 
-        public static int ArtIndex(GroundAmmo item) => item.Box ? (item.Family >= 6 ? 4 : 2) : item.Family % 6 >= 4 ? (item.Family >= 6 ? 5 : 3) : item.Family >= 6 ? 1 : 0;
+        public static int ArtIndex(GroundAmmo item) =>
+            item.Box ? (item.Family >= 6 ? 4 : 2)
+            : item.Family % 6 >= 4 ? (item.Family >= 6 ? 5 : 3)
+            : item.Family >= 6 ? 1
+            : 0;
     }
 }

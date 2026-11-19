@@ -16,22 +16,24 @@ namespace SilentOrders.Rendering
 
         protected void DrawGroundCells(int left, int top, int right, int bottom)
         {
-            bool test = Canvas.TestDepth, record = Canvas.RecordDepth;
+            bool test = Canvas.TestDepth,
+                record = Canvas.RecordDepth;
             float depth = Canvas.Depth;
             try
             {
                 Canvas.TestDepth = Canvas.RecordDepth = false;
                 Canvas.Depth = 0;
                 for (int y = top; y < bottom; y++)
-                    for (int x = left; x < right; x++)
+                for (int x = left; x < right; x++)
+                {
+                    if (x >= 0 && y >= 0 && x < activeMap.Columns && y < activeMap.Rows)
                     {
-                        if (x >= 0 && y >= 0 && x < activeMap.Columns && y < activeMap.Rows)
-                        {
-                            Canvas.Depth = 0;
-                            Ground(activeMap, x, y);
-                        }
-                        else if (nativeExterior != null) NativeExteriorGround(x, y);
+                        Canvas.Depth = 0;
+                        Ground(activeMap, x, y);
                     }
+                    else if (nativeExterior != null)
+                        NativeExteriorGround(x, y);
+                }
             }
             finally
             {

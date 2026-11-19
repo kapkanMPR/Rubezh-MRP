@@ -8,19 +8,34 @@ namespace SilentOrders.Core
     public static class FireLaneSafety
     {
         const float Width = .55f;
-        public static bool Important(Soldier s) => s.SuppressiveFire || s.SupportReady && (s.Job == Job.Cover || s.Job == Job.Hold || s.Job == Job.Command);
-        static bool Active(BattleSimulation b, Soldier s) => s.Available && !s.Broken && !s.Motion.Fast && s.Ammo > 0 && s.ReloadUntil <= b.Time && s.FireLaneUntil > b.Time && V2.Distance(s.Position, s.FireLaneTarget) > .8f;
+
+        public static bool Important(Soldier s) =>
+            s.SuppressiveFire || s.SupportReady && (s.Job == Job.Cover || s.Job == Job.Hold || s.Job == Job.Command);
+
+        static bool Active(BattleSimulation b, Soldier s) =>
+            s.Available
+            && !s.Broken
+            && !s.Motion.Fast
+            && s.Ammo > 0
+            && s.ReloadUntil <= b.Time
+            && s.FireLaneUntil > b.Time
+            && V2.Distance(s.Position, s.FireLaneTarget) > .8f;
+
         public static bool Crosses(V2 a, V2 c, V2 from, V2 to)
         {
             V2 d = (to - from).Normalized;
-            float range = V2.Distance(from, to), pa = V2.Dot(a - from, d), pc = V2.Dot(c - from, d);
+            float range = V2.Distance(from, to),
+                pa = V2.Dot(a - from, d),
+                pc = V2.Dot(c - from, d);
             if (Math.Max(pa, pc) < .25f || Math.Min(pa, pc) > range + .3f)
                 return false;
             V2 n = new V2(-d.Y, d.X);
-            float sa = V2.Dot(a - from, n), sc = V2.Dot(c - from, n);
+            float sa = V2.Dot(a - from, n),
+                sc = V2.Dot(c - from, n);
             if (sa * sc <= 0 && Math.Abs(sa - sc) > .00001f)
             {
-                float t = sa / (sa - sc), along = pa + (pc - pa) * t;
+                float t = sa / (sa - sc),
+                    along = pa + (pc - pa) * t;
                 if (along >= .25f && along <= range + .3f)
                     return true;
             }
@@ -33,7 +48,8 @@ namespace SilentOrders.Core
             if (s.PathCursor >= s.Path.Count)
                 return s.Position;
             V2 delta = s.Path[s.PathCursor] - s.Position;
-            return s.Position + delta.Normalized * Math.Min(delta.Length, Math.Max(.5f, CombatMovement.Speed(b, s)) * horizon);
+            return s.Position
+                + delta.Normalized * Math.Min(delta.Length, Math.Max(.5f, CombatMovement.Speed(b, s)) * horizon);
         }
 
         static void Pause(BattleSimulation b, Soldier shooter)
@@ -54,7 +70,14 @@ namespace SilentOrders.Core
                 return false;
             foreach (var mover in b.Soldiers)
             {
-                if (mover.Id == shooter.Id || mover.Side != shooter.Side || !mover.Alive || !mover.Deployed || mover.PathCursor >= mover.Path.Count || !mover.Moving)
+                if (
+                    mover.Id == shooter.Id
+                    || mover.Side != shooter.Side
+                    || !mover.Alive
+                    || !mover.Deployed
+                    || mover.PathCursor >= mover.Path.Count
+                    || !mover.Moving
+                )
                     continue;
                 if (mover.FireLaneWaitSince >= 0 && mover.FireLaneCrossUntil <= b.Time)
                     continue;
@@ -77,7 +100,9 @@ namespace SilentOrders.Core
             shooter.FireLaneUntil = b.Time + Util.Clamp(WeaponBalance.For(shooter).FireSeconds + .3f, .8f, 1.6f);
         }
 
-        internal static bool CostSource(BattleSimulation b, Soldier mover, Soldier s) => s.Id != mover.Id && s.Side == mover.Side && Active(b, s) && Important(s);
+        internal static bool CostSource(BattleSimulation b, Soldier mover, Soldier s) =>
+            s.Id != mover.Id && s.Side == mover.Side && Active(b, s) && Important(s);
+
         public static float PathCost(BattleSimulation b, Soldier mover, V2 point)
         {
             float cost = 0;
@@ -99,7 +124,10 @@ namespace SilentOrders.Core
         {
             foreach (var p in path)
             {
-                if (Crosses(from, p, shooter.Position, shooter.FireLaneTarget) || !Locomotion.WalkableSegment(b, from, p))
+                if (
+                    Crosses(from, p, shooter.Position, shooter.FireLaneTarget)
+                    || !Locomotion.WalkableSegment(b, from, p)
+                )
                     return false;
                 from = p;
             }
@@ -109,7 +137,11 @@ namespace SilentOrders.Core
 
         static bool Detour(BattleSimulation b, Soldier mover, Soldier shooter)
         {
-            if (b.Time < mover.FireLaneReplanAt || mover.PathCursor >= mover.Path.Count || V2.Distance(mover.Position, shooter.Position) > 5)
+            if (
+                b.Time < mover.FireLaneReplanAt
+                || mover.PathCursor >= mover.Path.Count
+                || V2.Distance(mover.Position, shooter.Position) > 5
+            )
                 return false;
             mover.FireLaneReplanAt = b.Time + 2;
             V2 behind = shooter.Position - (shooter.FireLaneTarget - shooter.Position).Normalized * 1.15f;
@@ -167,16 +199,29 @@ namespace SilentOrders.Core
                 return false;
             }
 
-            V2 ahead = mover.Position + desired.Normalized * Math.Max(desired.Length, Math.Min(1.1f, CombatMovement.Speed(b, mover) * .35f));
+            V2 ahead =
+                mover.Position
+                + desired.Normalized * Math.Max(desired.Length, Math.Min(1.1f, CombatMovement.Speed(b, mover) * .35f));
             bool yielding = false;
             foreach (var shooter in b.Soldiers)
             {
-                if (shooter.Id == mover.Id || shooter.Side != mover.Side || !Active(b, shooter) || !Crosses(mover.Position, ahead, shooter.Position, shooter.FireLaneTarget))
+                if (
+                    shooter.Id == mover.Id
+                    || shooter.Side != mover.Side
+                    || !Active(b, shooter)
+                    || !Crosses(mover.Position, ahead, shooter.Position, shooter.FireLaneTarget)
+                )
                     continue;
                 if (ShoulderPair.CanShootOver(b, shooter, mover, shooter.FireLaneTarget))
                     continue;
                 bool alreadyInLane = Crosses(mover.Position, mover.Position, shooter.Position, shooter.FireLaneTarget);
-                bool urgent = mover.GrenadeEscape.Active || mover.Busy || mover.Incapacitated || mover.Broken || mover.Health < 25 || mover.Suppression > .85f;
+                bool urgent =
+                    mover.GrenadeEscape.Active
+                    || mover.Busy
+                    || mover.Incapacitated
+                    || mover.Broken
+                    || mover.Health < 25
+                    || mover.Suppression > .85f;
                 if (!Important(shooter) || urgent || alreadyInLane || mover.FireLaneCrossUntil > b.Time)
                 {
                     mover.FireLaneCrossUntil = Math.Max(mover.FireLaneCrossUntil, b.Time + 1.5f);

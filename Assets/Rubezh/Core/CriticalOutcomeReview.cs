@@ -8,26 +8,85 @@ namespace SilentOrders.Core
     [Serializable]
     public sealed class CriticalUnitSnapshot
     {
-        public float time, x, y, hp, suppression, morale, exposureSeconds, coverProtection;
-        public int unit, group, revision, pair, visibleEnemies, contacts, alliesWithinSix, enemyWithinSix, ammo;
-        public bool deployed, alive, covered, underFire, moving, crouched, broken, incapacitated, bleeding, reloading;
-        public string style, intent, phase, job, task, order, reason, execution, weapon, assignment;
+        public float time,
+            x,
+            y,
+            hp,
+            suppression,
+            morale,
+            exposureSeconds,
+            coverProtection;
+        public int unit,
+            group,
+            revision,
+            pair,
+            visibleEnemies,
+            contacts,
+            alliesWithinSix,
+            enemyWithinSix,
+            ammo;
+        public bool deployed,
+            alive,
+            covered,
+            underFire,
+            moving,
+            crouched,
+            broken,
+            incapacitated,
+            bleeding,
+            reloading;
+        public string style,
+            intent,
+            phase,
+            job,
+            task,
+            order,
+            reason,
+            execution,
+            weapon,
+            assignment;
     }
 
     [Serializable]
     public sealed class CriticalSideSnapshot
     {
-        public float time, greenHealth, redHealth, greenSuppression, redSuppression, greenMorale, redMorale;
-        public int greenAlive, redAlive, greenCritical, redCritical, greenPinned, redPinned, greenBroken, redBroken, greenExposed, redExposed;
+        public float time,
+            greenHealth,
+            redHealth,
+            greenSuppression,
+            redSuppression,
+            greenMorale,
+            redMorale;
+        public int greenAlive,
+            redAlive,
+            greenCritical,
+            redCritical,
+            greenPinned,
+            redPinned,
+            greenBroken,
+            redBroken,
+            greenExposed,
+            redExposed;
     }
 
     [Serializable]
     public sealed class CriticalFollowup
     {
-        public float afterSeconds, observedAt;
-        public bool complete, targetAlive, targetIncapacitated, targetBroken, targetUnderFire, targetCovered;
-        public float targetHealth, targetSuppression, targetMorale;
-        public int alliedDeaths, enemyDeaths, alliedCriticals, enemyCriticals;
+        public float afterSeconds,
+            observedAt;
+        public bool complete,
+            targetAlive,
+            targetIncapacitated,
+            targetBroken,
+            targetUnderFire,
+            targetCovered;
+        public float targetHealth,
+            targetSuppression,
+            targetMorale;
+        public int alliedDeaths,
+            enemyDeaths,
+            alliedCriticals,
+            enemyCriticals;
         public CriticalSideSnapshot state;
     }
 
@@ -35,17 +94,36 @@ namespace SilentOrders.Core
     public sealed class CriticalDecisionTrace
     {
         public float time;
-        public int soldier, revision;
-        public string transition, task, reason;
+        public int soldier,
+            revision;
+        public string transition,
+            task,
+            reason;
     }
 
     [Serializable]
     public sealed class CriticalCombatOutcome
     {
-        public int id, unit, actor, side, group, relatedPressureSource;
-        public float at, healthBefore, suppressionBefore, moraleBefore, damage, pressureAgo;
-        public string kind, cause, actorSide, certainty, summary;
-        public CriticalUnitSnapshot before, atEvent, actorAtEvent;
+        public int id,
+            unit,
+            actor,
+            side,
+            group,
+            relatedPressureSource;
+        public float at,
+            healthBefore,
+            suppressionBefore,
+            moraleBefore,
+            damage,
+            pressureAgo;
+        public string kind,
+            cause,
+            actorSide,
+            certainty,
+            summary;
+        public CriticalUnitSnapshot before,
+            atEvent,
+            actorAtEvent;
         public CriticalSideSnapshot battlefieldAtEvent;
         public List<CriticalUnitSnapshot> leadup = new List<CriticalUnitSnapshot>();
         public List<CriticalUnitSnapshot> attackerLeadup = new List<CriticalUnitSnapshot>();
@@ -62,7 +140,8 @@ namespace SilentOrders.Core
         public const int MaxEvents = 1500;
         public readonly List<CriticalCombatOutcome> Events = new List<CriticalCombatOutcome>();
         public int DroppedEvents;
-        readonly Dictionary<int, List<CriticalUnitSnapshot>> previous = new Dictionary<int, List<CriticalUnitSnapshot>>();
+        readonly Dictionary<int, List<CriticalUnitSnapshot>> previous =
+            new Dictionary<int, List<CriticalUnitSnapshot>>();
         readonly Dictionary<int, int> lastPressure = new Dictionary<int, int>();
         readonly Dictionary<int, float> lastPressureTime = new Dictionary<int, float>();
         readonly Dictionary<int, bool> pinned = new Dictionary<int, bool>();
@@ -70,12 +149,8 @@ namespace SilentOrders.Core
         readonly Dictionary<int, bool> openFire = new Dictionary<int, bool>();
         float nextSample;
         int nextId;
-        static readonly float[] Windows =
-        {
-            5f,
-            15f,
-            30f
-        };
+        static readonly float[] Windows = { 5f, 15f, 30f };
+
         static bool Exposed(BattleSimulation b, Soldier s)
         {
             return !b.Map.NearCover(s.Position);
@@ -83,17 +158,39 @@ namespace SilentOrders.Core
 
         public void Pressure(BattleSimulation b, Soldier source, Soldier victim, float suppression, float morale)
         {
-            if (!Enabled || source == null || victim == null || source.Side == victim.Side || suppression <= 0 && morale <= 0)
+            if (
+                !Enabled
+                || source == null
+                || victim == null
+                || source.Side == victim.Side
+                || suppression <= 0 && morale <= 0
+            )
                 return;
             lastPressure[victim.Id] = source.Id;
             lastPressureTime[victim.Id] = b.Time;
         }
 
-        public void Wound(BattleSimulation b, Soldier victim, Soldier shooter, float oldHealth, float damage, string cause = "direct_hit")
+        public void Wound(
+            BattleSimulation b,
+            Soldier victim,
+            Soldier shooter,
+            float oldHealth,
+            float damage,
+            string cause = "direct_hit"
+        )
         {
             if (!Enabled || oldHealth <= 20f || victim.Health <= 0 || victim.Health > 20f)
                 return;
-            Add(b, "CriticalWound", victim, shooter, cause, oldHealth, damage, "Здоровье упало до тяжёлого ранения (HP <= 20)");
+            Add(
+                b,
+                "CriticalWound",
+                victim,
+                shooter,
+                cause,
+                oldHealth,
+                damage,
+                "Здоровье упало до тяжёлого ранения (HP <= 20)"
+            );
         }
 
         public void BleedingWound(BattleSimulation b, Soldier victim, Soldier source)
@@ -104,14 +201,32 @@ namespace SilentOrders.Core
             List<CriticalUnitSnapshot> history;
             if (previous.TryGetValue(victim.Id, out history) && history.Count > 0)
                 prior = history[history.Count - 1].hp;
-            Add(b, "CriticalWound", victim, source, "bleeding", prior, 0, "Недееспособен после ухудшения состояния / кровопотери");
+            Add(
+                b,
+                "CriticalWound",
+                victim,
+                source,
+                "bleeding",
+                prior,
+                0,
+                "Недееспособен после ухудшения состояния / кровопотери"
+            );
         }
 
         public void Death(BattleSimulation b, Soldier victim, Soldier killer, string cause)
         {
             if (!Enabled)
                 return;
-            Add(b, "Death", victim, killer, cause, 0, 0, cause == "bleeding" ? "Смерть от кровопотери" : "Погиб от полученного урона");
+            Add(
+                b,
+                "Death",
+                victim,
+                killer,
+                cause,
+                0,
+                0,
+                cause == "bleeding" ? "Смерть от кровопотери" : "Погиб от полученного урона"
+            );
         }
 
         static int Group(BattleSimulation b, Soldier s)
@@ -122,7 +237,8 @@ namespace SilentOrders.Core
         static CriticalUnitSnapshot Capture(BattleSimulation b, Soldier s)
         {
             var q = b.Team(s);
-            int allies = 0, enemies = 0;
+            int allies = 0,
+                enemies = 0;
             foreach (var other in b.Soldiers)
             {
                 if (other == s || !other.Alive || !other.Deployed || V2.Distance(s.Position, other.Position) > 6f)
@@ -171,16 +287,13 @@ namespace SilentOrders.Core
                 reason = s.Reason,
                 execution = s.Execution.Cause,
                 weapon = s.GunRole.ToString() + "/" + s.WeaponVariant,
-                assignment = s.Assignment.Owner + "/" + s.Assignment.Status
+                assignment = s.Assignment.Owner + "/" + s.Assignment.Status,
             };
         }
 
         static CriticalSideSnapshot Sides(BattleSimulation b)
         {
-            var r = new CriticalSideSnapshot
-            {
-                time = b.Time
-            };
+            var r = new CriticalSideSnapshot { time = b.Time };
             foreach (var s in b.Soldiers)
             {
                 if (!s.Deployed)
@@ -228,7 +341,16 @@ namespace SilentOrders.Core
             return side == (int)Side.Green ? green : red;
         }
 
-        void Add(BattleSimulation b, string kind, Soldier victim, Soldier actor, string cause, float beforeHealth, float damage, string summary)
+        void Add(
+            BattleSimulation b,
+            string kind,
+            Soldier victim,
+            Soldier actor,
+            string cause,
+            float beforeHealth,
+            float damage,
+            string summary
+        )
         {
             if (Events.Count >= MaxEvents)
             {
@@ -236,7 +358,8 @@ namespace SilentOrders.Core
                 DroppedEvents++;
             }
 
-            CriticalUnitSnapshot now = Capture(b, victim), earlier = now;
+            CriticalUnitSnapshot now = Capture(b, victim),
+                earlier = now;
             List<CriticalUnitSnapshot> list;
             if (previous.TryGetValue(victim.Id, out list) && list.Count > 0)
                 earlier = list[list.Count - 1];
@@ -260,7 +383,7 @@ namespace SilentOrders.Core
                 before = earlier,
                 atEvent = now,
                 actorAtEvent = actor == null ? null : Capture(b, actor),
-                battlefieldAtEvent = Sides(b)
+                battlefieldAtEvent = Sides(b),
             };
             if (list != null)
                 foreach (var item in list)
@@ -278,7 +401,11 @@ namespace SilentOrders.Core
                 var hit = b.History.Events[i];
                 if (b.Time - hit.time > 10f)
                     break;
-                if (hit.actor == victim.Id || hit.target == victim.Id || actor != null && (hit.actor == actor.Id || hit.target == actor.Id))
+                if (
+                    hit.actor == victim.Id
+                    || hit.target == victim.Id
+                    || actor != null && (hit.actor == actor.Id || hit.target == actor.Id)
+                )
                     e.combatLeadup.Insert(0, hit);
             }
 
@@ -288,12 +415,27 @@ namespace SilentOrders.Core
                 if (b.Time - decision.Time > 10f)
                     break;
                 if (decision.Soldier == victim.Id || actor != null && decision.Soldier == actor.Id)
-                    e.decisionLeadup.Insert(0, new CriticalDecisionTrace { time = decision.Time, soldier = decision.Soldier, revision = decision.Revision, transition = decision.Event, task = decision.Task, reason = decision.Reason });
+                    e.decisionLeadup.Insert(
+                        0,
+                        new CriticalDecisionTrace
+                        {
+                            time = decision.Time,
+                            soldier = decision.Soldier,
+                            revision = decision.Revision,
+                            transition = decision.Event,
+                            task = decision.Task,
+                            reason = decision.Reason,
+                        }
+                    );
             }
 
             int source;
             float sourceAt;
-            if (lastPressure.TryGetValue(victim.Id, out source) && lastPressureTime.TryGetValue(victim.Id, out sourceAt) && b.Time - sourceAt <= 5f)
+            if (
+                lastPressure.TryGetValue(victim.Id, out source)
+                && lastPressureTime.TryGetValue(victim.Id, out sourceAt)
+                && b.Time - sourceAt <= 5f
+            )
             {
                 e.relatedPressureSource = source;
                 e.pressureAgo = b.Time - sourceAt;
@@ -308,7 +450,8 @@ namespace SilentOrders.Core
                     e.confirmed.Add("Дружественный урон или собственный источник: требуется разбор");
                 if (!Exposed(b, victim))
                     e.atEvent.coverProtection = b.Map.Protection(victim.Position, actor.Position);
-                float dx = actor.Position.X - victim.Position.X, dy = actor.Position.Y - victim.Position.Y;
+                float dx = actor.Position.X - victim.Position.X,
+                    dy = actor.Position.Y - victim.Position.Y;
                 V2 relative = new V2(dx, dy);
                 if (relative.Length > .01f && victim.Facing.Length > .01f)
                 {
@@ -321,7 +464,9 @@ namespace SilentOrders.Core
             }
 
             if (cause == "bleeding")
-                e.confirmed.Add("Смерть наступила при тикающем кровотечении; источник исходного ранения не обязательно непосредственная причина задержки помощи");
+                e.confirmed.Add(
+                    "Смерть наступила при тикающем кровотечении; источник исходного ранения не обязательно непосредственная причина задержки помощи"
+                );
             if (Exposed(b, victim))
                 e.hypotheses.Add("Вне ближайшего укрытия в момент события");
             if (earlier.moving || victim.Moving)
@@ -348,17 +493,45 @@ namespace SilentOrders.Core
             {
                 if (!s.Deployed)
                     continue;
-                bool full = s.Alive && s.Suppression >= .95f, collapse = s.Alive && s.Broken;
+                bool full = s.Alive && s.Suppression >= .95f,
+                    collapse = s.Alive && s.Broken;
                 bool exposed = s.Alive && !s.Incapacitated && Exposed(b, s) && b.Time - s.LastIncoming <= 1.5f;
                 bool old;
                 if (pinned.TryGetValue(s.Id, out old) && full && !old)
-                    Add(b, "FullyPinned", s, RecentPressure(b, s), "suppression_threshold", s.Health, 0, "Подавление достигло 95%");
+                    Add(
+                        b,
+                        "FullyPinned",
+                        s,
+                        RecentPressure(b, s),
+                        "suppression_threshold",
+                        s.Health,
+                        0,
+                        "Подавление достигло 95%"
+                    );
                 pinned[s.Id] = full;
                 if (broken.TryGetValue(s.Id, out old) && collapse && !old)
-                    Add(b, "MoraleCollapse", s, RecentPressure(b, s), "morale_broken", s.Health, 0, "Боец перешёл в состояние морального срыва");
+                    Add(
+                        b,
+                        "MoraleCollapse",
+                        s,
+                        RecentPressure(b, s),
+                        "morale_broken",
+                        s.Health,
+                        0,
+                        "Боец перешёл в состояние морального срыва"
+                    );
                 broken[s.Id] = collapse;
                 if (openFire.TryGetValue(s.Id, out old) && exposed && !old)
-                    Add(b, "CaughtInOpen", s, RecentPressure(b, s), "incoming_while_exposed", s.Health, 0, "Под огнём вне ближайшего укрытия");
+                    Add(
+                        b,
+                        "CaughtInOpen",
+                        s,
+                        RecentPressure(b, s),
+                        "incoming_while_exposed",
+                        s.Health,
+                        0,
+                        "Под огнём вне ближайшего укрытия"
+                    );
                 openFire[s.Id] = exposed;
             }
 
@@ -393,7 +566,13 @@ namespace SilentOrders.Core
         {
             int id;
             float when;
-            if (lastPressure.TryGetValue(victim.Id, out id) && lastPressureTime.TryGetValue(victim.Id, out when) && b.Time - when <= 5f && id >= 0 && id < b.Soldiers.Count)
+            if (
+                lastPressure.TryGetValue(victim.Id, out id)
+                && lastPressureTime.TryGetValue(victim.Id, out when)
+                && b.Time - when <= 5f
+                && id >= 0
+                && id < b.Soldiers.Count
+            )
                 return b.Soldiers[id];
             return null;
         }
@@ -404,11 +583,37 @@ namespace SilentOrders.Core
             Soldier victim = e.unit >= 0 && e.unit < b.Soldiers.Count ? b.Soldiers[e.unit] : null;
             int initialAlly = Count(e.battlefieldAtEvent.greenAlive, e.battlefieldAtEvent.redAlive, e.side);
             int initialEnemy = Count(e.battlefieldAtEvent.redAlive, e.battlefieldAtEvent.greenAlive, e.side);
-            int finalAlly = Count(snapshot.greenAlive, snapshot.redAlive, e.side), finalEnemy = Count(snapshot.redAlive, snapshot.greenAlive, e.side);
+            int finalAlly = Count(snapshot.greenAlive, snapshot.redAlive, e.side),
+                finalEnemy = Count(snapshot.redAlive, snapshot.greenAlive, e.side);
             int initialCritical = Count(e.battlefieldAtEvent.greenCritical, e.battlefieldAtEvent.redCritical, e.side);
-            int initialEnemyCritical = Count(e.battlefieldAtEvent.redCritical, e.battlefieldAtEvent.greenCritical, e.side);
-            int finalCritical = Count(snapshot.greenCritical, snapshot.redCritical, e.side), finalEnemyCritical = Count(snapshot.redCritical, snapshot.greenCritical, e.side);
-            e.followups.Add(new CriticalFollowup { afterSeconds = window, observedAt = b.Time, complete = complete, state = snapshot, targetAlive = victim != null && victim.Alive, targetIncapacitated = victim != null && victim.Incapacitated, targetBroken = victim != null && victim.Broken, targetUnderFire = victim != null && b.Time - victim.LastIncoming <= 2f, targetCovered = victim != null && b.Map.NearCover(victim.Position), targetHealth = victim == null ? 0 : victim.Health, targetSuppression = victim == null ? 0 : victim.Suppression, targetMorale = victim == null ? 0 : victim.Morale, alliedDeaths = Math.Max(0, initialAlly - finalAlly), enemyDeaths = Math.Max(0, initialEnemy - finalEnemy), alliedCriticals = Math.Max(0, finalCritical - initialCritical), enemyCriticals = Math.Max(0, finalEnemyCritical - initialEnemyCritical) });
+            int initialEnemyCritical = Count(
+                e.battlefieldAtEvent.redCritical,
+                e.battlefieldAtEvent.greenCritical,
+                e.side
+            );
+            int finalCritical = Count(snapshot.greenCritical, snapshot.redCritical, e.side),
+                finalEnemyCritical = Count(snapshot.redCritical, snapshot.greenCritical, e.side);
+            e.followups.Add(
+                new CriticalFollowup
+                {
+                    afterSeconds = window,
+                    observedAt = b.Time,
+                    complete = complete,
+                    state = snapshot,
+                    targetAlive = victim != null && victim.Alive,
+                    targetIncapacitated = victim != null && victim.Incapacitated,
+                    targetBroken = victim != null && victim.Broken,
+                    targetUnderFire = victim != null && b.Time - victim.LastIncoming <= 2f,
+                    targetCovered = victim != null && b.Map.NearCover(victim.Position),
+                    targetHealth = victim == null ? 0 : victim.Health,
+                    targetSuppression = victim == null ? 0 : victim.Suppression,
+                    targetMorale = victim == null ? 0 : victim.Morale,
+                    alliedDeaths = Math.Max(0, initialAlly - finalAlly),
+                    enemyDeaths = Math.Max(0, initialEnemy - finalEnemy),
+                    alliedCriticals = Math.Max(0, finalCritical - initialCritical),
+                    enemyCriticals = Math.Max(0, finalEnemyCritical - initialEnemyCritical),
+                }
+            );
         }
 
         // Export in-progress windows separately; do not mislabel a 3-second result as 5 seconds.
@@ -446,7 +651,7 @@ namespace SilentOrders.Core
                     decisionLeadup = e.decisionLeadup,
                     confirmed = e.confirmed,
                     hypotheses = e.hypotheses,
-                    followups = new List<CriticalFollowup>(e.followups)
+                    followups = new List<CriticalFollowup>(e.followups),
                 };
                 if (copy.followups.Count < Windows.Length)
                 {

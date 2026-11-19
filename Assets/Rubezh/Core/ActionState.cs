@@ -21,6 +21,6 @@ namespace SilentOrders.Core
         Dragged,
         Treat,
         Launch,
-        GrenadeAim
+        GrenadeAim,
     }
 }

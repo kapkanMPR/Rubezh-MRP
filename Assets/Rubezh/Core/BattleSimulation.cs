@@ -8,44 +8,55 @@ namespace SilentOrders.Core
         public MissionMortarSupport StoryMortars;
         public int EnemyWeaponMission;
         public bool EnemyWeaponEndless;
-        public readonly System.Collections.Generic.List<BlastCrater> Craters = new System.Collections.Generic.List<BlastCrater>();
+        public readonly System.Collections.Generic.List<BlastCrater> Craters =
+            new System.Collections.Generic.List<BlastCrater>();
         public bool OpeningAllowOpenGround = true;
         public bool ReconCombatTransitionEnabled = true;
         public bool OpeningFixedAccuracyEnabled = true;
-        public bool OpeningIgnoreCoverEnabled = false, OpeningDoubleAccuracyEnabled = false;
-        public bool OpeningHorizonEnabled = true, OpeningCriticalEnabled = true;
+        public bool OpeningIgnoreCoverEnabled = false,
+            OpeningDoubleAccuracyEnabled = false;
+        public bool OpeningHorizonEnabled = true,
+            OpeningCriticalEnabled = true;
         public bool ReconOpeningEnabled = true;
-        public bool DefenderRestEnabled = true, QuietReconEnabled = true, UsefulReconEnabled = true;
-        public float ReconBudget = 14, ReconStandOff = 10;
+        public bool DefenderRestEnabled = true,
+            QuietReconEnabled = true,
+            UsefulReconEnabled = true;
+        public float ReconBudget = 14,
+            ReconStandOff = 10;
+
         // Archived showcase battles use the pre-cover-denial rules of AI-0.12.25.
         public bool Historical01225;
         public readonly BattleVisibility Fog = new BattleVisibility();
         public readonly BattleAudioEvents AudioEvents = new BattleAudioEvents();
         public readonly LossMemoryState LossLearning = new LossMemoryState();
         internal readonly RouteSnapshot RouteView = new RouteSnapshot();
-        internal readonly System.Collections.Generic.Dictionary<(Side, DefenderGroupState), int> MovementCounts = new System.Collections.Generic.Dictionary<(Side, DefenderGroupState), int>();
+        internal readonly System.Collections.Generic.Dictionary<(Side, DefenderGroupState), int> MovementCounts =
+            new System.Collections.Generic.Dictionary<(Side, DefenderGroupState), int>();
         public readonly AiDiagnostics Diagnostics = new AiDiagnostics();
         public readonly BattleHistory History = new BattleHistory();
         public readonly CriticalOutcomeReview Outcomes = new CriticalOutcomeReview();
         public readonly BallisticState Ballistics = new BallisticState();
-        public readonly System.Collections.Generic.List<SmokeEffect> SmokeEffects = new System.Collections.Generic.List<SmokeEffect>();
+        public readonly System.Collections.Generic.List<SmokeEffect> SmokeEffects =
+            new System.Collections.Generic.List<SmokeEffect>();
         public readonly TacticalMap Tactics = new TacticalMap();
-        public readonly SilentOrders.Core.Tuning Config;
-        public readonly SilentOrders.Core.BattleMap Map;
-        public readonly SilentOrders.Core.Rng Random;
-        public readonly SilentOrders.Core.Rng VoiceRandom;
+        public readonly Tuning Config;
+        public readonly BattleMap Map;
+        public readonly Rng Random;
+        public readonly Rng VoiceRandom;
         public readonly int Seed;
         public int CombatSeed { get; private set; }
+
         // Observational counters: never read by simulation decisions or serialized state.
         public long SquadPlanCalls { get; private set; }
         public long SoldierDecisionCalls { get; private set; }
 
         internal void CountSquadPlan() => SquadPlanCalls++;
+
         // Call once after scenario, loadout and level overrides, before the first tick.
         public void InitializeCombatRandom(int seed)
         {
             if (Time != 0 || TickNumber != 0)
-                throw new System.InvalidOperationException("Combat already started");
+                throw new InvalidOperationException("Combat already started");
             CombatSeed = seed;
             Random.Reseed(seed);
             VoiceRandom.Reseed(seed ^ 0x1648D);
@@ -53,34 +64,31 @@ namespace SilentOrders.Core
                 soldier.NextShot = Random.Range(.2f, 1f);
         }
 
-        public readonly System.Collections.Generic.List<SilentOrders.Core.Soldier> Soldiers = new System.Collections.Generic.List<SilentOrders.Core.Soldier>();
-        public readonly System.Collections.Generic.List<BloodTrace> BloodTraces = new System.Collections.Generic.List<BloodTrace>();
+        public readonly System.Collections.Generic.List<Soldier> Soldiers =
+            new System.Collections.Generic.List<Soldier>();
+        public readonly System.Collections.Generic.List<BloodTrace> BloodTraces =
+            new System.Collections.Generic.List<BloodTrace>();
+
         // Pure visual particles; never consulted by movement, cover, collision, vision or targeting.
         public int CoverDebrisRevision;
-        public readonly System.Collections.Generic.Dictionary<int, CoverDebrisPiece> CoverRemnants = new System.Collections.Generic.Dictionary<int, CoverDebrisPiece>();
-        public readonly System.Collections.Generic.List<CoverDebrisPiece> CoverDebris = new System.Collections.Generic.List<CoverDebrisPiece>();
-        public readonly System.Collections.Generic.List<CoverDebrisPiece> ShellCasings = new System.Collections.Generic.List<CoverDebrisPiece>();
-        public readonly SilentOrders.Core.Squad Green = new SilentOrders.Core.Squad
-        {
-            Side = SilentOrders.Core.Side.Green,
-            LeaderId = 0
-        };
-        private readonly SilentOrders.Core.Squad defaultRed = new SilentOrders.Core.Squad
-        {
-            Side = SilentOrders.Core.Side.Red,
-            LeaderId = 5
-        };
-        public readonly System.Collections.Generic.List<DefenderGroupState> DefenderGroups = new System.Collections.Generic.List<DefenderGroupState>();
+        public readonly System.Collections.Generic.Dictionary<int, CoverDebrisPiece> CoverRemnants =
+            new System.Collections.Generic.Dictionary<int, CoverDebrisPiece>();
+        public readonly System.Collections.Generic.List<CoverDebrisPiece> CoverDebris =
+            new System.Collections.Generic.List<CoverDebrisPiece>();
+        public readonly System.Collections.Generic.List<CoverDebrisPiece> ShellCasings =
+            new System.Collections.Generic.List<CoverDebrisPiece>();
+        public readonly Squad Green = new Squad { Side = Side.Green, LeaderId = 0 };
+        private readonly Squad defaultRed = new Squad { Side = Side.Red, LeaderId = 5 };
+        public readonly System.Collections.Generic.List<DefenderGroupState> DefenderGroups =
+            new System.Collections.Generic.List<DefenderGroupState>();
         public readonly CounterSniperIntel SniperIntel = new CounterSniperIntel();
         public bool CustomDefenders;
-        public VehicleArrivalState GreenVehicle, RedVehicle;
+        public VehicleArrivalState GreenVehicle,
+            RedVehicle;
         internal DefenderGroupState ActiveDefenderGroup;
         public Squad Red
         {
-            get
-            {
-                return ActiveDefenderGroup == null ? defaultRed : ActiveDefenderGroup.Command;
-            }
+            get { return ActiveDefenderGroup == null ? defaultRed : ActiveDefenderGroup.Command; }
         }
 
         public Squad Team(Soldier soldier)
@@ -88,28 +96,35 @@ namespace SilentOrders.Core
             return soldier.DefenderGroup == null ? Team(soldier.Side) : soldier.DefenderGroup.Command;
         }
 
-        public readonly System.Collections.Generic.List<SilentOrders.Core.BattleEvent> Events = new System.Collections.Generic.List<SilentOrders.Core.BattleEvent>();
-        public readonly System.Collections.Generic.List<SilentOrders.Core.ShotTrace> Traces = new System.Collections.Generic.List<SilentOrders.Core.ShotTrace>();
-        public readonly System.Collections.Generic.List<SilentOrders.Core.SmokeCloud> Smoke = new System.Collections.Generic.List<SilentOrders.Core.SmokeCloud>();
-        public readonly System.Collections.Generic.List<SilentOrders.Core.ArcProjectile> Projectiles = new System.Collections.Generic.List<SilentOrders.Core.ArcProjectile>();
+        public readonly System.Collections.Generic.List<BattleEvent> Events =
+            new System.Collections.Generic.List<BattleEvent>();
+        public readonly System.Collections.Generic.List<ShotTrace> Traces =
+            new System.Collections.Generic.List<ShotTrace>();
+        public readonly System.Collections.Generic.List<SmokeCloud> Smoke =
+            new System.Collections.Generic.List<SmokeCloud>();
+        public readonly System.Collections.Generic.List<ArcProjectile> Projectiles =
+            new System.Collections.Generic.List<ArcProjectile>();
         public SceneEquipmentState SceneEquipment;
-        public readonly System.Collections.Generic.List<GroundWeapon> GroundWeapons = new System.Collections.Generic.List<GroundWeapon>();
-        public readonly System.Collections.Generic.List<GroundTourniquet> GroundTourniquets = new System.Collections.Generic.List<GroundTourniquet>();
+        public readonly System.Collections.Generic.List<GroundWeapon> GroundWeapons =
+            new System.Collections.Generic.List<GroundWeapon>();
+        public readonly System.Collections.Generic.List<GroundTourniquet> GroundTourniquets =
+            new System.Collections.Generic.List<GroundTourniquet>();
         public float NextTourniquetPlan;
-        public readonly System.Collections.Generic.List<GroundAmmo> GroundAmmo = new System.Collections.Generic.List<GroundAmmo>();
-        public readonly System.Collections.Generic.List<GroundLauncher> GroundLaunchers = new System.Collections.Generic.List<GroundLauncher>();
-        public readonly System.Collections.Generic.List<SilentOrders.Core.BlastEffect> Blasts = new System.Collections.Generic.List<SilentOrders.Core.BlastEffect>();
-        public readonly SilentOrders.Core.Statistics Stats = new SilentOrders.Core.Statistics();
-        public readonly System.Collections.Generic.List<SilentOrders.Core.RadioReport> Radio = new System.Collections.Generic.List<SilentOrders.Core.RadioReport>();
+        public readonly System.Collections.Generic.List<GroundAmmo> GroundAmmo =
+            new System.Collections.Generic.List<GroundAmmo>();
+        public readonly System.Collections.Generic.List<GroundLauncher> GroundLaunchers =
+            new System.Collections.Generic.List<GroundLauncher>();
+        public readonly System.Collections.Generic.List<BlastEffect> Blasts =
+            new System.Collections.Generic.List<BlastEffect>();
+        public readonly Statistics Stats = new Statistics();
+        public readonly System.Collections.Generic.List<RadioReport> Radio =
+            new System.Collections.Generic.List<RadioReport>();
         public int CampaignLevel;
         public int CampaignReserve;
         private readonly RedCounterattackState defaultCounterattack = new RedCounterattackState();
         public RedCounterattackState Counterattack
         {
-            get
-            {
-                return ActiveDefenderGroup == null ? defaultCounterattack : ActiveDefenderGroup.Counterattack;
-            }
+            get { return ActiveDefenderGroup == null ? defaultCounterattack : ActiveDefenderGroup.Counterattack; }
         }
 
         public float EnemyClearedAt = -1f;
@@ -120,18 +135,19 @@ namespace SilentOrders.Core
         public float Capture;
         public bool Contested;
         public int TickNumber;
-        public SilentOrders.Core.Outcome Outcome;
+        public Outcome Outcome;
         public readonly GameplayRules Rules;
-        public BattleSimulation(int seed = 410, SilentOrders.Core.Tuning tuning = null, GameplayRules rules = null)
+
+        public BattleSimulation(int seed = 410, Tuning tuning = null, GameplayRules rules = null)
         {
             Rules = rules == null ? GameplayRules.CaptureDefaults() : rules.Copy();
             Seed = seed;
             CombatSeed = seed;
-            Config = tuning ?? new SilentOrders.Core.Tuning();
-            Map = new SilentOrders.Core.BattleMap();
-            Random = new SilentOrders.Core.Rng(seed);
-            VoiceRandom = new SilentOrders.Core.Rng(seed ^ 0x1648D);
-            string[] array = new string[10]
+            Config = tuning ?? new Tuning();
+            Map = new BattleMap();
+            Random = new Rng(seed);
+            VoiceRandom = new Rng(seed ^ 0x1648D);
+            string[] callsigns = new string[10]
             {
                 "КЕДР",
                 "ЛИС",
@@ -142,48 +158,49 @@ namespace SilentOrders.Core
                 "СЕВЕР",
                 "ДЫМ",
                 "ШИП",
-                "ЯСТРЕБ"
+                "ЯСТРЕБ",
             };
-            SilentOrders.Core.V2[] array2 = new SilentOrders.Core.V2[10]
+            V2[] spawnPositions = new V2[10]
             {
-                new SilentOrders.Core.V2(6.5f, 17.5f),
-                new SilentOrders.Core.V2(6.5f, 15.5f),
-                new SilentOrders.Core.V2(6.5f, 20.5f),
-                new SilentOrders.Core.V2(5.5f, 15.5f),
-                new SilentOrders.Core.V2(5.5f, 20.5f),
-                new SilentOrders.Core.V2(50.5f, 18.5f),
-                new SilentOrders.Core.V2(44.5f, 15.5f),
-                new SilentOrders.Core.V2(44.5f, 20.5f),
-                new SilentOrders.Core.V2(50.5f, 15.5f),
-                new SilentOrders.Core.V2(50.5f, 21.5f)
+                new V2(6.5f, 17.5f),
+                new V2(6.5f, 15.5f),
+                new V2(6.5f, 20.5f),
+                new V2(5.5f, 15.5f),
+                new V2(5.5f, 20.5f),
+                new V2(50.5f, 18.5f),
+                new V2(44.5f, 15.5f),
+                new V2(44.5f, 20.5f),
+                new V2(50.5f, 15.5f),
+                new V2(50.5f, 21.5f),
             };
             for (int i = 0; i < 10; i++)
             {
-                int num = i % 5;
-                int num2 = ((i >= 5) ? 5 : 0);
-                SilentOrders.Core.Soldier soldier = new SilentOrders.Core.Soldier(Rules)
+                int roleSlot = i % 5;
+                int teamOffset = ((i >= 5) ? 5 : 0);
+                Soldier soldier = new Soldier(Rules)
                 {
                     Id = i,
-                    Name = array[i],
+                    Name = callsigns[i],
                     KedrBinoculars = i == 0,
-                    Side = ((i >= 5) ? SilentOrders.Core.Side.Red : SilentOrders.Core.Side.Green),
-                    Role = (SilentOrders.Core.Role)num,
-                    Element = ((num == 0) ? (-1) : ((num <= 2) ? 1 : 0)),
-                    BuddyId = num2 + ((num == 0) ? 1 : ((num % 2 == 1) ? (num + 1) : (num - 1))),
-                    Position = Map.NearestOpen(array2[i]),
+                    Side = ((i >= 5) ? Side.Red : Side.Green),
+                    Role = (Role)roleSlot,
+                    Element = ((roleSlot == 0) ? (-1) : ((roleSlot <= 2) ? 1 : 0)),
+                    BuddyId =
+                        teamOffset + ((roleSlot == 0) ? 1 : ((roleSlot % 2 == 1) ? (roleSlot + 1) : (roleSlot - 1))),
+                    Position = Map.NearestOpen(spawnPositions[i]),
                     NextSense = (float)i * 0.023f,
                     NextDecision = (float)i * 0.055f,
-                    Facing = new SilentOrders.Core.V2((i < 5) ? 1 : (-1), 0f),
-                    NextShot = Random.Range(0.2f, 1f)
+                    Facing = new V2((i < 5) ? 1 : (-1), 0f),
+                    NextShot = Random.Range(0.2f, 1f),
                 };
-                soldier.SupplyPack = num == 4;
-                soldier.PackRockets = ((num == 4) ? 2 : 0);
-                soldier.PackBoxes = ((num == 4) ? 1 : 0);
-                soldier.PackMagazines = ((num == 4) ? 10 : 0);
-                soldier.Tourniquets = ((num != 2) ? 1 : 5);
-                soldier.Rockets = ((num == 3) ? 1 : 0);
-                soldier.SmokeCharges = ((num == 0) ? 3 : 0);
-                if (num == 1)
+                soldier.SupplyPack = roleSlot == 4;
+                soldier.PackRockets = ((roleSlot == 4) ? 2 : 0);
+                soldier.PackBoxes = ((roleSlot == 4) ? 1 : 0);
+                soldier.PackMagazines = ((roleSlot == 4) ? 10 : 0);
+                soldier.Tourniquets = ((roleSlot != 2) ? 1 : 5);
+                soldier.Rockets = ((roleSlot == 3) ? 1 : 0);
+                soldier.SmokeCharges = ((roleSlot == 0) ? 3 : 0);
+                if (roleSlot == 1)
                 {
                     soldier.WeaponVariant = 1;
                     soldier.Ammo = 100;
@@ -195,69 +212,90 @@ namespace SilentOrders.Core
             }
 
             foreach (var enemy in Soldiers)
-                if (enemy.Side == SilentOrders.Core.Side.Red)
-                    SilentOrders.Core.EnemyInventory.Configure(enemy, Soldiers.FindAll(x => x.Side == SilentOrders.Core.Side.Red));
-            Green.Character = (SilentOrders.Core.CommanderCharacter)(System.Math.Abs((long)seed) % 3);
-            Red.Character = (SilentOrders.Core.CommanderCharacter)((System.Math.Abs((long)seed) + 1) % 3);
-            Log(SilentOrders.Core.Side.Green, "Отделение КЕДР: занять точку «Рубеж». Беречь людей.");
-            Log(SilentOrders.Core.Side.Red, "Отделение ГРАНИТ: удерживать подходы к точке.");
+                if (enemy.Side == Side.Red)
+                    EnemyInventory.Configure(enemy, Soldiers.FindAll(x => x.Side == Side.Red));
+            Green.Character = (CommanderCharacter)(Math.Abs((long)seed) % 3);
+            Red.Character = (CommanderCharacter)((Math.Abs((long)seed) + 1) % 3);
+            Log(Side.Green, "Отделение КЕДР: занять точку «Рубеж». Беречь людей.");
+            Log(Side.Red, "Отделение ГРАНИТ: удерживать подходы к точке.");
         }
 
-        public SilentOrders.Core.Squad Team(SilentOrders.Core.Side side)
+        public Squad Team(Side side)
         {
-            return (side == SilentOrders.Core.Side.Green) ? Green : Red;
+            return (side == Side.Green) ? Green : Red;
         }
 
-        public int Alive(SilentOrders.Core.Side side)
+        public int Alive(Side side)
         {
-            int num = 0;
-            foreach (SilentOrders.Core.Soldier soldier in Soldiers)
+            int livingCount = 0;
+            foreach (Soldier soldier in Soldiers)
             {
                 if (soldier.Side == side && soldier.Alive)
                 {
-                    num++;
+                    livingCount++;
                 }
             }
 
-            return num;
+            return livingCount;
         }
 
-        public void Log(SilentOrders.Core.Side side, string message)
+        public void Log(Side side, string message)
         {
             string b = message.Trim().TrimEnd('.');
-            int num = Events.Count - 1;
-            while (num >= 0 && Time - Events[num].Time < 4f)
+            int eventIndex = Events.Count - 1;
+            while (eventIndex >= 0 && Time - Events[eventIndex].Time < 4f)
             {
-                if (Events[num].Side == side && Events[num].Text.Trim().TrimEnd('.') == b)
+                if (Events[eventIndex].Side == side && Events[eventIndex].Text.Trim().TrimEnd('.') == b)
                 {
                     return;
                 }
 
-                num--;
+                eventIndex--;
             }
 
             History.Event(this, "journal", -1, -1, new V2(), new V2(), 0, side + ": " + message);
-            Events.Add(new SilentOrders.Core.BattleEvent { Time = Time, Side = side, Text = message });
+            Events.Add(
+                new BattleEvent
+                {
+                    Time = Time,
+                    Side = side,
+                    Text = message,
+                }
+            );
             if (Events.Count > 100)
             {
                 Events.RemoveAt(0);
             }
         }
 
-        public void Say(SilentOrders.Core.Soldier s, string phrase, bool urgent = false)
+        public void Say(Soldier s, string phrase, bool urgent = false)
         {
             // Preserve the unique panic quote during its brief on-screen lifetime.
             bool grenadeWarning = urgent && (phrase == "СВОЯ!" || phrase == "ВЫСТРЕЛ!!");
-            bool wallCommand = urgent && (phrase.StartsWith("Код СТЕНА!", System.StringComparison.Ordinal) || phrase == "КОНТАКТ!!" || phrase == "Готовность. Движение");
+            bool wallCommand =
+                urgent
+                && (
+                    phrase.StartsWith("Код СТЕНА!", StringComparison.Ordinal)
+                    || phrase == "КОНТАКТ!!"
+                    || phrase == "Готовность. Движение"
+                );
             if (!grenadeWarning && (s.RetreatQuoteUntil > Time || s.CasualtyRecovery.QuoteUntil > Time))
                 return;
-            if (s.Alive && (grenadeWarning || wallCommand || (!(Time - s.SpeechAt < 1.5f) || s.LastSpoken.Length <= 0) && (urgent || !(Time < s.SpeechCooldown))))
+            if (
+                s.Alive
+                && (
+                    grenadeWarning
+                    || wallCommand
+                    || (!(Time - s.SpeechAt < 1.5f) || s.LastSpoken.Length <= 0)
+                        && (urgent || !(Time < s.SpeechCooldown))
+                )
+            )
             {
-                phrase = SilentOrders.Core.Dialogue.Adapt(this, s, phrase);
+                phrase = Dialogue.Adapt(this, s, phrase);
                 if (grenadeWarning || wallCommand || !(phrase == s.LastSpoken) || !(Time - s.LastSpokenAt < 10f))
                 {
                     s.Speech = phrase;
-                    s.SpeechShort = SilentOrders.Core.Dialogue.Short(phrase);
+                    s.SpeechShort = Dialogue.Short(phrase);
                     s.SpeechUrgent = urgent;
                     s.SpeechAt = Time;
                     s.LastSpoken = phrase;
@@ -269,17 +307,23 @@ namespace SilentOrders.Core
             }
         }
 
-        public bool ContactManeuversEnabled = true, SuppressionVisionEnabled = true;
-        public bool PeripheralFocusEnabled = true, SurpriseBurstEnabled = true, StealthChoiceEnabled = true;
+        public bool ContactManeuversEnabled = true,
+            SuppressionVisionEnabled = true;
+        public bool PeripheralFocusEnabled = true,
+            SurpriseBurstEnabled = true,
+            StealthChoiceEnabled = true;
         public int PairExperimentProfile;
         public bool PairExperimentMarch;
         public bool PairExperimentCover;
         public PairPlanSettings PairPlan;
-        public bool TacticalMarchEnabled = true, ReactionTimingEnabled = true;
+        public bool TacticalMarchEnabled = true,
+            ReactionTimingEnabled = true;
         bool deploymentPrepared;
+
         public void PrepareDeployment()
         {
-            if (deploymentPrepared) return;
+            if (deploymentPrepared)
+                return;
             SpawnLayout.Apply(this);
             deploymentPrepared = true;
         }
@@ -329,130 +373,154 @@ namespace SilentOrders.Core
                 SilentOrders.Core.Ballistics.BeginStep(this);
                 VehicleArrivals.Update(this);
                 TickNumber++;
-                for (int num = Radio.Count - 1; num >= 0; num--)
+                for (int reportIndex = Radio.Count - 1; reportIndex >= 0; reportIndex--)
                 {
-                    SilentOrders.Core.RadioReport radioReport = Radio[num];
+                    RadioReport radioReport = Radio[reportIndex];
                     if (!(radioReport.DeliverAt > Time))
                     {
                         if (Soldiers[radioReport.Sender].Alive)
                         {
                             Merge(Team(radioReport.Side).Contacts, radioReport.Contact);
-                            foreach (SilentOrders.Core.Soldier soldier2 in Soldiers)
+                            foreach (Soldier recipient in Soldiers)
                             {
-                                if (soldier2.Alive && soldier2.Side == radioReport.Side)
+                                if (recipient.Alive && recipient.Side == radioReport.Side)
                                 {
-                                    Merge(soldier2.Contacts, radioReport.Contact);
+                                    Merge(recipient.Contacts, radioReport.Contact);
                                 }
                             }
 
                             Stats.Reports++;
                         }
 
-                        Radio.RemoveAt(num);
+                        Radio.RemoveAt(reportIndex);
                     }
                 }
 
-                foreach (SilentOrders.Core.Soldier soldier3 in Soldiers)
+                foreach (Soldier fighter in Soldiers)
                 {
-                    if (!soldier3.Alive || !soldier3.Deployed)
+                    if (!fighter.Alive || !fighter.Deployed)
                     {
                         continue;
                     }
 
-                    if (soldier3.Health <= 20f && !soldier3.Incapacitated)
+                    if (fighter.Health <= 20f && !fighter.Incapacitated)
                     {
-                        soldier3.Incapacitated = true;
-                        Outcomes.BleedingWound(this, soldier3, (soldier3.BleedSourceId >= 0 && soldier3.BleedSourceId < Soldiers.Count) ? Soldiers[soldier3.BleedSourceId] : null);
-                        SilentOrders.Core.TacticalAI.Stop(soldier3);
-                        soldier3.SupportReady = false;
+                        fighter.Incapacitated = true;
+                        Outcomes.BleedingWound(
+                            this,
+                            fighter,
+                            (fighter.BleedSourceId >= 0 && fighter.BleedSourceId < Soldiers.Count)
+                                ? Soldiers[fighter.BleedSourceId]
+                                : null
+                        );
+                        TacticalAI.Stop(fighter);
+                        fighter.SupportReady = false;
                         Stats.CriticalWounds++;
-                        SilentOrders.Core.Dialogue.Say(this, soldier3, 32, urgent: true);
+                        Dialogue.Say(this, fighter, 32, urgent: true);
                     }
 
-                    if (soldier3.Health <= 20f && !soldier3.Stabilized)
+                    if (fighter.Health <= 20f && !fighter.Stabilized)
                     {
-                        soldier3.Bleeding = true;
+                        fighter.Bleeding = true;
                     }
 
-                    if (soldier3.Bleeding)
+                    if (fighter.Bleeding)
                     {
-                        if (soldier3.BleedSourceId >= 0 && Soldiers[soldier3.BleedSourceId].Side != soldier3.Side)
+                        if (fighter.BleedSourceId >= 0 && Soldiers[fighter.BleedSourceId].Side != fighter.Side)
                         {
-                            Soldiers[soldier3.BleedSourceId].DamageDealt += System.Math.Min(soldier3.Health, tick);
+                            Soldiers[fighter.BleedSourceId].DamageDealt += Math.Min(fighter.Health, tick);
                         }
 
-                        soldier3.Health = System.Math.Max(0f, soldier3.Health - tick);
-                        if (!soldier3.Alive)
+                        fighter.Health = Math.Max(0f, fighter.Health - tick);
+                        if (!fighter.Alive)
                         {
-                            soldier3.Bleeding = false;
-                            Down(soldier3, (soldier3.BleedSourceId >= 0) ? Soldiers[soldier3.BleedSourceId] : null, "bleeding");
-                            Log(soldier3.Side, soldier3.Name + ": погиб от кровопотери.");
+                            fighter.Bleeding = false;
+                            Down(
+                                fighter,
+                                (fighter.BleedSourceId >= 0) ? Soldiers[fighter.BleedSourceId] : null,
+                                "bleeding"
+                            );
+                            Log(fighter.Side, fighter.Name + ": погиб от кровопотери.");
                             continue;
                         }
                     }
 
-                    if (soldier3.Incapacitated || soldier3.Broken || soldier3.Suppression > 0.8f)
+                    if (fighter.Incapacitated || fighter.Broken || fighter.Suppression > 0.8f)
                     {
-                        if (soldier3.ImmobileSince < 0f)
+                        if (fighter.ImmobileSince < 0f)
                         {
-                            soldier3.ImmobileSince = Time;
+                            fighter.ImmobileSince = Time;
                         }
                     }
                     else
                     {
-                        soldier3.ImmobileSince = -1f;
+                        fighter.ImmobileSince = -1f;
                     }
 
-                    bool flag = PositionLogic.Protected(this, soldier3, soldier3.Position);
-                    bool flag2 = Time - soldier3.LastIncoming < 2f;
-                    soldier3.Suppression = System.Math.Max(0f, soldier3.Suppression - tick * (flag ? 0.16f : 0.08f));
-                    float num2 = 0f;
-                    foreach (SilentOrders.Core.Soldier soldier4 in Soldiers)
+                    bool isProtected = PositionLogic.Protected(this, fighter, fighter.Position);
+                    bool recentlyUnderFire = Time - fighter.LastIncoming < 2f;
+                    fighter.Suppression = Math.Max(0f, fighter.Suppression - tick * (isProtected ? 0.16f : 0.08f));
+                    float allyMoraleSupport = 0f;
+                    foreach (Soldier nearbyAlly in Soldiers)
                     {
-                        if (soldier4.Id != soldier3.Id && soldier4.Side == soldier3.Side && soldier4.Available && !soldier4.Broken && SilentOrders.Core.V2.Distance(soldier3.Position, soldier4.Position) < 6f)
+                        if (
+                            nearbyAlly.Id != fighter.Id
+                            && nearbyAlly.Side == fighter.Side
+                            && nearbyAlly.Available
+                            && !nearbyAlly.Broken
+                            && V2.Distance(fighter.Position, nearbyAlly.Position) < 6f
+                        )
                         {
-                            num2 += ((soldier4.Id == Team(soldier3).LeaderId) ? 0.025f : 0.008f);
+                            allyMoraleSupport += ((nearbyAlly.Id == Team(fighter).LeaderId) ? 0.025f : 0.008f);
                         }
                     }
 
-                    float num3 = ((num2 == 0f && flag2) ? 0.006f : 0f);
-                    float num4 = (flag2 ? (-0.024f * soldier3.Suppression - num3) : (0.012f + num2));
-                    if (Time - soldier3.LastBlast < 4f && flag2)
+                    float isolationPenalty = ((allyMoraleSupport == 0f && recentlyUnderFire) ? 0.006f : 0f);
+                    float moraleRate = (
+                        recentlyUnderFire
+                            ? (-0.024f * fighter.Suppression - isolationPenalty)
+                            : (0.012f + allyMoraleSupport)
+                    );
+                    if (Time - fighter.LastBlast < 4f && recentlyUnderFire)
                     {
-                        num4 -= 0.006f;
+                        moraleRate -= 0.006f;
                     }
 
-                    if (num4 > 0f)
+                    if (moraleRate > 0f)
                     {
-                        num4 = MoraleDynamics.RecoveryRate(soldier3, num4);
+                        moraleRate = MoraleDynamics.RecoveryRate(fighter, moraleRate);
                     }
 
                     // Immediately after psychological collapse no positive regeneration is possible.
                     // Incoming fire can still reduce morale; the pause is not a permanent lock.
-                    if (soldier3.Broken && num4 > 0f && (Time < soldier3.MoraleRecoveryBlockedUntil || Time - soldier3.LastIncoming <= 3f))
-                        num4 = 0f;
-                    if (flag2 && num4 < 0f && soldier3.Morale < .35f)
-                        num4 *= 1.18f; // low morale amplifies sustained-fire stress slightly
-                    soldier3.Morale = SilentOrders.Core.Util.Clamp(soldier3.Morale + tick * num4, 0f, soldier3.MoraleMaximum);
-                    if (flag)
+                    if (
+                        fighter.Broken
+                        && moraleRate > 0f
+                        && (Time < fighter.MoraleRecoveryBlockedUntil || Time - fighter.LastIncoming <= 3f)
+                    )
+                        moraleRate = 0f;
+                    if (recentlyUnderFire && moraleRate < 0f && fighter.Morale < .35f)
+                        moraleRate *= 1.18f; // low morale amplifies sustained-fire stress slightly
+                    fighter.Morale = Util.Clamp(fighter.Morale + tick * moraleRate, 0f, fighter.MoraleMaximum);
+                    if (isProtected)
                     {
-                        soldier3.CoverTime += tick;
+                        fighter.CoverTime += tick;
                         Stats.CoverSeconds += tick;
                     }
                     else
                     {
-                        soldier3.ExposedTime += tick;
+                        fighter.ExposedTime += tick;
                         Stats.ExposedSeconds += tick;
                     }
 
-                    if (soldier3.Morale <= .001f && flag2 && !soldier3.Broken)
-                        MoraleDynamics.EnterBroken(this, soldier3);
-                    CombatCohesion.AwardRelief(this, soldier3);
-                    if (!soldier3.Incapacitated && soldier3.RescuerId < 0 && Time >= soldier3.NextSense)
+                    if (fighter.Morale <= .001f && recentlyUnderFire && !fighter.Broken)
+                        MoraleDynamics.EnterBroken(this, fighter);
+                    CombatCohesion.AwardRelief(this, fighter);
+                    if (!fighter.Incapacitated && fighter.RescuerId < 0 && Time >= fighter.NextSense)
                     {
                         using (new CpuSample("Rubezh.AI.sense"))
-                            SilentOrders.Core.Perception.Observe(this, soldier3);
-                        soldier3.NextSense = Time + Config.PerceptionPeriod;
+                            Perception.Observe(this, fighter);
+                        fighter.NextSense = Time + Config.PerceptionPeriod;
                     }
                 }
 
@@ -473,28 +541,28 @@ namespace SilentOrders.Core
                 ReconCombatPhase.Update(this);
                 TacticalMarch.Update(this, Green);
                 DefenderGroupsRuntime.Update(this);
-                SilentOrders.Core.CampaignScenario.Update(this);
+                CampaignScenario.Update(this);
                 RedCounterattack.Tick(this);
-                SilentOrders.Core.SmokePlanner.Update(this, Green);
+                SmokePlanner.Update(this, Green);
                 if (!CustomDefenders)
-                    SilentOrders.Core.SmokePlanner.Update(this, Red);
+                    SmokePlanner.Update(this, Red);
                 if (Time >= Green.NextPlan && !VehicleArrivals.Disembarking(this, Side.Green))
                 {
-                    SilentOrders.Core.SupportAI.Plan(this, Green);
-                    SilentOrders.Core.SupplyAI.Plan(this, Green);
-                    SilentOrders.Core.TaskReview.Group(this, Green);
+                    SupportAI.Plan(this, Green);
+                    SupplyAI.Plan(this, Green);
+                    TaskReview.Group(this, Green);
                     using (new CpuSample("Rubezh.AI.squad"))
-                        SilentOrders.Core.SquadBrain.Plan(this, Green);
+                        SquadBrain.Plan(this, Green);
                     Green.NextPlan = Time + Config.SquadPeriod;
                 }
 
                 if (!CustomDefenders && Time >= Red.NextPlan)
                 {
-                    SilentOrders.Core.SupportAI.Plan(this, Red);
-                    SilentOrders.Core.SupplyAI.Plan(this, Red);
-                    SilentOrders.Core.TaskReview.Group(this, Red);
+                    SupportAI.Plan(this, Red);
+                    SupplyAI.Plan(this, Red);
+                    TaskReview.Group(this, Red);
                     using (new CpuSample("Rubezh.AI.squad"))
-                        SilentOrders.Core.SquadBrain.Plan(this, Red);
+                        SquadBrain.Plan(this, Red);
                     Red.NextPlan = Time + Config.SquadPeriod;
                 }
 
@@ -506,10 +574,22 @@ namespace SilentOrders.Core
                 ReconOpening.Enforce(this);
                 for (int i = 0; i < Soldiers.Count; i++)
                 {
-                    SilentOrders.Core.Soldier soldier = Soldiers[(i + TickNumber) % Soldiers.Count];
+                    Soldier soldier = Soldiers[(i + TickNumber) % Soldiers.Count];
                     if (soldier.Alive && soldier.Deployed)
                     {
-                        if (soldier.Available && !BuddyActions.Active(soldier) && !SupplyRecovery.Active(soldier) && !HandLauncher.Active(soldier) && !PairExchange.Active(this, soldier) && !CombatCrouch.Standing(this, soldier) && !FriendlyGrenadeSafety.Active(this, soldier) && !soldier.GrenadeEscape.Active && !soldier.VehicleDisperse && !soldier.VehicleRally && Time >= soldier.NextDecision)
+                        if (
+                            soldier.Available
+                            && !BuddyActions.Active(soldier)
+                            && !SupplyRecovery.Active(soldier)
+                            && !HandLauncher.Active(soldier)
+                            && !PairExchange.Active(this, soldier)
+                            && !CombatCrouch.Standing(this, soldier)
+                            && !FriendlyGrenadeSafety.Active(this, soldier)
+                            && !soldier.GrenadeEscape.Active
+                            && !soldier.VehicleDisperse
+                            && !soldier.VehicleRally
+                            && Time >= soldier.NextDecision
+                        )
                         {
                             // Keep the decision due while executing: retreat logic reads this deadline.
                             soldier.NextDecision = float.NegativeInfinity;
@@ -520,7 +600,7 @@ namespace SilentOrders.Core
                                 {
                                     SoldierDecisionCalls++;
                                     using (new CpuSample("Rubezh.AI.decide"))
-                                        SilentOrders.Core.TacticalAI.Decide(this, soldier);
+                                        TacticalAI.Decide(this, soldier);
                                 }
                             }
                             finally
@@ -531,8 +611,15 @@ namespace SilentOrders.Core
                                     soldier.NextDecision = Time;
                             }
 
-                            float scheduledDecision = Time + (Config.DecisionPeriod + Random.Range(0f, 0.12f)) * ConcussionEffects.ReactionTimeMultiplier(ConcussionEffects.Current(this, soldier));
-                            soldier.NextDecision = float.IsNegativeInfinity(requestedDecision) ? scheduledDecision : Math.Min(requestedDecision, scheduledDecision);
+                            float scheduledDecision =
+                                Time
+                                + (Config.DecisionPeriod + Random.Range(0f, 0.12f))
+                                    * ConcussionEffects.ReactionTimeMultiplier(
+                                        ConcussionEffects.Current(this, soldier)
+                                    );
+                            soldier.NextDecision = float.IsNegativeInfinity(requestedDecision)
+                                ? scheduledDecision
+                                : Math.Min(requestedDecision, scheduledDecision);
                         }
 
                         MotionCombat.Begin(this, soldier);
@@ -543,7 +630,13 @@ namespace SilentOrders.Core
                             UpdateSoldier(soldier, tick);
                         MotionCombat.End(this, soldier, tick);
                         CombatCrouch.End(this, soldier, tick);
-                        if (soldier.Awareness.Initialized && soldier.Available && !soldier.Busy && soldier.HandsBusyUntil <= Time && Time - soldier.LastFire > .25f)
+                        if (
+                            soldier.Awareness.Initialized
+                            && soldier.Available
+                            && !soldier.Busy
+                            && soldier.HandsBusyUntil <= Time
+                            && Time - soldier.LastFire > .25f
+                        )
                             soldier.Facing = soldier.Awareness.Look;
                         AiTasks.Observe(this, soldier);
                     }
@@ -558,14 +651,14 @@ namespace SilentOrders.Core
                 foreach (var g in DefenderGroups)
                     if (g.Deployed)
                         SmokeTactics.ReviewGroup(this, g.Command);
-                SilentOrders.Core.ArcedOrdnance.Update(this);
+                ArcedOrdnance.Update(this);
                 BlastCrater.Record(this);
                 PairExchange.Sweep(this);
                 SmokeTactics.Tick(this);
                 CoverDebrisSystem.Consume(this);
-                Traces.RemoveAll((SilentOrders.Core.ShotTrace t) => t.Until < Time);
-                Smoke.RemoveAll((SilentOrders.Core.SmokeCloud t) => t.Until <= Time);
-                Blasts.RemoveAll((SilentOrders.Core.BlastEffect t) => t.Until <= Time);
+                Traces.RemoveAll((ShotTrace t) => t.Until < Time);
+                Smoke.RemoveAll((SmokeCloud t) => t.Until <= Time);
+                Blasts.RemoveAll((BlastEffect t) => t.Until <= Time);
                 foreach (var wounded in Soldiers)
                     CasualtyRecovery.UpdateVoice(this, wounded);
                 Dialogue.Refresh(this);
@@ -575,17 +668,17 @@ namespace SilentOrders.Core
             }
         }
 
-        private static void Merge(System.Collections.Generic.Dictionary<int, SilentOrders.Core.Contact> contacts, SilentOrders.Core.Contact incoming)
+        private static void Merge(System.Collections.Generic.Dictionary<int, Contact> contacts, Contact incoming)
         {
             if (!contacts.TryGetValue(incoming.EnemyId, out var value) || value.SeenAt < incoming.SeenAt)
             {
-                SilentOrders.Core.Contact contact = incoming.Copy();
+                Contact contact = incoming.Copy();
                 contact.Reported = true;
                 contacts[incoming.EnemyId] = contact;
             }
         }
 
-        private void UpdateSoldier(SilentOrders.Core.Soldier s, float dt)
+        private void UpdateSoldier(Soldier s, float dt)
         {
             s.Moving = false;
             if (!s.Deployed)
@@ -629,19 +722,19 @@ namespace SilentOrders.Core
             AmmoLogistics.CollectNearby(this, s);
             if (TourniquetLogistics.UpdatePatient(this, s, dt))
                 return;
-            if (SilentOrders.Core.SupplyAI.Update(this, s, dt) || SilentOrders.Core.SupportAI.Update(this, s, dt))
+            if (SupplyAI.Update(this, s, dt) || SupportAI.Update(this, s, dt))
             {
                 return;
             }
 
             if (s.Broken)
             {
-                s.State = SilentOrders.Core.ActionState.Cower;
+                s.State = ActionState.Cower;
                 s.Crouched = true;
                 s.SupportReady = false;
                 if (PositionLogic.Protected(this, s, s.Position))
                 {
-                    SilentOrders.Core.TacticalAI.Stop(s);
+                    TacticalAI.Stop(s);
                 }
                 else
                 {
@@ -653,7 +746,7 @@ namespace SilentOrders.Core
 
             if (s.ReloadUntil > Time)
             {
-                s.State = SilentOrders.Core.ActionState.Reload;
+                s.State = ActionState.Reload;
                 s.Crouched = true;
                 return;
             }
@@ -662,7 +755,7 @@ namespace SilentOrders.Core
             {
                 MagazineSystem.Reload(this, s);
                 s.ReloadUntil = 0f;
-                SilentOrders.Core.Dialogue.Say(this, s, 7);
+                Dialogue.Say(this, s, 7);
             }
 
             if (s.HandsBusyUntil > Time && s.Motion.MobileSmokeUntil <= Time)
@@ -680,7 +773,17 @@ namespace SilentOrders.Core
                 return;
             MotionCombat.Smoke(this, s);
             bool waitingSmoke = s.Motion.MobileSmokeUntil <= Time && SmokeTactics.Waiting(this, s);
-            bool forcedMovement = !waitingSmoke && (ProgressRecovery.Move(this, s, dt) || ShoulderPair.Move(this, s, dt) || (LastOpponentHunt.Owns(this, s) ? LastOpponentHunt.Move(this, s, dt) : (RedCounterattack.Move(this, s, dt) || TacticalOrders.UpdatePriorityMovement(this, s, dt))));
+            bool forcedMovement =
+                !waitingSmoke
+                && (
+                    ProgressRecovery.Move(this, s, dt)
+                    || ShoulderPair.Move(this, s, dt)
+                    || (
+                        LastOpponentHunt.Owns(this, s)
+                            ? LastOpponentHunt.Move(this, s, dt)
+                            : (RedCounterattack.Move(this, s, dt) || TacticalOrders.UpdatePriorityMovement(this, s, dt))
+                    )
+                );
             if (forcedMovement && TacticalOrders.Emergency(Team(s)))
                 return;
             AmmoLogistics.TryBuddy(this, s);
@@ -690,37 +793,37 @@ namespace SilentOrders.Core
             // The scavenger still travels using the ordinary movement/cover system.
             if (!WithdrawalTactics.Active(Team(s)) && Team(s).Style != CombatStyle.Passive)
                 CorpseEquipment.TryUpdate(this, s);
-            bool flag = SilentOrders.Core.CombatCoordination.WantsReload(this, s) && MagazineSystem.BetterMagazine(s);
-            if ((s.Ammo <= 0 || flag) && s.Reserve > 0)
+            bool proactiveReload = CombatCoordination.WantsReload(this, s) && MagazineSystem.BetterMagazine(s);
+            if ((s.Ammo <= 0 || proactiveReload) && s.Reserve > 0)
             {
                 s.BuddyAction.ReloadAssisted = false;
                 s.ReloadUntil = Time + WeaponBalance.ReloadSeconds(s);
-                s.State = SilentOrders.Core.ActionState.Reload;
+                s.State = ActionState.Reload;
                 Stats.Reloads++;
-                if (flag)
+                if (proactiveReload)
                 {
                     Stats.TacticalReloads++;
                     s.NextTacticalReload = Time + 18f;
                 }
 
-                SilentOrders.Core.Dialogue.Say(this, s, (s.GunMachineGunner) ? 31 : 5, urgent: true);
-                SilentOrders.Core.Soldier soldier = Soldiers[s.BuddyId];
+                Dialogue.Say(this, s, (s.GunMachineGunner) ? 31 : 5, urgent: true);
+                Soldier soldier = Soldiers[s.BuddyId];
                 if (soldier.Alive && soldier.Suppression < 0.7f)
                 {
                     soldier.NextDecision = 0f;
-                    SilentOrders.Core.Dialogue.Say(this, soldier, 6, urgent: true);
+                    Dialogue.Say(this, soldier, 6, urgent: true);
                 }
             }
             else if (s.Suppression > 0.87f && !CombatCohesion.BypassCover(this, s))
             {
-                s.State = SilentOrders.Core.ActionState.Pinned;
+                s.State = ActionState.Pinned;
                 s.Crouched = true;
             }
             else
             {
                 if (CloseCombat.TryStrike(this, s))
                     return;
-                if (SilentOrders.Core.ArcedOrdnance.TryUse(this, s) || SilentOrders.Core.SpecialWeapons.TryLaunch(this, s))
+                if (ArcedOrdnance.TryUse(this, s) || SpecialWeapons.TryLaunch(this, s))
                 {
                     return;
                 }
@@ -728,16 +831,33 @@ namespace SilentOrders.Core
                 if (!forcedMovement && !MotionCombat.InMotion(this, s))
                     FiringPositionPolicy.Hold(this, s);
                 SomaliFire.PreparePosture(this, s);
-                SilentOrders.Core.Contact contact = SilentOrders.Core.TacticalAI.FireTarget(this, s);
+                Contact contact = TacticalAI.FireTarget(this, s);
                 if (contact == null)
                 {
-                    s.FireStatus = ((s.Ammo <= 0) ? "Нет БК" : ((s.ReloadUntil > Time) ? "Перезарядка" : "Сектор потерян"));
+                    s.FireStatus = (
+                        (s.Ammo <= 0) ? "Нет БК" : ((s.ReloadUntil > Time) ? "Перезарядка" : "Сектор потерян")
+                    );
                 }
 
-                bool flag2 = s.Job == SilentOrders.Core.Job.Cover || s.Job == SilentOrders.Core.Job.Hold || s.Job == SilentOrders.Core.Job.Command;
-                bool flag3 = (MotionCombat.CanFire(this, s) || SomaliFire.CanAttempt(this, s, contact)) && s.HandsBusyUntil <= Time && contact != null && s.Ammo > 0 && Time >= s.NextShot && Time >= s.ConcussionReactUntil;
-                bool flag4 = !forcedMovement && s.PathCursor < s.Path.Count;
-                if (flag3 && (!flag4 || flag2 || MotionCombat.InMotion(this, s) || SilentOrders.Core.V2.Distance(s.Position, contact.Position) < 5f) && s.RecoverUntil <= Time)
+                bool holdingPosition = s.Job == Job.Cover || s.Job == Job.Hold || s.Job == Job.Command;
+                bool canEngage =
+                    (MotionCombat.CanFire(this, s) || SomaliFire.CanAttempt(this, s, contact))
+                    && s.HandsBusyUntil <= Time
+                    && contact != null
+                    && s.Ammo > 0
+                    && Time >= s.NextShot
+                    && Time >= s.ConcussionReactUntil;
+                bool hasRoute = !forcedMovement && s.PathCursor < s.Path.Count;
+                if (
+                    canEngage
+                    && (
+                        !hasRoute
+                        || holdingPosition
+                        || MotionCombat.InMotion(this, s)
+                        || V2.Distance(s.Position, contact.Position) < 5f
+                    )
+                    && s.RecoverUntil <= Time
+                )
                 {
                     if (!FriendlyInLane(s, contact.Position))
                     {
@@ -750,42 +870,85 @@ namespace SilentOrders.Core
                     }
                 }
 
-                flag4 = !forcedMovement && s.PathCursor < s.Path.Count; // Fire may hand movement to a short approach.
-                bool flag5 = Time - s.LastFire < 0.24f && !MotionCombat.InMotion(this, s);
-                bool flag6 = flag4 && WithdrawalTactics.Active(Team(s)) && !WithdrawalTactics.HasCover(this, s) || flag4 && !PositionLogic.ShelterMoving(this, s) && s.FireLaneCrossUntil <= Time && !(s.Sniper && s.SniperMoving) && (PositionLogic.Protected(this, s, s.Position) || (Time - s.LastIncoming > 5f && SilentOrders.Core.TacticalAI.Risk(this, s, s.Position) < 0.01f)) && SilentOrders.Core.V2.Distance(s.Position, s.Destination) > 0.7f && !SilentOrders.Core.SquadBrain.MovementCovered(this, s) && !CombatCohesion.BypassCover(this, s);
-                if (FormationEnvelope.Active(this, s) || ReconOpening.Owns(this, s) || QuietRecon.Owns(this, s) || WallTravel.Active(this, s) || PairTacticalPlan.StepCovered(this, s))
-                    flag6 = false;
-                if (flag6)
+                hasRoute = !forcedMovement && s.PathCursor < s.Path.Count; // Fire may hand movement to a short approach.
+                bool pausedToFire = Time - s.LastFire < 0.24f && !MotionCombat.InMotion(this, s);
+                bool waitingForCover =
+                    hasRoute && WithdrawalTactics.Active(Team(s)) && !WithdrawalTactics.HasCover(this, s)
+                    || hasRoute
+                        && !PositionLogic.ShelterMoving(this, s)
+                        && s.FireLaneCrossUntil <= Time
+                        && !(s.Sniper && s.SniperMoving)
+                        && (
+                            PositionLogic.Protected(this, s, s.Position)
+                            || (Time - s.LastIncoming > 5f && TacticalAI.Risk(this, s, s.Position) < 0.01f)
+                        )
+                        && V2.Distance(s.Position, s.Destination) > 0.7f
+                        && !SquadBrain.MovementCovered(this, s)
+                        && !CombatCohesion.BypassCover(this, s);
+                if (
+                    ReconOpening.Owns(this, s)
+                    || QuietRecon.Owns(this, s)
+                    || WallTravel.Active(this, s)
+                    || PairTacticalPlan.StepCovered(this, s)
+                )
+                    waitingForCover = false;
+                if (waitingForCover)
                 {
-                    s.State = SilentOrders.Core.ActionState.WaitCover;
+                    s.State = ActionState.WaitCover;
                     s.WaitTime += dt;
                     s.Reason = "Перед опасным участком: жду подтверждения прикрытия";
-                    SilentOrders.Core.Dialogue.Say(this, s, 4);
+                    Dialogue.Say(this, s, 4);
                 }
 
                 // Ordinary flanking and inter-wing transfers require tactical
                 // cover clearance; the emergency escape and pinned-rescue bypasses
                 // retain their dedicated higher priorities.
-                if (flag4 && !flag5 && !flag6 && !waitingSmoke && (!TacticalOrders.Flanks(Team(s)) || ObjectiveOpportunity.MovementAllowed(this, s) || WallTravel.Active(this, s) || PositionLogic.ShelterMoving(this, s) || s.FireLaneCrossUntil > Time || CombatCohesion.BypassCover(this, s) || FlankTactics.CanAdvance(this, s)))
+                if (
+                    hasRoute
+                    && !pausedToFire
+                    && !waitingForCover
+                    && !waitingSmoke
+                    && (
+                        !TacticalOrders.Flanks(Team(s))
+                        || ObjectiveOpportunity.MovementAllowed(this, s)
+                        || WallTravel.Active(this, s)
+                        || PositionLogic.ShelterMoving(this, s)
+                        || s.FireLaneCrossUntil > Time
+                        || CombatCohesion.BypassCover(this, s)
+                        || FlankTactics.CanAdvance(this, s)
+                    )
+                )
                 {
-                    SilentOrders.Core.Locomotion.AdvanceWaypoint(this, s);
-                    SilentOrders.Core.V2 v = s.Path[s.PathCursor];
-                    SilentOrders.Core.V2 v2 = v - s.Position;
-                    float num2 = SilentOrders.Core.CombatMovement.Speed(this, s);
-                    if (SilentOrders.Core.Locomotion.TryStep(this, s, v2.Normalized * System.Math.Min(v2.Length, num2 * dt), out var next))
+                    Locomotion.AdvanceWaypoint(this, s);
+                    V2 v = s.Path[s.PathCursor];
+                    V2 stepDirection = v - s.Position;
+                    float movementSpeed = CombatMovement.Speed(this, s);
+                    if (
+                        Locomotion.TryStep(
+                            this,
+                            s,
+                            stepDirection.Normalized * Math.Min(stepDirection.Length, movementSpeed * dt),
+                            out var next
+                        )
+                    )
                     {
-                        s.DistanceTravelled += SilentOrders.Core.V2.Distance(s.Position, next);
+                        s.DistanceTravelled += V2.Distance(s.Position, next);
                         s.Position = next;
                         s.CoverWaitStartedAt = -1f;
-                        s.Facing = v2.Normalized;
+                        s.Facing = stepDirection.Normalized;
                         s.Moving = true;
                         s.LastMoved = Time;
-                        if (SilentOrders.Core.V2.Distance(next, v) < 0.04f)
+                        if (V2.Distance(next, v) < 0.04f)
                         {
                             s.PathCursor++;
                         }
                     }
-                    else if (!CombatCrouch.Standing(this, s) && Time - s.Ai.Started > 1.5f && Time - s.LastMoved > 1.5f && s.Motion.GroupWaitUntil <= Time)
+                    else if (
+                        !CombatCrouch.Standing(this, s)
+                        && Time - s.Ai.Started > 1.5f
+                        && Time - s.LastMoved > 1.5f
+                        && s.Motion.GroupWaitUntil <= Time
+                    )
                     {
                         s.NextDecision = 0f;
                         s.Path.Clear();
@@ -794,14 +957,26 @@ namespace SilentOrders.Core
                 }
 
                 s.Crouched = (!s.Moving && PositionLogic.Protected(this, s, s.Position)) || s.Suppression > 0.55f;
-                if (!flag5 && !flag6)
+                if (!pausedToFire && !waitingForCover)
                 {
-                    s.State = ((!s.Moving) ? ((s.RecoverUntil > Time) ? SilentOrders.Core.ActionState.Recover : ((s.MoveAuthorized || (s.Job != 0 && s.Job != SilentOrders.Core.Job.Flank)) ? SilentOrders.Core.ActionState.Observe : SilentOrders.Core.ActionState.WaitCover)) : SilentOrders.Core.ActionState.Move);
+                    s.State = (
+                        (!s.Moving)
+                            ? (
+                                (s.RecoverUntil > Time)
+                                    ? ActionState.Recover
+                                    : (
+                                        (s.MoveAuthorized || (s.Job != 0 && s.Job != Job.Flank))
+                                            ? ActionState.Observe
+                                            : ActionState.WaitCover
+                                    )
+                            )
+                            : ActionState.Move
+                    );
                 }
             }
         }
 
-        private void CrawlToCover(SilentOrders.Core.Soldier s, float dt)
+        private void CrawlToCover(Soldier s, float dt)
         {
             if (!PositionLogic.Protected(this, s, s.Destination) || V2.Distance(s.Position, s.Destination) > 3.2f)
             {
@@ -814,21 +989,37 @@ namespace SilentOrders.Core
                 return;
             }
 
-            SilentOrders.Core.V2 v = s.Path[s.PathCursor] - s.Position;
-            SilentOrders.Core.V2 v2 = s.Position + v.Normalized * System.Math.Min(v.Length, Config.MoveSpeed * BodyArmor.Multiplier(s.ArmorLevel) * ConcussionEffects.MovementMultiplier(ConcussionEffects.Current(this, s)) * 0.32f * dt);
-            foreach (SilentOrders.Core.Soldier soldier in Soldiers)
+            V2 v = s.Path[s.PathCursor] - s.Position;
+            V2 crawlDestination =
+                s.Position
+                + v.Normalized
+                    * Math.Min(
+                        v.Length,
+                        Config.MoveSpeed
+                            * BodyArmor.Multiplier(s.ArmorLevel)
+                            * ConcussionEffects.MovementMultiplier(ConcussionEffects.Current(this, s))
+                            * 0.32f
+                            * dt
+                    );
+            foreach (Soldier soldier in Soldiers)
             {
-                if (soldier.Alive && soldier.Id != s.Id && SilentOrders.Core.V2.Distance(v2, soldier.Position) < 0.4f)
+                if (soldier.Alive && soldier.Id != s.Id && V2.Distance(crawlDestination, soldier.Position) < 0.4f)
                 {
                     return;
                 }
             }
 
-            if (MedicTactics.AllowStep(this, s, v2) && !PairExchange.Reserved(this, s, v2) && Map.Walkable(v2) && Locomotion.WalkableSegment(this, s.Position, v2) && FireLaneSafety.AllowStep(this, s, v2 - s.Position))
+            if (
+                MedicTactics.AllowStep(this, s, crawlDestination)
+                && !PairExchange.Reserved(this, s, crawlDestination)
+                && Map.Walkable(crawlDestination)
+                && Locomotion.WalkableSegment(this, s.Position, crawlDestination)
+                && FireLaneSafety.AllowStep(this, s, crawlDestination - s.Position)
+            )
             {
-                s.DistanceTravelled += V2.Distance(s.Position, v2);
+                s.DistanceTravelled += V2.Distance(s.Position, crawlDestination);
                 s.Facing = v.Normalized;
-                s.Position = v2;
+                s.Position = crawlDestination;
                 s.Moving = true;
                 s.LastMoved = Time;
                 if (v.Length < 0.06f)
@@ -838,13 +1029,21 @@ namespace SilentOrders.Core
             }
         }
 
-        public bool FriendlyInLane(SilentOrders.Core.Soldier shooter, SilentOrders.Core.V2 target)
+        public bool FriendlyInLane(Soldier shooter, V2 target)
         {
             if (shooter.FireHoldUntil > Time)
                 return true;
-            foreach (SilentOrders.Core.Soldier soldier in Soldiers)
+            foreach (Soldier soldier in Soldiers)
             {
-                if (soldier.Alive && soldier.Deployed && soldier.Side == shooter.Side && soldier.Id != shooter.Id && !ShoulderPair.CanShootOver(this, shooter, soldier, target) && SilentOrders.Core.V2.SegmentDistance(soldier.Position, shooter.Position, target) < 0.45f && SilentOrders.Core.V2.Distance(soldier.Position, shooter.Position) > 0.2f)
+                if (
+                    soldier.Alive
+                    && soldier.Deployed
+                    && soldier.Side == shooter.Side
+                    && soldier.Id != shooter.Id
+                    && !ShoulderPair.CanShootOver(this, shooter, soldier, target)
+                    && V2.SegmentDistance(soldier.Position, shooter.Position, target) < 0.45f
+                    && V2.Distance(soldier.Position, shooter.Position) > 0.2f
+                )
                 {
                     return true;
                 }
@@ -853,33 +1052,49 @@ namespace SilentOrders.Core
             return false;
         }
 
-        private void Fire(SilentOrders.Core.Soldier shooter, SilentOrders.Core.Contact contact)
+        private void Fire(Soldier shooter, Contact contact)
         {
             if (shooter.SomaliNext > Time)
                 return;
-            if (ReconOpening.HoldFire(this, shooter) || QuietRecon.HoldFire(this, shooter) || (!ReconOpening.ActiveFire(this, shooter) && PairTacticalPlan.HoldFire(this, shooter, contact)))
+            if (
+                ReconOpening.HoldFire(this, shooter)
+                || QuietRecon.HoldFire(this, shooter)
+                || (!ReconOpening.ActiveFire(this, shooter) && PairTacticalPlan.HoldFire(this, shooter, contact))
+            )
                 return;
             bool somaliShot = SomaliFire.CanAttempt(this, shooter, contact);
             if (!somaliShot && !CombatCrouch.FireAllowed(this, shooter, contact.Position))
                 return;
             if (!shooter.Deployed || !MotionCombat.CanFire(this, shooter) || shooter.HandsBusyUntil > Time)
                 return;
-            if (V2.Distance(shooter.Position, contact.Position) > WeaponRange(shooter) && !EngagementPolicy.EmergencyAllowed(this, shooter, contact))
+            if (
+                V2.Distance(shooter.Position, contact.Position) > WeaponRange(shooter)
+                && !EngagementPolicy.EmergencyAllowed(this, shooter, contact)
+            )
                 return;
             bool sightReady = DirectionalVision.ReadyToFire(this, shooter, contact);
             bool reactionReady = ReactionTiming.WeaponReady(this, shooter, contact);
             if (!reactionReady || !sightReady)
                 return;
-            if (!somaliShot && !MotionCombat.InMotion(this, shooter) && !ReconOpening.ActiveFire(this, shooter) && EngagementPolicy.TryApproach(this, shooter, contact))
+            if (
+                !somaliShot
+                && !MotionCombat.InMotion(this, shooter)
+                && !ReconOpening.ActiveFire(this, shooter)
+                && EngagementPolicy.TryApproach(this, shooter, contact)
+            )
                 return;
-            if (!MotionCombat.SafeFire(this, shooter, contact.Position) || FriendlyInLane(shooter, contact.Position) || FireLaneSafety.HoldFire(this, shooter, contact.Position))
+            if (
+                !MotionCombat.SafeFire(this, shooter, contact.Position)
+                || FriendlyInLane(shooter, contact.Position)
+                || FireLaneSafety.HoldFire(this, shooter, contact.Position)
+            )
             {
                 Stats.FriendlyFireHolds++;
                 return;
             }
 
-            bool flag = shooter.Visible.Contains(contact.EnemyId);
-            SilentOrders.Core.V2 position = contact.Position;
+            bool targetVisible = shooter.Visible.Contains(contact.EnemyId);
+            V2 position = contact.Position;
             if (!somaliShot && !Map.LineOfSight(shooter.Position, position))
             {
                 return;
@@ -906,14 +1121,31 @@ namespace SilentOrders.Core
             ReconOpening.Fired(this, shooter, contact);
             if (MotionCombat.InMotion(this, shooter))
                 shooter.Motion.MovingShots++;
-            if (shooter.Motion.FrontId >= 0 && shooter.Motion.FrontId < Soldiers.Count && ShoulderPair.CanShootOver(this, shooter, Soldiers[shooter.Motion.FrontId], contact.Position))
+            if (
+                shooter.Motion.FrontId >= 0
+                && shooter.Motion.FrontId < Soldiers.Count
+                && ShoulderPair.CanShootOver(this, shooter, Soldiers[shooter.Motion.FrontId], contact.Position)
+            )
                 shooter.Motion.ShoulderShots++;
             Stats.Shots++;
-            AudioEvents.Emit(Time, shooter.GunSniper ? 2 : shooter.GunMachineGunner ? 1 : 0, shooter.Id);
+            AudioEvents.Emit(
+                Time,
+                shooter.GunSniper ? 2
+                    : shooter.GunMachineGunner ? 1
+                    : 0,
+                shooter.Id
+            );
             shooter.LastFire = Time;
             FireLaneSafety.Fired(this, shooter, contact.Position);
             shooter.NextShot = Time + WeaponBalance.For(shooter).FireSeconds + shooter.Suppression * 0.6f;
-            if (!shooter.GunSniper && (shooter.WeaponModel == 1 || AreaSuppression.Active(this, shooter) || LastOpponentHunt.IsCover(this, shooter)))
+            if (
+                !shooter.GunSniper
+                && (
+                    shooter.WeaponModel == 1
+                    || AreaSuppression.Active(this, shooter)
+                    || LastOpponentHunt.IsCover(this, shooter)
+                )
+            )
             {
                 if (shooter.BurstRounds <= 0)
                 {
@@ -921,7 +1153,14 @@ namespace SilentOrders.Core
                 }
 
                 shooter.BurstRounds--;
-                shooter.NextShot = Time + ((shooter.BurstRounds > 0) ? WeaponBalance.For(shooter).FireSeconds : WeaponBalance.For(shooter).FireSeconds * 9f) + shooter.Suppression * 0.2f;
+                shooter.NextShot =
+                    Time
+                    + (
+                        (shooter.BurstRounds > 0)
+                            ? WeaponBalance.For(shooter).FireSeconds
+                            : WeaponBalance.For(shooter).FireSeconds * 9f
+                    )
+                    + shooter.Suppression * 0.2f;
             }
 
             if (shooter.WeaponModel >= 4)
@@ -929,13 +1168,18 @@ namespace SilentOrders.Core
                 shooter.NextShot = Time + WeaponBalance.For(shooter).FireSeconds + shooter.Suppression * 0.6f;
             }
 
-            SilentOrders.Core.Squad squad = Team(shooter);
-            if (squad.EnvelopmentActive && squad.SupportIds.Contains(shooter.Id) && !shooter.GunSniper && shooter.Role != SilentOrders.Core.Role.Medic)
+            Squad squad = Team(shooter);
+            if (
+                squad.EnvelopmentActive
+                && squad.SupportIds.Contains(shooter.Id)
+                && !shooter.GunSniper
+                && shooter.Role != Role.Medic
+            )
             {
                 shooter.NextShot = Time + (shooter.NextShot - Time) * 0.78f;
             }
 
-            if (squad.Style == SilentOrders.Core.CombatStyle.Passive)
+            if (squad.Style == CombatStyle.Passive)
             {
                 shooter.NextShot += 0.4f;
             }
@@ -943,7 +1187,8 @@ namespace SilentOrders.Core
             if (shooter.SuppressiveFire)
             {
                 Stats.SuppressionShots++;
-                shooter.NextShot = Time + (shooter.NextShot - Time) * ((squad.Style == SilentOrders.Core.CombatStyle.Aggressive) ? 0.7f : 0.85f);
+                shooter.NextShot =
+                    Time + (shooter.NextShot - Time) * ((squad.Style == CombatStyle.Aggressive) ? 0.7f : 0.85f);
             }
 
             // After style/suppression modifiers, all actual sniper weapons fire
@@ -956,66 +1201,91 @@ namespace SilentOrders.Core
             }
             else
             {
-                shooter.FireStatus = V2.Distance(shooter.Position, contact.Position) > WeaponRange(shooter) ? "Экстренный огонь: точность ×0.5" : (shooter.SuppressiveFire ? "Подавляет позицию" : "Прицельный огонь");
+                shooter.FireStatus =
+                    V2.Distance(shooter.Position, contact.Position) > WeaponRange(shooter)
+                        ? "Экстренный огонь: точность ×0.5"
+                        : (shooter.SuppressiveFire ? "Подавляет позицию" : "Прицельный огонь");
             }
 
             shooter.Facing = (position - shooter.Position).Normalized;
-            shooter.State = ((flag && !shooter.SuppressiveFire && shooter.Role != SilentOrders.Core.Role.MachineGunner) ? SilentOrders.Core.ActionState.Fire : SilentOrders.Core.ActionState.Suppress);
+            shooter.State = (
+                (targetVisible && !shooter.SuppressiveFire && shooter.Role != Role.MachineGunner)
+                    ? ActionState.Fire
+                    : ActionState.Suppress
+            );
             var launched = SilentOrders.Core.Ballistics.Launch(this, shooter, contact, muzzle);
             CoverDebrisSystem.EjectCasing(this, shooter, muzzle, contact.Position);
             SomaliFire.Finish(this, shooter);
-            foreach (SilentOrders.Core.Soldier soldier2 in Soldiers)
+            foreach (Soldier listener in Soldiers)
             {
-                if (!shooter.GunSniper && soldier2.Alive && soldier2.Side != shooter.Side && SilentOrders.Core.V2.Distance(soldier2.Position, shooter.Position) < 17f && !soldier2.Visible.Contains(shooter.Id) && (!soldier2.Contacts.TryGetValue(shooter.Id, out var value) || Time - value.SeenAt > 2f))
+                if (
+                    !shooter.GunSniper
+                    && listener.Alive
+                    && listener.Side != shooter.Side
+                    && V2.Distance(listener.Position, shooter.Position) < 17f
+                    && !listener.Visible.Contains(shooter.Id)
+                    && (!listener.Contacts.TryGetValue(shooter.Id, out var value) || Time - value.SeenAt > 2f)
+                )
                 {
-                    soldier2.Contacts[shooter.Id] = new SilentOrders.Core.Contact
+                    listener.Contacts[shooter.Id] = new Contact
                     {
                         EnemyId = shooter.Id,
-                        Position = Map.NearestOpen(shooter.Position + new SilentOrders.Core.V2(Random.Range(-2f, 2f), Random.Range(-2f, 2f))),
+                        Position = Map.NearestOpen(
+                            shooter.Position + new V2(Random.Range(-2f, 2f), Random.Range(-2f, 2f))
+                        ),
                         SeenAt = Time,
                         Confidence = 0.35f,
-                        Visual = false
+                        Visual = false,
                     };
                 }
             }
         }
 
-        public float WeaponRange(SilentOrders.Core.Soldier s)
+        public float WeaponRange(Soldier s)
         {
             return WeaponBalance.For(s).Range;
         }
 
-        public float SmokeTransmission(SilentOrders.Core.V2 a, SilentOrders.Core.V2 z)
+        public float SmokeTransmission(V2 a, V2 z)
         {
             return SmokeTransmissionAt(a, z, Time);
         }
 
-        public float SmokeTransmissionAt(SilentOrders.Core.V2 a, SilentOrders.Core.V2 z, float at)
+        public float SmokeTransmissionAt(V2 a, V2 z, float at)
         {
             float depth = 0;
             foreach (var c in Smoke)
                 depth += SmokeTactics.Depth(a, z, c.Position, c.Born, c.Until, c.Radius, at);
-            return System.Math.Max(.035f, (float)System.Math.Exp(-depth));
+            return Math.Max(.035f, (float)Math.Exp(-depth));
         }
 
         // Legacy estimate for external diagnostics. Actual bullets use AimQuality
         // and geometric collisions; this value is never rolled to award damage.
-        public float Accuracy(SilentOrders.Core.Soldier shooter, SilentOrders.Core.Soldier target)
+        public float Accuracy(Soldier shooter, Soldier target)
         {
-            return SilentOrders.Core.Ballistics.Accuracy(this, shooter, target.Position, target.Moving, target.Crouched, ShoulderPair.Protection(this, target, shooter.Position), CombatCrouch.Protected(target), CombatTraining.Corners(this, target));
+            return SilentOrders.Core.Ballistics.Accuracy(
+                this,
+                shooter,
+                target.Position,
+                target.Moving,
+                target.Crouched,
+                ShoulderPair.Protection(this, target, shooter.Position),
+                CombatCrouch.Protected(target),
+                CombatTraining.Corners(this, target)
+            );
         }
 
-        public void RecordStress(SilentOrders.Core.Soldier shooter, SilentOrders.Core.Soldier target, float suppression, float morale)
+        public void RecordStress(Soldier shooter, Soldier target, float suppression, float morale)
         {
             Outcomes.Pressure(this, shooter, target, suppression, morale);
             if (shooter != null && shooter.Side != target.Side)
             {
-                shooter.MoraleDamage += System.Math.Min(target.Morale, System.Math.Max(0f, morale)) * 100f;
-                shooter.SuppressionDealt += System.Math.Min(1f - target.Suppression, System.Math.Max(0f, suppression)) * 100f;
+                shooter.MoraleDamage += Math.Min(target.Morale, Math.Max(0f, morale)) * 100f;
+                shooter.SuppressionDealt += Math.Min(1f - target.Suppression, Math.Max(0f, suppression)) * 100f;
             }
         }
 
-        public void Damage(SilentOrders.Core.Soldier target, SilentOrders.Core.Soldier shooter, float amount, float suppression, float morale)
+        public void Damage(Soldier target, Soldier shooter, float amount, float suppression, float morale)
         {
             if (!target.Alive)
             {
@@ -1026,18 +1296,26 @@ namespace SilentOrders.Core
             amount *= BodyArmor.DamageMultiplier(target.ArmorLevel);
             if (shooter != null && shooter.Side != target.Side)
             {
-                shooter.DamageDealt += System.Math.Min(target.Health, System.Math.Max(0f, amount));
+                shooter.DamageDealt += Math.Min(target.Health, Math.Max(0f, amount));
             }
 
             if (shooter != null && shooter.Side == target.Side)
                 amount *= .5f;
-            History.Event(this, "damage", shooter == null ? -1 : shooter.Id, target.Id, shooter == null ? target.Position : shooter.Position, target.Position, amount);
+            History.Event(
+                this,
+                "damage",
+                shooter == null ? -1 : shooter.Id,
+                target.Id,
+                shooter == null ? target.Position : shooter.Position,
+                target.Position,
+                amount
+            );
             RecordStress(shooter, target, suppression, morale);
-            target.Health = System.Math.Max(0f, target.Health - amount);
+            target.Health = Math.Max(0f, target.Health - amount);
             LossMemory.Record(this, target, amount);
             target.LastHurt = (target.LastIncoming = Time);
-            target.Suppression = SilentOrders.Core.Util.Clamp(target.Suppression + suppression*target.RaidSuppressionFactor, 0f, 1f);
-            target.Morale = System.Math.Max(0f, target.Morale - morale);
+            target.Suppression = Util.Clamp(target.Suppression + suppression * target.RaidSuppressionFactor, 0f, 1f);
+            target.Morale = Math.Max(0f, target.Morale - morale);
             if (!target.Alive)
             {
                 Down(target, shooter);
@@ -1055,43 +1333,43 @@ namespace SilentOrders.Core
             {
                 target.Incapacitated = true;
                 target.SupportReady = false;
-                SilentOrders.Core.TacticalAI.Stop(target);
+                TacticalAI.Stop(target);
                 Stats.CriticalWounds++;
-                SilentOrders.Core.Dialogue.Say(this, target, 32, urgent: true);
+                Dialogue.Say(this, target, 32, urgent: true);
             }
             else
             {
-                SilentOrders.Core.Dialogue.Say(this, target, 12, urgent: true);
+                Dialogue.Say(this, target, 12, urgent: true);
             }
 
             Outcomes.Wound(this, target, shooter, healthBeforeDamage, healthBeforeDamage - target.Health);
         }
 
-        private void Down(SilentOrders.Core.Soldier target, SilentOrders.Core.Soldier shooter, string cause = "direct_hit")
+        private void Down(Soldier target, Soldier shooter, string cause = "direct_hit")
         {
             Outcomes.Death(this, target, shooter, cause);
             CorpseEquipment.Drop(this, target);
             if (target.SupplyDonorId >= 0)
             {
-                SilentOrders.Core.SupplyAI.Cancel(this, target);
+                SupplyAI.Cancel(this, target);
             }
 
-            foreach (SilentOrders.Core.Soldier soldier in Soldiers)
+            foreach (Soldier soldier in Soldiers)
             {
                 if (soldier.SupplyDonorId == target.Id || soldier.SupplyReceiverId == target.Id)
                 {
-                    SilentOrders.Core.SupplyAI.Cancel(this, soldier);
+                    SupplyAI.Cancel(this, soldier);
                 }
             }
 
             if (target.RescueTargetId >= 0)
             {
-                SilentOrders.Core.SupportAI.Release(this, target, complete: false);
+                SupportAI.Release(this, target, complete: false);
             }
 
             if (target.RescuerId >= 0)
             {
-                SilentOrders.Core.SupportAI.Release(this, Soldiers[target.RescuerId], complete: false);
+                SupportAI.Release(this, Soldiers[target.RescuerId], complete: false);
             }
 
             if (shooter != null)
@@ -1099,18 +1377,21 @@ namespace SilentOrders.Core
                 shooter.Kills++;
             }
 
-            target.State = SilentOrders.Core.ActionState.Down;
+            target.State = ActionState.Down;
             target.Moving = false;
             target.Speech = "";
             TacticalAI.Stop(target); // Reset cursor as well as the route after a lethal hit.
             Log(target.Side, target.Name + " выбыл из боя.");
-            foreach (SilentOrders.Core.Soldier soldier2 in Soldiers)
+            foreach (Soldier witness in Soldiers)
             {
-                if (soldier2.Alive && soldier2.Side == target.Side && SilentOrders.Core.V2.Distance(soldier2.Position, target.Position) < 9f)
+                if (witness.Alive && witness.Side == target.Side && V2.Distance(witness.Position, target.Position) < 9f)
                 {
-                    RecordStress(shooter, soldier2, 0f, (target.Id == Team(target).LeaderId) ? 0.28f : 0.2f);
-                    soldier2.Morale = System.Math.Max(0f, soldier2.Morale - ((target.Id == Team(target).LeaderId) ? 0.28f : 0.2f));
-                    SilentOrders.Core.Dialogue.Say(this, soldier2, 13, urgent: true);
+                    RecordStress(shooter, witness, 0f, (target.Id == Team(target).LeaderId) ? 0.28f : 0.2f);
+                    witness.Morale = Math.Max(
+                        0f,
+                        witness.Morale - ((target.Id == Team(target).LeaderId) ? 0.28f : 0.2f)
+                    );
+                    Dialogue.Say(this, witness, 13, urgent: true);
                 }
             }
         }
@@ -1119,49 +1400,65 @@ namespace SilentOrders.Core
         {
             if (MissionCompletion.Update(this))
                 return;
-            int num = 0;
-            int num2 = 0;
-            foreach (SilentOrders.Core.Soldier soldier in Soldiers)
+            int greenAtObjective = 0;
+            int redAtObjective = 0;
+            foreach (Soldier soldier in Soldiers)
             {
-                if (soldier.Alive && !soldier.Incapacitated && soldier.RescuerId < 0 && !soldier.Busy && !soldier.Broken && SilentOrders.Core.V2.Distance(soldier.Position, Map.Objective) <= 2.1f)
+                if (
+                    soldier.Alive
+                    && !soldier.Incapacitated
+                    && soldier.RescuerId < 0
+                    && !soldier.Busy
+                    && !soldier.Broken
+                    && V2.Distance(soldier.Position, Map.Objective) <= 2.1f
+                )
                 {
-                    if (soldier.Side == SilentOrders.Core.Side.Green)
+                    if (soldier.Side == Side.Green)
                     {
-                        num++;
+                        greenAtObjective++;
                     }
                     else
                     {
-                        num2++;
+                        redAtObjective++;
                     }
                 }
             }
 
-            Contested = num > 0 && num2 > 0;
-            if (num > 0 && num2 == 0)
+            Contested = greenAtObjective > 0 && redAtObjective > 0;
+            if (greenAtObjective > 0 && redAtObjective == 0)
             {
-                Capture = System.Math.Min(1f, Capture + dt / Config.CaptureSeconds);
+                Capture = Math.Min(1f, Capture + dt / Config.CaptureSeconds);
             }
-            else if (num == 0)
+            else if (greenAtObjective == 0)
             {
-                Capture = System.Math.Max(0f, Capture - dt / (Config.CaptureSeconds * 2f));
+                Capture = Math.Max(0f, Capture - dt / (Config.CaptureSeconds * 2f));
             }
 
-            if (Alive(SilentOrders.Core.Side.Green) == 0)
+            if (Alive(Side.Green) == 0)
             {
-                Outcome = SilentOrders.Core.Outcome.GreenEliminated;
+                Outcome = Outcome.GreenEliminated;
             }
             else if (!RaidMode && Capture >= 1f)
             {
-                Outcome = SilentOrders.Core.Outcome.GreenCaptured;
+                Outcome = Outcome.GreenCaptured;
             }
             else if (Time >= Config.TimeLimit && EnemyClearedAt < 0f)
             {
-                Outcome = SilentOrders.Core.Outcome.RedHeld;
+                Outcome = Outcome.RedHeld;
             }
 
             if (Outcome != 0)
             {
-                Log((Outcome != SilentOrders.Core.Outcome.GreenCaptured) ? SilentOrders.Core.Side.Red : SilentOrders.Core.Side.Green, (Outcome == SilentOrders.Core.Outcome.GreenCaptured) ? "Точка «Рубеж» захвачена." : ((Outcome == SilentOrders.Core.Outcome.GreenEliminated) ? "Атакующее отделение выбыло." : "Время истекло. Оборона удержала рубеж."));
+                Log(
+                    (Outcome != Outcome.GreenCaptured) ? Side.Red : Side.Green,
+                    (Outcome == Outcome.GreenCaptured)
+                        ? "Точка «Рубеж» захвачена."
+                        : (
+                            (Outcome == Outcome.GreenEliminated)
+                                ? "Атакующее отделение выбыло."
+                                : "Время истекло. Оборона удержала рубеж."
+                        )
+                );
             }
         }
     }

@@ -24,7 +24,7 @@ namespace Rubezh.UnityPort
 #if ENABLE_LEGACY_INPUT_MANAGER || !ENABLE_INPUT_SYSTEM
                 return Input.touchCount;
 #else
-    return 0;
+                return 0;
 #endif
             }
         }
@@ -39,10 +39,10 @@ namespace Rubezh.UnityPort
             {
                 fingerId = t.fingerId,
                 position = t.position,
-                phase = t.phase
+                phase = t.phase,
             };
 #else
-   return default(TouchSample);
+            return default(TouchSample);
 #endif
         }
     }

@@ -32,22 +32,22 @@ namespace Rubezh.UnityPort
             l.playerSpawn = Cell(map.Entry);
             l.botSpawn = Cell(map.EnemyEntry);
             for (int y = 0; y < map.Rows; y++)
-                for (int x = 0; x < map.Columns; x++)
+            for (int x = 0; x < map.Columns; x++)
+            {
+                int i = y * map.Columns + x;
+                var tile = map.Tiles[i];
+                if (tile == Tile.Road || tile == Tile.Rubble)
+                    l.SetGround(x, y, tile == Tile.Road ? LevelGroundKind.Road : LevelGroundKind.Rubble);
+                if (tile == Tile.Wall || tile == Tile.LowCover)
                 {
-                    int i = y * map.Columns + x;
-                    var tile = map.Tiles[i];
-                    if (tile == Tile.Road || tile == Tile.Rubble)
-                        l.SetGround(x, y, tile == Tile.Road ? LevelGroundKind.Road : LevelGroundKind.Rubble);
-                    if (tile == Tile.Wall || tile == Tile.LowCover)
-                    {
-                        var kind = tile == Tile.Wall ? LevelObjectKind.HighWallOriginal : LevelObjectKind.LowCoverOriginal;
-                        if (map.LevelProps != null && map.LevelProps[i] > 0)
-                            kind = (LevelObjectKind)(100 + map.LevelProps[i]);
-                        else if (map.LowCoverStyle != null && map.LowCoverStyle[i] > 0)
-                            kind = (LevelObjectKind)(1 + map.LowCoverStyle[i]);
-                        l.SetObject(x, y, kind);
-                    }
+                    var kind = tile == Tile.Wall ? LevelObjectKind.HighWallOriginal : LevelObjectKind.LowCoverOriginal;
+                    if (map.LevelProps != null && map.LevelProps[i] > 0)
+                        kind = (LevelObjectKind)(100 + map.LevelProps[i]);
+                    else if (map.LowCoverStyle != null && map.LowCoverStyle[i] > 0)
+                        kind = (LevelObjectKind)(1 + map.LowCoverStyle[i]);
+                    l.SetObject(x, y, kind);
                 }
+            }
 
             Populate(l, b);
             return l;
@@ -56,9 +56,10 @@ namespace Rubezh.UnityPort
         public static void Populate(RubezhLevel l, BattleSimulation b)
         {
             l.defenders.Clear();
-            int count = b.CampaignTotal, first = count - b.CampaignReserve;
+            int count = b.CampaignTotal,
+                first = count - b.CampaignReserve;
             var kits = CampaignScenario.EnemyKits(b.CampaignLevel);
-            for (int start = 0; start < count;)
+            for (int start = 0; start < count; )
             {
                 bool reserve = start >= first;
                 int size = Math.Min(5, (reserve ? count : first) - start);
@@ -80,7 +81,7 @@ namespace Rubezh.UnityPort
                     position = point,
                     arrivalSeconds = reserve ? 110f : 0f,
                     legacyReserveTrigger = reserve,
-                    behavior = !reserve && b.CampaignReserve > 0 ? DefenderBehavior.Attack : DefenderBehavior.Hold
+                    behavior = !reserve && b.CampaignReserve > 0 ? DefenderBehavior.Attack : DefenderBehavior.Hold,
                 };
                 group.soldiers.Clear();
                 for (int i = 0; i < size; i++)

@@ -21,25 +21,58 @@ namespace SilentOrders.Core
                             Confidence = noise.Confidence,
                             Uncertainty = 4.25f,
                             Inferred = true,
-                            Reported = true
+                            Reported = true,
                         };
         }
 
         public static bool Holding(BattleSimulation b, Soldier s)
         {
             var g = s.DefenderGroup;
-            if (!s.GunSniper || g == null || !g.Pullback || g.Counterattack.Phase != RedCounterattackPhase.Retreat || g.Counterattack.RetreatClear || !AreaSuppression.Enabled(b, s) || !s.Available || !s.Deployed || s.Busy || s.Broken || s.GrenadeEscape.Active || s.CounterSniper.IncomingUntil > b.Time || s.CounterSniper.Phase != CounterSniperPhase.None || s.Suppression >= .6f || s.Ammo + s.Reserve <= 0 || s.HelpRetreatUntil > b.Time || s.RescueTargetId >= 0 || s.SupplyReceiverId >= 0)
+            if (
+                !s.GunSniper
+                || g == null
+                || !g.Pullback
+                || g.Counterattack.Phase != RedCounterattackPhase.Retreat
+                || g.Counterattack.RetreatClear
+                || !AreaSuppression.Enabled(b, s)
+                || !s.Available
+                || !s.Deployed
+                || s.Busy
+                || s.Broken
+                || s.GrenadeEscape.Active
+                || s.CounterSniper.IncomingUntil > b.Time
+                || s.CounterSniper.Phase != CounterSniperPhase.None
+                || s.Suppression >= .6f
+                || s.Ammo + s.Reserve <= 0
+                || s.HelpRetreatUntil > b.Time
+                || s.RescueTargetId >= 0
+                || s.SupplyReceiverId >= 0
+            )
                 return false;
             // Use only fresh sightings/reports, never the actual hidden enemy position.
             foreach (var c in Sources(b, s))
             {
-                float d = V2.Distance(s.Position, c.Position), range = b.WeaponRange(s);
-                if (c.Confidence < .35f || b.Time - c.SeenAt > 8 || c.Uncertainty > 5 || d < range * .85f || d > range || !b.Map.LineOfSight(s.Position, c.Position))
+                float d = V2.Distance(s.Position, c.Position),
+                    range = b.WeaponRange(s);
+                if (
+                    c.Confidence < .35f
+                    || b.Time - c.SeenAt > 8
+                    || c.Uncertainty > 5
+                    || d < range * .85f
+                    || d > range
+                    || !b.Map.LineOfSight(s.Position, c.Position)
+                )
                     continue;
                 if (b.Time - s.LastIncoming < 1 && !PositionLogic.Protected(b, s, s.Position))
                     continue;
                 foreach (var mate in g.Members)
-                    if (mate != s && mate.Alive && mate.Deployed && !mate.Incapacitated && V2.Distance(mate.Position, c.Position) < d - 1)
+                    if (
+                        mate != s
+                        && mate.Alive
+                        && mate.Deployed
+                        && !mate.Incapacitated
+                        && V2.Distance(mate.Position, c.Position) < d - 1
+                    )
                         return true;
             }
 

@@ -8,11 +8,25 @@ namespace SilentOrders.Core
         public bool Waiting;
         public CombatStyle Style = CombatStyle.Balanced;
         public ManeuverIntent Intent;
-        public float AcceptedAt, ExecuteAt, Deadline, NextReview, LastProgress;
-        public int LocalRepairs, ReviewNoRoute, ReviewSamples;
+        public float AcceptedAt,
+            ExecuteAt,
+            Deadline,
+            NextReview,
+            LastProgress;
+        public int LocalRepairs,
+            ReviewNoRoute,
+            ReviewSamples;
         public float NextBlockedReport;
-        public int Accepted, Executed, Superseded, PreservedServices, PreservedFire, FinishedBounds, ExpiredBounds, BlockedReports;
-        public string Phase = "Исполнение", Reason = "Начальный замысел";
+        public int Accepted,
+            Executed,
+            Superseded,
+            PreservedServices,
+            PreservedFire,
+            FinishedBounds,
+            ExpiredBounds,
+            BlockedReports;
+        public string Phase = "Исполнение",
+            Reason = "Начальный замысел";
         public readonly HashSet<int> Bounds = new HashSet<int>();
         public readonly Dictionary<int, V2> Positions = new Dictionary<int, V2>();
     }
@@ -49,9 +63,23 @@ namespace SilentOrders.Core
             q.PriorityPending = false;
             if (t.Intent != q.Intent || t.Style == CombatStyle.Withdraw || t.Style == CombatStyle.Passive)
                 foreach (var s in b.Soldiers)
-                    if (q.Contains(s) && s.Available && s.Deployed && !TacticalOrders.ServiceActive(s) && s.PathCursor < s.Path.Count && s.MoveAuthorized && b.Time - s.LastMoved < 1.5f && V2.Distance(s.Position, s.Destination) <= 5f)
+                    if (
+                        q.Contains(s)
+                        && s.Available
+                        && s.Deployed
+                        && !TacticalOrders.ServiceActive(s)
+                        && s.PathCursor < s.Path.Count
+                        && s.MoveAuthorized
+                        && b.Time - s.LastMoved < 1.5f
+                        && V2.Distance(s.Position, s.Destination) <= 5f
+                    )
                         t.Bounds.Add(s.Id);
-            Report(b, q, "Принял: " + CommanderPriorities.StyleName(t.Style) + " / " + CommanderPriorities.IntentName(t.Intent), "commanderAccepted");
+            Report(
+                b,
+                q,
+                "Принял: " + CommanderPriorities.StyleName(t.Style) + " / " + CommanderPriorities.IntentName(t.Intent),
+                "commanderAccepted"
+            );
             Update(b, q);
         }
 
@@ -89,7 +117,12 @@ namespace SilentOrders.Core
                 if (b.Time >= t.NextReview)
                 {
                     t.Phase = "Задержан";
-                    Report(b, q, "Не могу перестроить группу: нет боеспособного командира или заместителя", "commanderBlocked");
+                    Report(
+                        b,
+                        q,
+                        "Не могу перестроить группу: нет боеспособного командира или заместителя",
+                        "commanderBlocked"
+                    );
                     t.NextReview = b.Time + 8;
                     t.BlockedReports++;
                 }
@@ -102,7 +135,13 @@ namespace SilentOrders.Core
             foreach (int id in t.Bounds)
             {
                 var s = b.Soldiers[id];
-                if (!s.Available || s.PathCursor >= s.Path.Count || V2.Distance(s.Position, s.Destination) < .6f || !s.MoveAuthorized || b.Time - s.LastMoved >= 2.5f)
+                if (
+                    !s.Available
+                    || s.PathCursor >= s.Path.Count
+                    || V2.Distance(s.Position, s.Destination) < .6f
+                    || !s.MoveAuthorized
+                    || b.Time - s.LastMoved >= 2.5f
+                )
                 {
                     done.Add(id);
                     t.FinishedBounds++;
@@ -133,7 +172,15 @@ namespace SilentOrders.Core
             foreach (var s in b.Soldiers)
                 if (q.Contains(s) && s.Available)
                     t.Positions[s.Id] = s.Position;
-            Report(b, q, "Выполняем: " + CommanderPriorities.StyleName(q.Style) + " / " + CommanderPriorities.IntentName(q.Intent), "commanderExecuting");
+            Report(
+                b,
+                q,
+                "Выполняем: "
+                    + CommanderPriorities.StyleName(q.Style)
+                    + " / "
+                    + CommanderPriorities.IntentName(q.Intent),
+                "commanderExecuting"
+            );
         }
 
         public static bool Waiting(BattleSimulation b, Squad q)
@@ -148,7 +195,14 @@ namespace SilentOrders.Core
             CommandHierarchy.Maintain(b, q);
             if (b.CustomDefenders && q == b.Red)
                 return;
-            if (t.Waiting || b.Time < 10 || b.Time < t.NextReview || TacticalOrders.Emergency(q) || WithdrawalTactics.Active(q) || q.Style == CombatStyle.Passive)
+            if (
+                t.Waiting
+                || b.Time < 10
+                || b.Time < t.NextReview
+                || TacticalOrders.Emergency(q)
+                || WithdrawalTactics.Active(q)
+                || q.Style == CombatStyle.Passive
+            )
                 return;
             t.NextReview = b.Time + 6;
             t.ReviewSamples++;
@@ -159,7 +213,14 @@ namespace SilentOrders.Core
                 {
                     ExecutionReview.Sample(b, s);
                     var e = s.Execution;
-                    if (e.StalledSince < 0 || b.Time - e.StalledSince < 8 || b.Time - s.Progress.ProgressAt < 8 || b.Time < e.NextRepair || ExecutionReview.ProtectedTask(b, s) || ExecutionReview.UsefulWatch(b, s))
+                    if (
+                        e.StalledSince < 0
+                        || b.Time - e.StalledSince < 8
+                        || b.Time - s.Progress.ProgressAt < 8
+                        || b.Time < e.NextRepair
+                        || ExecutionReview.ProtectedTask(b, s)
+                        || ExecutionReview.UsefulWatch(b, s)
+                    )
                         continue;
                     if (e.StalledSince < oldest)
                     {
@@ -193,7 +254,16 @@ namespace SilentOrders.Core
                 t.LocalRepairs++;
                 memory.LastRepair = memory.Cause;
                 t.Phase = "Локальная коррекция";
-                b.History.Event(b, "commanderLocalRepair", q.LeaderId, chosen.Id, chosen.Position, chosen.Position, 0, memory.Cause);
+                b.History.Event(
+                    b,
+                    "commanderLocalRepair",
+                    q.LeaderId,
+                    chosen.Id,
+                    chosen.Position,
+                    chosen.Position,
+                    0,
+                    memory.Cause
+                );
                 return;
             }
 
@@ -207,7 +277,8 @@ namespace SilentOrders.Core
             // One bounded retry per chosen member, not a reset of all squad actions.
             chosen.Progress.NextReview = b.Time;
             chosen.Tactical.NextUsefulReview = b.Time;
-            int started = chosen.Progress.Started, failed = chosen.Progress.NoRoute;
+            int started = chosen.Progress.Started,
+                failed = chosen.Progress.NoRoute;
             ProgressRecovery.Decide(b, chosen);
             memory.NextRepair = b.Time + 10;
             if (chosen.Progress.Started > started)
@@ -216,7 +287,16 @@ namespace SilentOrders.Core
                 t.LocalRepairs++;
                 memory.LastRepair = memory.Cause;
                 t.Phase = "Локальная коррекция";
-                b.History.Event(b, "commanderLocalRepair", q.LeaderId, chosen.Id, chosen.Position, chosen.Destination, 0, memory.Cause);
+                b.History.Event(
+                    b,
+                    "commanderLocalRepair",
+                    q.LeaderId,
+                    chosen.Id,
+                    chosen.Position,
+                    chosen.Destination,
+                    0,
+                    memory.Cause
+                );
             }
             else if (chosen.Progress.NoRoute > failed)
             {
@@ -226,7 +306,16 @@ namespace SilentOrders.Core
                 {
                     t.NextBlockedReport = b.Time + 24;
                     t.BlockedReports++;
-                    Report(b, q, "Замысел сохраняю. " + chosen.Name + ": " + memory.Cause + "; безопасное смещение не найдено. Нужна оценка направления", "commanderBlocked");
+                    Report(
+                        b,
+                        q,
+                        "Замысел сохраняю. "
+                            + chosen.Name
+                            + ": "
+                            + memory.Cause
+                            + "; безопасное смещение не найдено. Нужна оценка направления",
+                        "commanderBlocked"
+                    );
                 }
             }
         }

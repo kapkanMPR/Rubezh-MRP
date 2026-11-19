@@ -12,7 +12,8 @@ namespace Rubezh.UnityPort
         void PrepareFireLoading()
         {
             loadingFade = 0;
-            if (loadingFx == null) loadingFx = gameObject.AddComponent<RubezhLoadingFx>();
+            if (loadingFx == null)
+                loadingFx = gameObject.AddComponent<RubezhLoadingFx>();
             fireLoadingAvailable = loadingFx.Initialize();
         }
 
@@ -28,6 +29,5 @@ namespace Rubezh.UnityPort
             }
             HideNativeLoading();
         }
-
     }
 }

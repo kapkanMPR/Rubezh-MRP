@@ -7,24 +7,50 @@ using UnityEngine;
 
 namespace Rubezh.UnityPort
 {
-
-
     public sealed partial class RubezhApp : MonoBehaviour
     {
         BattleSimulation battle;
         NativeBattleComposer painter;
         Texture2D texture;
-        byte[] pixels;
-        Progress progress, draft;
+
+        Progress progress,
+            draft;
         Kit[] quick = Progress.FreshKits();
         FormationSettings quickFormation = new FormationSettings();
         bool quickFormationLoaded;
-        int mission = 1, selected, kitSelected, screen, style = 2, maneuver; // 0 native camp, 2 battle, 5 settings, 6 formation, 7 developer scenarios
-        bool campaignMode = true, paused, debug, awarded;
-        float accumulator, speed = 1, nextFrame;
-        Vector2 menuScroll, detailScroll;
+
+        // Keep integer IDs stable for saved performance reports and the developer harness.
+        static class ScreenId
+        {
+            public const int Camp = 0;
+            public const int Battle = 2;
+            public const int LegacyCampaignGrid = 4;
+            public const int Settings = 5;
+            public const int Formation = 6;
+            public const int DeveloperScenarios = 7;
+            public const int HybridRange = 8;
+        }
+
+        int screen = ScreenId.Camp;
+        int mission = 1,
+            selected,
+            kitSelected,
+            style = 2,
+            maneuver;
+        bool campaignMode = true,
+            paused,
+            debug,
+            awarded;
+        float accumulator,
+            speed = 1,
+            nextFrame;
+        Vector2 menuScroll,
+            detailScroll;
         string message = "";
-        GUIStyle title, body, small, button;
+        GUIStyle title,
+            body,
+            small,
+            button;
         Rect mapRect;
         float W = 1600;
         const float H = 1000;
@@ -32,16 +58,18 @@ namespace Rubezh.UnityPort
         {
             get
             {
-                return Path.Combine(Application.persistentDataPath, DeveloperBuild.WebPreview ? "rubezh-web-progress.json" : DeveloperBuild.Enabled ? "rubezh-developer-progress.json" : "rubezh-unity-progress.json");
+                return Path.Combine(
+                    Application.persistentDataPath,
+                    DeveloperBuild.WebPreview ? "rubezh-web-progress.json"
+                        : DeveloperBuild.Enabled ? "rubezh-developer-progress.json"
+                        : "rubezh-unity-progress.json"
+                );
             }
         }
 
         Kit[] Kits
         {
-            get
-            {
-                return campaignMode ? draft.kits : quick;
-            }
+            get { return campaignMode ? draft.kits : quick; }
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -71,13 +99,7 @@ namespace Rubezh.UnityPort
 
         Progress Load()
         {
-            foreach (string path in new[]
-            {
-                SavePath,
-                SavePath + ".bak"
-            }
-
-            )
+            foreach (string path in new[] { SavePath, SavePath + ".bak" })
                 try
                 {
                     if (File.Exists(path))
@@ -145,7 +167,7 @@ namespace Rubezh.UnityPort
         bool legacyRead;
         int devDraftMission;
         string devLastJson;
-        bool devInput;
+
         static string DevDraftKey(int m)
         {
             return "rubezh.dev.preparation.v1." + m;
@@ -159,12 +181,36 @@ namespace Rubezh.UnityPort
             try
             {
                 var a = JsonUtility.FromJson<DevPreparation>(PlayerPrefs.GetString(key));
-                if (a != null && a.kits != null && a.kits.Length == 5 && a.kits.All(k => k != null && k.bag != null && k.bag.Length == 12 && k.weapon >= 0 && k.weapon <= 4 && k.extra >= 0 && k.extra <= 4 && k.rig >= 0 && k.rig <= 2 && k.armor >= 0 && k.armor <= 2 && k.grenade >= 0 && k.grenade <= 5 && k.grenade2 >= 0 && k.grenade2 <= 5 && k.grenade3 >= 0 && k.grenade3 <= 5) && a.training != null && a.training.Length == Progress.TrainingCount && a.training.All(t => t >= 0 && t <= 3))
+                if (
+                    a != null
+                    && a.kits != null
+                    && a.kits.Length == 5
+                    && a.kits.All(k =>
+                        k != null
+                        && k.bag != null
+                        && k.bag.Length == 12
+                        && k.weapon >= 0
+                        && k.weapon <= 4
+                        && k.extra >= 0
+                        && k.extra <= 4
+                        && k.rig >= 0
+                        && k.rig <= 2
+                        && k.armor >= 0
+                        && k.armor <= 2
+                        && k.grenade >= 0
+                        && k.grenade <= 5
+                        && k.grenade2 >= 0
+                        && k.grenade2 <= 5
+                        && k.grenade3 >= 0
+                        && k.grenade3 <= 5
+                    )
+                    && a.training != null
+                    && a.training.Length == Progress.TrainingCount
+                    && a.training.All(t => t >= 0 && t <= 3)
+                )
                     return a;
             }
-            catch (ArgumentException)
-            {
-            }
+            catch (ArgumentException) { }
 
             return null;
         }
@@ -195,11 +241,7 @@ namespace Rubezh.UnityPort
                 var saved = ReadDevDraft(n);
                 // Adopt an existing pre-patch Dev save only at its own level or above.
                 if (saved == null && legacyDev != null && legacyDev.budgetMission == n)
-                    saved = new DevPreparation
-                    {
-                        kits = legacyDev.kits,
-                        training = legacyDev.training
-                    };
+                    saved = new DevPreparation { kits = legacyDev.kits, training = legacyDev.training };
                 if (saved != null)
                 {
                     basis.kits = saved.kits;
@@ -212,6 +254,7 @@ namespace Rubezh.UnityPort
         }
 
         static int lastCombatSeed;
+
         internal static int NewCombatSeed()
         {
             int value = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0) & int.MaxValue;
@@ -221,7 +264,9 @@ namespace Rubezh.UnityPort
             return value;
         }
 
-        readonly System.Collections.Generic.Dictionary<string, Rubezh.GreenLook> legacyLooks = new System.Collections.Generic.Dictionary<string, Rubezh.GreenLook>();
+        readonly System.Collections.Generic.Dictionary<string, Rubezh.GreenLook> legacyLooks =
+            new System.Collections.Generic.Dictionary<string, Rubezh.GreenLook>();
+
         Rubezh.GreenLook LegacyLook(int slot, Kit kit)
         {
             string key = CampKey + "look57." + slot;
@@ -234,7 +279,9 @@ namespace Rubezh.UnityPort
                 legacyLooks[key] = l;
             }
 
-            int h = l.headId, a = l.lightId, f = l.familyId;
+            int h = l.headId,
+                a = l.lightId,
+                f = l.familyId;
             l.Ensure(kit.Class(slot), slot == 0);
             if (h != l.headId || a != l.lightId || f != l.familyId)
             {
@@ -255,12 +302,12 @@ namespace Rubezh.UnityPort
             battle = candidate;
             interestingSession = null;
             battle.AudioEvents.Enabled = true;
-            screen = 2;
+            screen = ScreenId.Battle;
             paused = false;
             awarded = false;
             accumulator = 0;
             selected = 0;
-            drawer = "";
+
             zoom = 1;
             pan = Vector2.zero;
             style = 2;
@@ -272,68 +319,98 @@ namespace Rubezh.UnityPort
             BeginMissionDialogue();
         }
 
-        double fullUpdateCpuMs,guiCpuMs;
+        double fullUpdateCpuMs,
+            guiCpuMs;
+
         void Update()
         {
-            long started=System.Diagnostics.Stopwatch.GetTimestamp();
-            try {
-            guiCpuMs=0;
-            UpdateAudio();
-            if(TickHybridRange())return;
-            UpdateStoryMortarAudio();
-            TrimPortraits();
-            long uiStarted=System.Diagnostics.Stopwatch.GetTimestamp();
-            UpdateNativeUtilityMenus();
-            UpdateNativeFormationMenu();
-            MaintainFixedBenchmark();
-            guiCpuMs+=(System.Diagnostics.Stopwatch.GetTimestamp()-uiStarted)*1000.0/System.Diagnostics.Stopwatch.Frequency;
-            UpdatePerformance();
-            UpdateDiagnostics();
-            if (battle == null)
-                importantCommands.Clear();
-            if (loading)
+            long started = System.Diagnostics.Stopwatch.GetTimestamp();
+            try
             {
-                uiStarted=System.Diagnostics.Stopwatch.GetTimestamp();
-                TickLoading();
-                guiCpuMs+=(System.Diagnostics.Stopwatch.GetTimestamp()-uiStarted)*1000.0/System.Diagnostics.Stopwatch.Frequency;
-                return;
-            }
+                guiCpuMs = 0;
+                UpdateAudio();
+                if (TickHybridRange())
+                    return;
+                UpdateStoryMortarAudio();
+                TrimPortraits();
+                long uiStarted = System.Diagnostics.Stopwatch.GetTimestamp();
+                UpdateNativeUtilityMenus();
+                UpdateNativeFormationMenu();
+                MaintainFixedBenchmark();
+                guiCpuMs +=
+                    (System.Diagnostics.Stopwatch.GetTimestamp() - uiStarted)
+                    * 1000.0
+                    / System.Diagnostics.Stopwatch.Frequency;
+                UpdatePerformance();
+                UpdateDiagnostics();
+                if (battle == null)
+                    importantCommands.Clear();
+                if (loading)
+                {
+                    uiStarted = System.Diagnostics.Stopwatch.GetTimestamp();
+                    TickLoading();
+                    guiCpuMs +=
+                        (System.Diagnostics.Stopwatch.GetTimestamp() - uiStarted)
+                        * 1000.0
+                        / System.Diagnostics.Stopwatch.Frequency;
+                    return;
+                }
 
-            if (!KeepBattleView && sceneArtBattle != null)
-            {
-                ReleaseSceneGraphics();
-                Rubezh.Graphics.ReleaseSceneSprites();
-            }
+                if (!KeepBattleView && sceneArtBattle != null)
+                {
+                    ReleaseSceneGraphics();
+                    Rubezh.Graphics.ReleaseSceneSprites();
+                }
 
-            if (battle == null || screen != 2)
-                return;
-            if(!testBattle&&!benchActive)UpdateMissionDialogue();
-            importantCommands.Observe(battle);
-            if (!paused && speechMode != SpeechMode.Off)
-                importantCommands.Tick(Mathf.Min(Time.unscaledDeltaTime, .2f));
-            if (!benchActive && (testBattle || !MissionDialogueActive) && !paused && battle.Outcome == Outcome.Running)
-                AdvanceSimulation(Time.unscaledDeltaTime);
-            UpdateBattleSound();
-            if(!benchActive)ProcessBattleCompletion();
-            if(battle==null||screen!=2||loading)return;
-            UpdatePresentationInterpolation();
-            uiStarted=System.Diagnostics.Stopwatch.GetTimestamp();
-            UpdateUnityTestHud();
-            guiCpuMs+=(System.Diagnostics.Stopwatch.GetTimestamp()-uiStarted)*1000.0/System.Diagnostics.Stopwatch.Frequency;
-            if(battle==null||screen!=2||loading)return;
-            if (Time.unscaledTime >= nextFrame && NeedsBattleRender())
-            {
-                Render();
-                nextFrame = Time.unscaledTime; // Application.targetFrameRate owns pacing for every quality tier.
+                if (battle == null || screen != ScreenId.Battle)
+                    return;
+                if (!testBattle && !benchActive)
+                    UpdateMissionDialogue();
+                importantCommands.Observe(battle);
+                if (!paused && speechMode != SpeechMode.Off)
+                    importantCommands.Tick(Mathf.Min(Time.unscaledDeltaTime, .2f));
+                if (
+                    !benchActive
+                    && (testBattle || !MissionDialogueActive)
+                    && !paused
+                    && battle.Outcome == Outcome.Running
+                )
+                    AdvanceSimulation(Time.unscaledDeltaTime);
+                UpdateBattleSound();
+                if (!benchActive)
+                    ProcessBattleCompletion();
+                if (battle == null || screen != ScreenId.Battle || loading)
+                    return;
+                UpdatePresentationInterpolation();
+                uiStarted = System.Diagnostics.Stopwatch.GetTimestamp();
+                UpdateUnityTestHud();
+                guiCpuMs +=
+                    (System.Diagnostics.Stopwatch.GetTimestamp() - uiStarted)
+                    * 1000.0
+                    / System.Diagnostics.Stopwatch.Frequency;
+                if (battle == null || screen != ScreenId.Battle || loading)
+                    return;
+                if (Time.unscaledTime >= nextFrame && NeedsBattleRender())
+                {
+                    Render();
+                    nextFrame = Time.unscaledTime; // Application.targetFrameRate owns pacing for every quality tier.
+                }
             }
-            } finally {fullUpdateCpuMs=(System.Diagnostics.Stopwatch.GetTimestamp()-started)*1000.0/System.Diagnostics.Stopwatch.Frequency;}
+            finally
+            {
+                fullUpdateCpuMs =
+                    (System.Diagnostics.Stopwatch.GetTimestamp() - started)
+                    * 1000.0
+                    / System.Diagnostics.Stopwatch.Frequency;
+            }
         }
 
         // Bound catch-up work after a long frame. Never skip simulation ticks: under
         // sustained overload game time advances more slowly instead of freezing the UI.
         void AdvanceSimulation(float wallDelta)
         {
-            if(benchActive)return;
+            if (benchActive)
+                return;
             accumulator = Mathf.Min(.25f, accumulator + Mathf.Clamp(wallDelta, 0, .2f) * speed);
             long start = System.Diagnostics.Stopwatch.GetTimestamp();
             int n = 0;
@@ -342,7 +419,12 @@ namespace Rubezh.UnityPort
                 StepMeasured();
                 UpdateBattleSound();
                 accumulator -= battle.Config.Tick;
-                if ((System.Diagnostics.Stopwatch.GetTimestamp() - start) * 1000.0 / System.Diagnostics.Stopwatch.Frequency >= 8)
+                if (
+                    (System.Diagnostics.Stopwatch.GetTimestamp() - start)
+                        * 1000.0
+                        / System.Diagnostics.Stopwatch.Frequency
+                    >= 8
+                )
                     break;
             }
         }
@@ -357,7 +439,10 @@ namespace Rubezh.UnityPort
             try
             {
                 string path = Path.Combine(Application.persistentDataPath, "battle-log.txt");
-                File.WriteAllLines(path, battle.Events.Select(e => e.Time.ToString("F1") + " " + e.Side + " " + e.Text));
+                File.WriteAllLines(
+                    path,
+                    battle.Events.Select(e => e.Time.ToString("F1") + " " + e.Side + " " + e.Text)
+                );
                 message = "Журнал сохранён: " + path;
             }
             catch (Exception ex)
@@ -375,13 +460,21 @@ namespace Rubezh.UnityPort
         void OnApplicationPause(bool pause)
         {
             SuspendHybridRange(pause);
-            if (pause) CancelUnityTestPointers();
+            if (pause)
+                CancelUnityTestPointers();
             storyAppPaused = pause;
             renderedBattle = null;
             CancelTouchInput();
             if (pause)
             {
-                try { SaveInterruptedRaid(); } catch(Exception e) { Debug.LogException(e); }
+                try
+                {
+                    SaveInterruptedRaid();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
                 StoreDevDraft();
                 paused = true;
                 SaveAudio();
@@ -390,7 +483,7 @@ namespace Rubezh.UnityPort
 
         void OnApplicationFocus(bool focus)
         {
-            SuspendHybridRange(!focus,true);
+            SuspendHybridRange(!focus, true);
             if (!focus)
             {
                 CancelTouchInput();
@@ -432,7 +525,6 @@ namespace Rubezh.UnityPort
             foreach (var t in uiTextures)
                 if (t != null)
                     Destroy(t);
-
         }
     }
 }

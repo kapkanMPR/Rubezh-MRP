@@ -12,6 +12,7 @@ namespace SilentOrders.Core
         public readonly Dictionary<int, V2> Posts = new Dictionary<int, V2>();
         public readonly Dictionary<int, float> NextRetry = new Dictionary<int, float>();
         public readonly HashSet<int> Completed = new HashSet<int>();
+
         public void Clear()
         {
             Initialized = false;
@@ -23,7 +24,12 @@ namespace SilentOrders.Core
 
     public static class RedReserveDeployment
     {
-        static bool Reserve(BattleSimulation b, Soldier s) => !b.CustomDefenders && s.Side == Side.Red && b.Counterattack.OriginalCount > 0 && s.Id >= 5 + b.Counterattack.OriginalCount;
+        static bool Reserve(BattleSimulation b, Soldier s) =>
+            !b.CustomDefenders
+            && s.Side == Side.Red
+            && b.Counterattack.OriginalCount > 0
+            && s.Id >= 5 + b.Counterattack.OriginalCount;
+
         // A reserve encountering the enemy immediately does NOT abandon the fight
         // just to reach a precomputed map coordinate.
         static bool HasThreat(BattleSimulation b, Soldier s)
@@ -31,10 +37,18 @@ namespace SilentOrders.Core
             if (s.Visible.Count > 0 || b.Time - s.LastIncoming < 3f)
                 return true;
             foreach (var c in s.Contacts.Values)
-                if (c.Confidence > .35f && b.Time - c.SeenAt < 5f && V2.Distance(c.Position, s.Position) < b.WeaponRange(s) + 3f)
+                if (
+                    c.Confidence > .35f
+                    && b.Time - c.SeenAt < 5f
+                    && V2.Distance(c.Position, s.Position) < b.WeaponRange(s) + 3f
+                )
                     return true;
             foreach (var c in b.Red.Contacts.Values)
-                if (c.Confidence > .45f && b.Time - c.SeenAt < 5f && V2.Distance(c.Position, s.Position) < b.WeaponRange(s) + 2f)
+                if (
+                    c.Confidence > .45f
+                    && b.Time - c.SeenAt < 5f
+                    && V2.Distance(c.Position, s.Position) < b.WeaponRange(s) + 2f
+                )
                     return true;
             return false;
         }
@@ -62,44 +76,63 @@ namespace SilentOrders.Core
                 V2 destination = soldier.Position;
                 List<V2> path = null;
                 for (int forward = -2; forward <= 2; forward++)
-                    for (int lateral = -2; lateral <= 2; lateral++)
-                    {
-                        var point = TacticalOrders.Open(b, preferred + axis * forward * 1.2f + sideways * lateral * 1.1f);
-                        if (!b.Map.Walkable(point) || V2.Distance(point, b.Map.Objective) > 13f || V2.Distance(point, soldier.Position) < 1.2f)
-                            continue;
-                        bool occupied = false;
-                        foreach (var p in used)
-                            if (V2.Distance(p, point) < 3.3f)
-                            {
-                                occupied = true;
-                                break;
-                            }
+                for (int lateral = -2; lateral <= 2; lateral++)
+                {
+                    var point = TacticalOrders.Open(b, preferred + axis * forward * 1.2f + sideways * lateral * 1.1f);
+                    if (
+                        !b.Map.Walkable(point)
+                        || V2.Distance(point, b.Map.Objective) > 13f
+                        || V2.Distance(point, soldier.Position) < 1.2f
+                    )
+                        continue;
+                    bool occupied = false;
+                    foreach (var p in used)
+                        if (V2.Distance(p, point) < 3.3f)
+                        {
+                            occupied = true;
+                            break;
+                        }
 
-                        if (occupied)
-                            continue;
-                        foreach (var other in b.Soldiers)
-                            if (other.Id != soldier.Id && other.Alive && other.Deployed && V2.Distance(other.Position, point) < 1.05f)
-                            {
-                                occupied = true;
-                                break;
-                            }
+                    if (occupied)
+                        continue;
+                    foreach (var other in b.Soldiers)
+                        if (
+                            other.Id != soldier.Id
+                            && other.Alive
+                            && other.Deployed
+                            && V2.Distance(other.Position, point) < 1.05f
+                        )
+                        {
+                            occupied = true;
+                            break;
+                        }
 
-                        if (occupied)
-                            continue;
-                        bool cover = b.Map.NearCover(point);
-                        bool protectedPost = PositionLogic.Protected(b, soldier, point);
-                        bool observation = b.Map.LineOfSight(point, b.Map.Entry);
-                        float score = (cover ? 18f : 0f) + (protectedPost ? 11f : 0f) + (observation ? 3f : 0f) - V2.Distance(point, preferred) * 1.5f - V2.Distance(point, soldier.Position) * .4f;
-                        if (score <= best)
-                            continue;
-                        var candidate = Pathfinder.Find(b.Map, soldier.Position, point, v => TacticalAI.Risk(b, soldier, v) * 1.5f);
-                        b.Stats.Paths++;
-                        if (candidate.Count == 0 || SupportAI.PathLength(soldier.Position, candidate) > 18f)
-                            continue;
-                        best = score;
-                        destination = point;
-                        path = candidate;
-                    }
+                    if (occupied)
+                        continue;
+                    bool cover = b.Map.NearCover(point);
+                    bool protectedPost = PositionLogic.Protected(b, soldier, point);
+                    bool observation = b.Map.LineOfSight(point, b.Map.Entry);
+                    float score =
+                        (cover ? 18f : 0f)
+                        + (protectedPost ? 11f : 0f)
+                        + (observation ? 3f : 0f)
+                        - V2.Distance(point, preferred) * 1.5f
+                        - V2.Distance(point, soldier.Position) * .4f;
+                    if (score <= best)
+                        continue;
+                    var candidate = Pathfinder.Find(
+                        b.Map,
+                        soldier.Position,
+                        point,
+                        v => TacticalAI.Risk(b, soldier, v) * 1.5f
+                    );
+                    b.Stats.Paths++;
+                    if (candidate.Count == 0 || SupportAI.PathLength(soldier.Position, candidate) > 18f)
+                        continue;
+                    best = score;
+                    destination = point;
+                    path = candidate;
+                }
 
                 if (path == null)
                     continue; // Fallback to the original adaptive defender.
@@ -144,10 +177,18 @@ namespace SilentOrders.Core
                 hasPending = true;
                 soldier.MoveAuthorized = true;
                 soldier.ManeuverPaused = false;
-                if (soldier.PathCursor >= soldier.Path.Count && (!st.NextRetry.TryGetValue(soldier.Id, out var next) || b.Time >= next))
+                if (
+                    soldier.PathCursor >= soldier.Path.Count
+                    && (!st.NextRetry.TryGetValue(soldier.Id, out var next) || b.Time >= next)
+                )
                 {
                     st.NextRetry[soldier.Id] = b.Time + 2.5f;
-                    var path = Pathfinder.Find(b.Map, soldier.Position, post, v => TacticalAI.Risk(b, soldier, v) * 1.5f);
+                    var path = Pathfinder.Find(
+                        b.Map,
+                        soldier.Position,
+                        post,
+                        v => TacticalAI.Risk(b, soldier, v) * 1.5f
+                    );
                     b.Stats.Paths++;
                     if (path.Count > 0)
                     {

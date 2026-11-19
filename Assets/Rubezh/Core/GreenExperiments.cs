@@ -4,7 +4,12 @@ namespace SilentOrders.Core
 {
     public sealed class GreenExperimentMemory
     {
-        public int RelayTargets, OrphanReleases, SpacingReviews, ReadinessWaits, DetourSearches, ReservationsReviewed;
+        public int RelayTargets,
+            OrphanReleases,
+            SpacingReviews,
+            ReadinessWaits,
+            DetourSearches,
+            ReservationsReviewed;
     }
 
     // AI-exp: optional policies belong to the green command hierarchy only.
@@ -12,6 +17,7 @@ namespace SilentOrders.Core
     public static class GreenExperiments
     {
         public const int AcceptedMask = 5;
+
         public static bool Enabled(Squad q, int bit)
         {
             return q.Side == Side.Green && (AcceptedMask & bit) != 0;
@@ -29,19 +35,18 @@ namespace SilentOrders.Core
 
         public static V2 Target(BattleSimulation b, Squad q, PairCommandPlan p, Soldier mover, V2 ordinary)
         {
-            if (!Enabled(q, 1) || p.Duty != PairDuty.Support || q.Style == CombatStyle.Passive || q.Style == CombatStyle.Withdraw)
+            if (
+                !Enabled(q, 1)
+                || p.Duty != PairDuty.Support
+                || q.Style == CombatStyle.Passive
+                || q.Style == CombatStyle.Withdraw
+            )
                 return ordinary;
             Soldier beneficiary = null;
             float best = float.MaxValue;
             foreach (var other in q.CommandPlan.Pairs)
                 if (other.SupportPair == p.Id)
-                    foreach (int id in new[]
-                    {
-                        other.A,
-                        other.B
-                    }
-
-                    )
+                    foreach (int id in new[] { other.A, other.B })
                     {
                         var u = Unit(b, id);
                         if (!Live(u, q))
@@ -68,7 +73,15 @@ namespace SilentOrders.Core
 
         public static bool ReservedByOtherPair(BattleSimulation b, Squad q, Soldier mover, Soldier other)
         {
-            return Enabled(q, 16) && other != mover && Live(other, q) && other.Assignment.PairId >= 0 && other.Assignment.PairId != mover.Assignment.PairId && other.Assignment.Active && other.Assignment.IsBound && other.Assignment.Deadline > b.Time && other.PathCursor < other.Path.Count;
+            return Enabled(q, 16)
+                && other != mover
+                && Live(other, q)
+                && other.Assignment.PairId >= 0
+                && other.Assignment.PairId != mover.Assignment.PairId
+                && other.Assignment.Active
+                && other.Assignment.IsBound
+                && other.Assignment.Deadline > b.Time
+                && other.PathCursor < other.Path.Count;
         }
 
         public static float Spacing(BattleSimulation b, Squad q, Soldier mover, V2 point)
@@ -107,10 +120,21 @@ namespace SilentOrders.Core
 
         public static bool WaitForPartner(BattleSimulation b, Squad q, PairCommandPlan p, Soldier mover)
         {
-            if (!Enabled(q, 4) || q.Style == CombatStyle.Passive || q.Style == CombatStyle.Withdraw || mover.Suppression > .4f || b.Time - mover.LastIncoming < 3)
+            if (
+                !Enabled(q, 4)
+                || q.Style == CombatStyle.Passive
+                || q.Style == CombatStyle.Withdraw
+                || mover.Suppression > .4f
+                || b.Time - mover.LastIncoming < 3
+            )
                 return false;
             var partner = Unit(b, p.A == mover.Id ? p.B : p.A);
-            if (!Live(partner, q) || partner.Broken || partner.Busy || V2.Distance(partner.Position, mover.Position) > 9)
+            if (
+                !Live(partner, q)
+                || partner.Broken
+                || partner.Busy
+                || V2.Distance(partner.Position, mover.Position) > 9
+            )
                 return false;
             // Finite rendezvous at an existing protected post, only for a reload already underway.
             float left = partner.ReloadUntil - b.Time;

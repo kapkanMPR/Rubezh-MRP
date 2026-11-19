@@ -14,6 +14,7 @@ namespace SilentOrders.Core
     {
         public const float Spacing = .36f;
         public const int MaxMarks = 2800;
+
         // Called after all movement including dragging; positions are simulation data.
         public static void Update(BattleSimulation b)
         {
@@ -50,7 +51,14 @@ namespace SilentOrders.Core
                     V2 point = s.BloodAnchor + direction * (Spacing * (i + 1));
                     if (!b.Map.Walkable(point))
                         continue;
-                    b.BloodTraces.Add(new BloodTrace { Position = point, SoldierId = s.Id, Time = b.Time });
+                    b.BloodTraces.Add(
+                        new BloodTrace
+                        {
+                            Position = point,
+                            SoldierId = s.Id,
+                            Time = b.Time,
+                        }
+                    );
                 }
 
                 s.BloodAnchor += direction * (Spacing * steps);

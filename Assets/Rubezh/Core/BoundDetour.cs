@@ -9,8 +9,12 @@ namespace SilentOrders.Core
     public sealed class BoundDetourState
     {
         internal List<V2> Route;
-        internal int Cursor, PendingCursor, MapRevision, OrderRevision;
-        internal V2 Target, Anchor;
+        internal int Cursor,
+            PendingCursor,
+            MapRevision,
+            OrderRevision;
+        internal V2 Target,
+            Anchor;
         public bool Active => Route != null;
 
         public void Clear()
@@ -24,7 +28,9 @@ namespace SilentOrders.Core
     {
         static bool AllowedPost(BattleSimulation b, Soldier s, V2 point)
         {
-            return StraightAdvance.Inside(b, s, point) && (s.Side != Side.Red || ProgressRecovery.WithinAssignment(b, s, point)) && (PositionLogic.Protected(b, s, point) || PositionLogic.Exposure(b, s, point) <= .12f);
+            return StraightAdvance.Inside(b, s, point)
+                && (s.Side != Side.Red || ProgressRecovery.WithinAssignment(b, s, point))
+                && (PositionLogic.Protected(b, s, point) || PositionLogic.Exposure(b, s, point) <= .12f);
         }
 
         static bool SafeEdge(BattleSimulation b, Soldier s, V2 from, V2 to)
@@ -38,7 +44,14 @@ namespace SilentOrders.Core
             return true;
         }
 
-        public static bool TryRoute(BattleSimulation b, Soldier s, V2 target, bool start, out V2 goal, out List<V2> route)
+        public static bool TryRoute(
+            BattleSimulation b,
+            Soldier s,
+            V2 target,
+            bool start,
+            out V2 goal,
+            out List<V2> route
+        )
         {
             goal = s.Position;
             route = null;
@@ -50,13 +63,31 @@ namespace SilentOrders.Core
                 return false;
             }
 
-            if (state.Active && (state.MapRevision != b.Map.Revision || state.OrderRevision != q.Revision || V2.Distance(state.Target, target) > .5f))
+            if (
+                state.Active
+                && (
+                    state.MapRevision != b.Map.Revision
+                    || state.OrderRevision != q.Revision
+                    || V2.Distance(state.Target, target) > .5f
+                )
+            )
                 state.Clear();
             if (!state.Active)
             {
-                if (!start || !PositionLogic.ShelterEligible(b, s) || q.Style == CombatStyle.Passive || !AllowedPost(b, s, target))
+                if (
+                    !start
+                    || !PositionLogic.ShelterEligible(b, s)
+                    || q.Style == CombatStyle.Passive
+                    || !AllowedPost(b, s, target)
+                )
                     return false;
-                var complete = LossMemory.Find(b, s, target, x => PositionLogic.Exposure(b, s, x) * 3 + FireLaneSafety.PathCost(b, s, x), (from, to) => SafeEdge(b, s, from, to));
+                var complete = LossMemory.Find(
+                    b,
+                    s,
+                    target,
+                    x => PositionLogic.Exposure(b, s, x) * 3 + FireLaneSafety.PathCost(b, s, x),
+                    (from, to) => SafeEdge(b, s, from, to)
+                );
                 b.Stats.Paths++;
                 if (complete.Count == 0 || V2.Distance(complete[complete.Count - 1], target) > 1)
                     return false;
@@ -70,7 +101,10 @@ namespace SilentOrders.Core
 
             // Only physical arrival consumes the route. A refused assignment cannot
             // advance the cursor or turn a subsequent attempt into a new retreat.
-            if (state.PendingCursor > state.Cursor && V2.Distance(s.Position, state.Route[state.PendingCursor - 1]) < .8f)
+            if (
+                state.PendingCursor > state.Cursor
+                && V2.Distance(s.Position, state.Route[state.PendingCursor - 1]) < .8f
+            )
             {
                 state.Cursor = state.PendingCursor;
                 state.Anchor = state.Route[state.Cursor - 1];
@@ -94,7 +128,11 @@ namespace SilentOrders.Core
                     break;
                 // Revalidate current knowledge and casualty/fire lanes before every
                 // bound. Cached geometry is never an exemption from safety checks.
-                if (!SafeEdge(b, s, previous, point) || !LossMemory.StepAllowed(b, s, previous, point - previous, false) || !IncomingFire.StepAllowed(b, s, previous, point - previous))
+                if (
+                    !SafeEdge(b, s, previous, point)
+                    || !LossMemory.StepAllowed(b, s, previous, point - previous, false)
+                    || !IncomingFire.StepAllowed(b, s, previous, point - previous)
+                )
                 {
                     state.Clear();
                     return false;
@@ -107,7 +145,13 @@ namespace SilentOrders.Core
             while (prefix.Count > 0)
             {
                 var end = prefix[prefix.Count - 1];
-                if (V2.Distance(s.Position, end) >= .8f && !PositionLogic.Occupied(b, s, end) && !(s.Assignment.FailedUntil > b.Time && V2.Distance(end, s.Assignment.FailedGoal) < 1.3f) && PositionLogic.UsefulRoute(b, s, prefix) && MedicTactics.AllowRoute(b, s, prefix))
+                if (
+                    V2.Distance(s.Position, end) >= .8f
+                    && !PositionLogic.Occupied(b, s, end)
+                    && !(s.Assignment.FailedUntil > b.Time && V2.Distance(end, s.Assignment.FailedGoal) < 1.3f)
+                    && PositionLogic.UsefulRoute(b, s, prefix)
+                    && MedicTactics.AllowRoute(b, s, prefix)
+                )
                 {
                     state.PendingCursor = state.Cursor + prefix.Count;
                     goal = end;

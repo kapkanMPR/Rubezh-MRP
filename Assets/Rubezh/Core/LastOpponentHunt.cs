@@ -8,15 +8,21 @@ namespace SilentOrders.Core
         public bool Active;
         public Contact Target;
         public int CoverId = -1;
-        public float NextReview, CooldownUntil, BlockedSince = -1;
-        public int FailedBounds, Repositions, Releases;
+        public float NextReview,
+            CooldownUntil,
+            BlockedSince = -1;
+        public int FailedBounds,
+            Repositions,
+            Releases;
         public readonly Dictionary<int, int> Wings = new Dictionary<int, int>();
-        public readonly Dictionary<int, float> PauseUntil = new Dictionary<int, float>(), BoundUntil = new Dictionary<int, float>();
+        public readonly Dictionary<int, float> PauseUntil = new Dictionary<int, float>(),
+            BoundUntil = new Dictionary<int, float>();
     }
 
     public static class LastOpponentHunt
     {
         public static bool Scope(BattleSimulation b) => b.CampaignLevel == 19 || b.CampaignLevel == 20;
+
         static bool LastEnemy(BattleSimulation b, out int id)
         {
             id = -1;
@@ -34,13 +40,52 @@ namespace SilentOrders.Core
         public static bool GroupActive(BattleSimulation b, DefenderGroupState g)
         {
             int id;
-            return g != null && Scope(b) && g.Hunt.Active && LastEnemy(b, out id) && g.Hunt.Target != null && g.Hunt.Target.EnemyId == id && b.Time - g.Hunt.Target.SeenAt <= 45;
+            return g != null
+                && Scope(b)
+                && g.Hunt.Active
+                && LastEnemy(b, out id)
+                && g.Hunt.Target != null
+                && g.Hunt.Target.EnemyId == id
+                && b.Time - g.Hunt.Target.SeenAt <= 45;
         }
 
-        static bool Free(BattleSimulation b, Soldier s) => s.Side == Side.Red && s.Deployed && s.Available && !s.Busy && !s.Broken && !s.Bleeding && !s.GrenadeEscape.Active && !s.VehicleDisperse && !s.VehicleRally && s.Health >= 35 && s.Suppression < .65f && s.RescueTargetId < 0 && s.RescuerId < 0 && s.SupplyDonorId < 0 && s.SupplyReceiverId < 0 && s.HelpUntil <= b.Time && s.HelpRetreatUntil <= b.Time && s.CounterSniper.IncomingUntil <= b.Time && s.CounterSniper.Phase == CounterSniperPhase.None && s.LootTargetId < 0 && s.LootGroundId < 0 && s.LauncherPickupId < 0 && s.WeaponAidTargetId < 0 && s.HandsBusyUntil <= b.Time && s.Ammo + s.Reserve > 0 && !TacticalOrders.Emergency(b.Team(s)) && !WithdrawalTactics.Active(b.Team(s));
-        public static bool Owns(BattleSimulation b, Soldier s) => GroupActive(b, s.DefenderGroup) && s.DefenderGroup.Hunt.Wings.ContainsKey(s.Id) && Free(b, s);
+        static bool Free(BattleSimulation b, Soldier s) =>
+            s.Side == Side.Red
+            && s.Deployed
+            && s.Available
+            && !s.Busy
+            && !s.Broken
+            && !s.Bleeding
+            && !s.GrenadeEscape.Active
+            && !s.VehicleDisperse
+            && !s.VehicleRally
+            && s.Health >= 35
+            && s.Suppression < .65f
+            && s.RescueTargetId < 0
+            && s.RescuerId < 0
+            && s.SupplyDonorId < 0
+            && s.SupplyReceiverId < 0
+            && s.HelpUntil <= b.Time
+            && s.HelpRetreatUntil <= b.Time
+            && s.CounterSniper.IncomingUntil <= b.Time
+            && s.CounterSniper.Phase == CounterSniperPhase.None
+            && s.LootTargetId < 0
+            && s.LootGroundId < 0
+            && s.LauncherPickupId < 0
+            && s.WeaponAidTargetId < 0
+            && s.HandsBusyUntil <= b.Time
+            && s.Ammo + s.Reserve > 0
+            && !TacticalOrders.Emergency(b.Team(s))
+            && !WithdrawalTactics.Active(b.Team(s));
+
+        public static bool Owns(BattleSimulation b, Soldier s) =>
+            GroupActive(b, s.DefenderGroup) && s.DefenderGroup.Hunt.Wings.ContainsKey(s.Id) && Free(b, s);
+
         public static bool IsCover(BattleSimulation b, Soldier s) => Owns(b, s) && s.DefenderGroup.Hunt.CoverId == s.Id;
-        public static bool Sprint(BattleSimulation b, Soldier s) => Owns(b, s) && !IsCover(b, s) && s.PathCursor < s.Path.Count;
+
+        public static bool Sprint(BattleSimulation b, Soldier s) =>
+            Owns(b, s) && !IsCover(b, s) && s.PathCursor < s.Path.Count;
+
         static void End(BattleSimulation b, DefenderGroupState g)
         {
             var h = g.Hunt;
@@ -80,7 +125,14 @@ namespace SilentOrders.Core
                         target = c;
             }
 
-            if (target == null && Scope(b) && LastEnemy(b, out enemy) && g.Hunt.Target != null && g.Hunt.Target.EnemyId == enemy && b.Time - g.Hunt.Target.SeenAt <= 45)
+            if (
+                target == null
+                && Scope(b)
+                && LastEnemy(b, out enemy)
+                && g.Hunt.Target != null
+                && g.Hunt.Target.EnemyId == enemy
+                && b.Time - g.Hunt.Target.SeenAt <= 45
+            )
                 target = g.Hunt.Target;
             if (target == null)
             {
@@ -118,15 +170,31 @@ namespace SilentOrders.Core
                 return false;
             }
 
-            if (b.Time >= h.NextReview || h.CoverId < 0 || h.CoverId >= b.Soldiers.Count || !Free(b, b.Soldiers[h.CoverId]) || b.Soldiers[h.CoverId].Ammo == 0)
+            if (
+                b.Time >= h.NextReview
+                || h.CoverId < 0
+                || h.CoverId >= b.Soldiers.Count
+                || !Free(b, b.Soldiers[h.CoverId])
+                || b.Soldiers[h.CoverId].Ammo == 0
+            )
             {
                 h.NextReview = b.Time + 4;
                 int selected = -1;
                 float score = float.MinValue;
                 foreach (var s in g.Members)
-                    if (Free(b, s) && !s.GunSniper && s.Ammo >= 6 && s.ReloadUntil <= b.Time && PositionLogic.CanEngage(b, s, s.Position, target) && !b.FriendlyInLane(s, target.Position))
+                    if (
+                        Free(b, s)
+                        && !s.GunSniper
+                        && s.Ammo >= 6
+                        && s.ReloadUntil <= b.Time
+                        && PositionLogic.CanEngage(b, s, s.Position, target)
+                        && !b.FriendlyInLane(s, target.Position)
+                    )
                     {
-                        float v = (s.GunMachineGunner ? 100 : 0) + (s.Id == h.CoverId ? 10 : 0) - V2.Distance(s.Position, target.Position);
+                        float v =
+                            (s.GunMachineGunner ? 100 : 0)
+                            + (s.Id == h.CoverId ? 10 : 0)
+                            - V2.Distance(s.Position, target.Position);
                         if (v > score)
                         {
                             score = v;
@@ -200,15 +268,36 @@ namespace SilentOrders.Core
                 return;
             }
 
-            V2 forward = (h.Target.Position - s.Position).Normalized, side = new V2(-forward.Y, forward.X);
+            V2 forward = (h.Target.Position - s.Position).Normalized,
+                side = new V2(-forward.Y, forward.X);
             int wing = h.Wings[s.Id];
             for (int i = 0; i < 3; i++)
             {
-                var desired = s.Position + forward * Math.Min(2.5f, distance - 5) + side * (wing * (i == 0 ? 2.5f : i == 1 ? 1.5f : 3.5f));
+                var desired =
+                    s.Position
+                    + forward * Math.Min(2.5f, distance - 5)
+                    + side
+                        * (
+                            wing
+                            * (
+                                i == 0 ? 2.5f
+                                : i == 1 ? 1.5f
+                                : 3.5f
+                            )
+                        );
                 V2 goal = b.Map.NearestOpen(desired);
-                if (V2.Distance(goal, s.Position) < 1 || V2.Distance(goal, h.Target.Position) < 4.5f || PositionLogic.Occupied(b, s, goal))
+                if (
+                    V2.Distance(goal, s.Position) < 1
+                    || V2.Distance(goal, h.Target.Position) < 4.5f
+                    || PositionLogic.Occupied(b, s, goal)
+                )
                     continue;
-                var path = LossMemory.Find(b, s, goal, p => PositionLogic.Exposure(b, s, p) * 4 + (PositionLogic.Occupied(b, s, p) ? 15 : 0));
+                var path = LossMemory.Find(
+                    b,
+                    s,
+                    goal,
+                    p => PositionLogic.Exposure(b, s, p) * 4 + (PositionLogic.Occupied(b, s, p) ? 15 : 0)
+                );
                 b.Stats.Paths++;
                 if (path.Count == 0 || SupportAI.PathLength(s.Position, path) > 7)
                     continue;
@@ -233,20 +322,33 @@ namespace SilentOrders.Core
             h.FailedBounds++;
             h.PauseUntil[s.Id] = b.Time + 2;
             s.Job = Job.Cover;
-            s.Reason = h.CoverId < 0 ? "Добивание: нет доступной огневой позиции, возвращаю отказ командиру" : "Добивание: обход сейчас недоступен, проверяю другой маршрут";
+            s.Reason =
+                h.CoverId < 0
+                    ? "Добивание: нет доступной огневой позиции, возвращаю отказ командиру"
+                    : "Добивание: обход сейчас недоступен, проверяю другой маршрут";
         }
 
         static bool TryNavigationBound(BattleSimulation b, Soldier s, HuntState h)
         {
             if (GroupMovement.Count(b, b.Team(s)) >= 3)
                 return false;
-            V2 axis = (h.Target.Position - s.Position).Normalized, lat = new V2(-axis.Y, axis.X);
+            V2 axis = (h.Target.Position - s.Position).Normalized,
+                lat = new V2(-axis.Y, axis.X);
             // Search reachable firing posts, not three Euclidean points on the same wall.
             for (int k = 0; k < 5; k++)
             {
-                float flank = k == 0 ? 0 : k % 2 == 0 ? -1 : 1;
-                V2 aim = h.Target.Position - axis * Math.Max(5, b.WeaponRange(s) - 2) + lat * (flank * (k <= 2 ? 4 : 7));
-                var full = LossMemory.Find(b, s, b.Map.NearestOpen(aim), p => PositionLogic.Exposure(b, s, p) * 5 + FireLaneSafety.PathCost(b, s, p));
+                float flank =
+                    k == 0 ? 0
+                    : k % 2 == 0 ? -1
+                    : 1;
+                V2 aim =
+                    h.Target.Position - axis * Math.Max(5, b.WeaponRange(s) - 2) + lat * (flank * (k <= 2 ? 4 : 7));
+                var full = LossMemory.Find(
+                    b,
+                    s,
+                    b.Map.NearestOpen(aim),
+                    p => PositionLogic.Exposure(b, s, p) * 5 + FireLaneSafety.PathCost(b, s, p)
+                );
                 b.Stats.Paths++;
                 var path = new List<V2>();
                 V2 from = s.Position;
@@ -260,7 +362,12 @@ namespace SilentOrders.Core
                     from = point;
                 }
 
-                if (path.Count == 0 || V2.Distance(from, s.Position) < .8f || PositionLogic.Occupied(b, s, from) || !CounterSniper.SafeRoute(b, s, path, h.Target))
+                if (
+                    path.Count == 0
+                    || V2.Distance(from, s.Position) < .8f
+                    || PositionLogic.Occupied(b, s, from)
+                    || !CounterSniper.SafeRoute(b, s, path, h.Target)
+                )
                     continue;
                 s.Path = path;
                 s.PathCursor = 0;
@@ -321,7 +428,14 @@ namespace SilentOrders.Core
             {
                 var d = s.Path[s.PathCursor] - s.Position;
                 V2 next;
-                if (Locomotion.TryStep(b, s, d.Normalized * Math.Min(d.Length, CombatMovement.Speed(b, s) * dt), out next))
+                if (
+                    Locomotion.TryStep(
+                        b,
+                        s,
+                        d.Normalized * Math.Min(d.Length, CombatMovement.Speed(b, s) * dt),
+                        out next
+                    )
+                )
                 {
                     s.DistanceTravelled += V2.Distance(s.Position, next);
                     s.Position = next;

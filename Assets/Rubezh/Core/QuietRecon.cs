@@ -6,7 +6,16 @@ namespace SilentOrders.Core
 {
     public sealed class ReconStats
     {
-        public int Starts, Routes, Arrivals, HeldShots, NewContacts, ObservedCells, Replans, NoGain, WatchChanges, InformedQueries;
+        public int Starts,
+            Routes,
+            Arrivals,
+            HeldShots,
+            NewContacts,
+            ObservedCells,
+            Replans,
+            NoGain,
+            WatchChanges,
+            InformedQueries;
         public string EndReason = "";
         public float Seconds;
     }
@@ -15,22 +24,53 @@ namespace SilentOrders.Core
     {
         sealed class State
         {
-            public bool Used, Active;
-            public float Until, Started, ProgressAt, NextSense, ArrivedAt = -1;
-            public int Revision, Scout = -1, Cursor;
-            public V2 Goal, Progress, Watch;
-            public List<V2> Route, Published;
+            public bool Used,
+                Active;
+            public float Until,
+                Started,
+                ProgressAt,
+                NextSense,
+                ArrivedAt = -1;
+            public int Revision,
+                Scout = -1,
+                Cursor;
+            public V2 Goal,
+                Progress,
+                Watch;
+            public List<V2> Route,
+                Published;
             public Contact Contact;
-            public readonly HashSet<int> Known = new HashSet<int>(), Seen = new HashSet<int>();
+            public readonly HashSet<int> Known = new HashSet<int>(),
+                Seen = new HashSet<int>();
             public readonly List<V2> Probes = new List<V2>();
             public readonly ReconStats Stats = new ReconStats();
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, State> Data = new ConditionalWeakTable<BattleSimulation, State>();
-        public static ReconStats Stats(BattleSimulation b) => !b.UsefulReconEnabled ? LegacyQuietRecon.Stats(b) : Data.GetOrCreateValue(b).Stats;
-        public static bool Active(BattleSimulation b) => !ReconCombatPhase.Active(b) && (!b.UsefulReconEnabled ? LegacyQuietRecon.Active(b) : b.QuietReconEnabled && !b.Historical01225 && Data.GetOrCreateValue(b).Active);
-        public static bool Owns(BattleSimulation b, Soldier s) => !b.UsefulReconEnabled ? LegacyQuietRecon.Owns(b, s) : s.Side == Side.Green && Active(b) && Data.GetOrCreateValue(b).Scout == s.Id && Data.GetOrCreateValue(b).Route != null;
-        static bool Eligible(BattleSimulation b, Soldier s) => s.Side == Side.Green && s.Deployed && s.Available && !s.Broken && !s.Bleeding && TacticalMarch.Free(b, s);
+        static readonly ConditionalWeakTable<BattleSimulation, State> Data =
+            new ConditionalWeakTable<BattleSimulation, State>();
+
+        public static ReconStats Stats(BattleSimulation b) =>
+            !b.UsefulReconEnabled ? LegacyQuietRecon.Stats(b) : Data.GetOrCreateValue(b).Stats;
+
+        public static bool Active(BattleSimulation b) =>
+            !ReconCombatPhase.Active(b)
+            && (
+                !b.UsefulReconEnabled
+                    ? LegacyQuietRecon.Active(b)
+                    : b.QuietReconEnabled && !b.Historical01225 && Data.GetOrCreateValue(b).Active
+            );
+
+        public static bool Owns(BattleSimulation b, Soldier s) =>
+            !b.UsefulReconEnabled
+                ? LegacyQuietRecon.Owns(b, s)
+                : s.Side == Side.Green
+                    && Active(b)
+                    && Data.GetOrCreateValue(b).Scout == s.Id
+                    && Data.GetOrCreateValue(b).Route != null;
+
+        static bool Eligible(BattleSimulation b, Soldier s) =>
+            s.Side == Side.Green && s.Deployed && s.Available && !s.Broken && !s.Bleeding && TacticalMarch.Free(b, s);
+
         public static bool SeemsUnaware(BattleSimulation b, Soldier s, Contact c)
         {
             if (!b.UsefulReconEnabled)
@@ -40,7 +80,10 @@ namespace SilentOrders.Core
             float distance = V2.Distance(s.Position, c.Position);
             if (distance < 7)
                 return false;
-            float facing = c.ObservedFacing.Length < .1f ? 1 : V2.Dot(c.ObservedFacing.Normalized, (s.Position - c.Position).Normalized);
+            float facing =
+                c.ObservedFacing.Length < .1f
+                    ? 1
+                    : V2.Dot(c.ObservedFacing.Normalized, (s.Position - c.Position).Normalized);
             return facing < .25f || distance >= b.ReconStandOff;
         }
 
@@ -62,7 +105,13 @@ namespace SilentOrders.Core
                 if (s.Side == Side.Green && s.Alive && s.Deployed)
                 {
                     n++;
-                    if (!Eligible(b, s) || s.LastFire >= 0 || b.Time - s.LastIncoming < 5 || b.Time - s.LastBlast < 5 || s.Suppression > .15f)
+                    if (
+                        !Eligible(b, s)
+                        || s.LastFire >= 0
+                        || b.Time - s.LastIncoming < 5
+                        || b.Time - s.LastBlast < 5
+                        || s.Suppression > .15f
+                    )
                         return false;
                     foreach (var c in Knowledge.Contacts(b, s))
                         if (c.Visual && !c.Inferred && b.Time - c.SeenAt <= 1 && !SeemsUnaware(b, s, c))
@@ -73,7 +122,12 @@ namespace SilentOrders.Core
         }
 
         static int Key(BattleSimulation b, V2 p) => (int)p.Y * b.Map.Columns + (int)p.X;
-        static bool Visible(BattleSimulation b, Soldier s, V2 p) => DirectionalVision.InView(b, s, p) && b.Map.LineOfSight(s.Position, p) && b.SmokeTransmission(s.Position, p) > .8f;
+
+        static bool Visible(BattleSimulation b, Soldier s, V2 p) =>
+            DirectionalVision.InView(b, s, p)
+            && b.Map.LineOfSight(s.Position, p)
+            && b.SmokeTransmission(s.Position, p) > .8f;
+
         static void Observe(BattleSimulation b, State st)
         {
             bool sample = b.Time >= st.NextSense;
@@ -83,30 +137,54 @@ namespace SilentOrders.Core
                 if (s.Side == Side.Green && s.Available && s.Deployed)
                 {
                     foreach (var c in s.Contacts.Values)
-                        if (c.Visual && !c.Inferred && !c.Reported && b.Time - c.SeenAt <= 1 && st.Known.Add(c.EnemyId) && st.Active)
+                        if (
+                            c.Visual
+                            && !c.Inferred
+                            && !c.Reported
+                            && b.Time - c.SeenAt <= 1
+                            && st.Known.Add(c.EnemyId)
+                            && st.Active
+                        )
                         {
                             st.Stats.NewContacts++;
                             st.Contact = c.Copy();
                             b.Say(s, "Ещё контакт.", true);
-                            b.History.Event(b, "reconContact", s.Id, c.EnemyId, s.Position, c.Position, 0, "new_direct_contact");
+                            b.History.Event(
+                                b,
+                                "reconContact",
+                                s.Id,
+                                c.EnemyId,
+                                s.Position,
+                                c.Position,
+                                0,
+                                "new_direct_contact"
+                            );
                         }
 
                     if (!sample)
                         continue;
                     int r = (int)Math.Ceiling(DirectionalVision.FrontRange(b, s));
-                    for (int y = Math.Max(0, (int)s.Position.Y - r); y <= Math.Min(b.Map.Rows - 1, (int)s.Position.Y + r); y++)
-                        for (int x = Math.Max(0, (int)s.Position.X - r); x <= Math.Min(b.Map.Columns - 1, (int)s.Position.X + r); x++)
-                        {
-                            int k = y * b.Map.Columns + x;
-                            if (st.Seen.Contains(k))
-                                continue;
-                            var p = new V2(x + .5f, y + .5f);
-                            if (!b.Map.Walkable(p) || !Visible(b, s, p))
-                                continue;
-                            st.Seen.Add(k);
-                            if (st.Active && st.Contact != null && V2.Distance(p, st.Contact.Position) <= 9)
-                                st.Stats.ObservedCells++;
-                        }
+                    for (
+                        int y = Math.Max(0, (int)s.Position.Y - r);
+                        y <= Math.Min(b.Map.Rows - 1, (int)s.Position.Y + r);
+                        y++
+                    )
+                    for (
+                        int x = Math.Max(0, (int)s.Position.X - r);
+                        x <= Math.Min(b.Map.Columns - 1, (int)s.Position.X + r);
+                        x++
+                    )
+                    {
+                        int k = y * b.Map.Columns + x;
+                        if (st.Seen.Contains(k))
+                            continue;
+                        var p = new V2(x + .5f, y + .5f);
+                        if (!b.Map.Walkable(p) || !Visible(b, s, p))
+                            continue;
+                        st.Seen.Add(k);
+                        if (st.Active && st.Contact != null && V2.Distance(p, st.Contact.Position) <= 9)
+                            st.Stats.ObservedCells++;
+                    }
                 }
         }
 
@@ -217,7 +295,11 @@ namespace SilentOrders.Core
             {
                 // A real exchange can begin before the first recon task. It is one-way too.
                 foreach (var unit in b.Soldiers)
-                    if (unit.Side == Side.Green && unit.Deployed && (unit.LastFire >= 0 || b.Time - unit.LastIncoming < 2 || b.Time - unit.LastBlast < 2))
+                    if (
+                        unit.Side == Side.Green
+                        && unit.Deployed
+                        && (unit.LastFire >= 0 || b.Time - unit.LastIncoming < 2 || b.Time - unit.LastBlast < 2)
+                    )
                     {
                         ReconCombatPhase.Enter(b, "contact_before_recon");
                         break;
@@ -242,7 +324,16 @@ namespace SilentOrders.Core
                                     foreach (var known in unit.Contacts.Values)
                                         if (known.Visual && !known.Inferred)
                                             st.Known.Add(known.EnemyId);
-                            b.History.Event(b, "reconStart", s.Id, c.EnemyId, s.Position, c.Position, 0, "suspected_unnoticed");
+                            b.History.Event(
+                                b,
+                                "reconStart",
+                                s.Id,
+                                c.EnemyId,
+                                s.Position,
+                                c.Position,
+                                0,
+                                "suspected_unnoticed"
+                            );
                             if (!Plan(b, st))
                             {
                                 st.Stats.NoGain++;
@@ -256,10 +347,7 @@ namespace SilentOrders.Core
 
         static bool SafePoint(BattleSimulation b, Soldier s, V2 p, State st)
         {
-            var contacts = new List<Contact>
-            {
-                st.Contact
-            };
+            var contacts = new List<Contact> { st.Contact };
             foreach (var c in Knowledge.Contacts(b, s))
                 contacts.Add(c);
             foreach (var c in contacts)
@@ -268,7 +356,12 @@ namespace SilentOrders.Core
                     float d = V2.Distance(p, c.Position);
                     if (d < Math.Min(8, V2.Distance(s.Position, c.Position) - .25f))
                         return false;
-                    if (b.Map.LineOfSight(p, c.Position) && c.ObservedFacing.Length > .1f && V2.Dot(c.ObservedFacing.Normalized, (p - c.Position).Normalized) > .25f && d < b.ReconStandOff + .2f)
+                    if (
+                        b.Map.LineOfSight(p, c.Position)
+                        && c.ObservedFacing.Length > .1f
+                        && V2.Dot(c.ObservedFacing.Normalized, (p - c.Position).Normalized) > .25f
+                        && d < b.ReconStandOff + .2f
+                    )
                         return false;
                 }
 
@@ -288,38 +381,75 @@ namespace SilentOrders.Core
             var candidates = new List<Candidate>();
             var probes = new List<V2>();
             var c = st.Contact;
-            for (int y = Math.Max(0, (int)c.Position.Y - 9); y <= Math.Min(b.Map.Rows - 1, (int)c.Position.Y + 9); y += 2)
-                for (int x = Math.Max(0, (int)c.Position.X - 9); x <= Math.Min(b.Map.Columns - 1, (int)c.Position.X + 9); x += 2)
-                {
-                    var p = new V2(x + .5f, y + .5f);
-                    if (b.Map.Walkable(p) && !st.Seen.Contains(Key(b, p)) && V2.Distance(p, c.Position) <= 9)
-                        probes.Add(p);
-                }
+            for (
+                int y = Math.Max(0, (int)c.Position.Y - 9);
+                y <= Math.Min(b.Map.Rows - 1, (int)c.Position.Y + 9);
+                y += 2
+            )
+            for (
+                int x = Math.Max(0, (int)c.Position.X - 9);
+                x <= Math.Min(b.Map.Columns - 1, (int)c.Position.X + 9);
+                x += 2
+            )
+            {
+                var p = new V2(x + .5f, y + .5f);
+                if (b.Map.Walkable(p) && !st.Seen.Contains(Key(b, p)) && V2.Distance(p, c.Position) <= 9)
+                    probes.Add(p);
+            }
 
             foreach (var s in b.Soldiers)
                 if (Eligible(b, s))
                 {
                     for (int y = -7; y <= 7; y += 2)
-                        for (int x = -7; x <= 7; x += 2)
-                        {
-                            var p = new V2((float)Math.Floor(s.Position.X) + x + .5f, (float)Math.Floor(s.Position.Y) + y + .5f);
-                            float d = V2.Distance(s.Position, p);
-                            if (d < 1 || d > 8 || !b.Map.Walkable(p) || !CommandHierarchy.WithinManeuver(b, s, p) || PositionLogic.Occupied(b, s, p) || !SafePoint(b, s, p, st))
-                                continue;
-                            var visible = new List<V2>();
-                            foreach (var probe in probes)
-                                if (V2.Distance(p, probe) < DirectionalVision.FrontRange(b, s) - .5f && b.Map.LineOfSight(p, probe) && b.SmokeTransmission(p, probe) > .8f)
-                                    visible.Add(probe);
-                            // A rotation alone does not justify a move; reserve translation for blocked/out-of-range sightlines.
-                            int gain = 0;
-                            foreach (var probe in visible)
-                                if (V2.Distance(s.Position, probe) > DirectionalVision.FrontRange(b, s) - .5f || !b.Map.LineOfSight(s.Position, probe))
-                                    gain += b.Map.NearCover(probe) ? 4 : 1;
-                            if (gain < 2)
-                                continue;
-                            float score = gain * 2 - d * .7f - PositionLogic.Exposure(b, s, p) * 5 + b.Map.Protection(p, c.Position) * 5;
-                            candidates.Add(new Candidate { Unit = s, Point = p, Score = score, Probes = visible });
-                        }
+                    for (int x = -7; x <= 7; x += 2)
+                    {
+                        var p = new V2(
+                            (float)Math.Floor(s.Position.X) + x + .5f,
+                            (float)Math.Floor(s.Position.Y) + y + .5f
+                        );
+                        float d = V2.Distance(s.Position, p);
+                        if (
+                            d < 1
+                            || d > 8
+                            || !b.Map.Walkable(p)
+                            || !CommandHierarchy.WithinManeuver(b, s, p)
+                            || PositionLogic.Occupied(b, s, p)
+                            || !SafePoint(b, s, p, st)
+                        )
+                            continue;
+                        var visible = new List<V2>();
+                        foreach (var probe in probes)
+                            if (
+                                V2.Distance(p, probe) < DirectionalVision.FrontRange(b, s) - .5f
+                                && b.Map.LineOfSight(p, probe)
+                                && b.SmokeTransmission(p, probe) > .8f
+                            )
+                                visible.Add(probe);
+                        // A rotation alone does not justify a move; reserve translation for blocked/out-of-range sightlines.
+                        int gain = 0;
+                        foreach (var probe in visible)
+                            if (
+                                V2.Distance(s.Position, probe) > DirectionalVision.FrontRange(b, s) - .5f
+                                || !b.Map.LineOfSight(s.Position, probe)
+                            )
+                                gain += b.Map.NearCover(probe) ? 4 : 1;
+                        if (gain < 2)
+                            continue;
+                        float score =
+                            gain * 2
+                            - d * .7f
+                            - PositionLogic.Exposure(b, s, p) * 5
+                            + b.Map.Protection(p, c.Position) * 5;
+                        candidates.Add(
+                            new Candidate
+                            {
+                                Unit = s,
+                                Point = p,
+                                Score = score,
+                                Probes = visible,
+                            }
+                        );
+                    }
                 }
 
             candidates.Sort((a, z) => z.Score.CompareTo(a.Score));
@@ -357,7 +487,16 @@ namespace SilentOrders.Core
                 st.Probes.AddRange(candidate.Probes);
                 st.Stats.Routes++;
                 ChooseWatch(b, st, s);
-                b.History.Event(b, "reconRoute", s.Id, c.EnemyId, s.Position, st.Goal, candidate.Probes.Count, "unobserved_sightlines");
+                b.History.Event(
+                    b,
+                    "reconRoute",
+                    s.Id,
+                    c.EnemyId,
+                    s.Position,
+                    st.Goal,
+                    candidate.Probes.Count,
+                    "unobserved_sightlines"
+                );
                 return true;
             }
 
@@ -370,7 +509,11 @@ namespace SilentOrders.Core
             V2 chosen = new V2();
             bool found = false;
             foreach (var p in st.Probes)
-                if (!st.Seen.Contains(Key(b, p)) && b.Map.LineOfSight(s.Position, p) && V2.Distance(s.Position, p) <= DirectionalVision.FrontRange(b, s))
+                if (
+                    !st.Seen.Contains(Key(b, p))
+                    && b.Map.LineOfSight(s.Position, p)
+                    && V2.Distance(s.Position, p) <= DirectionalVision.FrontRange(b, s)
+                )
                 {
                     float cost = DirectionalVision.Angle(s.Awareness.Look, p - s.Position);
                     if (cost < best)
@@ -438,7 +581,10 @@ namespace SilentOrders.Core
                 TacticalAI.Stop(s);
                 s.MoveAuthorized = false;
                 s.Job = Job.Cover;
-                s.Reason = s.Id == st.Scout ? "Разведка: осматриваю новый сектор" : "Контролирую известный контакт, жду доклада";
+                s.Reason =
+                    s.Id == st.Scout
+                        ? "Разведка: осматриваю новый сектор"
+                        : "Контролирую известный контакт, жду доклада";
             }
 
             return true;

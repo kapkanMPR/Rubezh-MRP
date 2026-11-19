@@ -7,13 +7,15 @@ namespace SilentOrders.Core
     {
         public Contact Contact;
         public int Shot;
-        internal V2 Origin, Bias;
+        internal V2 Origin,
+            Bias;
         public float NextRequest;
     }
 
     public sealed class CounterSniperIntel
     {
-        public readonly Dictionary<int, SniperEstimate> Green = new Dictionary<int, SniperEstimate>(), Red = new Dictionary<int, SniperEstimate>();
+        public readonly Dictionary<int, SniperEstimate> Green = new Dictionary<int, SniperEstimate>(),
+            Red = new Dictionary<int, SniperEstimate>();
     }
 
     public enum CounterSniperPhase
@@ -23,7 +25,7 @@ namespace SilentOrders.Core
         Approach,
         Cover,
         Return,
-        CloseIn
+        CloseIn,
     }
 
     public sealed class CounterSniperAction
@@ -31,8 +33,13 @@ namespace SilentOrders.Core
         public CounterSniperPhase Phase;
         public Contact Threat;
         public int Victim = -1;
-        public float IncomingUntil, NextPlan, Until, CoverUntil, NextSupport;
-        public V2 Home, Goal;
+        public float IncomingUntil,
+            NextPlan,
+            Until,
+            CoverUntil,
+            NextSupport;
+        public V2 Home,
+            Goal;
         public Job OldJob;
         public List<V2> Route = new List<V2>();
         public int Cursor;
@@ -45,13 +52,23 @@ namespace SilentOrders.Core
             if (radius <= 0)
                 return point;
             float angle = b.Random.Value() * (float)Math.PI * 2;
-            return point + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * ((float)Math.Sqrt(b.Random.Value()) * radius);
+            return point
+                + new V2((float)Math.Cos(angle), (float)Math.Sin(angle))
+                    * ((float)Math.Sqrt(b.Random.Value()) * radius);
         }
 
-        static Dictionary<int, SniperEstimate> Intel(BattleSimulation b, Side side) => side == Side.Green ? b.SniperIntel.Green : b.SniperIntel.Red;
+        static Dictionary<int, SniperEstimate> Intel(BattleSimulation b, Side side) =>
+            side == Side.Green ? b.SniperIntel.Green : b.SniperIntel.Red;
+
         public static void Incoming(BattleSimulation b, Soldier victim, Bullet bullet)
         {
-            if (!bullet.SniperShot || bullet.Ricocheted || victim.Side == bullet.Side || !victim.Alive || !victim.Deployed)
+            if (
+                !bullet.SniperShot
+                || bullet.Ricocheted
+                || victim.Side == bullet.Side
+                || !victim.Alive
+                || !victim.Deployed
+            )
                 return;
             var intel = Intel(b, victim.Side);
             SniperEstimate entry;
@@ -73,7 +90,10 @@ namespace SilentOrders.Core
 
                 float radius = reset ? 5 : Math.Max(0, entry.Contact.Uncertainty - 1);
                 V2 estimate = bullet.SourcePosition + entry.Bias * radius;
-                estimate = new V2(Util.Clamp(estimate.X, .1f, b.Map.Columns - .1f), Util.Clamp(estimate.Y, .1f, b.Map.Rows - .1f));
+                estimate = new V2(
+                    Util.Clamp(estimate.X, .1f, b.Map.Columns - .1f),
+                    Util.Clamp(estimate.Y, .1f, b.Map.Rows - .1f)
+                );
                 entry.Shot = bullet.ShotId;
                 entry.Contact = new Contact
                 {
@@ -85,7 +105,7 @@ namespace SilentOrders.Core
                     Reported = true,
                     Inferred = true,
                     Uncertainty = radius,
-                    TargetPriority = 1
+                    TargetPriority = 1,
                 };
             }
 
@@ -93,43 +113,87 @@ namespace SilentOrders.Core
             // never the hidden soldier's current coordinates or movement.
             Contact known = entry.Contact;
             Contact direct;
-            if (victim.Contacts.TryGetValue(bullet.ShooterId, out direct) && victim.Visible.Contains(bullet.ShooterId) && direct.Visual && b.Time - direct.SeenAt <= b.Config.PerceptionPeriod * 2)
+            if (
+                victim.Contacts.TryGetValue(bullet.ShooterId, out direct)
+                && victim.Visible.Contains(bullet.ShooterId)
+                && direct.Visual
+                && b.Time - direct.SeenAt <= b.Config.PerceptionPeriod * 2
+            )
                 known = direct;
             Publish(victim.Contacts, known);
             Publish(b.Team(victim).Contacts, known);
             if (V2.Distance(victim.Position, known.Position) + known.Uncertainty <= b.WeaponRange(victim))
                 return;
             var action = victim.CounterSniper;
-            if (action.Phase == CounterSniperPhase.Cover || action.Phase == CounterSniperPhase.Approach || action.Phase == CounterSniperPhase.Return)
+            if (
+                action.Phase == CounterSniperPhase.Cover
+                || action.Phase == CounterSniperPhase.Approach
+                || action.Phase == CounterSniperPhase.Return
+            )
                 End(b, victim);
             action.Threat = known.Copy();
             action.IncomingUntil = b.Time + 12;
             victim.NextDecision = Math.Min(victim.NextDecision, b.Time);
-            b.Diagnostics.Add(b, victim, "report", "CounterSniper", "Дальний снайперский огонь; погрешность " + known.Uncertainty.ToString("0") + " клеток");
+            b.Diagnostics.Add(
+                b,
+                victim,
+                "report",
+                "CounterSniper",
+                "Дальний снайперский огонь; погрешность " + known.Uncertainty.ToString("0") + " клеток"
+            );
         }
 
         static void Publish(Dictionary<int, Contact> contacts, Contact incoming)
         {
             Contact old;
-            if (!contacts.TryGetValue(incoming.EnemyId, out old) || old.SeenAt < incoming.SeenAt || old.SeenAt == incoming.SeenAt && incoming.Uncertainty < old.Uncertainty)
+            if (
+                !contacts.TryGetValue(incoming.EnemyId, out old)
+                || old.SeenAt < incoming.SeenAt
+                || old.SeenAt == incoming.SeenAt && incoming.Uncertainty < old.Uncertainty
+            )
                 contacts[incoming.EnemyId] = incoming.Copy();
         }
 
         static bool Free(BattleSimulation b, Soldier s)
         {
             var q = b.Team(s);
-            return s.Deployed && s.Available && !s.Busy && !s.Broken && !s.VehicleRally && !s.VehicleDisperse && !s.GrenadeEscape.Active && s.RescuerId < 0 && s.RescueTargetId < 0 && s.SupplyDonorId < 0 && s.SupplyReceiverId < 0 && s.LootGroundId < 0 && s.LootTargetId < 0 && s.WeaponAidTargetId < 0 && s.LauncherPickupId < 0 && s.HandsBusyUntil <= b.Time && !TacticalOrders.Emergency(q) && !WithdrawalTactics.Active(q) && !q.Breakthrough.Active;
+            return s.Deployed
+                && s.Available
+                && !s.Busy
+                && !s.Broken
+                && !s.VehicleRally
+                && !s.VehicleDisperse
+                && !s.GrenadeEscape.Active
+                && s.RescuerId < 0
+                && s.RescueTargetId < 0
+                && s.SupplyDonorId < 0
+                && s.SupplyReceiverId < 0
+                && s.LootGroundId < 0
+                && s.LootTargetId < 0
+                && s.WeaponAidTargetId < 0
+                && s.LauncherPickupId < 0
+                && s.HandsBusyUntil <= b.Time
+                && !TacticalOrders.Emergency(q)
+                && !WithdrawalTactics.Active(q)
+                && !q.Breakthrough.Active;
         }
 
         public static bool Reserved(BattleSimulation b, Soldier s)
         {
-            return Free(b, s) && (s.CounterSniper.Phase != CounterSniperPhase.None || s.CounterSniper.IncomingUntil > b.Time);
+            return Free(b, s)
+                && (s.CounterSniper.Phase != CounterSniperPhase.None || s.CounterSniper.IncomingUntil > b.Time);
         }
 
         public static bool AreaFire(BattleSimulation b, Soldier s, Contact c)
         {
             var a = s.CounterSniper;
-            return c != null && Free(b, s) && a.Phase == CounterSniperPhase.Cover && a.Threat != null && a.Threat.EnemyId == c.EnemyId && a.Until > b.Time && b.Time - c.SeenAt <= 8;
+            return c != null
+                && Free(b, s)
+                && a.Phase == CounterSniperPhase.Cover
+                && a.Threat != null
+                && a.Threat.EnemyId == c.EnemyId
+                && a.Until > b.Time
+                && b.Time - c.SeenAt <= 8;
         }
 
         public static bool SafeFireLane(BattleSimulation b, Soldier s, Contact c)
@@ -145,7 +209,10 @@ namespace SilentOrders.Core
                     float along = V2.Dot(ally.Position - s.Position, direction);
                     if (along <= 0 || along > length + c.Uncertainty + 1.5f)
                         continue;
-                    if (V2.SegmentDistance(ally.Position, s.Position, c.Position) < .5f + (c.Uncertainty + 1.5f) * Math.Min(1, along / length))
+                    if (
+                        V2.SegmentDistance(ally.Position, s.Position, c.Position)
+                        < .5f + (c.Uncertainty + 1.5f) * Math.Min(1, along / length)
+                    )
                         return false;
                 }
 
@@ -183,7 +250,9 @@ namespace SilentOrders.Core
                     source += new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * c.Uncertainty;
                 }
 
-                float v = b.Map.LineOfSight(p, source) ? (1 - b.Map.Protection(p, source)) * b.SmokeTransmission(p, source) : 0;
+                float v = b.Map.LineOfSight(p, source)
+                    ? (1 - b.Map.Protection(p, source)) * b.SmokeTransmission(p, source)
+                    : 0;
                 worst = Math.Max(worst, v);
             }
 
@@ -193,7 +262,8 @@ namespace SilentOrders.Core
         public static bool SafeRoute(BattleSimulation b, Soldier s, List<V2> route, Contact threat)
         {
             V2 previous = s.Position;
-            float initial = Risk(b, s.Position, threat), exposure = PositionLogic.Exposure(b, s, s.Position);
+            float initial = Risk(b, s.Position, threat),
+                exposure = PositionLogic.Exposure(b, s, s.Position);
             foreach (var end in route)
             {
                 int steps = Math.Max(1, (int)Math.Ceiling(V2.Distance(previous, end) * 2));
@@ -203,10 +273,20 @@ namespace SilentOrders.Core
                     if (Risk(b, p, threat) > initial + .12f || PositionLogic.Exposure(b, s, p) > exposure + .15f)
                         return false;
                     foreach (var other in Knowledge.Contacts(b, s))
-                        if (other.EnemyId != threat.EnemyId && PositionLogic.Recent(b, other) && b.Map.LineOfSight(p, other.Position) && b.SmokeTransmission(p, other.Position) > .3f)
+                        if (
+                            other.EnemyId != threat.EnemyId
+                            && PositionLogic.Recent(b, other)
+                            && b.Map.LineOfSight(p, other.Position)
+                            && b.SmokeTransmission(p, other.Position) > .3f
+                        )
                         {
-                            float now = V2.Distance(p, other.Position), before = V2.Distance(s.Position, other.Position);
-                            if (now < b.Config.WeaponRange + 2 + other.Uncertainty && now < before - .5f && Risk(b, p, other) > .5f)
+                            float now = V2.Distance(p, other.Position),
+                                before = V2.Distance(s.Position, other.Position);
+                            if (
+                                now < b.Config.WeaponRange + 2 + other.Uncertainty
+                                && now < before - .5f
+                                && Risk(b, p, other) > .5f
+                            )
                                 return false;
                         }
                 }
@@ -237,7 +317,10 @@ namespace SilentOrders.Core
             s.ManeuverPaused = false;
             s.SupportReady = false;
             s.Job = phase == CounterSniperPhase.Cover ? Job.Cover : Job.Reposition;
-            s.Reason = phase == CounterSniperPhase.Escape ? "Снайпер вне дальности: разрываю линию огня" : phase == CounterSniperPhase.Return ? "Товарищ отошёл — возвращаюсь к своему рубежу" : "Прикрываю отход от снайпера";
+            s.Reason =
+                phase == CounterSniperPhase.Escape ? "Снайпер вне дальности: разрываю линию огня"
+                : phase == CounterSniperPhase.Return ? "Товарищ отошёл — возвращаюсь к своему рубежу"
+                : "Прикрываю отход от снайпера";
         }
 
         static void End(BattleSimulation b, Soldier s)
@@ -255,32 +338,44 @@ namespace SilentOrders.Core
         {
             if (s.CounterSniper.Phase != CounterSniperPhase.None)
                 return false;
-            float risk = Risk(b, s.Position, threat), best = float.MinValue;
+            float risk = Risk(b, s.Position, threat),
+                best = float.MinValue;
             V2 goal = s.Position;
             List<V2> chosen = null;
             V2 forward = (threat.Position - s.Position).Normalized;
             for (int ring = 0; ring < 4; ring++)
-                for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
+            {
+                float angle = i * (float)Math.PI / 6;
+                V2 p = b.Map.NearestOpen(
+                    s.Position + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * (2.5f + ring * 2f)
+                );
+                if (
+                    V2.Dot(p - s.Position, forward) > .6f
+                    || PositionLogic.Occupied(b, s, p)
+                    || V2.Distance(s.Position, p) < 1
+                )
+                    continue;
+                float danger = Risk(b, p, threat);
+                if (danger > risk - .08f)
+                    continue;
+                var path = LossMemory.Find(
+                    b,
+                    s,
+                    p,
+                    v => PositionLogic.Exposure(b, s, v) * 3 + (PositionLogic.Occupied(b, s, v) ? 15 : 0)
+                );
+                b.Stats.Paths++;
+                if (path.Count == 0 || SupportAI.PathLength(s.Position, path) > 16 || !SafeRoute(b, s, path, threat))
+                    continue;
+                float score = (risk - danger) * 10 - SupportAI.PathLength(s.Position, path) * .3f;
+                if (score > best)
                 {
-                    float angle = i * (float)Math.PI / 6;
-                    V2 p = b.Map.NearestOpen(s.Position + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * (2.5f + ring * 2f));
-                    if (V2.Dot(p - s.Position, forward) > .6f || PositionLogic.Occupied(b, s, p) || V2.Distance(s.Position, p) < 1)
-                        continue;
-                    float danger = Risk(b, p, threat);
-                    if (danger > risk - .08f)
-                        continue;
-                    var path = LossMemory.Find(b, s, p, v => PositionLogic.Exposure(b, s, v) * 3 + (PositionLogic.Occupied(b, s, v) ? 15 : 0));
-                    b.Stats.Paths++;
-                    if (path.Count == 0 || SupportAI.PathLength(s.Position, path) > 16 || !SafeRoute(b, s, path, threat))
-                        continue;
-                    float score = (risk - danger) * 10 - SupportAI.PathLength(s.Position, path) * .3f;
-                    if (score > best)
-                    {
-                        best = score;
-                        goal = p;
-                        chosen = path;
-                    }
+                    best = score;
+                    goal = p;
+                    chosen = path;
                 }
+            }
 
             if (chosen == null)
                 return false;
@@ -292,7 +387,11 @@ namespace SilentOrders.Core
         {
             float distance = V2.Distance(s.Position, c.Position);
             bool ugl = s.Underbarrel && GrenadePockets.Count(s, 2) > 0 && distance <= ArcedOrdnance.Range(b, 2);
-            bool rocket = s.Role == Role.Grenadier && s.Rockets > 0 && distance <= SpecialWeapons.Range(b) && b.Map.LineOfSight(s.Position, c.Position);
+            bool rocket =
+                s.Role == Role.Grenadier
+                && s.Rockets > 0
+                && distance <= SpecialWeapons.Range(b)
+                && b.Map.LineOfSight(s.Position, c.Position);
             return ugl || rocket;
         }
 
@@ -300,15 +399,30 @@ namespace SilentOrders.Core
         {
             goal = helper.Position;
             route = null;
-            V2 forward = (threat.Position - helper.Position).Normalized, side = new V2(-forward.Y, forward.X);
+            V2 forward = (threat.Position - helper.Position).Normalized,
+                side = new V2(-forward.Y, forward.X);
             for (int i = 0; i < 4; i++)
             {
                 V2 p = b.Map.NearestOpen(helper.Position + forward * (i < 2 ? 2 : 4) + side * (i % 2 == 0 ? 3 : -3));
-                if (PositionLogic.Occupied(b, helper, p) || !PositionLogic.Protected(b, helper, p) || V2.Distance(p, threat.Position) > b.WeaponRange(helper) - .5f || !b.Map.LineOfSight(p, threat.Position))
+                if (
+                    PositionLogic.Occupied(b, helper, p)
+                    || !PositionLogic.Protected(b, helper, p)
+                    || V2.Distance(p, threat.Position) > b.WeaponRange(helper) - .5f
+                    || !b.Map.LineOfSight(p, threat.Position)
+                )
                     continue;
-                var path = Pathfinder.Find(b.Map, helper.Position, p, v => PositionLogic.Exposure(b, helper, v) * 3 + (PositionLogic.Occupied(b, helper, v) ? 15 : 0));
+                var path = Pathfinder.Find(
+                    b.Map,
+                    helper.Position,
+                    p,
+                    v => PositionLogic.Exposure(b, helper, v) * 3 + (PositionLogic.Occupied(b, helper, v) ? 15 : 0)
+                );
                 b.Stats.Paths++;
-                if (path.Count == 0 || SupportAI.PathLength(helper.Position, path) > 8 || !SafeRoute(b, helper, path, threat))
+                if (
+                    path.Count == 0
+                    || SupportAI.PathLength(helper.Position, path) > 8
+                    || !SafeRoute(b, helper, path, threat)
+                )
                     continue;
                 goal = p;
                 route = path;
@@ -336,21 +450,49 @@ namespace SilentOrders.Core
             float best = float.MinValue;
             foreach (var helper in b.Soldiers)
             {
-                if (helper.Side != victim.Side || helper.Id == victim.Id || !Free(b, helper) || RedCounterattack.Retreating(b, helper) || helper.CounterSniper.Phase != CounterSniperPhase.None || helper.CounterSniper.IncomingUntil > b.Time || helper.FlagResponseUntil > b.Time || helper.Health < 45 || helper.Suppression > .45f || (helper.Ammo + helper.Reserve <= 0 && !Heavy(b, helper, threat)) || helper.Sniper && threat.Inferred && !Heavy(b, helper, threat) || helper.HelpUntil > b.Time || helper.ReloadUntil > b.Time || !GroupCoordination.CanLend(b, helper, victim) || V2.Distance(helper.Position, victim.Position) > 18)
+                if (
+                    helper.Side != victim.Side
+                    || helper.Id == victim.Id
+                    || !Free(b, helper)
+                    || RedCounterattack.Retreating(b, helper)
+                    || helper.CounterSniper.Phase != CounterSniperPhase.None
+                    || helper.CounterSniper.IncomingUntil > b.Time
+                    || helper.FlagResponseUntil > b.Time
+                    || helper.Health < 45
+                    || helper.Suppression > .45f
+                    || (helper.Ammo + helper.Reserve <= 0 && !Heavy(b, helper, threat))
+                    || helper.Sniper && threat.Inferred && !Heavy(b, helper, threat)
+                    || helper.HelpUntil > b.Time
+                    || helper.ReloadUntil > b.Time
+                    || !GroupCoordination.CanLend(b, helper, victim)
+                    || V2.Distance(helper.Position, victim.Position) > 18
+                )
                     continue;
-                bool borrowed = helper.DefenderGroup != victim.DefenderGroup, occupied = false;
+                bool borrowed = helper.DefenderGroup != victim.DefenderGroup,
+                    occupied = false;
                 if (borrowed)
                     foreach (var other in b.Soldiers)
-                        if (other.DefenderGroup == helper.DefenderGroup && other.CounterSniper.Phase != CounterSniperPhase.None)
+                        if (
+                            other.DefenderGroup == helper.DefenderGroup
+                            && other.CounterSniper.Phase != CounterSniperPhase.None
+                        )
                             occupied = true;
                 if (occupied)
                     continue;
-                bool heavy = Heavy(b, helper, threat), fire = PositionLogic.CanEngage(b, helper, helper.Position, threat);
+                bool heavy = Heavy(b, helper, threat),
+                    fire = PositionLogic.CanEngage(b, helper, helper.Position, threat);
                 V2 p = helper.Position;
                 List<V2> path = null;
                 if (!heavy && !fire && (!Approach(b, helper, threat, out p, out path) || helper.Role == Role.Medic))
                     continue;
-                float score = (heavy ? 30 : fire ? 20 : 5) - V2.Distance(helper.Position, victim.Position) - (borrowed ? 3 : 0);
+                float score =
+                    (
+                        heavy ? 30
+                        : fire ? 20
+                        : 5
+                    )
+                    - V2.Distance(helper.Position, victim.Position)
+                    - (borrowed ? 3 : 0);
                 if (score <= best)
                     continue;
                 best = score;
@@ -396,7 +538,23 @@ namespace SilentOrders.Core
 
         public static bool CanCloseIn(BattleSimulation b, Soldier s, Contact threat)
         {
-            if (threat == null || !Free(b, s) || s.Bleeding || s.Health < 45 || s.Suppression > .5f || s.Ammo + s.Reserve <= 0 || s.HelpUntil > b.Time || s.HelpRetreatUntil > b.Time || s.FlagResponseUntil > b.Time || RedCounterattack.Retreating(b, s) || b.Team(s).Style == CombatStyle.Withdraw || ObjectiveOpportunity.IsCapturer(b, s) || b.Time - threat.SeenAt > 8 || threat.Confidence < .35f || threat.Uncertainty > 5)
+            if (
+                threat == null
+                || !Free(b, s)
+                || s.Bleeding
+                || s.Health < 45
+                || s.Suppression > .5f
+                || s.Ammo + s.Reserve <= 0
+                || s.HelpUntil > b.Time
+                || s.HelpRetreatUntil > b.Time
+                || s.FlagResponseUntil > b.Time
+                || RedCounterattack.Retreating(b, s)
+                || b.Team(s).Style == CombatStyle.Withdraw
+                || ObjectiveOpportunity.IsCapturer(b, s)
+                || b.Time - threat.SeenAt > 8
+                || threat.Confidence < .35f
+                || threat.Uncertainty > 5
+            )
                 return false;
             // Only observations, never the global number or positions of living enemies.
             foreach (var ally in b.Soldiers)
@@ -413,28 +571,49 @@ namespace SilentOrders.Core
                 return false;
             int movers = 0;
             foreach (var ally in b.Soldiers)
-                if (ally != s && ally.Side == s.Side && b.Team(s).Contains(ally) && ally.Available && ally.CounterSniper.Phase == CounterSniperPhase.CloseIn)
+                if (
+                    ally != s
+                    && ally.Side == s.Side
+                    && b.Team(s).Contains(ally)
+                    && ally.Available
+                    && ally.CounterSniper.Phase == CounterSniperPhase.CloseIn
+                )
                     movers++;
             if (movers >= 2)
                 return false;
             float distance = V2.Distance(s.Position, threat.Position);
             if (distance + threat.Uncertainty <= b.WeaponRange(s) && PositionLogic.CanEngage(b, s, s.Position, threat))
                 return false;
-            V2 forward = (threat.Position - s.Position).Normalized, side = new V2(-forward.Y, forward.X);
+            V2 forward = (threat.Position - s.Position).Normalized,
+                side = new V2(-forward.Y, forward.X);
             float best = float.MinValue;
             V2 goal = s.Position;
             List<V2> chosen = null;
             for (int i = 0; i < 6; i++)
             {
-                float step = i < 3 ? 3 : 5, offset = (i % 3 - 1) * 2;
+                float step = i < 3 ? 3 : 5,
+                    offset = (i % 3 - 1) * 2;
                 V2 p = b.Map.NearestOpen(s.Position + forward * step + side * offset);
-                if (PositionLogic.Occupied(b, s, p) || V2.Distance(p, threat.Position) > distance - 1 || V2.Distance(p, threat.Position) < 4)
+                if (
+                    PositionLogic.Occupied(b, s, p)
+                    || V2.Distance(p, threat.Position) > distance - 1
+                    || V2.Distance(p, threat.Position) < 4
+                )
                     continue;
-                var path = LossMemory.Find(b, s, p, v => PositionLogic.Exposure(b, s, v) * 4 + (PositionLogic.Occupied(b, s, v) ? 15 : 0));
+                var path = LossMemory.Find(
+                    b,
+                    s,
+                    p,
+                    v => PositionLogic.Exposure(b, s, v) * 4 + (PositionLogic.Occupied(b, s, v) ? 15 : 0)
+                );
                 b.Stats.Paths++;
                 if (path.Count == 0 || SupportAI.PathLength(s.Position, path) > 7 || !SafeRoute(b, s, path, threat))
                     continue;
-                float score = distance - V2.Distance(p, threat.Position) + (PositionLogic.Protected(b, s, p) ? 3 : 0) - SupportAI.PathLength(s.Position, path) * .25f;
+                float score =
+                    distance
+                    - V2.Distance(p, threat.Position)
+                    + (PositionLogic.Protected(b, s, p) ? 3 : 0)
+                    - SupportAI.PathLength(s.Position, path) * .25f;
                 if (score > best)
                 {
                     best = score;
@@ -479,7 +658,11 @@ namespace SilentOrders.Core
                 return false;
             if (a.Phase != CounterSniperPhase.None)
                 return true;
-            if (a.IncomingUntil <= b.Time || b.Time - threat.SeenAt > 12 || V2.Distance(s.Position, threat.Position) + threat.Uncertainty <= b.WeaponRange(s))
+            if (
+                a.IncomingUntil <= b.Time
+                || b.Time - threat.SeenAt > 12
+                || V2.Distance(s.Position, threat.Position) + threat.Uncertainty <= b.WeaponRange(s)
+            )
                 return false;
             if (b.Time >= a.NextPlan)
             {
@@ -523,7 +706,14 @@ namespace SilentOrders.Core
                 return a.Phase == CounterSniperPhase.Return;
             }
 
-            bool relief = a.Victim >= 0 && (a.Victim >= b.Soldiers.Count || !b.Soldiers[a.Victim].Alive || b.Soldiers[a.Victim].CounterSniper.IncomingUntil <= b.Time || Risk(b, b.Soldiers[a.Victim].Position, threat) < .3f);
+            bool relief =
+                a.Victim >= 0
+                && (
+                    a.Victim >= b.Soldiers.Count
+                    || !b.Soldiers[a.Victim].Alive
+                    || b.Soldiers[a.Victim].CounterSniper.IncomingUntil <= b.Time
+                    || Risk(b, b.Soldiers[a.Victim].Position, threat) < .3f
+                );
             if (a.Phase == CounterSniperPhase.Cover)
             {
                 if (relief || b.Time >= a.Until || b.Time - threat.SeenAt > 8)
@@ -574,10 +764,7 @@ namespace SilentOrders.Core
             }
 
             V2 delta = a.Route[a.Cursor] - s.Position;
-            var nextPath = new List<V2>
-            {
-                s.Position + delta.Normalized * Math.Min(.5f, delta.Length)
-            };
+            var nextPath = new List<V2> { s.Position + delta.Normalized * Math.Min(.5f, delta.Length) };
             if (!SafeRoute(b, s, nextPath, threat))
             {
                 if (a.Phase == CounterSniperPhase.Approach)
@@ -587,7 +774,14 @@ namespace SilentOrders.Core
                 return false;
             }
 
-            if (Locomotion.TryStep(b, s, delta.Normalized * Math.Min(delta.Length, CombatMovement.Speed(b, s) * dt), out var next))
+            if (
+                Locomotion.TryStep(
+                    b,
+                    s,
+                    delta.Normalized * Math.Min(delta.Length, CombatMovement.Speed(b, s) * dt),
+                    out var next
+                )
+            )
             {
                 s.DistanceTravelled += V2.Distance(s.Position, next);
                 s.Position = next;

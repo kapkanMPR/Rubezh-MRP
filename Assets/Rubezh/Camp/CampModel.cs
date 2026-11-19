@@ -10,22 +10,37 @@ namespace Rubezh.Camp
     [Serializable]
     public sealed class Item
     {
-        public string id, name, type, img, stats, desc, role, rarity;
-        public int unlock, price, capacity;
+        public string id,
+            name,
+            type,
+            img,
+            stats,
+            desc,
+            role,
+            rarity;
+        public int unlock,
+            price,
+            capacity;
         public string[][] fields;
     }
 
     [Serializable]
     public sealed class Unit
     {
-        public string id, name, role, rarity, unit, trait;
+        public string id,
+            name,
+            role,
+            rarity,
+            unit,
+            trait;
     }
 
     [Serializable]
     public sealed class Offer
     {
         public string id;
-        public int unlock, price;
+        public int unlock,
+            price;
     }
 
     [Serializable]
@@ -38,7 +53,8 @@ namespace Rubezh.Camp
     [Serializable]
     public sealed class Effect
     {
-        public string stat, unit;
+        public string stat,
+            unit;
         public float delta;
         public int rank;
     }
@@ -46,24 +62,36 @@ namespace Rubezh.Camp
     [Serializable]
     public sealed class Skill
     {
-        public string id, name, desc, role;
+        public string id,
+            name,
+            desc,
+            role;
         public int level;
         public string[] pre;
-        public float x, y, col, row;
+        public float x,
+            y,
+            col,
+            row;
         public Effect effect;
     }
 
     [Serializable]
     public sealed class Mission
     {
-        public string name, brief;
+        public string name,
+            brief;
     }
 
     [Serializable]
     public sealed class WarMap
     {
-        public string name, terrain;
-        public int n, w, h, red, waves;
+        public string name,
+            terrain;
+        public int n,
+            w,
+            h,
+            red,
+            waves;
         public float reserve;
     }
 
@@ -77,6 +105,7 @@ namespace Rubezh.Camp
         public Names[] callsigns;
         public Mission[] missions;
         public WarMap[] war;
+
         public Item Item(string id)
         {
             return items.FirstOrDefault(x => x.id == id);
@@ -96,25 +125,27 @@ namespace Rubezh.Camp
     [Serializable]
     public sealed class Look
     {
-        public int headId, lightId, familyId, heavyId;
+        public int headId,
+            lightId,
+            familyId,
+            heavyId;
     }
 
     [Serializable]
     public sealed class Gear
     {
-        public string weapon, armor, rig, extra, extra2, tourniquet;
-        public List<string> rigSlots = new List<string>(), bag = new List<string>();
+        public string weapon,
+            armor,
+            rig,
+            extra,
+            extra2,
+            tourniquet;
+        public List<string> rigSlots = new List<string>(),
+            bag = new List<string>();
+
         public IEnumerable<string> All()
         {
-            return new[]
-            {
-                weapon,
-                armor,
-                rig,
-                extra,
-                extra2,
-                tourniquet
-            }.Concat(rigSlots).Concat(bag);
+            return new[] { weapon, armor, rig, extra, extra2, tourniquet }.Concat(rigSlots).Concat(bag);
         }
 
         public string Get(string slot)
@@ -169,7 +200,9 @@ namespace Rubezh.Camp
     [Serializable]
     public sealed class Person
     {
-        public int level = 1, points, credit;
+        public int level = 1,
+            points,
+            credit;
         public Dictionary<string, int> skills = new Dictionary<string, int>();
     }
 
@@ -177,20 +210,28 @@ namespace Rubezh.Camp
     public sealed class Career
     {
         public int battleXpVersion;
-        public int xp, manuals, levelBooks, freeXp, treeVersion = 4, xpCurve = 2, fighterCurve = 2;
+        public int xp,
+            manuals,
+            levelBooks,
+            freeXp,
+            treeVersion = 4,
+            xpCurve = 2,
+            fighterCurve = 2;
         public Dictionary<string, Person> people = new Dictionary<string, Person>();
     }
 
     [Serializable]
     public sealed class Recruit
     {
-        public string template, name;
+        public string template,
+            name;
     }
 
     [Serializable]
     public sealed class Arrival
     {
-        public string template, name;
+        public string template,
+            name;
         public int level;
         public bool advanced;
         public Look look;
@@ -207,35 +248,28 @@ namespace Rubezh.Camp
     [Serializable]
     public sealed class RewardView
     {
-        public string key, summary, phase = "gear";
+        public string key,
+            summary,
+            phase = "gear";
     }
 
     [Serializable]
     public sealed class Operation
     {
         public string mode = "war";
-        public int block = 1, mission = 1;
+        public int block = 1,
+            mission = 1;
     }
 
     [Serializable]
     public sealed class Formation
     {
         public bool quietWork;
-        public int pairing, width = 1, depth = 1;
-        public int[] pairSlots =
-        {
-            -1,
-            -1,
-            -1,
-            -1
-        }, positions =
-        {
-            0,
-            0,
-            0,
-            0,
-            0
-        };
+        public int pairing,
+            width = 1,
+            depth = 1;
+        public int[] pairSlots =  { -1, -1, -1, -1 },
+            positions =  { 0, 0, 0, 0, 0 };
     }
 
     [Serializable]
@@ -245,22 +279,21 @@ namespace Rubezh.Camp
         public List<LootReceipt> lootReceipts = new List<LootReceipt>();
         public int finiteEquipmentVersion;
         public bool hideIssued;
-        public int version = 1, story, nextRecruit;
+        public int version = 1,
+            story,
+            nextRecruit;
         public string nickname = "Kapkan";
         public int avatarHead = 82;
         public List<int> avatarHeads = new List<int>();
         public List<CampSquad> squads = new List<CampSquad>();
         public string selectedSquad;
-        public bool unlimited, unlockAll, motion = true;
+        public bool unlimited,
+            unlockAll,
+            motion = true;
         public double balance;
-        public List<string> completed = new List<string>(), active = new List<string>
-        {
-            "kedr",
-            "s1",
-            "s2",
-            "s3",
-            "s4"
-        }, usedNames = new List<string>();
+        public List<string> completed = new List<string>(),
+            active = new List<string> { "kedr", "s1", "s2", "s3", "s4" },
+            usedNames = new List<string>();
         public Dictionary<string, int> inventory = new Dictionary<string, int>();
         public Dictionary<string, Gear> gear = new Dictionary<string, Gear>();
         public List<int> seenHeads = new List<int>();
@@ -274,14 +307,7 @@ namespace Rubezh.Camp
         public RewardView rewardView;
         public string lastCampReceipt;
         public RaidProgress raid = new RaidProgress();
-        public int[] training =
-        {
-            0,
-            0,
-            0,
-            0,
-            0
-        };
+        public int[] training = { 0, 0, 0, 0, 0 };
     }
 
     public sealed partial class CampModel
@@ -290,6 +316,7 @@ namespace Rubezh.Camp
         public State S { get; private set; }
 
         readonly Func<double> random;
+
         public CampModel(Catalog catalog, State state = null, Func<double> rng = null)
         {
             Data = catalog ?? throw new ArgumentNullException(nameof(catalog));
@@ -304,8 +331,9 @@ namespace Rubezh.Camp
             TypeNameHandling = TypeNameHandling.None,
             MaxDepth = 64,
             MissingMemberHandling = MissingMemberHandling.Ignore,
-            ObjectCreationHandling = ObjectCreationHandling.Replace
+            ObjectCreationHandling = ObjectCreationHandling.Replace,
         };
+
         public string Serialize()
         {
             RememberAvatarHeads();
@@ -334,7 +362,17 @@ namespace Rubezh.Camp
 
             if (raw["caseHistory"] == null)
                 s.caseHistory = null;
-            if (s == null || s.version != 1 || s.gear == null || !s.gear.ContainsKey("kedr") || s.active == null || s.active.Count != 5 || (s.active[0] != null && s.active[0] != "kedr") || s.active.Where(id => id != null).Distinct().Count() != s.active.Count(id => id != null) || s.active.Any(id => id != null && !s.gear.ContainsKey(id)))
+            if (
+                s == null
+                || s.version != 1
+                || s.gear == null
+                || !s.gear.ContainsKey("kedr")
+                || s.active == null
+                || s.active.Count != 5
+                || (s.active[0] != null && s.active[0] != "kedr")
+                || s.active.Where(id => id != null).Distinct().Count() != s.active.Count(id => id != null)
+                || s.active.Any(id => id != null && !s.gear.ContainsKey(id))
+            )
                 throw new ArgumentException("Сохранение лагеря повреждено или имеет неизвестную версию");
             return s;
         }
@@ -348,7 +386,19 @@ namespace Rubezh.Camp
         State Fresh()
         {
             var s = new State();
-            foreach (var u in Data.units.Where(u => u.id != "sn-morok" && u.id != "sn-manul" && u.id != "med-dobry" && u.id != "med-hirurg" && u.id != "mg-medved" && u.id != "mg-bury" && u.id != "rpg-pepel" && u.id != "rpg-fugas" && !Data.offers.Any(o => o.id == u.id)))
+            foreach (
+                var u in Data.units.Where(u =>
+                    u.id != "sn-morok"
+                    && u.id != "sn-manul"
+                    && u.id != "med-dobry"
+                    && u.id != "med-hirurg"
+                    && u.id != "mg-medved"
+                    && u.id != "mg-bury"
+                    && u.id != "rpg-pepel"
+                    && u.id != "rpg-fugas"
+                    && !Data.offers.Any(o => o.id == u.id)
+                )
+            )
             {
                 s.gear[u.id] = new Gear();
                 s.career.people[u.id] = new Person();
@@ -383,7 +433,7 @@ namespace Rubezh.Camp
                 role = u.role,
                 rarity = u.rarity,
                 unit = u.unit,
-                trait = u.trait
+                trait = u.trait,
             };
         }
 
@@ -444,13 +494,17 @@ namespace Rubezh.Camp
         public int ExtraSlots(string uid)
         {
             string role = Soldier(uid).role;
-            return role == "Снайпер" || role == "Пулемётчик" ? 0 : role == "Гранатомётчик" ? 2 : 1;
+            return role == "Снайпер" || role == "Пулемётчик" ? 0
+                : role == "Гранатомётчик" ? 2
+                : 1;
         }
 
         public bool CanEquip(string uid, string slot, Item item)
         {
-            if (item == null || !S.gear.ContainsKey(uid)) return false;
-            if (slot == "extra" && ExtraSlots(uid) == 0 || slot == "extra2" && ExtraSlots(uid) != 2) return false;
+            if (item == null || !S.gear.ContainsKey(uid))
+                return false;
+            if (slot == "extra" && ExtraSlots(uid) == 0 || slot == "extra2" && ExtraSlots(uid) != 2)
+                return false;
             return Fits(S.gear[uid], slot, item) && (slot == "bag" || Allowed(Soldier(uid), item));
         }
 
@@ -467,10 +521,17 @@ namespace Rubezh.Camp
         public double Sell(string id)
         {
             var i = Data.Item(id);
-            Check(i == null || i.type != "weapon" || WeaponStock > 5, "Нужно оставить минимум 5 единиц основного оружия, включая выданное");
+            Check(
+                i == null || i.type != "weapon" || WeaponStock > 5,
+                "Нужно оставить минимум 5 единиц основного оружия, включая выданное"
+            );
             Check(i != null && !Personal(id) && Free(id) > 0, "Продать можно только свободный предмет со склада");
-            Check(Owned(id) > MaxSquadUse(id), "Этот экземпляр нужен комплекту другого отряда. Сначала снимите его там.");
-            if (i.type == "weapon") RemoveWeaponInstanceForSale(id);
+            Check(
+                Owned(id) > MaxSquadUse(id),
+                "Этот экземпляр нужен комплекту другого отряда. Сначала снимите его там."
+            );
+            if (i.type == "weapon")
+                RemoveWeaponInstanceForSale(id);
             S.inventory[id]--;
             double n = i.price * .75;
             S.balance += n;
@@ -485,55 +546,42 @@ namespace Rubezh.Camp
             S.career.manuals++;
         }
 
-        static readonly int[] lights =
-        {
-            51,
-            54,
-            55,
-            88,
-            83,
-            81,
-            97,
-            79,
-            62,
-            61,
-            65
-        }, families =
-        {
-            52,
-            53,
-            58,
-            63,
-            64,
-            69,
-            71,
-            72,
-            75,
-            80,
-            85,
-            89,
-            91,
-            94,
-            95,
-            98
-        }, heads = {57,59,63,107,116,131,133,134,136}, snipers = {62,69,143};
+        static readonly int[] lights =  { 51, 54, 55, 88, 83, 81, 97, 79, 62, 61, 65 },
+            families =  { 52, 53, 58, 63, 64, 69, 71, 72, 75, 80, 85, 89, 91, 94, 95, 98 },
+            heads =  { 57, 59, 63, 107, 116, 131, 133, 134, 136 },
+            snipers =  { 62, 69, 143 };
+
         int Pick(IList<int> pool, int old = 0)
         {
-            return pool.Contains(old) ? old : pool.Count == 1 ? pool[0] : pool[(int)(random() * pool.Count)];
+            return pool.Contains(old) ? old
+                : pool.Count == 1 ? pool[0]
+                : pool[(int)(random() * pool.Count)];
         }
 
         int PickHead(IList<int> pool, int old)
         {
             S.seenHeads = S.seenHeads ?? new List<int>();
-            foreach (var look in S.looks.Values.Concat((S.pendingRecruits ?? new List<Arrival>()).Select(a => a.look)).Concat((S.caseHistory ?? new Dictionary<string, Shipment>()).Values.SelectMany(c => c.fighters ?? new List<Arrival>()).Select(a => a.look)))
-                if (look != null && !S.seenHeads.Contains(look.headId)) S.seenHeads.Add(look.headId);
+            foreach (
+                var look in S
+                    .looks.Values.Concat((S.pendingRecruits ?? new List<Arrival>()).Select(a => a.look))
+                    .Concat(
+                        (S.caseHistory ?? new Dictionary<string, Shipment>())
+                            .Values.SelectMany(c => c.fighters ?? new List<Arrival>())
+                            .Select(a => a.look)
+                    )
+            )
+                if (look != null && !S.seenHeads.Contains(look.headId))
+                    S.seenHeads.Add(look.headId);
             int head;
-            if (pool.Contains(old)) head = old;
-            else {
+            if (pool.Contains(old))
+                head = old;
+            else
+            {
                 var unseen = pool.Where(h => !S.seenHeads.Contains(h)).ToArray();
                 head = Pick(unseen.Length > 0 ? unseen : pool);
             }
-            if (!S.seenHeads.Contains(head)) S.seenHeads.Add(head);
+            if (!S.seenHeads.Contains(head))
+                S.seenHeads.Add(head);
             return head;
         }
 
@@ -541,44 +589,134 @@ namespace Rubezh.Camp
         {
             return new Look
             {
-                headId = PickHead(commander ? new[] { 82 } : role == "Снайпер" ? snipers : role == "Медик" ? new[] { 88,106,109 } : heads, old == null ? 0 : old.headId),
+                headId = PickHead(
+                    commander ? new[] { 82 }
+                        : role == "Снайпер" ? snipers
+                        : role == "Медик" ? new[] { 88, 106, 109 }
+                        : heads,
+                    old == null ? 0 : old.headId
+                ),
                 lightId = Pick(lights, old == null ? 0 : old.lightId),
-                familyId = Pick(families, old == null ? 0 : old.familyId)
+                familyId = Pick(families, old == null ? 0 : old.familyId),
             };
         }
 
         // Archetypes are fixed; recruitment randomness selects an archetype only.
         string CanonicalTemplate(string template)
         {
-            if(template=="mg") return new[] { "mg", "mg-medved", "mg-bury" }[Math.Min(2,(int)(random()*3))];
-            if(template=="rpg") return new[] { "rpg", "rpg-pepel", "rpg-fugas" }[Math.Min(2,(int)(random()*3))];
-            if(Data.Template(template).role=="Стрелок") return new[] { "s1", "s2", "s3" }[Math.Min(2,(int)(random()*3))];
-            if(template != "sn" && template != "med") return template;
-            var pool = template=="med" ? new[] { "med", "med-dobry", "med-hirurg" } : new[] { "sn", "sn-morok", "sn-manul" };
-            return pool[Math.Min(2,(int)(random()*pool.Length))];
+            if (template == "mg")
+                return new[] { "mg", "mg-medved", "mg-bury" }[Math.Min(2, (int)(random() * 3))];
+            if (template == "rpg")
+                return new[] { "rpg", "rpg-pepel", "rpg-fugas" }[Math.Min(2, (int)(random() * 3))];
+            if (Data.Template(template).role == "Стрелок")
+                return new[] { "s1", "s2", "s3" }[Math.Min(2, (int)(random() * 3))];
+            if (template != "sn" && template != "med")
+                return template;
+            var pool =
+                template == "med" ? new[] { "med", "med-dobry", "med-hirurg" } : new[] { "sn", "sn-morok", "sn-manul" };
+            return pool[Math.Min(2, (int)(random() * pool.Length))];
         }
+
         public Look CanonicalLook(string template)
         {
-            if(template=="mg" || template=="mg-medved" || template=="mg-bury") return new Look { headId=template=="mg"?57:template=="mg-medved"?59:63, lightId=79, familyId=91, heavyId=64 };
-            if(template=="rpg" || template=="rpg-pepel" || template=="rpg-fugas") return new Look { headId=template=="rpg"?107:template=="rpg-pepel"?134:136, lightId=62, familyId=89, heavyId=89 };
-            if(Data.Template(template).role=="Стрелок") return new Look { headId=template=="s2"?131:(template=="s3" || template=="sup")?133:116, lightId=62, familyId=89, heavyId=89 };
-            if(template=="med" || template=="med-dobry" || template=="med-hirurg")
-                return new Look { headId=template=="med"?88:template=="med-dobry"?106:109, lightId=83, familyId=63, heavyId=80 };
-            if(template=="kedr") return new Look { headId=82, lightId=51, familyId=53 };
-            if(template=="sn" || template=="sn-morok" || template=="sn-manul")
-                return new Look { headId=template=="sn"?143:template=="sn-morok"?62:69, lightId=55, familyId=95 };
-            var u=Data.Template(template);
-            int index=Array.FindIndex(Data.units,x=>x.id==template);
-            index=Math.Max(0,index);
-            return new Look { headId=template=="kedr"?82:u.role=="Медик"?88:heads[index%heads.Length], lightId=lights[index%lights.Length], familyId=families[index%families.Length] };
+            if (template == "mg" || template == "mg-medved" || template == "mg-bury")
+                return new Look
+                {
+                    headId =
+                        template == "mg" ? 57
+                        : template == "mg-medved" ? 59
+                        : 63,
+                    lightId = 79,
+                    familyId = 91,
+                    heavyId = 64,
+                };
+            if (template == "rpg" || template == "rpg-pepel" || template == "rpg-fugas")
+                return new Look
+                {
+                    headId =
+                        template == "rpg" ? 107
+                        : template == "rpg-pepel" ? 134
+                        : 136,
+                    lightId = 62,
+                    familyId = 89,
+                    heavyId = 89,
+                };
+            if (Data.Template(template).role == "Стрелок")
+                return new Look
+                {
+                    headId =
+                        template == "s2" ? 131
+                        : (template == "s3" || template == "sup") ? 133
+                        : 116,
+                    lightId = 62,
+                    familyId = 89,
+                    heavyId = 89,
+                };
+            if (template == "med" || template == "med-dobry" || template == "med-hirurg")
+                return new Look
+                {
+                    headId =
+                        template == "med" ? 88
+                        : template == "med-dobry" ? 106
+                        : 109,
+                    lightId = 83,
+                    familyId = 63,
+                    heavyId = 80,
+                };
+            if (template == "kedr")
+                return new Look
+                {
+                    headId = 82,
+                    lightId = 51,
+                    familyId = 53,
+                };
+            if (template == "sn" || template == "sn-morok" || template == "sn-manul")
+                return new Look
+                {
+                    headId =
+                        template == "sn" ? 143
+                        : template == "sn-morok" ? 62
+                        : 69,
+                    lightId = 55,
+                    familyId = 95,
+                };
+            var u = Data.Template(template);
+            int index = Array.FindIndex(Data.units, x => x.id == template);
+            index = Math.Max(0, index);
+            return new Look
+            {
+                headId =
+                    template == "kedr" ? 82
+                    : u.role == "Медик" ? 88
+                    : heads[index % heads.Length],
+                lightId = lights[index % lights.Length],
+                familyId = families[index % families.Length],
+            };
         }
+
         public string PortraitArt(string id)
         {
-            var template=S.recruits.ContainsKey(id)?S.recruits[id].template:id;
-            if(template=="mg" || template=="mg-medved" || template=="mg-bury") return template=="mg"?"canonical/val.png":template=="mg-medved"?"canonical/medved.png":"canonical/bury.png";
-            if(template=="rpg" || template=="rpg-pepel" || template=="rpg-fugas") return template=="rpg"?"canonical/vektor.png":template=="rpg-pepel"?"canonical/pepel.png":"canonical/fugas.png";
-            if(Data.Template(template).role=="Стрелок") return template=="s2"?"canonical/veresk.png":(template=="s3" || template=="sup")?"canonical/granit.png":"canonical/klen.png";
-            return template=="med"?"canonical/fenix.png":template=="med-dobry"?"canonical/dobry.png":template=="med-hirurg"?"canonical/hirurg.png":template=="kedr"?"canonical/kedr.png":template=="sn"?"canonical/sedoy.png":template=="sn-morok"?"canonical/morok.png":template=="sn-manul"?"canonical/manul.png":null;
+            var template = S.recruits.ContainsKey(id) ? S.recruits[id].template : id;
+            if (template == "mg" || template == "mg-medved" || template == "mg-bury")
+                return template == "mg" ? "canonical/val.png"
+                    : template == "mg-medved" ? "canonical/medved.png"
+                    : "canonical/bury.png";
+            if (template == "rpg" || template == "rpg-pepel" || template == "rpg-fugas")
+                return template == "rpg" ? "canonical/vektor.png"
+                    : template == "rpg-pepel" ? "canonical/pepel.png"
+                    : "canonical/fugas.png";
+            if (Data.Template(template).role == "Стрелок")
+                return template == "s2" ? "canonical/veresk.png"
+                    : (template == "s3" || template == "sup") ? "canonical/granit.png"
+                    : "canonical/klen.png";
+            return template == "med" ? "canonical/fenix.png"
+                : template == "med-dobry" ? "canonical/dobry.png"
+                : template == "med-hirurg" ? "canonical/hirurg.png"
+                : template == "kedr" ? "canonical/kedr.png"
+                : template == "sn" ? "canonical/sedoy.png"
+                : template == "sn-morok" ? "canonical/morok.png"
+                : template == "sn-manul" ? "canonical/manul.png"
+                : null;
         }
 
         public string Enlist(string template)
@@ -593,11 +731,7 @@ namespace Rubezh.Camp
             string id = !S.gear.ContainsKey(template) && !S.recruits.ContainsKey(template) ? template : NextId();
             S.balance -= o.price;
             RememberName(name);
-            S.recruits[id] = new Recruit
-            {
-                template = template,
-                name = name
-            };
+            S.recruits[id] = new Recruit { template = template, name = name };
             S.gear[id] = new Gear();
             S.career.people[id] = new Person();
             S.looks[id] = CanonicalLook(template);
@@ -621,8 +755,7 @@ namespace Rubezh.Camp
             do
             {
                 id = "recruit-" + (++S.nextRecruit);
-            }
-            while (S.gear.ContainsKey(id) || S.recruits.ContainsKey(id));
+            } while (S.gear.ContainsKey(id) || S.recruits.ContainsKey(id));
             return id;
         }
 
@@ -636,7 +769,10 @@ namespace Rubezh.Camp
             var g = S.gear[id];
             if (g.extra != "supply" && g.extra != "medbag")
                 return 0;
-            string role = Soldier(id).role, prefix = role == "Стрелок" ? "rifpack" : role == "Медик" ? "medpack" : null;
+            string role = Soldier(id).role,
+                prefix = role == "Стрелок" ? "rifpack"
+                : role == "Медик" ? "medpack"
+                : null;
             return 6 + 2 * Enumerable.Range(1, 3).Count(i => prefix != null && Has(id, prefix + i));
         }
 
@@ -649,7 +785,10 @@ namespace Rubezh.Camp
             if (slot == "rigSlots")
                 return i.type == "grenade";
             if (slot == "bag")
-                return g.extra == "medbag" ? i.type == "medical" : g.extra == "supply" && (i.type == "ammo" || i.type == "grenade" || i.id == "rpg" || i.id == "rshg");
+                return g.extra == "medbag"
+                    ? i.type == "medical"
+                    : g.extra == "supply"
+                        && (i.type == "ammo" || i.type == "grenade" || i.id == "rpg" || i.id == "rshg");
             if (slot == "extra2")
                 return i.id == "rpg" || i.id == "rshg";
             return slot == i.type;
@@ -668,7 +807,8 @@ namespace Rubezh.Camp
 
         static bool Limits(IEnumerable<string> ids)
         {
-            return ids.Count(x => x == "vog") <= 4 && ids.Count(x => x == "f1" || x == "rgd" || x == "rgn" || x == "rgo") <= 4;
+            return ids.Count(x => x == "vog") <= 4
+                && ids.Count(x => x == "f1" || x == "rgd" || x == "rgn" || x == "rgo") <= 4;
         }
 
         public void SyncPack(string id)
@@ -697,7 +837,10 @@ namespace Rubezh.Camp
                     cells[index + n] = null;
                 Check(id == null || Free(id) > 0, "Нет свободных экземпляров");
                 Check(id == null || Place(cells, index, id), "Не хватает соседних свободных клеток");
-                Check(slot != "bag" || Limits(cells), "Лимит сумки: 4 подствольных и 4 метательных, дым не учитывается");
+                Check(
+                    slot != "bag" || Limits(cells),
+                    "Лимит сумки: 4 подствольных и 4 метательных, дым не учитывается"
+                );
                 if (slot == "bag")
                     g.bag = cells;
                 else
@@ -712,7 +855,10 @@ namespace Rubezh.Camp
             if (slot == "extra")
                 g.bag = Enumerable.Repeat<string>(null, BagLimit(uid)).ToList();
             if (slot == "rig")
-                g.rigSlots = Enumerable.Range(0, it == null ? 0 : it.capacity).Select(i => i < g.rigSlots.Count ? g.rigSlots[i] : null).ToList();
+                g.rigSlots = Enumerable
+                    .Range(0, it == null ? 0 : it.capacity)
+                    .Select(i => i < g.rigSlots.Count ? g.rigSlots[i] : null)
+                    .ToList();
         }
 
         public void Strip(string id)
@@ -745,10 +891,7 @@ namespace Rubezh.Camp
 
         public int PlayerLevel
         {
-            get
-            {
-                return LevelAt(S.career.xp);
-            }
+            get { return LevelAt(S.career.xp); }
         }
 
         public static int NextCost(int level)
@@ -784,7 +927,11 @@ namespace Rubezh.Camp
         public bool Available(string id, Skill k)
         {
             var p = Person(id);
-            return (string.IsNullOrEmpty(k.role) || Soldier(id).role == k.role) && !Has(id, k.id) && p.level >= k.level && k.pre.All(x => Has(id, x)) && p.points > 0;
+            return (string.IsNullOrEmpty(k.role) || Soldier(id).role == k.role)
+                && !Has(id, k.id)
+                && p.level >= k.level
+                && k.pre.All(x => Has(id, x))
+                && p.points > 0;
         }
 
         public bool CanLearn(string id)
@@ -833,25 +980,17 @@ namespace Rubezh.Camp
             if (source == "manual")
             {
                 Check(S.career.manuals > 0, "Нет учебных пособий");
-                return new Person
-                {
-                    level = p.level,
-                    credit = p.credit
-                };
+                return new Person { level = p.level, credit = p.credit };
             }
 
             if (source == "level-book")
             {
                 Check(S.career.levelBooks > 0, "Нет книг повышения уровня");
                 Check(p.level < PlayerLevel, "Достигнут уровень игрока");
-                return new Person
-                {
-                    level = p.level + 1,
-                    credit = p.credit
-                };
+                return new Person { level = p.level + 1, credit = p.credit };
             }
 
-            throw new InvalidOperationException("Обучение резервистами временно недоступно");
+            throw new InvalidOperationException("Неизвестный источник обучения: " + source);
         }
 
         public void Promote(string id, string source)
@@ -865,8 +1004,7 @@ namespace Rubezh.Camp
             }
             else
             {
-                if (source == "level-book")
-                    S.career.levelBooks--;
+                S.career.levelBooks--;
 
                 p.points += next.level - p.level;
                 p.level = next.level;
@@ -878,7 +1016,13 @@ namespace Rubezh.Camp
         void Remove(string id)
         {
             RememberAvatarHeads();
-            foreach(var q in S.squads) { q.loadouts.Remove(id); for(int i=0;i<q.members.Count;i++) if(q.members[i]==id) q.members[i]=null; }
+            foreach (var q in S.squads)
+            {
+                q.loadouts.Remove(id);
+                for (int i = 0; i < q.members.Count; i++)
+                    if (q.members[i] == id)
+                        q.members[i] = null;
+            }
             S.gear.Remove(id);
             S.looks.Remove(id);
             S.career.people.Remove(id);
@@ -935,15 +1079,27 @@ namespace Rubezh.Camp
 
         public bool MissionOpen(string mode, int b, int m)
         {
-            if(mode=="test"||mode=="test-reference")return b==1&&(m==1||m==20);
-            if(mode=="raid")return m>=1&&m<=100;
-            return (mode == "story" && b == 1 || mode == "war" && BlockOpen(b)) && m >= 1 && m <= (mode == "war" ? 10 : 20) && (m == 1 || S.completed.Contains(mode + "-" + b + "-" + (m - 1)) || S.completed.Contains(mode + "-" + b + "-" + m));
+            if (mode == "test" || mode == "test-reference")
+                return b == 1 && (m == 1 || m == 20);
+            if (mode == "raid")
+                return m >= 1 && m <= 100;
+            return (mode == "story" && b == 1 || mode == "war" && BlockOpen(b))
+                && m >= 1
+                && m <= (mode == "war" ? 10 : 20)
+                && (
+                    m == 1
+                    || S.completed.Contains(mode + "-" + b + "-" + (m - 1))
+                    || S.completed.Contains(mode + "-" + b + "-" + m)
+                );
         }
 
         public static int Payout(string mode, int b, int m)
         {
-            if (mode == "story" && b == 1 && m >= 1 && m <= 20) return 50 * (1 + (m - 1) / 4);
-            return mode == "war" && b >= 1 && b <= 5 && m >= 1 && m <= 10 ? (m == 10 ? 250 + (b - 1) * 50 : 100 + (b - 1) * 25) : 0;
+            if (mode == "story" && b == 1 && m >= 1 && m <= 20)
+                return 50 * (1 + (m - 1) / 4);
+            return mode == "war" && b >= 1 && b <= 5 && m >= 1 && m <= 10
+                ? (m == 10 ? 250 + (b - 1) * 50 : 100 + (b - 1) * 25)
+                : 0;
         }
 
         public static int BattleXp(string mode, int block, int mission)
@@ -953,15 +1109,23 @@ namespace Rubezh.Camp
 
         void MigrateBattleXp()
         {
-            if (S.career.battleXpVersion >= 2) return;
+            if (S.career.battleXpVersion >= 2)
+                return;
             int compensation = 0;
             foreach (string key in S.completed.Distinct())
             {
                 var parts = key.Split('-');
-                int block, mission;
-                if (parts.Length != 3 || !int.TryParse(parts[1], out block) || !int.TryParse(parts[2], out mission)) continue;
-                if (!(parts[0] == "war" && block >= 1 && block <= 5 && mission >= 1 && mission <= 10 ||
-                    parts[0] == "story" && block == 1 && mission >= 1 && mission <= 20)) continue;
+                int block,
+                    mission;
+                if (parts.Length != 3 || !int.TryParse(parts[1], out block) || !int.TryParse(parts[2], out mission))
+                    continue;
+                if (
+                    !(
+                        parts[0] == "war" && block >= 1 && block <= 5 && mission >= 1 && mission <= 10
+                        || parts[0] == "story" && block == 1 && mission >= 1 && mission <= 20
+                    )
+                )
+                    continue;
                 int previous = S.career.battleXpVersion >= 1 ? (parts[0] == "war" ? block : 1 + (mission - 1) / 4) : 1;
                 compensation += 5 * (BattleXp(parts[0], block, mission) - previous);
             }
@@ -971,7 +1135,8 @@ namespace Rubezh.Camp
 
         public bool Win(string mode, int b, int m, IEnumerable<string> party = null)
         {
-            if(mode=="test"||mode=="test-reference")return false;
+            if (mode == "test" || mode == "test-reference")
+                return false;
             Check(MissionOpen(mode, b, m), "Сначала пройди предыдущую миссию");
             string key = mode + "-" + b + "-" + m;
             if (S.completed.Contains(key))
@@ -994,7 +1159,10 @@ namespace Rubezh.Camp
         public string Equipment(bool priority = false)
         {
             var all = Data.items.Where(i => !Personal(i.id) && Unlocked(i)).ToArray();
-            var pool = priority ? all.Where(i => i.type == "weapon" || i.type == "armor" || i.type == "rig" || i.type == "extra").ToArray() : all;
+            var pool = priority
+                ? all.Where(i => i.type == "weapon" || i.type == "armor" || i.type == "rig" || i.type == "extra")
+                    .ToArray()
+                : all;
             if (pool.Length == 0)
                 pool = all;
             double roll = random() * pool.Sum(i => 1d / i.price);
@@ -1012,54 +1180,22 @@ namespace Rubezh.Camp
         {
             int[][] rows =
             {
-                new[]
-                {
-                    1,
-                    2,
-                    3,
-                    3
-                },
-                new[]
-                {
-                    2,
-                    3,
-                    4,
-                    5
-                },
-                new[]
-                {
-                    3,
-                    5,
-                    6,
-                    7
-                },
-                new[]
-                {
-                    4,
-                    6,
-                    7,
-                    9
-                },
-                new[]
-                {
-                    5,
-                    7,
-                    9,
-                    11
-                }
+                new[] { 1, 2, 3, 3 },
+                new[] { 2, 3, 4, 5 },
+                new[] { 3, 5, 6, 7 },
+                new[] { 4, 6, 7, 9 },
+                new[] { 5, 7, 9, 11 },
             };
             var r = rows[b - 1];
             int i = advanced ? 2 : 0;
-            return new[]
-            {
-                Math.Min(cap, r[i]),
-                Math.Min(cap, r[i + 1])
-            };
+            return new[] { Math.Min(cap, r[i]), Math.Min(cap, r[i + 1]) };
         }
 
         Arrival Reserve(int block, bool advanced)
         {
-            var open = Data.units.Where(u => u.id != "sup" && Data.offers.Any(o => o.id == u.id && o.unlock <= S.story)).ToArray();
+            var open = Data
+                .units.Where(u => u.id != "sup" && Data.offers.Any(o => o.id == u.id && o.unlock <= S.story))
+                .ToArray();
             var u = open[(int)(random() * open.Length)];
             u = Data.Template(CanonicalTemplate(u.id));
             var name = u.name;
@@ -1071,19 +1207,23 @@ namespace Rubezh.Camp
                 name = name,
                 level = range[0] + (int)(random() * (range[1] - range[0] + 1)),
                 advanced = advanced,
-                look = CanonicalLook(u.id)
+                look = CanonicalLook(u.id),
             };
         }
 
         public Shipment Award(string key, string mode, int b, int m)
         {
-            int size = mode == "war" ? (m == 10 ? 5 : m == 5 ? 3 : 0) : 0;
+            int size =
+                mode == "war"
+                    ? (
+                        m == 10 ? 5
+                        : m == 5 ? 3
+                        : 0
+                    )
+                    : 0;
             if (size == 0 || S.caseHistory.ContainsKey(key))
                 return null;
-            var r = new Shipment
-            {
-                book = size == 5
-            };
+            var r = new Shipment { book = size == 5 };
             for (int i = 0; i < size; i++)
                 r.gear.Add(Equipment(size == 5 && i == 0));
             if (size == 5)
@@ -1106,18 +1246,10 @@ namespace Rubezh.Camp
                 var f = S.pendingRecruits[0];
                 S.pendingRecruits.RemoveAt(0);
                 string id = NextId();
-                S.recruits[id] = new Recruit
-                {
-                    template = f.template,
-                    name = f.name
-                };
+                S.recruits[id] = new Recruit { template = f.template, name = f.name };
                 S.gear[id] = new Gear();
                 S.looks[id] = f.look = CanonicalLook(f.template);
-                S.career.people[id] = new Person
-                {
-                    level = f.level,
-                    points = f.level - 1
-                };
+                S.career.people[id] = new Person { level = f.level, points = f.level - 1 };
             }
         }
 
@@ -1129,21 +1261,42 @@ namespace Rubezh.Camp
             S.looks = S.looks ?? new Dictionary<string, Look>();
             S.inventory = S.inventory ?? new Dictionary<string, int>();
             S.pendingRecruits = S.pendingRecruits ?? new List<Arrival>();
-            foreach(var recruit in S.recruits.Values) {
-                if(recruit.template=="sn" && recruit.name=="Морок") recruit.template="sn-morok";
-                if(recruit.template=="sn" && recruit.name=="Манул") recruit.template="sn-manul";
-                if(recruit.template=="med" && recruit.name=="Добрый") recruit.template="med-dobry";
-                if(recruit.template=="med" && recruit.name=="Хирург") recruit.template="med-hirurg";
-                var definition=Data.Template(recruit.template);
-                if(definition!=null) recruit.name=definition.name;
+            foreach (var recruit in S.recruits.Values)
+            {
+                if (recruit.template == "sn" && recruit.name == "Морок")
+                    recruit.template = "sn-morok";
+                if (recruit.template == "sn" && recruit.name == "Манул")
+                    recruit.template = "sn-manul";
+                if (recruit.template == "med" && recruit.name == "Добрый")
+                    recruit.template = "med-dobry";
+                if (recruit.template == "med" && recruit.name == "Хирург")
+                    recruit.template = "med-hirurg";
+                var definition = Data.Template(recruit.template);
+                if (definition != null)
+                    recruit.name = definition.name;
             }
-            foreach(var arrival in S.pendingRecruits.Concat((S.caseHistory ?? new Dictionary<string,Shipment>()).Values.SelectMany(x=>x.fighters ?? new List<Arrival>()))) {
-                if(arrival.template=="sn" && arrival.name=="Морок") arrival.template="sn-morok";
-                if(arrival.template=="sn" && arrival.name=="Манул") arrival.template="sn-manul";
-                if(arrival.template=="med" && arrival.name=="Добрый") arrival.template="med-dobry";
-                if(arrival.template=="med" && arrival.name=="Хирург") arrival.template="med-hirurg";
-                var definition=Data.Template(arrival.template);
-                if(definition!=null) { arrival.name=definition.name; arrival.look=CanonicalLook(arrival.template); }
+            foreach (
+                var arrival in S.pendingRecruits.Concat(
+                    (S.caseHistory ?? new Dictionary<string, Shipment>()).Values.SelectMany(x =>
+                        x.fighters ?? new List<Arrival>()
+                    )
+                )
+            )
+            {
+                if (arrival.template == "sn" && arrival.name == "Морок")
+                    arrival.template = "sn-morok";
+                if (arrival.template == "sn" && arrival.name == "Манул")
+                    arrival.template = "sn-manul";
+                if (arrival.template == "med" && arrival.name == "Добрый")
+                    arrival.template = "med-dobry";
+                if (arrival.template == "med" && arrival.name == "Хирург")
+                    arrival.template = "med-hirurg";
+                var definition = Data.Template(arrival.template);
+                if (definition != null)
+                {
+                    arrival.name = definition.name;
+                    arrival.look = CanonicalLook(arrival.template);
+                }
             }
 
             S.completed = S.completed ?? new List<string>();
@@ -1151,19 +1304,9 @@ namespace Rubezh.Camp
             S.raid = S.raid ?? new RaidProgress();
             S.formation = S.formation ?? new Formation();
             if (S.formation.pairSlots == null && S.formation.pairing != 4)
-                S.formation.pairSlots = new[]
-                {
-                    -1,
-                    -1,
-                    -1,
-                    -1
-                };
+                S.formation.pairSlots = new[] { -1, -1, -1, -1 };
             if (S.career == null)
-                S.career = new Career
-                {
-                    xp = S.completed.Count * 100,
-                    manuals = S.completed.Count
-                };
+                S.career = new Career { xp = S.completed.Count * 100, manuals = S.completed.Count };
             var c = S.career;
             c.people = c.people ?? new Dictionary<string, Person>();
             if (c.treeVersion != 4)
@@ -1222,7 +1365,8 @@ namespace Rubezh.Camp
                 Look old;
                 S.looks.TryGetValue(id, out old);
                 S.looks[id] = CanonicalLook(S.recruits.ContainsKey(id) ? S.recruits[id].template : id);
-                if(S.recruits.ContainsKey(id)) S.recruits[id].name=u.name;
+                if (S.recruits.ContainsKey(id))
+                    S.recruits[id].name = u.name;
                 if (Data.Item(g.weapon) == null)
                     g.weapon = null;
                 if (Data.Item(g.armor) == null)
@@ -1241,7 +1385,10 @@ namespace Rubezh.Camp
                     g.armor = null;
                 if (!Allowed(u, Data.Item(g.weapon)))
                     g.weapon = null;
-                g.rigSlots = Enumerable.Range(0, Data.Item(g.rig)?.capacity ?? 0).Select(i => i < g.rigSlots.Count ? g.rigSlots[i] : null).ToList();
+                g.rigSlots = Enumerable
+                    .Range(0, Data.Item(g.rig)?.capacity ?? 0)
+                    .Select(i => i < g.rigSlots.Count ? g.rigSlots[i] : null)
+                    .ToList();
                 var oldBag = g.bag;
                 g.bag = Enumerable.Repeat<string>(null, BagLimit(id)).ToList();
                 for (int i = 0; i < oldBag.Count; i++)
@@ -1268,19 +1415,61 @@ namespace Rubezh.Camp
         public void Validate()
         {
             var f = S.formation;
-            Check(f != null && f.pairing >= 0 && f.pairing <= 4 && f.width >= 0 && f.width <= 2 && f.depth >= 0 && f.depth <= 2 && f.positions != null && f.positions.Length == 5 && f.positions.All(x => x >= -1 && x <= 1) && f.pairSlots != null && f.pairSlots.Length == 4 && f.pairSlots.All(x => x == -1 || x >= 1 && x <= 4) && f.pairSlots.Where(x => x > 0).Distinct().Count() == f.pairSlots.Count(x => x > 0), "Повреждён замысел построения");
-            Check(S.active.Count == 5 && (S.active[0] == null || S.active[0] == "kedr") && S.active.Where(id => id != null).Distinct().Count() == S.active.Count(id => id != null) && S.active.All(id => id == null || S.gear.ContainsKey(id)), "Повреждён состав отряда");
-            Check(S.gear.Count <= 50 && S.balance >= 0 && !double.IsNaN(S.balance) && !double.IsInfinity(S.balance) && S.career.xp >= 0 && S.career.freeXp >= 0 && S.career.manuals >= 0 && S.career.levelBooks >= 0, "Повреждены ресурсы лагеря");
+            Check(
+                f != null
+                    && f.pairing >= 0
+                    && f.pairing <= 4
+                    && f.width >= 0
+                    && f.width <= 2
+                    && f.depth >= 0
+                    && f.depth <= 2
+                    && f.positions != null
+                    && f.positions.Length == 5
+                    && f.positions.All(x => x >= -1 && x <= 1)
+                    && f.pairSlots != null
+                    && f.pairSlots.Length == 4
+                    && f.pairSlots.All(x => x == -1 || x >= 1 && x <= 4)
+                    && f.pairSlots.Where(x => x > 0).Distinct().Count() == f.pairSlots.Count(x => x > 0),
+                "Повреждён замысел построения"
+            );
+            Check(
+                S.active.Count == 5
+                    && (S.active[0] == null || S.active[0] == "kedr")
+                    && S.active.Where(id => id != null).Distinct().Count() == S.active.Count(id => id != null)
+                    && S.active.All(id => id == null || S.gear.ContainsKey(id)),
+                "Повреждён состав отряда"
+            );
+            Check(
+                S.gear.Count <= 50
+                    && S.balance >= 0
+                    && !double.IsNaN(S.balance)
+                    && !double.IsInfinity(S.balance)
+                    && S.career.xp >= 0
+                    && S.career.freeXp >= 0
+                    && S.career.manuals >= 0
+                    && S.career.levelBooks >= 0,
+                "Повреждены ресурсы лагеря"
+            );
             foreach (var pair in S.gear)
             {
                 var p = Person(pair.Key);
                 Check(p.level >= 1 && p.level <= 10000 && p.credit >= 0 && p.points >= 0, "Повреждён опыт бойца");
-                Check(pair.Value.All().Where(x => x != null && !x.StartsWith("@", StringComparison.Ordinal)).All(x => Data.Item(x) != null), "Неизвестное снаряжение");
+                Check(
+                    pair.Value.All()
+                        .Where(x => x != null && !x.StartsWith("@", StringComparison.Ordinal))
+                        .All(x => Data.Item(x) != null),
+                    "Неизвестное снаряжение"
+                );
             }
 
             foreach (var kv in S.inventory)
                 Check(kv.Value >= 0 && Free(kv.Key) >= 0, "Снаряжение выдано сверх наличия");
-            foreach (var id in S.gear.Values.SelectMany(g => g.All()).Where(x => x != null && !x.StartsWith("@", StringComparison.Ordinal)).Distinct())
+            foreach (
+                var id in S
+                    .gear.Values.SelectMany(g => g.All())
+                    .Where(x => x != null && !x.StartsWith("@", StringComparison.Ordinal))
+                    .Distinct()
+            )
                 Check(Free(id) >= 0, "Снаряжение выдано сверх наличия");
         }
 

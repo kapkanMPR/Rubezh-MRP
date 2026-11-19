@@ -7,12 +7,20 @@ namespace SilentOrders.Core
     // a fresh supply tube has exactly one shot and can only be collected after landing.
     public sealed class GroundLauncher
     {
-        public int Id, FromSoldierId, Kind; // 0: RPG-26, 1: RShG
-        public bool Loaded, Collected;
-        public V2 From, To;
-        public float Born, Duration, Angle;
+        public int Id,
+            FromSoldierId,
+            Kind; // 0: RPG-26, 1: RShG
+        public bool Loaded,
+            Collected;
+        public V2 From,
+            To;
+        public float Born,
+            Duration,
+            Angle;
         public StudioPlaced Scene;
+
         public bool Flying(float now) => Duration > 0f && now < Born + Duration;
+
         public float Height(float now)
         {
             if (!Flying(now))
@@ -34,7 +42,8 @@ namespace SilentOrders.Core
     {
         public static void ReadyReserve(Soldier s)
         {
-            if (s.Rockets != 0 || s.ReserveLauncherKind < 0) return;
+            if (s.Rockets != 0 || s.ReserveLauncherKind < 0)
+                return;
             s.LauncherKind = s.ReserveLauncherKind;
             s.ReserveLauncherKind = -1;
             s.Rockets = 1;
@@ -43,8 +52,20 @@ namespace SilentOrders.Core
         public const float MaxSpentDistance = 2f;
         public const float MaxSupplyThrowDistance = 4f;
         const float CollectionRadius = 1.4f;
-        static bool Ready(BattleSimulation b, Soldier s) => s != null && s.Alive && s.Deployed && s.Available && !s.Incapacitated && !s.Broken && s.Suppression < .70f && s.Morale >= .25f && !TacticalOrders.Emergency(b.Team(s));
+
+        static bool Ready(BattleSimulation b, Soldier s) =>
+            s != null
+            && s.Alive
+            && s.Deployed
+            && s.Available
+            && !s.Incapacitated
+            && !s.Broken
+            && s.Suppression < .70f
+            && s.Morale >= .25f
+            && !TacticalOrders.Emergency(b.Team(s));
+
         static bool Suitable(BattleMap map, V2 pos) => CorpseEquipment.ValidDroppedWeaponSite(map, pos);
+
         static V2 Landing(BattleSimulation b, V2 from, V2 near, float maxOffset, float phase)
         {
             if (Suitable(b.Map, near) && b.Map.LineOfSight(from, near))
@@ -85,8 +106,17 @@ namespace SilentOrders.Core
             return null;
         }
 
-        public static GroundLauncher DropLoaded(BattleSimulation b, Soldier s) => Spawn(b, s, s.LauncherKind, true, s.Position, 0);
-        static GroundLauncher Spawn(BattleSimulation b, Soldier from, int kind, bool loaded, V2 destination, float duration)
+        public static GroundLauncher DropLoaded(BattleSimulation b, Soldier s) =>
+            Spawn(b, s, s.LauncherKind, true, s.Position, 0);
+
+        static GroundLauncher Spawn(
+            BattleSimulation b,
+            Soldier from,
+            int kind,
+            bool loaded,
+            V2 destination,
+            float duration
+        )
         {
             var item = new GroundLauncher
             {
@@ -98,7 +128,7 @@ namespace SilentOrders.Core
                 To = destination,
                 Born = b.Time,
                 Duration = duration,
-                Angle = ((from.Id * 73 + b.TickNumber * 11 + b.GroundLaunchers.Count * 59) % 628) * .01f
+                Angle = ((from.Id * 73 + b.TickNumber * 11 + b.GroundLaunchers.Count * 59) % 628) * .01f,
             };
             b.GroundLaunchers.Add(item);
             return item;
@@ -131,7 +161,12 @@ namespace SilentOrders.Core
                 return true;
             if (InteractionReach.Can(b, grenadier.Position, candidate.To, CollectionRadius))
                 return true;
-            var route = Pathfinder.Find(b.Map, grenadier.Position, candidate.To, p => PositionLogic.Exposure(b, grenadier, p) * 3f);
+            var route = Pathfinder.Find(
+                b.Map,
+                grenadier.Position,
+                candidate.To,
+                p => PositionLogic.Exposure(b, grenadier, p) * 3f
+            );
             b.Stats.Paths++;
             return route.Count > 0 && SupportAI.PathLength(grenadier.Position, route) <= 12f;
         }
@@ -158,7 +193,22 @@ namespace SilentOrders.Core
             return chosen;
         }
 
-        public static bool CanCollect(BattleSimulation b, Soldier s, GroundLauncher item) => Ready(b, s) && (s.Role == Role.Grenadier || s.Role == Role.Commander) && s.Rockets == 0 && item != null && (item.FromSoldierId < 0 || item.FromSoldierId >= b.Soldiers.Count || b.Soldiers[item.FromSoldierId].Alive || CombatTraining.Skill(s, 2, "tube")) && item.Loaded && !item.Collected && !item.Flying(b.Time) && SceneEquipment.Reach(b, s.Position, item.To, item.Scene, 1.55f);
+        public static bool CanCollect(BattleSimulation b, Soldier s, GroundLauncher item) =>
+            Ready(b, s)
+            && (s.Role == Role.Grenadier || s.Role == Role.Commander)
+            && s.Rockets == 0
+            && item != null
+            && (
+                item.FromSoldierId < 0
+                || item.FromSoldierId >= b.Soldiers.Count
+                || b.Soldiers[item.FromSoldierId].Alive
+                || CombatTraining.Skill(s, 2, "tube")
+            )
+            && item.Loaded
+            && !item.Collected
+            && !item.Flying(b.Time)
+            && SceneEquipment.Reach(b, s.Position, item.To, item.Scene, 1.55f);
+
         public static bool Collect(BattleSimulation b, Soldier s, GroundLauncher item)
         {
             if (!CanCollect(b, s, item))
@@ -189,10 +239,17 @@ namespace SilentOrders.Core
             return item.Loaded && !item.Collected;
         }
 
-        public static bool RoutePriority(BattleSimulation b, Soldier s) => HasPickupPriority(b, s) && s.PathCursor < s.Path.Count && s.Suppression < .65f && s.Morale >= .30f;
+        public static bool RoutePriority(BattleSimulation b, Soldier s) =>
+            HasPickupPriority(b, s) && s.PathCursor < s.Path.Count && s.Suppression < .65f && s.Morale >= .30f;
+
         public static bool PlanPickup(BattleSimulation b, Soldier s)
         {
-            if (!Ready(b, s) || (s.Role != Role.Grenadier && s.Role != Role.Commander) || s.Rockets > 0 || s.SupplyDonorId >= 0)
+            if (
+                !Ready(b, s)
+                || (s.Role != Role.Grenadier && s.Role != Role.Commander)
+                || s.Rockets > 0
+                || s.SupplyDonorId >= 0
+            )
                 return false;
             // Do not lose a committed pickup route during its retry/cooldown window.
             if (HasPickupPriority(b, s) && s.PathCursor < s.Path.Count)
@@ -255,7 +312,11 @@ namespace SilentOrders.Core
         {
             if (!Ready(b, s) || (s.Role != Role.Grenadier && s.Role != Role.Commander) || s.Rockets > 0)
                 return false;
-            if (s.LauncherPickupId >= 0 && s.LauncherPickupId < b.GroundLaunchers.Count && Collect(b, s, b.GroundLaunchers[s.LauncherPickupId]))
+            if (
+                s.LauncherPickupId >= 0
+                && s.LauncherPickupId < b.GroundLaunchers.Count
+                && Collect(b, s, b.GroundLaunchers[s.LauncherPickupId])
+            )
                 return true;
             foreach (var item in b.GroundLaunchers)
                 if (Collect(b, s, item))
@@ -267,7 +328,20 @@ namespace SilentOrders.Core
         {
             if (!CombatTraining.Skill(supplier, 1, "toss"))
                 return false;
-            if (!Ready(b, supplier) || !Ready(b, grenadier) || supplier.Id == grenadier.Id || supplier.Side != grenadier.Side || !supplier.SupplyPack || CombatTraining.AvailableLauncher(supplier, grenadier) < 0 || (grenadier.Role != Role.Grenadier && grenadier.Role != Role.Commander) || grenadier.Rockets != 0 || b.Time < supplier.HandsBusyUntil || supplier.ReloadUntil > b.Time || b.Time < supplier.LauncherThrowRetryAt || b.Time - supplier.LastIncoming < 2f)
+            if (
+                !Ready(b, supplier)
+                || !Ready(b, grenadier)
+                || supplier.Id == grenadier.Id
+                || supplier.Side != grenadier.Side
+                || !supplier.SupplyPack
+                || CombatTraining.AvailableLauncher(supplier, grenadier) < 0
+                || (grenadier.Role != Role.Grenadier && grenadier.Role != Role.Commander)
+                || grenadier.Rockets != 0
+                || b.Time < supplier.HandsBusyUntil
+                || supplier.ReloadUntil > b.Time
+                || b.Time < supplier.LauncherThrowRetryAt
+                || b.Time - supplier.LastIncoming < 2f
+            )
                 return false;
             float dist = V2.Distance(supplier.Position, grenadier.Position);
             if (dist <= 1.4f || dist > MaxSupplyThrowDistance)
@@ -278,7 +352,13 @@ namespace SilentOrders.Core
                 return false; // pickup first, delivery second.
             if (!ThreatSafe(b, grenadier, grenadier.Position))
                 return false;
-            V2 destination = Landing(b, supplier.Position, grenadier.Position, MaxSupplyThrowDistance, (grenadier.Id * 41 + supplier.Id * 13) % 628 * .01f);
+            V2 destination = Landing(
+                b,
+                supplier.Position,
+                grenadier.Position,
+                MaxSupplyThrowDistance,
+                (grenadier.Id * 41 + supplier.Id * 13) % 628 * .01f
+            );
             if (float.IsNaN(destination.X) || V2.Distance(destination, grenadier.Position) > CollectionRadius)
                 return false;
             int kind = CombatTraining.AvailableLauncher(supplier, grenadier);
@@ -289,10 +369,16 @@ namespace SilentOrders.Core
             grenadier.LauncherPickupId = item.Id;
             grenadier.LauncherPickupRetryAt = b.Time;
             grenadier.NextDecision = b.Time;
-            b.Log(supplier.Side, supplier.Name + " перебросил " + (kind == 1 ? "РШГ" : "РПГ") + " для " + grenadier.Name);
+            b.Log(
+                supplier.Side,
+                supplier.Name + " перебросил " + (kind == 1 ? "РШГ" : "РПГ") + " для " + grenadier.Name
+            );
             return true;
         }
 
-        public static bool CanWaitForSupply(BattleSimulation b, Soldier s) => HasPickupPriority(b, s) && b.GroundLaunchers[s.LauncherPickupId].Flying(b.Time) && V2.Distance(s.Position, b.GroundLaunchers[s.LauncherPickupId].To) <= CollectionRadius;
+        public static bool CanWaitForSupply(BattleSimulation b, Soldier s) =>
+            HasPickupPriority(b, s)
+            && b.GroundLaunchers[s.LauncherPickupId].Flying(b.Time)
+            && V2.Distance(s.Position, b.GroundLaunchers[s.LauncherPickupId].To) <= CollectionRadius;
     }
 }

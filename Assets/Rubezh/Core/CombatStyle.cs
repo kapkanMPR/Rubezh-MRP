@@ -9,6 +9,6 @@ namespace SilentOrders.Core
         Passive,
         Balanced,
         Aggressive,
-        EmergencyWithdraw = 4
+        EmergencyWithdraw = 4,
     }
 }

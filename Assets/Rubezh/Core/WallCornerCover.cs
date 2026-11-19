@@ -6,10 +6,14 @@ namespace SilentOrders.Core
     public static class WallCornerCover
     {
         public const float Protection = .75f;
+
         public sealed class Cache
         {
-            public readonly int Revision, Columns, Rows;
+            public readonly int Revision,
+                Columns,
+                Rows;
             public readonly byte[] Masks;
+
             public Cache(BattleMap map)
             {
                 Revision = map.Revision;
@@ -17,20 +21,20 @@ namespace SilentOrders.Core
                 Rows = map.Rows;
                 Masks = new byte[Columns * Rows];
                 for (int y = 0; y < Rows; y++)
-                    for (int x = 0; x < Columns; x++)
+                for (int x = 0; x < Columns; x++)
+                {
+                    if (!map.Walkable(x, y))
+                        continue;
+                    int bit = 0;
+                    for (int sy = -1; sy <= 1; sy += 2)
+                    for (int sx = -1; sx <= 1; sx += 2, bit++)
                     {
-                        if (!map.Walkable(x, y))
+                        if (!map.Inside(x + sx, y + sy) || map.At(new V2(x + sx + .5f, y + sy + .5f)) != Tile.Wall)
                             continue;
-                        int bit = 0;
-                        for (int sy = -1; sy <= 1; sy += 2)
-                            for (int sx = -1; sx <= 1; sx += 2, bit++)
-                            {
-                                if (!map.Inside(x + sx, y + sy) || map.At(new V2(x + sx + .5f, y + sy + .5f)) != Tile.Wall)
-                                    continue;
-                                if (map.Walkable(x + sx, y) && map.Walkable(x, y + sy))
-                                    Masks[y * Columns + x] |= (byte)(1 << bit);
-                            }
+                        if (map.Walkable(x + sx, y) && map.Walkable(x, y + sy))
+                            Masks[y * Columns + x] |= (byte)(1 << bit);
                     }
+                }
             }
         }
 
@@ -41,9 +45,15 @@ namespace SilentOrders.Core
             V2 direction = (threat - position).Normalized;
             if (direction.Length < .1f)
                 return false;
-            int px = (int)Math.Floor(position.X), py = (int)Math.Floor(position.Y);
+            int px = (int)Math.Floor(position.X),
+                py = (int)Math.Floor(position.Y);
             var cache = map.CornerCache;
-            if (cache == null || cache.Revision != map.Revision || cache.Columns != map.Columns || cache.Rows != map.Rows)
+            if (
+                cache == null
+                || cache.Revision != map.Revision
+                || cache.Columns != map.Columns
+                || cache.Rows != map.Rows
+            )
             {
                 cache = new Cache(map);
                 map.CornerCache = cache;
@@ -54,22 +64,22 @@ namespace SilentOrders.Core
                 return false;
             int bit = 0;
             for (int sy = -1; sy <= 1; sy += 2)
-                for (int sx = -1; sx <= 1; sx += 2, bit++)
-                {
-                    if ((mask & (1 << bit)) == 0)
-                        continue;
-                    V2 corner = new V2(px + (sx > 0 ? 1 : 0), py + (sy > 0 ? 1 : 0));
-                    V2 offset = position - corner;
-                    if (offset.X * (-sx) < .1f || offset.Y * (-sy) < .1f || offset.Length > .85f)
-                        continue;
-                    V2 toward = corner - position;
-                    float along = V2.Dot(toward, direction);
-                    if (along <= .1f || V2.Distance(position, threat) < along)
-                        continue;
-                    float lateral = Math.Abs(toward.X * direction.Y - toward.Y * direction.X);
-                    if (lateral <= .6f)
-                        return true;
-                }
+            for (int sx = -1; sx <= 1; sx += 2, bit++)
+            {
+                if ((mask & (1 << bit)) == 0)
+                    continue;
+                V2 corner = new V2(px + (sx > 0 ? 1 : 0), py + (sy > 0 ? 1 : 0));
+                V2 offset = position - corner;
+                if (offset.X * (-sx) < .1f || offset.Y * (-sy) < .1f || offset.Length > .85f)
+                    continue;
+                V2 toward = corner - position;
+                float along = V2.Dot(toward, direction);
+                if (along <= .1f || V2.Distance(position, threat) < along)
+                    continue;
+                float lateral = Math.Abs(toward.X * direction.Y - toward.Y * direction.X);
+                if (lateral <= .6f)
+                    return true;
+            }
 
             return false;
         }

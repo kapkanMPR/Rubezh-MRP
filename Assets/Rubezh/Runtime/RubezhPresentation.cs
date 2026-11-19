@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using SilentOrders.Core;
 using UnityEngine;
 
@@ -9,10 +9,19 @@ namespace Rubezh.UnityPort
     public sealed partial class RubezhApp
     {
         SpeechMode speechMode = SpeechMode.Full;
-        GUIStyle accuracyHeading, equipNote, equipStats, equipHeading, compactButton, compactChosen, compactSelect, hudText;
-        bool rulesOpen, commandHelpOpen;
+        GUIStyle accuracyHeading,
+            equipNote,
+            equipStats,
+            equipHeading,
+            compactButton,
+            compactChosen,
+            compactSelect,
+            hudText;
+        bool rulesOpen,
+            commandHelpOpen;
         float trainingContentHeight = 900;
         Vector2 trainingScroll;
+
         void InitCompactStyles()
         {
             accuracyHeading = Text(24, accent, true);
@@ -23,19 +32,15 @@ namespace Rubezh.UnityPort
             {
                 fontSize = 21,
                 wordWrap = false,
-                padding = new RectOffset(9, 9, 6, 6)
+                padding = new RectOffset(9, 9, 6, 6),
             };
             compactChosen = new GUIStyle(chosen)
             {
                 fontSize = 21,
                 wordWrap = false,
-                padding = new RectOffset(9, 9, 6, 6)
+                padding = new RectOffset(9, 9, 6, 6),
             };
-            compactSelect = new GUIStyle(compactButton)
-            {
-                alignment = TextAnchor.MiddleLeft,
-                wordWrap = true
-            };
+            compactSelect = new GUIStyle(compactButton) { alignment = TextAnchor.MiddleLeft, wordWrap = true };
             hudText = Text(23, ink);
             hudText.wordWrap = false;
             hudText.alignment = TextAnchor.MiddleCenter;
@@ -79,7 +84,13 @@ namespace Rubezh.UnityPort
         void DrawBagEditor(Kit kit, float w, ref float y)
         {
             y += 12;
-            Paragraph(14, ref y, w - 28, "СОДЕРЖИМОЕ РЮКЗАКА · " + kit.BagCost + " / " + BagLimit(kit) + " очков", equipStats);
+            Paragraph(
+                14,
+                ref y,
+                w - 28,
+                "СОДЕРЖИМОЕ РЮКЗАКА · " + kit.BagCost + " / " + BagLimit(kit) + " очков",
+                equipStats
+            );
             Paragraph(14, ref y, w - 28, "Загрузка включена в цену рюкзака. Опыт повторно не списывается.", equipNote);
             var available = Enumerable.Range(0, kit.bag.Length).Where(i => kit.Allows(i) && BagOpen(i)).ToArray();
             foreach (int i in available)
@@ -103,13 +114,29 @@ namespace Rubezh.UnityPort
             DrawSquadIcon(x + 16, y + 12, 30);
             Txt(x + 58, y + 10, w - 75, 40, "ПОДГОТОВКА ОТРЯДА", equipHeading);
             float contentW = w - 55;
-            int columns = contentW >= 850 ? 3 : contentW >= 540 ? 2 : 1;
-            float gap = 12, cardW = (contentW - gap * (columns - 1)) / columns;
-            float rowY = 0, rowHeight = 0;
-            trainingScroll = TouchScroll("training", new Rect(x + 15, y + 60, w - 30, h - 72), trainingScroll, new Rect(0, 0, contentW, trainingContentHeight));
+            int columns =
+                contentW >= 850 ? 3
+                : contentW >= 540 ? 2
+                : 1;
+            float gap = 12,
+                cardW = (contentW - gap * (columns - 1)) / columns;
+            float rowY = 0,
+                rowHeight = 0;
+            trainingScroll = TouchScroll(
+                "training",
+                new Rect(x + 15, y + 60, w - 30, h - 72),
+                trainingScroll,
+                new Rect(0, 0, contentW, trainingContentHeight)
+            );
             if (!campaignMode)
             {
-                Paragraph(0, ref rowY, contentW, "Прокачки применяются в кампании. Быстрый бой использует базовую подготовку.", equipNote);
+                Paragraph(
+                    0,
+                    ref rowY,
+                    contentW,
+                    "Прокачки применяются в кампании. Быстрый бой использует базовую подготовку.",
+                    equipNote
+                );
                 rowY += 10;
             }
 
@@ -136,15 +163,39 @@ namespace Rubezh.UnityPort
                     Paragraph(10, ref ty, cardW - 20, UiCatalog.TrainingEffect(i, level), equipNote);
                     ty += 8;
                     bool enabled = GUI.enabled;
-                    GUI.enabled = enabled && campaignMode && (level > 0 || CampaignProgression.TrainingMax(progress.completed) > 0);
-                    if (B(10, ty, cardW - 20, 48, "Уровень " + level + " · " + new[] { 0, 100, 250, 450 }[level] + " опыта", compactSelect))
-                        Pick(UiCatalog.TrainingNames[i], Enumerable.Range(0, CampaignProgression.TrainingMax(progress.completed) + 1).Select(v => "Уровень " + v + " · " + new[] { 0, 100, 250, 450 }[v] + " опыта всего · " + UiCatalog.TrainingEffect(index, v)).ToArray(), v => draft.training[index] = v);
+                    GUI.enabled =
+                        enabled
+                        && campaignMode
+                        && (level > 0 || CampaignProgression.TrainingMax(progress.completed) > 0);
+                    if (
+                        B(
+                            10,
+                            ty,
+                            cardW - 20,
+                            48,
+                            "Уровень " + level + " · " + new[] { 0, 100, 250, 450 }[level] + " опыта",
+                            compactSelect
+                        )
+                    )
+                        Pick(
+                            UiCatalog.TrainingNames[i],
+                            Enumerable
+                                .Range(0, CampaignProgression.TrainingMax(progress.completed) + 1)
+                                .Select(v =>
+                                    "Уровень "
+                                    + v
+                                    + " · "
+                                    + new[] { 0, 100, 250, 450 }[v]
+                                    + " опыта всего · "
+                                    + UiCatalog.TrainingEffect(index, v)
+                                )
+                                .ToArray(),
+                            v => draft.training[index] = v
+                        );
                     GUI.enabled = enabled;
                     ty += 56;
                     if (B(10, ty, cardW - 20, 42, "Описание", compactSelect))
-                        Pick(UiCatalog.TrainingDescriptions[i], new[] { "Понятно" }, v =>
-                        {
-                        });
+                        Pick(UiCatalog.TrainingDescriptions[i], new[] { "Понятно" }, v => { });
                     ty += 50;
                 }
 
@@ -169,7 +220,10 @@ namespace Rubezh.UnityPort
 
         void DrawIcon(Rect r, int kind)
         {
-            float x = r.x + 4, y = r.y + 4, w = r.width - 8, h = r.height - 8;
+            float x = r.x + 4,
+                y = r.y + 4,
+                w = r.width - 8,
+                h = r.height - 8;
             if (kind == 3)
             {
                 for (int i = 0; i < 3; i++)
@@ -210,7 +264,8 @@ namespace Rubezh.UnityPort
             for (int i = 0; i < 12; i++)
             {
                 float a = i / 11f;
-                float px = x + a * w, py = y + (a < .5f ? a : 1 - a) * h;
+                float px = x + a * w,
+                    py = y + (a < .5f ? a : 1 - a) * h;
                 if (kind == 4)
                     py = y + h - (py - y);
                 if (kind == 1 || kind == 2)

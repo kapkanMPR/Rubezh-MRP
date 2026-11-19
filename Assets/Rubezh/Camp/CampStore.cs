@@ -10,6 +10,7 @@ namespace Rubezh.Camp
     {
         public readonly string Path;
         public readonly CampModel Model;
+
         public CampStore(string path, CampModel model)
         {
             Path = path;
@@ -19,19 +20,13 @@ namespace Rubezh.Camp
         public static State Read(string path)
         {
             Exception error = null;
-            foreach (string p in new[]
+            foreach (string candidatePath in new[] { path, path + ".bak" })
             {
-                path,
-                path + ".bak"
-            }
-
-            )
-            {
-                if (!File.Exists(p))
+                if (!File.Exists(candidatePath))
                     continue;
                 try
                 {
-                    return CampModel.Decode(File.ReadAllText(p));
+                    return CampModel.Decode(File.ReadAllText(candidatePath));
                 }
                 catch (Exception e)
                 {
@@ -47,20 +42,21 @@ namespace Rubezh.Camp
         public void Save()
         {
             Model.Validate();
-            string dir = System.IO.Path.GetDirectoryName(Path);
-            if (!string.IsNullOrEmpty(dir))
-                Directory.CreateDirectory(dir);
+            string directory = System.IO.Path.GetDirectoryName(Path);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
             byte[] bytes = new UTF8Encoding(false).GetBytes(Model.Serialize());
-            using (var f = new FileStream(Path + ".tmp", FileMode.Create, FileAccess.Write, FileShare.None))
+            string temporaryPath = Path + ".tmp";
+            using (var stream = new FileStream(temporaryPath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                f.Write(bytes, 0, bytes.Length);
-                f.Flush(true);
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Flush(true);
             }
 
             if (File.Exists(Path))
-                File.Replace(Path + ".tmp", Path, Path + ".bak");
+                File.Replace(temporaryPath, Path, Path + ".bak");
             else
-                File.Move(Path + ".tmp", Path);
+                File.Move(temporaryPath, Path);
         }
 
         public void Change(Action action)
@@ -82,17 +78,7 @@ namespace Rubezh.Camp
         {
             var candidate = CampModel.Decode(json);
             new CampModel(Model.Data, candidate); // validate without touching the live save
-            string before = Model.Serialize();
-            try
-            {
-                Model.Restore(candidate);
-                Save();
-            }
-            catch
-            {
-                Model.Restore(CampModel.Decode(before));
-                throw;
-            }
+            Change(() => Model.Restore(candidate));
         }
     }
 }

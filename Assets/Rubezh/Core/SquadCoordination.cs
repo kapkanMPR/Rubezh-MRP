@@ -12,13 +12,21 @@ namespace SilentOrders.Core
             if (!s.Sniper)
                 return false;
             var known = SniperTactics.Known(b, s);
-            return known.Count > 0 && SniperTactics.OpenSafe(b, s.Position, known, 2) && PositionLogic.HasSector(b, s, s.Position);
+            return known.Count > 0
+                && SniperTactics.OpenSafe(b, s.Position, known, 2)
+                && PositionLogic.HasSector(b, s, s.Position);
         }
 
         // Rebuild reciprocal pairs from actual equipment; no assumption about roster slots.
         public static void Pair(BattleSimulation b, Squad q, List<Soldier> units)
         {
-            if (q.Side == Side.Green && q.CommandPlan.Pairs.Count > 0 || CommandHierarchy.Owns(q) || WithdrawalTactics.Active(q) && q.CommandPlan.Pairs.Count > 0 || TacticalOrders.Flanks(q) || TacticalOrders.Emergency(q))
+            if (
+                q.Side == Side.Green && q.CommandPlan.Pairs.Count > 0
+                || CommandHierarchy.Owns(q)
+                || WithdrawalTactics.Active(q) && q.CommandPlan.Pairs.Count > 0
+                || TacticalOrders.Flanks(q)
+                || TacticalOrders.Emergency(q)
+            )
                 return;
             if (b.Time < q.NextPairReview)
                 return;
@@ -35,10 +43,12 @@ namespace SilentOrders.Core
             {
                 for (int pair = 0; pair < 2; pair++)
                 {
-                    int a = q.Formation.DisplaySlot(pair * 2), z = q.Formation.DisplaySlot(pair * 2 + 1);
+                    int a = q.Formation.DisplaySlot(pair * 2),
+                        z = q.Formation.DisplaySlot(pair * 2 + 1);
                     if (a < 0 || z < 0)
                         continue;
-                    Soldier x = null, y = null;
+                    Soldier x = null,
+                        y = null;
                     foreach (var soldier in left)
                     {
                         if (soldier.Id == a)
@@ -55,35 +65,39 @@ namespace SilentOrders.Core
                         left.Remove(y);
                     }
                 }
-            // If the specified partner is missing, fall back to a new matching pair
-            // using whoever is actually available, rather than freezing in place.
+                // If the specified partner is missing, fall back to a new matching pair
+                // using whoever is actually available, rather than freezing in place.
             }
 
             while (left.Count > 1)
             {
-                Soldier a = null, z = null;
+                Soldier a = null,
+                    z = null;
                 float best = float.MinValue;
                 for (int i = 0; i < left.Count; i++)
-                    for (int j = i + 1; j < left.Count; j++)
+                for (int j = i + 1; j < left.Count; j++)
+                {
+                    var x = left[i];
+                    var y = left[j];
+                    float score = -V2.Distance(x.Position, y.Position);
+                    if (x.SupplyPack && y.Role == Role.MachineGunner || y.SupplyPack && x.Role == Role.MachineGunner)
+                        score += 30;
+                    if (
+                        x.Role == Role.Grenadier && y.Role == Role.Rifleman
+                        || y.Role == Role.Grenadier && x.Role == Role.Rifleman
+                    )
+                        score += 15;
+                    if (x.Role == Role.Medic && y.Id == q.LeaderId || y.Role == Role.Medic && x.Id == q.LeaderId)
+                        score += 12;
+                    if (x.Sniper || y.Sniper)
+                        score -= 8;
+                    if (score > best)
                     {
-                        var x = left[i];
-                        var y = left[j];
-                        float score = -V2.Distance(x.Position, y.Position);
-                        if (x.SupplyPack && y.Role == Role.MachineGunner || y.SupplyPack && x.Role == Role.MachineGunner)
-                            score += 30;
-                        if (x.Role == Role.Grenadier && y.Role == Role.Rifleman || y.Role == Role.Grenadier && x.Role == Role.Rifleman)
-                            score += 15;
-                        if (x.Role == Role.Medic && y.Id == q.LeaderId || y.Role == Role.Medic && x.Id == q.LeaderId)
-                            score += 12;
-                        if (x.Sniper || y.Sniper)
-                            score -= 8;
-                        if (score > best)
-                        {
-                            best = score;
-                            a = x;
-                            z = y;
-                        }
+                        best = score;
+                        a = x;
+                        z = y;
                     }
+                }
 
                 a.BuddyId = z.Id;
                 z.BuddyId = a.Id;
@@ -109,8 +123,20 @@ namespace SilentOrders.Core
         public static int MovePriority(BattleSimulation b, Squad q, Soldier s)
         {
             if (q.Style == CombatStyle.Withdraw || q.EmergencyRetreat)
-                return (s.Health < 50 ? 0 : s.Role == Role.Medic ? 1 : s.Sniper ? 3 : s.Role == Role.MachineGunner ? 20 : 5);
-            return (s.Sniper ? 25 : s.Role == Role.Medic ? 30 : s.Role == Role.MachineGunner ? 20 : s.Role == Role.Rifleman ? 0 : 1) + FormationAI.MovePriority(q, s);
+                return (
+                    s.Health < 50 ? 0
+                    : s.Role == Role.Medic ? 1
+                    : s.Sniper ? 3
+                    : s.Role == Role.MachineGunner ? 20
+                    : 5
+                );
+            return (
+                    s.Sniper ? 25
+                    : s.Role == Role.Medic ? 30
+                    : s.Role == Role.MachineGunner ? 20
+                    : s.Role == Role.Rifleman ? 0
+                    : 1
+                ) + FormationAI.MovePriority(q, s);
         }
 
         public static bool CanSplit(BattleSimulation b, List<Soldier> units)

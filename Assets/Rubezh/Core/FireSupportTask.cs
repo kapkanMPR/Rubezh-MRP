@@ -11,9 +11,20 @@ namespace SilentOrders.Core
             float score = float.MinValue;
             foreach (var s in b.Soldiers)
             {
-                if (s == shooter || s.Side != shooter.Side || !s.Available || !s.Deployed || s.Busy || s.PathCursor >= s.Path.Count || V2.Distance(s.Position, shooter.Position) > 18)
+                if (
+                    s == shooter
+                    || s.Side != shooter.Side
+                    || !s.Available
+                    || !s.Deployed
+                    || s.Busy
+                    || s.PathCursor >= s.Path.Count
+                    || V2.Distance(s.Position, shooter.Position) > 18
+                )
                     continue;
-                float value = (s.DefenderGroup == shooter.DefenderGroup ? 10 : 0) + (RedCounterattack.Retreating(b, s) ? 12 : 0) - V2.Distance(s.Position, shooter.Position) * .3f;
+                float value =
+                    (s.DefenderGroup == shooter.DefenderGroup ? 10 : 0)
+                    + (RedCounterattack.Retreating(b, s) ? 12 : 0)
+                    - V2.Distance(s.Position, shooter.Position) * .3f;
                 if (value > score)
                 {
                     score = value;
@@ -40,7 +51,11 @@ namespace SilentOrders.Core
             for (int i = 0; i < 4; i++)
             {
                 V2 point = mover.Position + (mover.Destination - mover.Position) * (i / 3f);
-                if (PositionLogic.Relevant(b, c, point) && b.Map.LineOfSight(c.Position, point) && b.SmokeTransmission(c.Position, point) > .3f)
+                if (
+                    PositionLogic.Relevant(b, c, point)
+                    && b.Map.LineOfSight(c.Position, point)
+                    && b.SmokeTransmission(c.Position, point) > .3f
+                )
                     return true;
             }
 

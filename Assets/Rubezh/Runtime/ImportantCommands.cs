@@ -11,39 +11,45 @@ namespace Rubezh.UnityPort
         sealed class Bubble
         {
             public string Text = "";
-            public float At = -100, Remaining;
+            public float At = -100,
+                Remaining;
         }
 
         readonly Dictionary<int, Bubble> bubbles = new Dictionary<int, Bubble>();
+
         public string BubbleText(Soldier s)
         {
             Bubble v;
             return bubbles.TryGetValue(s.Id, out v) && v.Remaining > 0 ? v.Text : "";
         }
 
-        public static bool BubbleImportant(string text) => Extract(text).Length > 0 || text == "ВЫСТРЕЛ!!" || text == "СВОЯ!";
+        public static bool BubbleImportant(string text) =>
+            Extract(text).Length > 0 || text == "ВЫСТРЕЛ!!" || text == "СВОЯ!";
+
         readonly Queue<string> pending = new Queue<string>();
         BattleSimulation source;
         BattleEvent last;
-        string lastOrder = "", lastText = "";
-        float lastAt = -100, remaining;
+        string lastOrder = "",
+            lastText = "";
+        float lastAt = -100,
+            remaining;
         public string Text { get; private set; } = "";
 
         public static string Extract(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return "";
-            foreach (var marker in new[]
-            {
-                "КОНТАКТ!!",
-                "Готовность. Движение",
-                "Код СТЕНА!",
-                "ДАВИМ!!!",
-                "Залп прошёл.",
-                "Рубеж достигнут.",
-                "Группа контакт! ЗАСАДА!"
-            }
-
+            foreach (
+                var marker in new[]
+                {
+                    "КОНТАКТ!!",
+                    "Готовность. Движение",
+                    "Код СТЕНА!",
+                    "ДАВИМ!!!",
+                    "Залп прошёл.",
+                    "Рубеж достигнут.",
+                    "Группа контакт! ЗАСАДА!",
+                }
             )
             {
                 int i = text.IndexOf(marker, StringComparison.Ordinal);

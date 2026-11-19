@@ -3,7 +3,7 @@ using SilentOrders.Core;
 
 namespace SilentOrders.Core
 {
-    [System.Serializable]
+    [Serializable]
     public sealed class Tuning
     {
         public float Tick = 0.05f;

@@ -1,9 +1,11 @@
 using UnityEngine;
+
 namespace Rubezh.UnityPort
 {
     public sealed partial class RubezhApp
     {
         Texture2D rainStreak;
+
         void EnsureRainStreak()
         {
             if (rainStreak == null)
@@ -22,10 +24,10 @@ namespace Rubezh.UnityPort
                 rainStreak.Apply();
                 uiTextures.Add(rainStreak);
             }
-
         }
 
-        const int LightWidth = 320, LightHeight = 200;
+        const int LightWidth = 320,
+            LightHeight = 200;
         const float NightDarkness = .28f;
     }
 }

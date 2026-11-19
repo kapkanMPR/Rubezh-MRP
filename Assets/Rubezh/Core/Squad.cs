@@ -11,6 +11,7 @@ namespace SilentOrders.Core
         public readonly AiGroupState Ai = new AiGroupState();
         public readonly SmokeState Smoke = new SmokeState();
         public DefenderGroupState DefenderGroup;
+
         public bool Contains(Soldier soldier)
         {
             return soldier.Side == Side && (DefenderGroup == null || soldier.DefenderGroup == DefenderGroup);
@@ -18,9 +19,17 @@ namespace SilentOrders.Core
 
         public V2 DefenseCenter(BattleSimulation b)
         {
-            if (DefenderGroup != null && DefenderGroup.Cooperation.Active && DefenderGroup.Counterattack.Phase != RedCounterattackPhase.Retreat)
+            if (
+                DefenderGroup != null
+                && DefenderGroup.Cooperation.Active
+                && DefenderGroup.Counterattack.Phase != RedCounterattackPhase.Retreat
+            )
                 return DefenderGroup.Cooperation.Anchor;
-            return DefenderGroup == null || DefenderGroup.Pullback && DefenderGroup.Counterattack.Phase != RedCounterattackPhase.Assault ? b.Map.Objective : DefenderGroup.Spawn;
+            return
+                DefenderGroup == null
+                || DefenderGroup.Pullback && DefenderGroup.Counterattack.Phase != RedCounterattackPhase.Assault
+                ? b.Map.Objective
+                : DefenderGroup.Spawn;
         }
 
         public readonly WithdrawalPlan Withdrawal = new WithdrawalPlan();
@@ -35,13 +44,13 @@ namespace SilentOrders.Core
         public int TacticalComposition = -1;
         public bool TacticalHadFresh;
         public readonly ObservationMemory Observation = new ObservationMemory();
-        public readonly SilentOrders.Core.DefenseState Defense = new SilentOrders.Core.DefenseState();
-        public SilentOrders.Core.Side Side;
-        public SilentOrders.Core.CombatStyle Style = SilentOrders.Core.CombatStyle.Balanced;
-        public SilentOrders.Core.CombatStyle PendingStyle = SilentOrders.Core.CombatStyle.Balanced;
-        public SilentOrders.Core.ManeuverIntent Intent;
-        public SilentOrders.Core.ManeuverIntent PendingIntent;
-        public SilentOrders.Core.CommanderCharacter Character;
+        public readonly DefenseState Defense = new DefenseState();
+        public Side Side;
+        public CombatStyle Style = CombatStyle.Balanced;
+        public CombatStyle PendingStyle = CombatStyle.Balanced;
+        public ManeuverIntent Intent;
+        public ManeuverIntent PendingIntent;
+        public CommanderCharacter Character;
         public bool PriorityPending;
         public bool PriorityChanged;
         public bool PriorityInitialized;
@@ -76,7 +85,7 @@ namespace SilentOrders.Core
         public float LastEncouragement;
         public bool Initialized;
         public bool HadContact;
-        public SilentOrders.Core.ManeuverPhase Phase;
+        public ManeuverPhase Phase;
         public int SupportMoverId = -1;
         public int SupportFollowerId = -1;
         public int SupportMovePhase;
@@ -86,17 +95,17 @@ namespace SilentOrders.Core
         public float OpeningUntil;
         public float AidPauseSince = -1f;
         public float NextPlannedSmoke;
-        public SilentOrders.Core.V2 SupportRally;
+        public V2 SupportRally;
         public string SupportStatus = "Поддержка на исходных";
         public string DelayReason = "";
-        public readonly System.Collections.Generic.List<SilentOrders.Core.V2> PlannedSmoke = new System.Collections.Generic.List<SilentOrders.Core.V2>();
+        public readonly System.Collections.Generic.List<V2> PlannedSmoke = new System.Collections.Generic.List<V2>();
         public bool EnvelopmentActive;
         public int EnvelopmentBounds;
         public float EnvelopmentSince;
-        public SilentOrders.Core.V2 EnvelopmentThreat;
+        public V2 EnvelopmentThreat;
         public readonly System.Collections.Generic.List<int> SupportIds = new System.Collections.Generic.List<int>();
-        public SilentOrders.Core.V2 Stage;
-        public SilentOrders.Core.V2 ProgressCenter;
+        public V2 Stage;
+        public V2 ProgressCenter;
         public float LastProgress;
         public float LastAdaptation = -100f;
         public float AdaptStarted;
@@ -104,11 +113,12 @@ namespace SilentOrders.Core
         public float CombatStall;
         public float ProgressHealth = 1000f;
         public int Replans;
-        public SilentOrders.Core.Adaptation Adaptation;
+        public Adaptation Adaptation;
         public bool AdaptReleased;
         public readonly System.Collections.Generic.List<int> ManeuverIds = new System.Collections.Generic.List<int>();
         public string CommanderOrder = "Занять исходные позиции";
         public string Plan = "";
-        public readonly System.Collections.Generic.Dictionary<int, SilentOrders.Core.Contact> Contacts = new System.Collections.Generic.Dictionary<int, SilentOrders.Core.Contact>();
+        public readonly System.Collections.Generic.Dictionary<int, Contact> Contacts =
+            new System.Collections.Generic.Dictionary<int, Contact>();
     }
 }

@@ -1,37 +1,61 @@
 using System;
-using UnityEngine;
 using SilentOrders.Rendering;
+using UnityEngine;
 
 namespace Rubezh.UnityPort
 {
     public sealed partial class RubezhApp
     {
         HdGpuRenderer hdBattle;
-        bool hdGpuUnavailable;string firstHdGpuError;
+        bool hdGpuUnavailable;
+        string firstHdGpuError;
         bool forceSoftware;
-        bool diagDisableSmoke,diagDisableRoofs,diagDisableScenery;
-        void GraphicsDiagnostics(){
-            Pick("Диагностика графики · влияет только на изображение",new[]{
-                "Дым: "+(diagDisableSmoke?"выключен":"включён"),
-                "Крыши: "+(diagDisableRoofs?"выключены":"включены"),
-                "Окружение: "+(diagDisableScenery?"выключено":"включено"),"Включить все слои"}, i=>{
-                if(i==0)diagDisableSmoke=!diagDisableSmoke;
-                if(i==1)diagDisableRoofs=!diagDisableRoofs;
-                if(i==2)diagDisableScenery=!diagDisableScenery;
-                if(i==3)diagDisableSmoke=diagDisableRoofs=diagDisableScenery=false;
-                renderedBattle=null;
-            });
+        bool diagDisableSmoke,
+            diagDisableRoofs,
+            diagDisableScenery;
+
+        void GraphicsDiagnostics()
+        {
+            Pick(
+                "Диагностика графики · влияет только на изображение",
+                new[]
+                {
+                    "Дым: " + (diagDisableSmoke ? "выключен" : "включён"),
+                    "Крыши: " + (diagDisableRoofs ? "выключены" : "включены"),
+                    "Окружение: " + (diagDisableScenery ? "выключено" : "включено"),
+                    "Включить все слои",
+                },
+                i =>
+                {
+                    if (i == 0)
+                        diagDisableSmoke = !diagDisableSmoke;
+                    if (i == 1)
+                        diagDisableRoofs = !diagDisableRoofs;
+                    if (i == 2)
+                        diagDisableScenery = !diagDisableScenery;
+                    if (i == 3)
+                        diagDisableSmoke = diagDisableRoofs = diagDisableScenery = false;
+                    renderedBattle = null;
+                }
+            );
         }
+
         int frameRateLimit = 60;
-        static readonly int[] FrameRateChoices = {30,60,90,120};
+        static readonly int[] FrameRateChoices = { 30, 60, 90, 120 };
         int graphicsTier = 2; // -1 pixels, 0 low, 1 medium, 2 high
         bool soundEnabled = true;
-        bool fullVisibility = true, hardcoreFog;
+        bool fullVisibility = true,
+            hardcoreFog;
         AudioSource soundSource;
         AudioClip[] weaponSounds;
-        AudioClip[] rifleSamples, machineGunSamples;
-        AudioClip launcherSample, explosionSample, sniperSample, smokeSample;
+        AudioClip[] rifleSamples,
+            machineGunSamples;
+        AudioClip launcherSample,
+            explosionSample,
+            sniperSample,
+            smokeSample;
         int lastMachineSample = -1;
+
         void InitOptions()
         {
             frameRateLimit = NormalizeFrameRate(PlayerPrefs.GetInt("rubezh.fps", 60));
@@ -48,6 +72,7 @@ namespace Rubezh.UnityPort
         }
 
         static int NormalizeFrameRate(int value) => Array.IndexOf(FrameRateChoices, value) >= 0 ? value : 60;
+
         void ApplyFrameRate()
         {
 #if UNITY_5_3_OR_NEWER
@@ -56,6 +81,7 @@ namespace Rubezh.UnityPort
             Application.targetFrameRate = frameRateLimit;
             nextFrame = 0;
         }
+
         void SetFrameRate(int value)
         {
             frameRateLimit = NormalizeFrameRate(value);
@@ -78,7 +104,8 @@ namespace Rubezh.UnityPort
             soundEnabled = value;
             PlayerPrefs.SetInt("rubezh.sound", value ? 1 : 0);
             PlayerPrefs.Save();
-            if (value && AudioBattle) LoadBattleSamples();
+            if (value && AudioBattle)
+                LoadBattleSamples();
             if (!value && soundSource != null)
                 soundSource.Stop();
         }
@@ -96,7 +123,7 @@ namespace Rubezh.UnityPort
                 effects = Mathf.RoundToInt(effectsVolume * 100),
                 music = Mathf.RoundToInt(musicVolume * 100),
                 visibility = fullVisibility,
-                fog = hardcoreFog
+                fog = hardcoreFog,
             };
         }
 
@@ -157,19 +184,28 @@ namespace Rubezh.UnityPort
             SaveAudio();
         }
 
-
-
         AudioClip Synthesize(int type)
         {
             const int rate = 22050;
-            float duration = type == 5 ? .85f : type == 3 || type == 4 ? .48f : type == 2 ? .35f : .18f;
+            float duration =
+                type == 5 ? .85f
+                : type == 3 || type == 4 ? .48f
+                : type == 2 ? .35f
+                : .18f;
             int n = Mathf.CeilToInt(duration * rate);
             float[] samples = new float[n];
             uint rng = (uint)(0xA19B + type * 341);
-            float pitch = type == 0 ? 150 : type == 1 ? 115 : type == 2 ? 215 : type == 3 ? 92 : type == 4 ? 120 : 62;
+            float pitch =
+                type == 0 ? 150
+                : type == 1 ? 115
+                : type == 2 ? 215
+                : type == 3 ? 92
+                : type == 4 ? 120
+                : 62;
             for (int i = 0; i < n; i++)
             {
-                float t = i / (float)rate, u = t / duration;
+                float t = i / (float)rate,
+                    u = t / duration;
                 rng ^= rng << 13;
                 rng ^= rng >> 17;
                 rng ^= rng << 5;
@@ -186,13 +222,12 @@ namespace Rubezh.UnityPort
 
         void LoadBattleSamples()
         {
-            if (!soundEnabled || weaponSounds != null) return;
+            if (!soundEnabled || weaponSounds != null)
+                return;
             weaponSounds = new AudioClip[6];
-            for (int i=0;i<weaponSounds.Length;i++) weaponSounds[i]=Synthesize(i);
-            rifleSamples = new[]
-            {
-                Resources.Load<AudioClip>("Audio/rifle01")
-            };
+            for (int i = 0; i < weaponSounds.Length; i++)
+                weaponSounds[i] = Synthesize(i);
+            rifleSamples = new[] { Resources.Load<AudioClip>("Audio/rifle01") };
             sniperSample = Resources.Load<AudioClip>("Audio/sniper");
             smokeSample = Resources.Load<AudioClip>("Audio/smoke");
             machineGunSamples = new AudioClip[8];
@@ -204,15 +239,37 @@ namespace Rubezh.UnityPort
 
         void ReleaseBattleSamples()
         {
-            if (soundSource != null) { soundSource.Stop(); soundSource.clip = null; }
-            foreach (var voice in smokeVoices.Values) { voice.Stop(); voice.clip=null; Destroy(voice); }
-            smokeVoices.Clear(); expiredSmokeVoices.Clear();
-            if (weaponSounds != null) foreach (var clip in weaponSounds) if (clip != null) Destroy(clip);
-            weaponSounds=null;
-            if (rifleSamples != null) foreach(var clip in rifleSamples) if(clip!=null) Resources.UnloadAsset(clip);
-            if (machineGunSamples != null) foreach(var clip in machineGunSamples) if(clip!=null) Resources.UnloadAsset(clip);
-            foreach(var clip in new[]{sniperSample,smokeSample,launcherSample,explosionSample}) if(clip!=null) Resources.UnloadAsset(clip);
-            rifleSamples=machineGunSamples=null;sniperSample=smokeSample=launcherSample=explosionSample=null;
+            if (soundSource != null)
+            {
+                soundSource.Stop();
+                soundSource.clip = null;
+            }
+            foreach (var voice in smokeVoices.Values)
+            {
+                voice.Stop();
+                voice.clip = null;
+                Destroy(voice);
+            }
+            smokeVoices.Clear();
+            expiredSmokeVoices.Clear();
+            if (weaponSounds != null)
+                foreach (var clip in weaponSounds)
+                    if (clip != null)
+                        Destroy(clip);
+            weaponSounds = null;
+            if (rifleSamples != null)
+                foreach (var clip in rifleSamples)
+                    if (clip != null)
+                        Resources.UnloadAsset(clip);
+            if (machineGunSamples != null)
+                foreach (var clip in machineGunSamples)
+                    if (clip != null)
+                        Resources.UnloadAsset(clip);
+            foreach (var clip in new[] { sniperSample, smokeSample, launcherSample, explosionSample })
+                if (clip != null)
+                    Resources.UnloadAsset(clip);
+            rifleSamples = machineGunSamples = null;
+            sniperSample = smokeSample = launcherSample = explosionSample = null;
         }
 
         void Sound(int category)
@@ -222,7 +279,13 @@ namespace Rubezh.UnityPort
                 PlayStoryMortarImpact();
                 return;
             }
-            if (!soundEnabled || soundSource == null || weaponSounds == null || category < 0 || category >= weaponSounds.Length)
+            if (
+                !soundEnabled
+                || soundSource == null
+                || weaponSounds == null
+                || category < 0
+                || category >= weaponSounds.Length
+            )
                 return;
             AudioClip clip = weaponSounds[category];
             if (category == 0 && rifleSamples != null && rifleSamples[0] != null)
@@ -270,19 +333,19 @@ namespace Rubezh.UnityPort
             if (texture != null)
                 Destroy(texture);
             texture = null;
-            pixels = null;
         }
 
         bool HasStudioArt
         {
             get
             {
-                return battle != null && battle.Map.Studio != null && (battle.Map.Studio.Objects.Count > 0 || Array.Exists(battle.Map.Studio.Ground, a => a != null));
+                return battle != null
+                    && battle.Map.Studio != null
+                    && (battle.Map.Studio.Objects.Count > 0 || Array.Exists(battle.Map.Studio.Ground, a => a != null));
             }
         }
 
         bool HasRoof => battle != null && battle.Map.Roof != null && System.Array.Exists(battle.Map.Roof, v => v);
-
 
         float BattleRasterScale => 1f;
 
@@ -292,54 +355,91 @@ namespace Rubezh.UnityPort
 
         SilentOrders.Core.BattleSimulation presentationSnapBattle;
         int presentationSnapTick = -1;
+
         void UpdatePresentationInterpolation()
         {
-            if(painter==null||battle==null)return;
+            if (painter == null || battle == null)
+                return;
             painter.ObserveTick(battle);
-            bool stopped=paused||battle.Outcome!=SilentOrders.Core.Outcome.Running||(!testBattle&&MissionDialogueActive);
-            if(stopped){presentationSnapBattle=battle;presentationSnapTick=battle.TickNumber;}
-            bool holdEndpoint=presentationSnapBattle==battle&&presentationSnapTick==battle.TickNumber;
-            painter.SetInterpolation(stopped||holdEndpoint||battle.Config.Tick<=0?1f:Mathf.Clamp01(accumulator/battle.Config.Tick));
+            bool stopped =
+                paused || battle.Outcome != SilentOrders.Core.Outcome.Running || (!testBattle && MissionDialogueActive);
+            if (stopped)
+            {
+                presentationSnapBattle = battle;
+                presentationSnapTick = battle.TickNumber;
+            }
+            bool holdEndpoint = presentationSnapBattle == battle && presentationSnapTick == battle.TickNumber;
+            painter.SetInterpolation(
+                stopped || holdEndpoint || battle.Config.Tick <= 0
+                    ? 1f
+                    : Mathf.Clamp01(accumulator / battle.Config.Tick)
+            );
         }
 
         void RenderOutput()
         {
-            var phase=System.Diagnostics.Stopwatch.StartNew();
+            var phase = System.Diagnostics.Stopwatch.StartNew();
             UpdatePresentationInterpolation();
-            diagInterpolationMs=phase.Elapsed.TotalMilliseconds;phase.Restart();
+            diagInterpolationMs = phase.Elapsed.TotalMilliseconds;
+            phase.Restart();
             // A dimensions-only canvas remains for projection metadata. Native rendering
             // never requests its Pixels or invokes the legacy software compositor.
-            if(painter.PrepareCanvas(battle.Map,1f))RebuildOutputTexture();
-            diagCanvasMs=phase.Elapsed.TotalMilliseconds;phase.Restart();
+            if (painter.PrepareCanvas(battle.Map, 1f))
+                RebuildOutputTexture();
+            diagCanvasMs = phase.Elapsed.TotalMilliseconds;
+            phase.Restart();
             ApplyVisibility();
-            diagVisibilityMs=phase.Elapsed.TotalMilliseconds;phase.Restart();
+            diagVisibilityMs = phase.Elapsed.TotalMilliseconds;
+            phase.Restart();
             try
             {
-                if(hdBattle==null)hdBattle=new HdGpuRenderer(painter.Canvas,true,graphicsTier==-1,true);
+                if (hdBattle == null)
+                    hdBattle = new HdGpuRenderer(painter.Canvas, true, graphicsTier == -1, true);
                 LayoutMap();
-                var safe=Screen.safeArea;float ui=UIScale;
-                float vw=Mathf.Max(1,safe.width/ui),vh=Mathf.Max(1,safe.height/ui);
-                var view=new Rect(-mapRect.x/mapRect.width,-mapRect.y/mapRect.height,vw/mapRect.width,vh/mapRect.height);
-                float limit=SystemInfo.maxTextureSize;
+                var safe = Screen.safeArea;
+                float ui = UIScale;
+                float vw = Mathf.Max(1, safe.width / ui),
+                    vh = Mathf.Max(1, safe.height / ui);
+                var view = new Rect(
+                    -mapRect.x / mapRect.width,
+                    -mapRect.y / mapRect.height,
+                    vw / mapRect.width,
+                    vh / mapRect.height
+                );
+                float limit = SystemInfo.maxTextureSize;
 #if UNITY_ANDROID && !UNITY_EDITOR
-                int mobileLimit=PlayerPrefs.GetInt("rubezh.hdRenderLimit",1920);
-                if(mobileLimit>0)limit=Mathf.Min(limit,Mathf.Max(960,mobileLimit));
+                int mobileLimit = PlayerPrefs.GetInt("rubezh.hdRenderLimit", 1920);
+                if (mobileLimit > 0)
+                    limit = Mathf.Min(limit, Mathf.Max(960, mobileLimit));
 #endif
-                float quality=graphicsTier<=0?.5f:graphicsTier==1?.75f:1f;
-                float fit=Mathf.Min(quality,limit/Mathf.Max(1,Mathf.Max(safe.width,safe.height)));
-                int width=Mathf.Max(1,Mathf.RoundToInt(safe.width*fit)),height=Mathf.Max(1,Mathf.RoundToInt(safe.height*fit));
-                hdBattle.DisableSmoke=diagDisableSmoke;hdBattle.DisableRoofs=diagDisableRoofs;hdBattle.DisableScenery=diagDisableScenery;
-                diagLayoutMs=phase.Elapsed.TotalMilliseconds;phase.Restart();
-                hdBattle.Render(painter,battle,debug,selected,width,height,view);
-                diagNativeMs=phase.Elapsed.TotalMilliseconds;phase.Restart();
-                if(!fullVisibility)hdBattle.RenderForeground(painter,battle,selected); // Native camera/layer pass, no actor recomposition.
-                diagForegroundMs=phase.Elapsed.TotalMilliseconds;
+                float quality =
+                    graphicsTier <= 0 ? .5f
+                    : graphicsTier == 1 ? .75f
+                    : 1f;
+                float fit = Mathf.Min(quality, limit / Mathf.Max(1, Mathf.Max(safe.width, safe.height)));
+                int width = Mathf.Max(1, Mathf.RoundToInt(safe.width * fit)),
+                    height = Mathf.Max(1, Mathf.RoundToInt(safe.height * fit));
+                hdBattle.DisableSmoke = diagDisableSmoke;
+                hdBattle.DisableRoofs = diagDisableRoofs;
+                hdBattle.DisableScenery = diagDisableScenery;
+                diagLayoutMs = phase.Elapsed.TotalMilliseconds;
+                phase.Restart();
+                hdBattle.Render(painter, battle, debug, selected, width, height, view);
+                diagNativeMs = phase.Elapsed.TotalMilliseconds;
+                phase.Restart();
+                if (!fullVisibility)
+                    hdBattle.RenderForeground(painter, battle, selected); // Native camera/layer pass, no actor recomposition.
+                diagForegroundMs = phase.Elapsed.TotalMilliseconds;
             }
-            catch(Exception error)
+            catch (Exception error)
             {
-                if(string.IsNullOrEmpty(firstHdGpuError))firstHdGpuError=error.ToString();
-                if(benchActive)FinishFixedBenchmark(false);
-                unityTestError=error.Message;paused=true;Debug.LogException(error);
+                if (string.IsNullOrEmpty(firstHdGpuError))
+                    firstHdGpuError = error.ToString();
+                if (benchActive)
+                    FinishFixedBenchmark(false);
+                unityTestError = error.Message;
+                paused = true;
+                Debug.LogException(error);
             }
         }
     }

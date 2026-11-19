@@ -9,12 +9,7 @@ namespace SilentOrders.Core
             b.PairExperimentMarch = quiet;
             b.PairExperimentProfile = quiet ? 4 : 0;
             b.PairExperimentCover = quiet;
-            b.PairPlan = quiet ? new PairPlanSettings
-            {
-                AdaptiveRisk = true
-            }
-
-            : null;
+            b.PairPlan = quiet ? new PairPlanSettings { AdaptiveRisk = true } : null;
             b.TacticalMarchEnabled = quiet;
             b.QuietReconEnabled = quiet;
             b.UsefulReconEnabled = true;

@@ -20,14 +20,24 @@ namespace Rubezh.UnityPort.Hybrid
             {
                 template = Resources.Load<Material>("HybridRange/SurfaceTemplate");
                 if (template == null || template.shader == null)
-                    throw new InvalidOperationException("Не найден материал гибридного полигона: HybridRange/SurfaceTemplate");
+                    throw new InvalidOperationException(
+                        "Не найден материал гибридного полигона: HybridRange/SurfaceTemplate"
+                    );
                 if (!template.shader.isSupported)
-                    throw new InvalidOperationException("Устройство не поддерживает материал поверхностей гибридного полигона.");
+                    throw new InvalidOperationException(
+                        "Устройство не поддерживает материал поверхностей гибридного полигона."
+                    );
                 Create(HybridSurface.Ground, "surface-rough", new Color(.66f, .73f, .58f, 1), .24f, .24f);
                 Create(HybridSurface.Road, "surface-rough", new Color(.69f, .67f, .61f, 1), .45f, .45f);
                 Create(HybridSurface.Concrete, "surface-rough", new Color(1.08f, 1.08f, 1.04f, 1), .6f, .6f);
-                Create(HybridSurface.Brick, "surface-brick", new Color(1.08f, 1.05f, 1.02f, 1), .55f, .36f,
-                    new Vector4(0, .055f, 1, .89f));
+                Create(
+                    HybridSurface.Brick,
+                    "surface-brick",
+                    new Color(1.08f, 1.05f, 1.02f, 1),
+                    .55f,
+                    .36f,
+                    new Vector4(0, .055f, 1, .89f)
+                );
                 Create(HybridSurface.Wood, "surface-wood", new Color(1.05f, 1.02f, .98f, 1), .65f, .5f);
                 Create(HybridSurface.Metal, "surface-rough", new Color(.57f, .64f, .60f, 1), 1.6f, 1.6f);
                 Create(HybridSurface.Roof, "surface-roof", new Color(.93f, .98f, 1f, 1), .45f, .3f);
@@ -67,7 +77,8 @@ namespace Rubezh.UnityPort.Hybrid
 
         public Material Get(HybridSurface surface)
         {
-            if (disposed) throw new ObjectDisposedException(nameof(HybridMaterials));
+            if (disposed)
+                throw new ObjectDisposedException(nameof(HybridMaterials));
             Material material;
             if (!materials.TryGetValue(surface, out material))
                 throw new ArgumentOutOfRangeException(nameof(surface));
@@ -79,15 +90,19 @@ namespace Rubezh.UnityPort.Hybrid
 
         public void Dispose()
         {
-            if (disposed) return;
+            if (disposed)
+                return;
             disposed = true;
             foreach (var material in materials.Values)
-                if (material != null) UnityEngine.Object.Destroy(material);
+                if (material != null)
+                    UnityEngine.Object.Destroy(material);
             materials.Clear();
             foreach (var texture in textures.Values)
-                if (texture != null) Resources.UnloadAsset(texture);
+                if (texture != null)
+                    Resources.UnloadAsset(texture);
             textures.Clear();
-            if (template != null) Resources.UnloadAsset(template);
+            if (template != null)
+                Resources.UnloadAsset(template);
             template = null;
         }
     }

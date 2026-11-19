@@ -9,14 +9,23 @@ namespace SilentOrders.Core
         Volley,
         Advance,
         CloseFight,
-        Recover
+        Recover,
     }
 
     public sealed class BreakthroughState
     {
         public BreakthroughPhase Phase;
-        public float Since, NextAttempt, LastVolley;
-        public int Operation, Starts, Completed, Aborted, Shots, RouteRejects, DesiredVolley, MaxVolley;
+        public float Since,
+            NextAttempt,
+            LastVolley;
+        public int Operation,
+            Starts,
+            Completed,
+            Aborted,
+            Shots,
+            RouteRejects,
+            DesiredVolley,
+            MaxVolley;
         public string Status = "Ожидание";
         public V2 Target;
         public ManeuverIntent Intent;
@@ -24,18 +33,44 @@ namespace SilentOrders.Core
         public readonly Dictionary<int, int> Targets = new Dictionary<int, int>();
         public readonly HashSet<int> Fired = new HashSet<int>();
         public readonly List<int> Movers = new List<int>();
-        public bool Active => Phase == BreakthroughPhase.Volley || Phase == BreakthroughPhase.Advance || Phase == BreakthroughPhase.CloseFight;
+        public bool Active =>
+            Phase == BreakthroughPhase.Volley
+            || Phase == BreakthroughPhase.Advance
+            || Phase == BreakthroughPhase.CloseFight;
     }
 
     public static class BreakthroughTactics
     {
-        static bool Fit(BattleSimulation b, Soldier s, bool allowWall = false) => s.Available && !s.Busy && !s.Broken && !(allowWall && SmokeTactics.WallThrowBusy(b, s) ? CommandPosture.ServiceWithoutHands(b, s) : CommandPosture.Service(b, s)) && s.Health >= 40 && s.Morale >= .3f && s.Suppression < .55f && ConcussionEffects.Current(b, s) < .3f;
-        public static bool SystemReady(BattleSimulation b, Soldier s) => Fit(b, s) && !s.Sniper && s.Role != Role.Medic && s.ReloadUntil <= b.Time && (s.Role == Role.Grenadier && s.Rockets > 0 && s.NextSpecial <= b.Time || s.Underbarrel && GrenadePockets.Count(s, 2) > 0 && s.NextOrdnance <= b.Time);
+        static bool Fit(BattleSimulation b, Soldier s, bool allowWall = false) =>
+            s.Available
+            && !s.Busy
+            && !s.Broken
+            && !(
+                allowWall && SmokeTactics.WallThrowBusy(b, s)
+                    ? CommandPosture.ServiceWithoutHands(b, s)
+                    : CommandPosture.Service(b, s)
+            )
+            && s.Health >= 40
+            && s.Morale >= .3f
+            && s.Suppression < .55f
+            && ConcussionEffects.Current(b, s) < .3f;
+
+        public static bool SystemReady(BattleSimulation b, Soldier s) =>
+            Fit(b, s)
+            && !s.Sniper
+            && s.Role != Role.Medic
+            && s.ReloadUntil <= b.Time
+            && (
+                s.Role == Role.Grenadier && s.Rockets > 0 && s.NextSpecial <= b.Time
+                || s.Underbarrel && GrenadePockets.Count(s, 2) > 0 && s.NextOrdnance <= b.Time
+            );
+
         public static string Unavailable(BattleSimulation b, Squad q)
         {
             if (q.Style != CombatStyle.Aggressive)
                 return "Требуется агрессивный стиль";
-            int systems = 0, ready = 0;
+            int systems = 0,
+                ready = 0;
             foreach (var s in b.Soldiers)
                 if (q.Contains(s) && s.Available)
                 {
@@ -82,15 +117,25 @@ namespace SilentOrders.Core
         {
             var q = b.Team(s);
             V2 goal = TaskGoal(b, s);
-            V2 desired = (goal - s.Position).Normalized, delta = (point - s.Position).Normalized;
-            if (desired.Length < .1f || (q.Intent == ManeuverIntent.Straight || q.Intent == ManeuverIntent.Front) && StraightAdvance.Waiting(b, s))
+            V2 desired = (goal - s.Position).Normalized,
+                delta = (point - s.Position).Normalized;
+            if (
+                desired.Length < .1f
+                || (q.Intent == ManeuverIntent.Straight || q.Intent == ManeuverIntent.Front)
+                    && StraightAdvance.Waiting(b, s)
+            )
                 return false;
             return V2.Dot(desired, delta) > .45f && StraightAdvance.Inside(b, s, point);
         }
 
         static bool Opportunity(BattleSimulation b, Squad q)
         {
-            if (q.Style != CombatStyle.Aggressive || q.CommandTransition.Waiting || q.CapturePlan.Active || b.Time - q.Posture.Since < 4)
+            if (
+                q.Style != CombatStyle.Aggressive
+                || q.CommandTransition.Waiting
+                || q.CapturePlan.Active
+                || b.Time - q.Posture.Since < 4
+            )
                 return false;
             // A commander chooses this expensive action only when the accepted task is contested.
             foreach (var s in b.Soldiers)
@@ -100,7 +145,12 @@ namespace SilentOrders.Core
                     if (p == null || p.Duty == PairDuty.Support || p.Duty == PairDuty.Reserve)
                         continue;
                     foreach (var c in s.Contacts.Values)
-                        if (c.Visual && c.Confidence > .7f && b.Time - c.SeenAt < 2.5f && DirectionAllowed(b, s, c.Position))
+                        if (
+                            c.Visual
+                            && c.Confidence > .7f
+                            && b.Time - c.SeenAt < 2.5f
+                            && DirectionAllowed(b, s, c.Position)
+                        )
                             return true;
                 }
 
@@ -116,15 +166,33 @@ namespace SilentOrders.Core
             {
                 if (!DirectionAllowed(b, s, c.Position) || !c.Visual || c.Confidence < .7f || b.Time - c.SeenAt > 2.5f)
                     continue;
-                float d = V2.Distance(s.Position, c.Position), r = rocket ? SpecialWeapons.Radius(s) : 2.7f;
+                float d = V2.Distance(s.Position, c.Position),
+                    r = rocket ? SpecialWeapons.Radius(s) : 2.7f;
                 if (d < r + 1.5f || d > (rocket ? SpecialWeapons.Range(b) : ArcedOrdnance.Range(b, 2)))
                     continue;
-                var impact = rocket ? b.Map.LauncherImpact(s.Position, c.Position) : ArcedOrdnance.ArcImpact(b, s.Position, c.Position, 2);
-                if (V2.Distance(impact, c.Position) > r * .6f || rocket && (!b.Map.LineOfSight(s.Position, c.Position) || !SpecialWeapons.UsefulImpact(b, s, c.Position, impact)))
+                var impact = rocket
+                    ? b.Map.LauncherImpact(s.Position, c.Position)
+                    : ArcedOrdnance.ArcImpact(b, s.Position, c.Position, 2);
+                if (
+                    V2.Distance(impact, c.Position) > r * .6f
+                    || rocket
+                        && (
+                            !b.Map.LineOfSight(s.Position, c.Position)
+                            || !SpecialWeapons.UsefulImpact(b, s, c.Position, impact)
+                        )
+                )
                     continue;
                 bool friendly = false;
                 foreach (var u in b.Soldiers)
-                    if (u.Side == s.Side && u.Alive && u.Deployed && (V2.Distance(u.Position, impact) < r + 1.2f || u.Moving && V2.Distance(u.OrderAnchor, impact) < r + 1.2f))
+                    if (
+                        u.Side == s.Side
+                        && u.Alive
+                        && u.Deployed
+                        && (
+                            V2.Distance(u.Position, impact) < r + 1.2f
+                            || u.Moving && V2.Distance(u.OrderAnchor, impact) < r + 1.2f
+                        )
+                    )
                     {
                         friendly = true;
                         break;
@@ -147,7 +215,12 @@ namespace SilentOrders.Core
         {
             post = s.Position;
             route = null;
-            var full = LossMemory.Find(b, s, TacticalOrders.Open(b, taskGoal), p => PositionLogic.Exposure(b, s, p) * 3 + FireLaneSafety.PathCost(b, s, p));
+            var full = LossMemory.Find(
+                b,
+                s,
+                TacticalOrders.Open(b, taskGoal),
+                p => PositionLogic.Exposure(b, s, p) * 3 + FireLaneSafety.PathCost(b, s, p)
+            );
             b.Stats.Paths++;
             var prefix = new List<V2>();
             V2 prev = s.Position;
@@ -159,7 +232,13 @@ namespace SilentOrders.Core
                 if (length > 6)
                     break;
                 prefix.Add(point);
-                if (length < 1.2f || !DirectionAllowed(b, s, point) || !StraightAdvance.Inside(b, s, point) || PositionLogic.Occupied(b, s, point) || !PositionLogic.UsefulRoute(b, s, prefix))
+                if (
+                    length < 1.2f
+                    || !DirectionAllowed(b, s, point)
+                    || !StraightAdvance.Inside(b, s, point)
+                    || PositionLogic.Occupied(b, s, point)
+                    || !PositionLogic.UsefulRoute(b, s, prefix)
+                )
                     continue;
                 post = point;
                 route = new List<V2>(prefix);
@@ -197,7 +276,13 @@ namespace SilentOrders.Core
             else
                 st.Aborted++;
             foreach (var s in b.Soldiers)
-                if (q.Contains(s) && s.Available && !s.Busy && !CommandPosture.Service(b, s) && (st.Movers.Contains(s.Id) || st.Targets.ContainsKey(s.Id)))
+                if (
+                    q.Contains(s)
+                    && s.Available
+                    && !s.Busy
+                    && !CommandPosture.Service(b, s)
+                    && (st.Movers.Contains(s.Id) || st.Targets.ContainsKey(s.Id))
+                )
                     Hold(b, q, s);
             st.Phase = BreakthroughPhase.Recover;
             st.Since = b.Time;
@@ -217,7 +302,18 @@ namespace SilentOrders.Core
             foreach (var u in units)
                 if (SystemReady(b, u))
                     foreach (var c in u.Contacts.Values)
-                        if (c.Visual && c.Confidence >= .7f && b.Time - c.SeenAt <= 2.5f && DirectionAllowed(b, u, c.Position) && V2.Distance(u.Position, c.Position) <= (u.Role == Role.Grenadier && u.Rockets > 0 ? SpecialWeapons.Range(b) : ArcedOrdnance.Range(b, 2)))
+                        if (
+                            c.Visual
+                            && c.Confidence >= .7f
+                            && b.Time - c.SeenAt <= 2.5f
+                            && DirectionAllowed(b, u, c.Position)
+                            && V2.Distance(u.Position, c.Position)
+                                <= (
+                                    u.Role == Role.Grenadier && u.Rockets > 0
+                                        ? SpecialWeapons.Range(b)
+                                        : ArcedOrdnance.Range(b, 2)
+                                )
+                        )
                             threats[c.EnemyId] = c.Position;
             var sectors = new List<V2>();
             foreach (var point in threats.Values)
@@ -240,7 +336,17 @@ namespace SilentOrders.Core
         public static bool Plan(BattleSimulation b, Squad q, List<Soldier> units)
         {
             var st = q.Breakthrough;
-            if (st.Active && (q.Style != CombatStyle.Aggressive || q.Intent != st.Intent || q.EmergencyRetreat || q.LeaderId < 0 || q.LeaderId >= b.Soldiers.Count || !Fit(b, b.Soldiers[q.LeaderId], true)))
+            if (
+                st.Active
+                && (
+                    q.Style != CombatStyle.Aggressive
+                    || q.Intent != st.Intent
+                    || q.EmergencyRetreat
+                    || q.LeaderId < 0
+                    || q.LeaderId >= b.Soldiers.Count
+                    || !Fit(b, b.Soldiers[q.LeaderId], true)
+                )
+            )
             {
                 End(b, q, "Прорыв отменён. Перегруппировка и прикрытие");
                 return false;
@@ -458,7 +564,8 @@ namespace SilentOrders.Core
                 return true;
             }
 
-            int alive = 0, arrived = 0;
+            int alive = 0,
+                arrived = 0;
             foreach (int id in q.ManeuverIds)
             {
                 var s = b.Soldiers[id];
@@ -527,7 +634,11 @@ namespace SilentOrders.Core
         public static bool BlastWindow(BattleSimulation b, Soldier s)
         {
             var st = b.Team(s).Breakthrough;
-            return st.Phase == BreakthroughPhase.Advance && st.Movers.Contains(s.Id) && b.Time - st.Since < 2.5f && s.Suppression < .55f && s.Health >= 40;
+            return st.Phase == BreakthroughPhase.Advance
+                && st.Movers.Contains(s.Id)
+                && b.Time - st.Since < 2.5f
+                && s.Suppression < .55f
+                && s.Health >= 40;
         }
 
         public static bool MovementAllowed(BattleSimulation b, Soldier s)
@@ -538,7 +649,13 @@ namespace SilentOrders.Core
             if (PositionLogic.Exposure(b, s, next) <= .12f && s.Suppression < .55f)
                 return true;
             foreach (var ally in b.Soldiers)
-                if (ally != s && b.Team(s).Contains(ally) && WithdrawalTactics.CanCover(b, ally) && ally.PathCursor >= ally.Path.Count && PositionLogic.UsefulSupport(b, ally, s, next))
+                if (
+                    ally != s
+                    && b.Team(s).Contains(ally)
+                    && WithdrawalTactics.CanCover(b, ally)
+                    && ally.PathCursor >= ally.Path.Count
+                    && PositionLogic.UsefulSupport(b, ally, s, next)
+                )
                     return true;
             return false;
         }
@@ -567,7 +684,14 @@ namespace SilentOrders.Core
             // Existing ordnance API keeps its arming time, trajectory and friendly safety checks.
             if (HandGrenades.Count(s) > 0 && s.NextOrdnance <= b.Time)
                 foreach (var c in s.Contacts.Values)
-                    if (c.Visual && c.Confidence >= .6f && b.Time - c.SeenAt < 2 && V2.Distance(s.Position, c.Position) > 4 && V2.Distance(s.Position, c.Position) < (GrenadePockets.Count(s, 1) > 0 || GrenadePockets.Count(s, 4) > 0 ? 9 : 8))
+                    if (
+                        c.Visual
+                        && c.Confidence >= .6f
+                        && b.Time - c.SeenAt < 2
+                        && V2.Distance(s.Position, c.Position) > 4
+                        && V2.Distance(s.Position, c.Position)
+                            < (GrenadePockets.Count(s, 1) > 0 || GrenadePockets.Count(s, 4) > 0 ? 9 : 8)
+                    )
                     {
                         bool friendly = false;
                         foreach (var u in b.Soldiers)
@@ -590,7 +714,13 @@ namespace SilentOrders.Core
                         pending = true;
                 if (!pending)
                     foreach (var c in s.Contacts.Values)
-                        if (DirectionAllowed(b, s, c.Position) && s.Visible.Contains(c.EnemyId) && c.Visual && b.Time - c.SeenAt < 1 && V2.Distance(s.Position, c.Position) <= 7)
+                        if (
+                            DirectionAllowed(b, s, c.Position)
+                            && s.Visible.Contains(c.EnemyId)
+                            && c.Visual
+                            && b.Time - c.SeenAt < 1
+                            && V2.Distance(s.Position, c.Position) <= 7
+                        )
                         {
                             float distance = V2.Distance(s.Position, c.Position);
                             if (distance <= 1.25f)

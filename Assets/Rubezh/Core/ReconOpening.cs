@@ -6,10 +6,24 @@ namespace SilentOrders.Core
 {
     public sealed class OpeningStats
     {
-        public int HorizonCandidates, HorizonExits, CritEligible, CritRolled, CritHits;
-        public int Evaluations, Plans, Rejected, Commands, Aborted, Assigned, Ready, Shots, ParticipantsFired;
+        public int HorizonCandidates,
+            HorizonExits,
+            CritEligible,
+            CritRolled,
+            CritHits;
+        public int Evaluations,
+            Plans,
+            Rejected,
+            Commands,
+            Aborted,
+            Assigned,
+            Ready,
+            Shots,
+            ParticipantsFired;
         public float DamageFirst10Seconds;
-        public float PreparationSeconds, FirstShotDelay = -1, ShotSpread = -1;
+        public float PreparationSeconds,
+            FirstShotDelay = -1,
+            ShotSpread = -1;
         public string EndReason = "";
     }
 
@@ -18,13 +32,19 @@ namespace SilentOrders.Core
     {
         sealed class Task
         {
-            public int Unit, Target, Cursor, CritRemaining = 3;
+            public int Unit,
+                Target,
+                Cursor,
+                CritRemaining = 3;
             public float CritLast = -100;
             public bool CritSpent;
             public V2 Next;
             public V2 Goal;
-            public List<V2> Route, Published;
-            public bool Ready, Fired, OpenGround;
+            public List<V2> Route,
+                Published;
+            public bool Ready,
+                Fired,
+                OpenGround;
             public float ProgressAt;
             public string Block = "";
             public V2 Progress;
@@ -32,9 +52,16 @@ namespace SilentOrders.Core
 
         sealed class State
         {
-            public bool Preparing, Released;
-            public int Leader, Revision;
-            public float Started, ReleaseAt, Until, First = -1, Last, DamageAtRelease;
+            public bool Preparing,
+                Released;
+            public int Leader,
+                Revision;
+            public float Started,
+                ReleaseAt,
+                Until,
+                First = -1,
+                Last,
+                DamageAtRelease;
             public bool DamageMeasured;
             public readonly List<Task> Tasks = new List<Task>();
             public readonly OpeningStats Stats = new OpeningStats();
@@ -51,15 +78,39 @@ namespace SilentOrders.Core
             public List<V2> Path;
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, State> Data = new ConditionalWeakTable<BattleSimulation, State>();
+        static readonly ConditionalWeakTable<BattleSimulation, State> Data =
+            new ConditionalWeakTable<BattleSimulation, State>();
+
         public static OpeningStats Stats(BattleSimulation b) => Data.GetOrCreateValue(b).Stats;
+
         public static bool Preparing(BattleSimulation b) => b.ReconOpeningEnabled && Data.GetOrCreateValue(b).Preparing;
-        static bool Free(BattleSimulation b, Soldier s) => s.Side == Side.Green && s.Deployed && s.Available && !s.Broken && !s.Bleeding && !s.Busy && !s.GrenadeEscape.Active && !TacticalOrders.ServiceActive(s) && !FriendlyGrenadeSafety.Active(b, s) && !HandLauncher.Active(s) && !PairExchange.Active(b, s) && s.HandsBusyUntil <= b.Time && s.ReloadUntil <= b.Time;
+
+        static bool Free(BattleSimulation b, Soldier s) =>
+            s.Side == Side.Green
+            && s.Deployed
+            && s.Available
+            && !s.Broken
+            && !s.Bleeding
+            && !s.Busy
+            && !s.GrenadeEscape.Active
+            && !TacticalOrders.ServiceActive(s)
+            && !FriendlyGrenadeSafety.Active(b, s)
+            && !HandLauncher.Active(s)
+            && !PairExchange.Active(b, s)
+            && s.HandsBusyUntil <= b.Time
+            && s.ReloadUntil <= b.Time;
+
         static Contact Known(BattleSimulation b, Soldier s, int target)
         {
             Contact best = null;
             foreach (var c in Knowledge.Contacts(b, s))
-                if (c.EnemyId == target && !c.Inferred && c.Confidence > .45f && b.Time - c.SeenAt < 4 && (best == null || c.SeenAt > best.SeenAt))
+                if (
+                    c.EnemyId == target
+                    && !c.Inferred
+                    && c.Confidence > .45f
+                    && b.Time - c.SeenAt < 4
+                    && (best == null || c.SeenAt > best.SeenAt)
+                )
                     best = c;
             return best;
         }
@@ -79,7 +130,12 @@ namespace SilentOrders.Core
                 float distance = V2.Distance(point, c.Position);
                 if (distance < 5)
                     return false;
-                if (b.Map.LineOfSight(point, c.Position) && c.ObservedFacing.Length > .1f && V2.Dot(c.ObservedFacing.Normalized, (point - c.Position).Normalized) > .25f && distance < b.ReconStandOff)
+                if (
+                    b.Map.LineOfSight(point, c.Position)
+                    && c.ObservedFacing.Length > .1f
+                    && V2.Dot(c.ObservedFacing.Normalized, (point - c.Position).Normalized) > .25f
+                    && distance < b.ReconStandOff
+                )
                     return false;
             }
 
@@ -121,9 +177,9 @@ namespace SilentOrders.Core
             var known = new List<Contact>();
             var ids = new HashSet<int>();
             foreach (var s in units)
-                foreach (var c in Knowledge.Contacts(b, s))
-                    if (!c.Inferred && c.Visual && c.Confidence > .5f && b.Time - c.SeenAt < 2 && ids.Add(c.EnemyId))
-                        known.Add(c.Copy());
+            foreach (var c in Knowledge.Contacts(b, s))
+                if (!c.Inferred && c.Visual && c.Confidence > .5f && b.Time - c.SeenAt < 2 && ids.Add(c.EnemyId))
+                    known.Add(c.Copy());
             if (known.Count == 0)
             {
                 Reject(b, st, "no_fresh_targets");
@@ -138,76 +194,126 @@ namespace SilentOrders.Core
                 foreach (var c in known)
                 {
                     for (int y = -12; y <= 12; y++)
-                        for (int x = -12; x <= 12; x++)
+                    for (int x = -12; x <= 12; x++)
+                    {
+                        V2 p =
+                            x == 0 && y == 0
+                                ? s.Position
+                                : new V2(
+                                    (float)Math.Floor(s.Position.X) + x * .5f + .5f,
+                                    (float)Math.Floor(s.Position.Y) + y * .5f + .5f
+                                );
+                        float d = V2.Distance(s.Position, p),
+                            range = V2.Distance(p, c.Position);
+                        if (
+                            d > 7
+                            || !b.Map.Walkable(p)
+                            || !CommandHierarchy.WithinManeuver(b, s, p)
+                            || PositionLogic.Occupied(b, s, p)
+                            || range > b.WeaponRange(s) - .5f
+                            || !b.Map.LineOfSight(p, c.Position)
+                            || b.SmokeTransmission(p, c.Position) < .8f
+                            || !SafePoint(b, s, p, known)
+                        )
+                            continue;
+                        float cover = CombatTraining.Cover(b, s, p, c.Position);
+                        bool open = cover < .1f;
+                        // Last resort: fire crouched from the current spot, never march into open ground for the bonus.
+                        if (open && (!b.OpeningAllowOpenGround || d > .1f))
+                            continue;
+                        bool stable = true;
+                        foreach (
+                            var offset in new[] { new V2(.18f, 0), new V2(-.18f, 0), new V2(0, .18f), new V2(0, -.18f) }
+                        )
                         {
-                            V2 p = x == 0 && y == 0 ? s.Position : new V2((float)Math.Floor(s.Position.X) + x * .5f + .5f, (float)Math.Floor(s.Position.Y) + y * .5f + .5f);
-                            float d = V2.Distance(s.Position, p), range = V2.Distance(p, c.Position);
-                            if (d > 7 || !b.Map.Walkable(p) || !CommandHierarchy.WithinManeuver(b, s, p) || PositionLogic.Occupied(b, s, p) || range > b.WeaponRange(s) - .5f || !b.Map.LineOfSight(p, c.Position) || b.SmokeTransmission(p, c.Position) < .8f || !SafePoint(b, s, p, known))
-                                continue;
-                            float cover = CombatTraining.Cover(b, s, p, c.Position);
-                            bool open = cover < .1f;
-                            // Last resort: fire crouched from the current spot, never march into open ground for the bonus.
-                            if (open && (!b.OpeningAllowOpenGround || d > .1f))
-                                continue;
-                            bool stable = true;
-                            foreach (var offset in new[]
-                            {
-                                new V2(.18f, 0),
-                                new V2(-.18f, 0),
-                                new V2(0, .18f),
-                                new V2(0, -.18f)
-                            }
-
+                            var test = p + offset;
+                            if (
+                                !open && CombatTraining.Cover(b, s, test, c.Position) < .1f
+                                || !b.Map.LineOfSight(test, c.Position)
                             )
-                            {
-                                var test = p + offset;
-                                if (!open && CombatTraining.Cover(b, s, test, c.Position) < .1f || !b.Map.LineOfSight(test, c.Position))
-                                    stable = false;
-                            }
+                                stable = false;
+                        }
 
-                            if (!stable || Ballistics.Geometry(b.Map, p, Ballistics.MuzzleHeight, (c.Position - p).Normalized, 0, .32f).Kind != BulletStop.None)
-                                continue;
-                            bool crowded = false;
-                            foreach (var t in st.Tasks)
-                            {
-                                if (V2.Distance(p, t.Goal) < 1.8f)
-                                    crowded = true;
-                                if (b.OpeningHorizonEnabled)
-                                {
-                                    var other = Known(b, s, t.Target);
-                                    if (V2.SegmentDistance(t.Goal, p, c.Position) < .65f || other != null && V2.SegmentDistance(p, t.Goal, other.Position) < .65f)
-                                        crowded = true;
-                                }
-                            }
-
-                            if (crowded)
-                                continue;
-                            float progress = V2.Distance(s.Position, c.Position) - range;
-                            float angleGain = 0;
-                            foreach (var task in st.Tasks)
-                                angleGain = Math.Max(angleGain, DirectionalVision.Angle(task.Goal - c.Position, p - c.Position));
-                            float score = cover * 10 - d * .6f - PositionLogic.Exposure(b, s, p) * 3 - b.Map.Protection(c.Position, p) * 14 + progress * .9f + angleGain * .04f + (assigned.Contains(c.EnemyId) ? 0 : 3) + c.Confidence * 2;
-                            V2 next = p;
-                            int exits = 0;
+                        if (
+                            !stable
+                            || Ballistics
+                                .Geometry(b.Map, p, Ballistics.MuzzleHeight, (c.Position - p).Normalized, 0, .32f)
+                                .Kind != BulletStop.None
+                        )
+                            continue;
+                        bool crowded = false;
+                        foreach (var t in st.Tasks)
+                        {
+                            if (V2.Distance(p, t.Goal) < 1.8f)
+                                crowded = true;
                             if (b.OpeningHorizonEnabled)
                             {
-                                score += OpeningHorizon.Evaluate(b, s, p, known, out next, out exits);
-                                st.Stats.HorizonCandidates++;
+                                var other = Known(b, s, t.Target);
+                                if (
+                                    V2.SegmentDistance(t.Goal, p, c.Position) < .65f
+                                    || other != null && V2.SegmentDistance(p, t.Goal, other.Position) < .65f
+                                )
+                                    crowded = true;
                             }
-
-                            candidates.Add(new Candidate { OpenGround = open, Target = c.EnemyId, Point = p, Score = score, Next = next, Exits = exits });
                         }
+
+                        if (crowded)
+                            continue;
+                        float progress = V2.Distance(s.Position, c.Position) - range;
+                        float angleGain = 0;
+                        foreach (var task in st.Tasks)
+                            angleGain = Math.Max(
+                                angleGain,
+                                DirectionalVision.Angle(task.Goal - c.Position, p - c.Position)
+                            );
+                        float score =
+                            cover * 10
+                            - d * .6f
+                            - PositionLogic.Exposure(b, s, p) * 3
+                            - b.Map.Protection(c.Position, p) * 14
+                            + progress * .9f
+                            + angleGain * .04f
+                            + (assigned.Contains(c.EnemyId) ? 0 : 3)
+                            + c.Confidence * 2;
+                        V2 next = p;
+                        int exits = 0;
+                        if (b.OpeningHorizonEnabled)
+                        {
+                            score += OpeningHorizon.Evaluate(b, s, p, known, out next, out exits);
+                            st.Stats.HorizonCandidates++;
+                        }
+
+                        candidates.Add(
+                            new Candidate
+                            {
+                                OpenGround = open,
+                                Target = c.EnemyId,
+                                Point = p,
+                                Score = score,
+                                Next = next,
+                                Exits = exits,
+                            }
+                        );
+                    }
                 }
 
-                candidates.Sort((a, z) => a.OpenGround != z.OpenGround ? (a.OpenGround ? 1 : -1) : z.Score.CompareTo(a.Score));
+                candidates.Sort(
+                    (a, z) => a.OpenGround != z.OpenGround ? (a.OpenGround ? 1 : -1) : z.Score.CompareTo(a.Score)
+                );
                 Candidate chosen = null;
                 int checkedPaths = 0;
                 foreach (var c in candidates)
                 {
                     if (!c.OpenGround && checkedPaths++ >= 20)
                         continue;
-                    var path = V2.Distance(s.Position, c.Point) < .5f ? new List<V2>() : LossMemory.Find(b, s, c.Point, p => PositionLogic.Exposure(b, s, p) * 8);
-                    if (V2.Distance(s.Position, c.Point) >= .5f && path.Count == 0 || SupportAI.PathLength(s.Position, path) > 10)
+                    var path =
+                        V2.Distance(s.Position, c.Point) < .5f
+                            ? new List<V2>()
+                            : LossMemory.Find(b, s, c.Point, p => PositionLogic.Exposure(b, s, p) * 8);
+                    if (
+                        V2.Distance(s.Position, c.Point) >= .5f && path.Count == 0
+                        || SupportAI.PathLength(s.Position, path) > 10
+                    )
                         continue;
                     if (path.Count > 0 && V2.Distance(path[path.Count - 1], c.Point) > .05f)
                         path.Add(c.Point);
@@ -217,7 +323,10 @@ namespace SilentOrders.Core
                     {
                         int n = Math.Max(1, (int)Math.Ceiling(V2.Distance(previous, p) * 2));
                         for (int j = 1; j <= n; j++)
-                            if (!b.Map.Walkable(previous + (p - previous) * (j / (float)n)) || !SafePoint(b, s, previous + (p - previous) * (j / (float)n), known))
+                            if (
+                                !b.Map.Walkable(previous + (p - previous) * (j / (float)n))
+                                || !SafePoint(b, s, previous + (p - previous) * (j / (float)n), known)
+                            )
                                 safe = false;
                         previous = p;
                     }
@@ -236,7 +345,19 @@ namespace SilentOrders.Core
                     return;
                 }
 
-                st.Tasks.Add(new Task { OpenGround = chosen.OpenGround, Unit = s.Id, Target = chosen.Target, Goal = chosen.Point, Route = chosen.Path, Next = chosen.Next, Progress = s.Position, ProgressAt = b.Time });
+                st.Tasks.Add(
+                    new Task
+                    {
+                        OpenGround = chosen.OpenGround,
+                        Unit = s.Id,
+                        Target = chosen.Target,
+                        Goal = chosen.Point,
+                        Route = chosen.Path,
+                        Next = chosen.Next,
+                        Progress = s.Position,
+                        ProgressAt = b.Time,
+                    }
+                );
                 assigned.Add(chosen.Target);
                 st.Stats.HorizonExits += chosen.Exits;
             }
@@ -251,9 +372,27 @@ namespace SilentOrders.Core
             b.Say(b.Soldiers[leader], "Цели распределены. Занять позиции. Без огня!", true);
             foreach (var t in st.Tasks)
             {
-                b.History.Event(b, "openingAssign", t.Unit, t.Target, b.Soldiers[t.Unit].Position, t.Goal, 0, "commander_cover_plan");
+                b.History.Event(
+                    b,
+                    "openingAssign",
+                    t.Unit,
+                    t.Target,
+                    b.Soldiers[t.Unit].Position,
+                    t.Goal,
+                    0,
+                    "commander_cover_plan"
+                );
                 if (b.OpeningHorizonEnabled)
-                    b.History.Event(b, "openingNextPosition", t.Unit, t.Target, t.Goal, t.Next, 0, "known_geometry_lookahead");
+                    b.History.Event(
+                        b,
+                        "openingNextPosition",
+                        t.Unit,
+                        t.Target,
+                        t.Goal,
+                        t.Next,
+                        0,
+                        "known_geometry_lookahead"
+                    );
             }
         }
 
@@ -268,7 +407,16 @@ namespace SilentOrders.Core
         {
             foreach (var task in st.Tasks)
                 if (!task.Ready)
-                    b.History.Event(b, "openingBlocked", task.Unit, task.Target, b.Soldiers[task.Unit].Position, task.Goal, 0, task.Block);
+                    b.History.Event(
+                        b,
+                        "openingBlocked",
+                        task.Unit,
+                        task.Target,
+                        b.Soldiers[task.Unit].Position,
+                        task.Goal,
+                        0,
+                        task.Block
+                    );
             st.Preparing = false;
             st.Released = release;
             st.Stats.PreparationSeconds += b.Time - st.Started;
@@ -301,7 +449,16 @@ namespace SilentOrders.Core
                 ReconCombatPhase.Enter(b, "opening_aborted:" + reason);
             }
 
-            b.History.Event(b, release ? "openingCommand" : "openingAbort", st.Leader, -1, b.Soldiers[st.Leader].Position, b.Soldiers[st.Leader].Position, st.Stats.Ready, reason);
+            b.History.Event(
+                b,
+                release ? "openingCommand" : "openingAbort",
+                st.Leader,
+                -1,
+                b.Soldiers[st.Leader].Position,
+                b.Soldiers[st.Leader].Position,
+                st.Stats.Ready,
+                reason
+            );
         }
 
         public static void Update(BattleSimulation b)
@@ -329,9 +486,31 @@ namespace SilentOrders.Core
             foreach (var t in st.Tasks)
             {
                 var s = b.Soldiers[t.Unit];
-                if (!Free(b, s) || s.Suppression > .25f || b.Time - s.LastIncoming < 2 || b.Time - s.LastBlast < 2 || s.LastFire >= st.Started)
+                if (
+                    !Free(b, s)
+                    || s.Suppression > .25f
+                    || b.Time - s.LastIncoming < 2
+                    || b.Time - s.LastBlast < 2
+                    || s.LastFire >= st.Started
+                )
                 {
-                    Finish(b, st, "emergency:" + s.Id + ":" + s.Job + ":" + s.LastIncoming + ":" + s.LastFire + ":" + s.Suppression + ":" + Free(b, s), false);
+                    Finish(
+                        b,
+                        st,
+                        "emergency:"
+                            + s.Id
+                            + ":"
+                            + s.Job
+                            + ":"
+                            + s.LastIncoming
+                            + ":"
+                            + s.LastFire
+                            + ":"
+                            + s.Suppression
+                            + ":"
+                            + Free(b, s),
+                        false
+                    );
                     return;
                 }
             }
@@ -382,16 +561,45 @@ namespace SilentOrders.Core
                     }
                 }
 
-                bool clear = at && s.Visible.Contains(t.Target) && c.Visual && !c.Inferred && b.Time - c.SeenAt <= b.Config.PerceptionPeriod * 2 && s.Ammo > 0 && s.ReloadUntil <= b.Time && s.HandsBusyUntil <= b.Time && V2.Distance(s.Position, c.Position) <= b.WeaponRange(s) && b.Map.LineOfSight(s.Position, c.Position) && b.SmokeTransmission(s.Position, c.Position) > .5f && !b.FriendlyInLane(s, c.Position) && (CombatTraining.Cover(b, s, s.Position, c.Position) > .1f || t.OpenGround && s.Crouched);
+                bool clear =
+                    at
+                    && s.Visible.Contains(t.Target)
+                    && c.Visual
+                    && !c.Inferred
+                    && b.Time - c.SeenAt <= b.Config.PerceptionPeriod * 2
+                    && s.Ammo > 0
+                    && s.ReloadUntil <= b.Time
+                    && s.HandsBusyUntil <= b.Time
+                    && V2.Distance(s.Position, c.Position) <= b.WeaponRange(s)
+                    && b.Map.LineOfSight(s.Position, c.Position)
+                    && b.SmokeTransmission(s.Position, c.Position) > .5f
+                    && !b.FriendlyInLane(s, c.Position)
+                    && (CombatTraining.Cover(b, s, s.Position, c.Position) > .1f || t.OpenGround && s.Crouched);
                 if (clear)
                 {
                     if (!t.OpenGround)
                         CombatCrouch.Rise(b, s);
                     V2 muzzle;
-                    clear = CombatCrouch.FireAllowed(b, s, c.Position) && Ballistics.TryMuzzle(b, s, c.Position, out muzzle) && ReactionTiming.WeaponReady(b, s, c) && DirectionalVision.ReadyToFire(b, s, c);
+                    clear =
+                        CombatCrouch.FireAllowed(b, s, c.Position)
+                        && Ballistics.TryMuzzle(b, s, c.Position, out muzzle)
+                        && ReactionTiming.WeaponReady(b, s, c)
+                        && DirectionalVision.ReadyToFire(b, s, c);
                 }
 
-                t.Block = "at=" + at + ",visible=" + s.Visible.Contains(t.Target) + ",cover=" + CombatTraining.Cover(b, s, s.Position, c.Position) + ",los=" + b.Map.LineOfSight(s.Position, c.Position) + ",lane=" + b.FriendlyInLane(s, c.Position) + ",crouch=" + s.Crouched;
+                t.Block =
+                    "at="
+                    + at
+                    + ",visible="
+                    + s.Visible.Contains(t.Target)
+                    + ",cover="
+                    + CombatTraining.Cover(b, s, s.Position, c.Position)
+                    + ",los="
+                    + b.Map.LineOfSight(s.Position, c.Position)
+                    + ",lane="
+                    + b.FriendlyInLane(s, c.Position)
+                    + ",crouch="
+                    + s.Crouched;
                 V2 diagnosticMuzzle;
                 t.Block += ",muzzle=" + Ballistics.TryMuzzle(b, s, c.Position, out diagnosticMuzzle);
                 t.Ready = clear;
@@ -419,7 +627,11 @@ namespace SilentOrders.Core
                 if (b.OpeningHorizonEnabled && ActiveFire(b, s) && b.Time - st.ReleaseAt > 2)
                 {
                     var current = Known(b, s, t.Target);
-                    if (current == null || !s.Visible.Contains(t.Target) || CombatTraining.Cover(b, s, s.Position, current.Position) < .1f)
+                    if (
+                        current == null
+                        || !s.Visible.Contains(t.Target)
+                        || CombatTraining.Cover(b, s, s.Position, current.Position) < .1f
+                    )
                     {
                         s.NextDecision = b.Time;
                         s.Reason = "Пересмотр продолжения боя";
@@ -427,7 +639,13 @@ namespace SilentOrders.Core
                     }
                 }
 
-                if (ActiveFire(b, s) && s.Suppression < .65f && Known(b, s, t.Target) != null && s.Visible.Contains(t.Target) && CombatTraining.Cover(b, s, s.Position, Known(b, s, t.Target).Position) > .1f)
+                if (
+                    ActiveFire(b, s)
+                    && s.Suppression < .65f
+                    && Known(b, s, t.Target) != null
+                    && s.Visible.Contains(t.Target)
+                    && CombatTraining.Cover(b, s, s.Position, Known(b, s, t.Target).Position) > .1f
+                )
                 {
                     TacticalAI.Stop(s);
                     s.MoveAuthorized = false;
@@ -473,7 +691,9 @@ namespace SilentOrders.Core
                     Decide(b, s);
         }
 
-        public static bool Owns(BattleSimulation b, Soldier s) => Preparing(b) && Find(Data.GetOrCreateValue(b), s) != null;
+        public static bool Owns(BattleSimulation b, Soldier s) =>
+            Preparing(b) && Find(Data.GetOrCreateValue(b), s) != null;
+
         public static bool HoldFire(BattleSimulation b, Soldier s)
         {
             if (!Owns(b, s))
@@ -533,7 +753,16 @@ namespace SilentOrders.Core
                 st.Last = b.Time;
                 if (st.Stats.ParticipantsFired == st.Tasks.Count)
                     st.Stats.ShotSpread = st.Last - st.First;
-                b.History.Event(b, "openingFirstShot", s.Id, c.EnemyId, s.Position, c.Position, b.Time - st.ReleaseAt, c.EnemyId == t.Target ? "assigned" : "other");
+                b.History.Event(
+                    b,
+                    "openingFirstShot",
+                    s.Id,
+                    c.EnemyId,
+                    s.Position,
+                    c.Position,
+                    b.Time - st.ReleaseAt,
+                    c.EnemyId == t.Target ? "assigned" : "other"
+                );
             }
         }
 
@@ -543,18 +772,51 @@ namespace SilentOrders.Core
             if (s.SomaliFiring || !ActiveFire(b, s) || c == null)
                 return false;
             var t = Find(Data.GetOrCreateValue(b), s);
-            return t != null && !t.CritSpent && t.CritRemaining > 0 && c.EnemyId == t.Target && c.Visual && !c.Inferred && s.Visible.Contains(c.EnemyId) && s.ReloadUntil <= b.Time && (b.OpeningFixedAccuracyEnabled || s.Suppression <= .65f) && (t.CritLast < 0 || b.Time - t.CritLast <= Math.Max(2, WeaponBalance.For(s).FireSeconds * 2.5f));
+            return t != null
+                && !t.CritSpent
+                && t.CritRemaining > 0
+                && c.EnemyId == t.Target
+                && c.Visual
+                && !c.Inferred
+                && s.Visible.Contains(c.EnemyId)
+                && s.ReloadUntil <= b.Time
+                && (b.OpeningFixedAccuracyEnabled || s.Suppression <= .65f)
+                && (t.CritLast < 0 || b.Time - t.CritLast <= Math.Max(2, WeaponBalance.For(s).FireSeconds * 2.5f));
         }
 
         public static bool CriticalEligible(BattleSimulation b, Soldier s, Contact c)
         {
-            if ((!b.OpeningFixedAccuracyEnabled && !b.OpeningCriticalEnabled && !b.OpeningIgnoreCoverEnabled && !b.OpeningDoubleAccuracyEnabled) || (s.GunSniper && !b.OpeningFixedAccuracyEnabled && !b.OpeningIgnoreCoverEnabled && !b.OpeningDoubleAccuracyEnabled) || s.SomaliFiring || !ActiveFire(b, s) || c == null)
+            if (
+                (
+                    !b.OpeningFixedAccuracyEnabled
+                    && !b.OpeningCriticalEnabled
+                    && !b.OpeningIgnoreCoverEnabled
+                    && !b.OpeningDoubleAccuracyEnabled
+                )
+                || (
+                    s.GunSniper
+                    && !b.OpeningFixedAccuracyEnabled
+                    && !b.OpeningIgnoreCoverEnabled
+                    && !b.OpeningDoubleAccuracyEnabled
+                )
+                || s.SomaliFiring
+                || !ActiveFire(b, s)
+                || c == null
+            )
                 return false;
             var st = Data.GetOrCreateValue(b);
             var t = Find(st, s);
             if (t == null || t.CritSpent || t.CritRemaining <= 0)
                 return false;
-            if (c.EnemyId != t.Target || !c.Visual || c.Inferred || !s.Visible.Contains(c.EnemyId) || s.ReloadUntil > b.Time || (!b.OpeningFixedAccuracyEnabled && s.Suppression > .65f) || t.CritLast >= 0 && b.Time - t.CritLast > Math.Max(2, WeaponBalance.For(s).FireSeconds * 2.5f))
+            if (
+                c.EnemyId != t.Target
+                || !c.Visual
+                || c.Inferred
+                || !s.Visible.Contains(c.EnemyId)
+                || s.ReloadUntil > b.Time
+                || (!b.OpeningFixedAccuracyEnabled && s.Suppression > .65f)
+                || t.CritLast >= 0 && b.Time - t.CritLast > Math.Max(2, WeaponBalance.For(s).FireSeconds * 2.5f)
+            )
             {
                 t.CritSpent = true;
                 return false;

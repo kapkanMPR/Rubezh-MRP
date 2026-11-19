@@ -15,9 +15,14 @@ namespace SilentOrders.Core
             public int Reviews;
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, State> Data = new ConditionalWeakTable<BattleSimulation, State>();
-        public static bool Active(BattleSimulation b) => b.ReconCombatTransitionEnabled && Data.GetOrCreateValue(b).Entered;
+        static readonly ConditionalWeakTable<BattleSimulation, State> Data =
+            new ConditionalWeakTable<BattleSimulation, State>();
+
+        public static bool Active(BattleSimulation b) =>
+            b.ReconCombatTransitionEnabled && Data.GetOrCreateValue(b).Entered;
+
         public static int Reviews(BattleSimulation b) => Data.GetOrCreateValue(b).Reviews;
+
         public static void Enter(BattleSimulation b, string reason = "opening_release")
         {
             if (!b.ReconCombatTransitionEnabled || !b.PairExperimentMarch || b.Historical01225)
@@ -48,7 +53,16 @@ namespace SilentOrders.Core
             march.Sectors.Clear();
             march.Dispersed.Clear();
             Request(b, reason);
-            b.History.Event(b, "combatPhase", b.Green.LeaderId, -1, new V2(), new V2(), 0, "Разведка завершена; штатный боевой планировщик");
+            b.History.Event(
+                b,
+                "combatPhase",
+                b.Green.LeaderId,
+                -1,
+                new V2(),
+                new V2(),
+                0,
+                "Разведка завершена; штатный боевой планировщик"
+            );
         }
 
         static void Request(BattleSimulation b, string reason)
@@ -83,9 +97,26 @@ namespace SilentOrders.Core
             foreach (var s in b.Soldiers)
                 if (s.Side == Side.Green && s.Deployed)
                 {
-                    parts.Add(s.Id + ":" + s.Available + ":" + (s.Health < 45) + ":" + (s.Suppression > .65f) + ":" + (s.Ammo == 0) + ":" + (s.ReloadUntil > b.Time));
+                    parts.Add(
+                        s.Id
+                            + ":"
+                            + s.Available
+                            + ":"
+                            + (s.Health < 45)
+                            + ":"
+                            + (s.Suppression > .65f)
+                            + ":"
+                            + (s.Ammo == 0)
+                            + ":"
+                            + (s.ReloadUntil > b.Time)
+                    );
                     foreach (var contact in Knowledge.Contacts(b, s))
-                        if (contact.Visual && !contact.Inferred && s.Visible.Contains(contact.EnemyId) && b.Time - contact.SeenAt <= b.Config.PerceptionPeriod * 2)
+                        if (
+                            contact.Visual
+                            && !contact.Inferred
+                            && s.Visible.Contains(contact.EnemyId)
+                            && b.Time - contact.SeenAt <= b.Config.PerceptionPeriod * 2
+                        )
                             parts.Add(s.Id + ">" + contact.EnemyId);
                 }
 

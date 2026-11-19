@@ -8,7 +8,9 @@ namespace SilentOrders.Core
     {
         public static bool Can(BattleSimulation b, V2 from, V2 to, float radius)
         {
-            return V2.Distance(from, to) <= radius && b.Map.LineOfSight(from, to) && Locomotion.WalkableSegment(b, from, to);
+            return V2.Distance(from, to) <= radius
+                && b.Map.LineOfSight(from, to)
+                && Locomotion.WalkableSegment(b, from, to);
         }
     }
 
@@ -17,7 +19,7 @@ namespace SilentOrders.Core
         Visual,
         Report,
         Memory,
-        Inferred
+        Inferred,
     }
 
     public static class Knowledge
@@ -28,7 +30,9 @@ namespace SilentOrders.Core
                 return z;
             if (z == null)
                 return a;
-            return z.SeenAt > a.SeenAt || z.SeenAt == a.SeenAt && (z.Confidence > a.Confidence || z.Visual && !a.Visual) ? z : a;
+            return z.SeenAt > a.SeenAt || z.SeenAt == a.SeenAt && (z.Confidence > a.Confidence || z.Visual && !a.Visual)
+                ? z
+                : a;
         }
 
         public static KnowledgeKind Kind(BattleSimulation b, Soldier s, Contact c)
@@ -43,7 +47,9 @@ namespace SilentOrders.Core
         // Value-type iterator: exposure/path scoring does not allocate a list per cell.
         public struct ContactSet
         {
-            readonly Dictionary<int, Contact> group, personal;
+            readonly Dictionary<int, Contact> group,
+                personal;
+
             public ContactSet(Dictionary<int, Contact> g, Dictionary<int, Contact> p)
             {
                 group = g;
@@ -57,7 +63,8 @@ namespace SilentOrders.Core
 
             public struct Enumerator
             {
-                Dictionary<int, Contact> group, personal;
+                Dictionary<int, Contact> group,
+                    personal;
                 Dictionary<int, Contact>.Enumerator iterator;
                 bool second;
                 public Contact Current { get; private set; }
@@ -122,7 +129,7 @@ namespace SilentOrders.Core
         Pickup,
         Retreat,
         Recover,
-        EvadeGrenade
+        EvadeGrenade,
     }
 
     [Flags]
@@ -131,7 +138,7 @@ namespace SilentOrders.Core
         None = 0,
         Movement = 1,
         Weapon = 2,
-        Hands = 4
+        Hands = 4,
     }
 
     public sealed class AiTaskState
@@ -139,9 +146,14 @@ namespace SilentOrders.Core
         public AiTaskKind Kind;
         public AiChannels Channels;
         public int Revision;
-        public float Started, LastProgress, NextTrace;
-        public V2 LastPosition, Anchor;
-        public string Owner = "", Reason = "", Rejected = "";
+        public float Started,
+            LastProgress,
+            NextTrace;
+        public V2 LastPosition,
+            Anchor;
+        public string Owner = "",
+            Reason = "",
+            Rejected = "";
     }
 
     public sealed class AiGroupState
@@ -154,9 +166,13 @@ namespace SilentOrders.Core
     public sealed class AiEvent
     {
         public float Time;
-        public int Soldier, Revision;
-        public string Event, Task, Reason;
-        public V2 Position, Destination;
+        public int Soldier,
+            Revision;
+        public string Event,
+            Task,
+            Reason;
+        public V2 Position,
+            Destination;
     }
 
     public sealed class AiDiagnostics
@@ -164,7 +180,15 @@ namespace SilentOrders.Core
         public bool Enabled;
         public readonly List<AiEvent> Events = new List<AiEvent>(512);
         public int DroppedEvents;
-        public int Transitions, Interruptions, RejectedOrders, SmokeRequests, SmokeRejected, SmokeLaunched, SmokeEffective, SmokeIneffective;
+        public int Transitions,
+            Interruptions,
+            RejectedOrders,
+            SmokeRequests,
+            SmokeRejected,
+            SmokeLaunched,
+            SmokeEffective,
+            SmokeIneffective;
+
         public void Add(BattleSimulation b, Soldier s, string kind, string task, string reason)
         {
             if (!Enabled)
@@ -175,7 +199,19 @@ namespace SilentOrders.Core
                 DroppedEvents += 256;
             }
 
-            Events.Add(new AiEvent { Time = b.Time, Soldier = s == null ? -1 : s.Id, Revision = s == null ? 0 : s.OrderRevision, Event = kind, Task = task, Reason = reason, Position = s == null ? new V2() : s.Position, Destination = s == null ? new V2() : s.OrderAnchor });
+            Events.Add(
+                new AiEvent
+                {
+                    Time = b.Time,
+                    Soldier = s == null ? -1 : s.Id,
+                    Revision = s == null ? 0 : s.OrderRevision,
+                    Event = kind,
+                    Task = task,
+                    Reason = reason,
+                    Position = s == null ? new V2() : s.Position,
+                    Destination = s == null ? new V2() : s.OrderAnchor,
+                }
+            );
         }
     }
 
@@ -199,7 +235,12 @@ namespace SilentOrders.Core
                 CorpseEquipment.MaintainWeaponAid(b, s);
                 // Expired help cannot reserve movement indefinitely (including sniper/medic branches
                 // that never reach CombatCohesion.DecideHelper).
-                if (s.HelpTargetId >= 0 && (s.HelpUntil <= b.Time || s.HelpTargetId >= b.Soldiers.Count || !b.Soldiers[s.HelpTargetId].Alive))
+                if (
+                    s.HelpTargetId >= 0
+                    && (
+                        s.HelpUntil <= b.Time || s.HelpTargetId >= b.Soldiers.Count || !b.Soldiers[s.HelpTargetId].Alive
+                    )
+                )
                 {
                     s.HelpTargetId = -1;
                     s.HelpUntil = s.HelpRouteUntil = 0;
@@ -255,7 +296,21 @@ namespace SilentOrders.Core
         public static bool MayAssign(BattleSimulation b, Soldier s)
         {
             bool emergency = TacticalOrders.Emergency(b.Team(s)) || RedCounterattack.Retreating(b, s);
-            bool reserved = (SupplyRecovery.Active(s) || HandLauncher.Active(s)) || BuddyActions.Active(s) || ProgressRecovery.Active(b, s) || LastOpponentHunt.Owns(b, s) || AreaSuppression.Reserved(b, s) || CounterSniper.Reserved(b, s) || s.Busy || s.SupplyReceiverId >= 0 || s.RescuerId >= 0 || s.HelpTargetId >= 0 && s.HelpUntil > b.Time || CorpseEquipment.ValidWeaponAid(b, s) || s.LauncherPickupId >= 0 || s.LootTargetId >= 0 || s.LootGroundId >= 0;
+            bool reserved =
+                (SupplyRecovery.Active(s) || HandLauncher.Active(s))
+                || BuddyActions.Active(s)
+                || ProgressRecovery.Active(b, s)
+                || LastOpponentHunt.Owns(b, s)
+                || AreaSuppression.Reserved(b, s)
+                || CounterSniper.Reserved(b, s)
+                || s.Busy
+                || s.SupplyReceiverId >= 0
+                || s.RescuerId >= 0
+                || s.HelpTargetId >= 0 && s.HelpUntil > b.Time
+                || CorpseEquipment.ValidWeaponAid(b, s)
+                || s.LauncherPickupId >= 0
+                || s.LootTargetId >= 0
+                || s.LootGroundId >= 0;
             if (s.GrenadeEscape.Active || !s.Available || s.Broken || reserved && !emergency)
             {
                 s.Ai.Rejected = "Приказ перемещения отклонён: состояние или действующая помощь";
@@ -280,7 +335,11 @@ namespace SilentOrders.Core
                 return AiTaskKind.Support;
             if (s.SupplyReceiverId >= 0 || s.SupplyDonorId >= 0 || s.WeaponAidTargetId >= 0)
                 return AiTaskKind.Supply;
-            if (TacticalOrders.Emergency(b.Team(s)) || WithdrawalTactics.Active(b.Team(s)) || RedCounterattack.Retreating(b, s))
+            if (
+                TacticalOrders.Emergency(b.Team(s))
+                || WithdrawalTactics.Active(b.Team(s))
+                || RedCounterattack.Retreating(b, s)
+            )
                 return AiTaskKind.Retreat;
             if (ObjectiveOpportunity.IsCapturer(b, s))
                 return AiTaskKind.Capture;
@@ -317,7 +376,12 @@ namespace SilentOrders.Core
                 b.Diagnostics.Add(b, s, "start", a.Owner, s.Reason);
             }
 
-            a.Channels = BuddyActions.Active(s) ? AiChannels.Movement | AiChannels.Weapon | AiChannels.Hands : kind == AiTaskKind.Medical ? AiChannels.Movement | AiChannels.Hands : kind == AiTaskKind.Recover ? AiChannels.Movement : kind == AiTaskKind.Pickup || kind == AiTaskKind.Supply ? AiChannels.Movement | AiChannels.Hands : AiChannels.Movement | AiChannels.Weapon;
+            a.Channels =
+                BuddyActions.Active(s) ? AiChannels.Movement | AiChannels.Weapon | AiChannels.Hands
+                : kind == AiTaskKind.Medical ? AiChannels.Movement | AiChannels.Hands
+                : kind == AiTaskKind.Recover ? AiChannels.Movement
+                : kind == AiTaskKind.Pickup || kind == AiTaskKind.Supply ? AiChannels.Movement | AiChannels.Hands
+                : AiChannels.Movement | AiChannels.Weapon;
             if (V2.Distance(a.LastPosition, s.Position) > .25f)
             {
                 a.LastPosition = s.Position;
@@ -333,7 +397,14 @@ namespace SilentOrders.Core
             a.Reason = s.Reason;
             // A blocked assignment expires through the group planner; it never grants a
             // magical movement bypass. Medical and pickup have their own finite contracts.
-            if (kind == AiTaskKind.Move && !ExecutionReview.ProtectedTask(b, s) && b.Time - s.Progress.ProgressAt > 14f && b.Time - a.Started > 14f && b.Time - a.LastProgress > 14f && b.Time >= s.Execution.NextReturn)
+            if (
+                kind == AiTaskKind.Move
+                && !ExecutionReview.ProtectedTask(b, s)
+                && b.Time - s.Progress.ProgressAt > 14f
+                && b.Time - a.Started > 14f
+                && b.Time - a.LastProgress > 14f
+                && b.Time >= s.Execution.NextReturn
+            )
             {
                 s.Execution.NextReturn = b.Time + 8;
                 s.Execution.FailedGoal = s.OrderAnchor;

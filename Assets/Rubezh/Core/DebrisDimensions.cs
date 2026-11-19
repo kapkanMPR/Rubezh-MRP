@@ -41,7 +41,7 @@ namespace SilentOrders.Core
             211,
             182,
             88,
-            86
+            86,
         };
         public static readonly int[] Heights =
         {
@@ -82,8 +82,9 @@ namespace SilentOrders.Core
             133,
             125,
             128,
-            128
+            128,
         };
+
         public static int Height(int id, int width)
         {
             if (id >= 41)

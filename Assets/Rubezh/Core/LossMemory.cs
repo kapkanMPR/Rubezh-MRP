@@ -9,7 +9,8 @@ namespace SilentOrders.Core
         public Side Side;
         public int Victim;
         public V2 Position;
-        public float At, Severity;
+        public float At,
+            Severity;
     }
 
     public sealed class LossMemoryState
@@ -22,10 +23,13 @@ namespace SilentOrders.Core
     internal sealed class RouteSnapshot
     {
         public Soldier Owner;
-        bool gotContacts, gotLanes, gotPositions;
+        bool gotContacts,
+            gotLanes,
+            gotPositions;
         readonly List<Contact> contacts = new List<Contact>();
         readonly List<Soldier> lanes = new List<Soldier>();
         readonly List<V2> positions = new List<V2>();
+
         public void Begin(Soldier s)
         {
             Owner = s;
@@ -74,7 +78,11 @@ namespace SilentOrders.Core
                     if (s.Side == Owner.Side && s.Id != Owner.Id && s.Alive && s.Deployed)
                     {
                         positions.Add(s.Position);
-                        if (s.Available && V2.Distance(s.Position, s.OrderAnchor) > .6f && ExecutionReview.ReservesGoal(b, s))
+                        if (
+                            s.Available
+                            && V2.Distance(s.Position, s.OrderAnchor) > .6f
+                            && ExecutionReview.ReservesGoal(b, s)
+                        )
                             positions.Add(s.OrderAnchor);
                     }
 
@@ -90,12 +98,15 @@ namespace SilentOrders.Core
 #if RUBEZH_BENCH
         public static Action<bool, V2> TraceRiskEvaluation;
 #endif
+
         // One synchronous Pathfinder.Find snapshot only. Exact points, no cell rounding,
         // time-to-live, cross-unit reuse or new tactical information. As for Pathfinder's
         // cost memo, callbacks must not mutate the queried world during a search.
         struct RiskPoint : IEquatable<RiskPoint>
         {
-            readonly float x, y;
+            readonly float x,
+                y;
+
             public RiskPoint(V2 p)
             {
                 x = p.X;
@@ -103,7 +114,9 @@ namespace SilentOrders.Core
             }
 
             public bool Equals(RiskPoint p) => x == p.x && y == p.y;
+
             public override bool Equals(object p) => p is RiskPoint && Equals((RiskPoint)p);
+
             public override int GetHashCode()
             {
                 unchecked
@@ -119,10 +132,13 @@ namespace SilentOrders.Core
             BattleSimulation battle;
             Soldier unit;
             Func<V2, float> extra;
-            bool losses, lanes;
-            readonly Dictionary<RiskPoint, float> loss = new Dictionary<RiskPoint, float>(), fire = new Dictionary<RiskPoint, float>();
+            bool losses,
+                lanes;
+            readonly Dictionary<RiskPoint, float> loss = new Dictionary<RiskPoint, float>(),
+                fire = new Dictionary<RiskPoint, float>();
             public readonly Func<V2, float> Cost;
             public readonly Func<V2, V2, bool> Edge;
+
             public QueryRisk()
             {
                 Cost = Score;
@@ -184,13 +200,15 @@ namespace SilentOrders.Core
             }
 
             float Score(V2 p) => (extra == null ? 0 : extra(p)) + Loss(p) * 24 + Fire(p) * 40;
+
             bool Permits(V2 from, V2 to)
             {
                 var step = to - from;
                 if (losses && !IgnoresRisk(unit))
                 {
                     var ahead = from + step.Normalized * Math.Max(.8f, step.Length);
-                    float next = Loss(ahead), current = Loss(from);
+                    float next = Loss(ahead),
+                        current = Loss(from);
                     if (!PermitsRisk(next, current))
                         return false;
                 }
@@ -218,13 +236,21 @@ namespace SilentOrders.Core
 
         [ThreadStatic]
         static QueryRisk reusableRisk;
+
         public static void Record(BattleSimulation b, Soldier victim, float amount)
         {
             if (amount < 20 && victim.Health > 20)
                 return;
             bool reported = victim.Alive && !victim.Incapacitated;
             foreach (var mate in b.Soldiers)
-                if (mate != victim && mate.Side == victim.Side && mate.Available && mate.Deployed && V2.Distance(mate.Position, victim.Position) < 12 && b.Map.LineOfSight(mate.Position, victim.Position))
+                if (
+                    mate != victim
+                    && mate.Side == victim.Side
+                    && mate.Available
+                    && mate.Deployed
+                    && V2.Distance(mate.Position, victim.Position) < 12
+                    && b.Map.LineOfSight(mate.Position, victim.Position)
+                )
                 {
                     reported = true;
                     break;
@@ -234,7 +260,9 @@ namespace SilentOrders.Core
                 return;
             var sites = b.LossLearning.Sites;
             sites.RemoveAll(e => b.Time - e.At >= 90);
-            var e = sites.Find(x => x.Side == victim.Side && x.Victim == victim.Id && V2.Distance(x.Position, victim.Position) < 3);
+            var e = sites.Find(x =>
+                x.Side == victim.Side && x.Victim == victim.Id && V2.Distance(x.Position, victim.Position) < 3
+            );
             if (e == null)
             {
                 if (sites.Count >= 64)
@@ -243,7 +271,7 @@ namespace SilentOrders.Core
                 {
                     Side = victim.Side,
                     Victim = victim.Id,
-                    Position = victim.Position
+                    Position = victim.Position,
                 };
                 sites.Add(e);
             }
@@ -260,7 +288,8 @@ namespace SilentOrders.Core
             float risk = 0;
             foreach (var e in b.LossLearning.Sites)
             {
-                float age = b.Time - e.At, d = V2.Distance(p, e.Position);
+                float age = b.Time - e.At,
+                    d = V2.Distance(p, e.Position);
                 if (e.Side != s.Side || age >= 90 || d >= 3 || !b.Map.LineOfSight(p, e.Position))
                     continue;
                 risk += e.Severity * Math.Max(0, 1 - age / 90) * Math.Min(1, (3 - d) / 1.5f);
@@ -269,7 +298,13 @@ namespace SilentOrders.Core
             return Math.Min(3, risk);
         }
 
-        public static List<V2> Find(BattleSimulation b, Soldier s, V2 end, Func<V2, float> risk = null, Func<V2, V2, bool> edgeAllowed = null)
+        public static List<V2> Find(
+            BattleSimulation b,
+            Soldier s,
+            V2 end,
+            Func<V2, float> risk = null,
+            Func<V2, V2, bool> edgeAllowed = null
+        )
         {
             var view = b.RouteView;
             bool ownsView = view.Owner == null;
@@ -296,8 +331,15 @@ namespace SilentOrders.Core
             }
         }
 
-        internal static bool IgnoresRisk(Soldier s) => s.Incapacitated || s.Busy || s.GrenadeEscape.Active || s.CounterSniper.Phase != CounterSniperPhase.None || s.RescueTargetId >= 0;
+        internal static bool IgnoresRisk(Soldier s) =>
+            s.Incapacitated
+            || s.Busy
+            || s.GrenadeEscape.Active
+            || s.CounterSniper.Phase != CounterSniperPhase.None
+            || s.RescueTargetId >= 0;
+
         internal static bool PermitsRisk(float next, float current) => next < .7f || next <= current + .02f;
+
         // No mutation. Future edges cannot use SmokeSafe: it examines the old active route.
         // Planning is conservative until a per-edge smoke forecast is available.
         public static bool StepAllowed(BattleSimulation b, Soldier s, V2 from, V2 desired, bool activeRouteSmoke = true)
@@ -305,7 +347,8 @@ namespace SilentOrders.Core
             if (IgnoresRisk(s))
                 return true;
             var ahead = from + desired.Normalized * Math.Max(.8f, desired.Length);
-            float risk = Risk(b, s, ahead), current = Risk(b, s, from);
+            float risk = Risk(b, s, ahead),
+                current = Risk(b, s, from);
             return PermitsRisk(risk, current) || activeRouteSmoke && CommanderPriorities.SmokeSafe(b, s);
         }
 
@@ -318,7 +361,12 @@ namespace SilentOrders.Core
             if (b.Time >= next)
             {
                 b.LossLearning.Replan[s.Id] = b.Time + 2;
-                var route = Find(b, s, s.Destination, p => PositionLogic.Exposure(b, s, p) * 3 + (PositionLogic.Occupied(b, s, p) ? 12 : 0));
+                var route = Find(
+                    b,
+                    s,
+                    s.Destination,
+                    p => PositionLogic.Exposure(b, s, p) * 3 + (PositionLogic.Occupied(b, s, p) ? 12 : 0)
+                );
                 b.Stats.Paths++;
                 s.Path = route;
                 s.PathCursor = 0;

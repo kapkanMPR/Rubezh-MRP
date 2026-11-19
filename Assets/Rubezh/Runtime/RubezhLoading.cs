@@ -18,9 +18,13 @@ namespace Rubezh.UnityPort
     {
         volatile bool loadingDisposed;
         bool loading = true;
-        float loadingTarget, loadingShown, atlasFraction;
-        string loadingStatus = "Подготовка операции…", loadingError;
+        float loadingTarget,
+            loadingShown,
+            atlasFraction;
+        string loadingStatus = "Подготовка операции…",
+            loadingError;
         TextAsset loadingAtlasAsset;
+
         void ReleaseLoadingAtlas()
         {
             HideNativeLoading();
@@ -32,6 +36,7 @@ namespace Rubezh.UnityPort
         }
 
         float runnerClock;
+
         void StartLoading()
         {
             // Retry always returns to the camp. Do not retain a half-created battle or
@@ -52,15 +57,27 @@ namespace Rubezh.UnityPort
         {
             ReleaseSceneGraphics();
             Rubezh.Graphics.ReleaseSceneSprites();
-            if(testBattle)
+            if (testBattle)
             {
-                graphicsTier=testPreviousQuality;forceSoftware=testPreviousSoftware;
-                fullVisibility=testPreviousVisibility;hardcoreFog=testPreviousFog;
+                graphicsTier = testPreviousQuality;
+                forceSoftware = testPreviousSoftware;
+                fullVisibility = testPreviousVisibility;
+                hardcoreFog = testPreviousFog;
             }
-            battle=null;campBattle=null;raid=null;raidChanging=false;campBusy=false;
-            testBattle=unityTestBattle=false;unityTestError=null;
-            interestingSession=null;paused=false;awarded=false;accumulator=0;
-            pickOptions=null;pickApply=null;CloseDrawer();
+            battle = null;
+            campBattle = null;
+            raid = null;
+            raidChanging = false;
+            campBusy = false;
+            testBattle = unityTestBattle = false;
+            unityTestError = null;
+            interestingSession = null;
+            paused = false;
+            awarded = false;
+            accumulator = 0;
+            pickOptions = null;
+            pickApply = null;
+            CloseDrawer();
         }
 
         IEnumerator GuardLoading(IEnumerator work)
@@ -106,7 +123,8 @@ namespace Rubezh.UnityPort
             // Give the startup screen a rendered frame before loading the large atlas.
             yield return null;
 #if UNITY_WEBGL && !UNITY_EDITOR
-   progress=Load();draft=JsonUtility.FromJson<Progress>(JsonUtility.ToJson(progress));
+            progress = Load();
+            draft = JsonUtility.FromJson<Progress>(JsonUtility.ToJson(progress));
 #endif
             loadingTarget = .15f;
             loadingStatus = "Загрузка графики…";
@@ -128,9 +146,10 @@ namespace Rubezh.UnityPort
             while (loadingShown < 1f)
                 yield return null;
             var fade = FinishFireLoading();
-            while (fade.MoveNext()) yield return fade.Current;
+            while (fade.MoveNext())
+                yield return fade.Current;
             loading = false;
-            screen = 0;
+            screen = ScreenId.Camp;
             ShowCamp();
         }
 
@@ -141,6 +160,5 @@ namespace Rubezh.UnityPort
                 runnerClock += Time.unscaledDeltaTime;
             UpdateNativeLoading();
         }
-
     }
 }

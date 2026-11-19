@@ -8,6 +8,7 @@ namespace SilentOrders.Rendering
         void SetStage(int stage);
         void EndDynamic();
     }
+
     public interface IVectorCanvasGpu
     {
         bool Ellipse(float x, float y, int rx, int ry, float scale, uint color, float depth, bool test);

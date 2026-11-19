@@ -5,12 +5,18 @@ namespace SilentOrders.Core
 {
     public sealed class MovementPriority
     {
-        public bool Transfer, RearLegCompleted, FastTransfer;
+        public bool Transfer,
+            RearLegCompleted,
+            FastTransfer;
         public int TransferGroupSize;
         public int DestinationWing;
-        public float NextRoute, NextSmoke, WaitSince = -1f;
-        public int Attempts, MapRevision = -1;
-        public V2 Goal, LastPosition;
+        public float NextRoute,
+            NextSmoke,
+            WaitSince = -1f;
+        public int Attempts,
+            MapRevision = -1;
+        public V2 Goal,
+            LastPosition;
     }
 
     public static class TacticalOrders
@@ -22,7 +28,11 @@ namespace SilentOrders.Core
 
         public static bool Flanks(Squad q)
         {
-            return q.Side == Side.Green && !Emergency(q) && q.Style != CombatStyle.Withdraw && q.Style != CombatStyle.Passive && IsFlank(q.Intent);
+            return q.Side == Side.Green
+                && !Emergency(q)
+                && q.Style != CombatStyle.Withdraw
+                && q.Style != CombatStyle.Passive
+                && IsFlank(q.Intent);
         }
 
         public static bool IsFlank(ManeuverIntent i)
@@ -51,7 +61,11 @@ namespace SilentOrders.Core
             b.History.Event(b, "playerOrder", q.LeaderId, -1, new V2(), new V2(), style, "intent=" + intent);
             // Emergency command and release from it are never held in the radio queue.
             q.PriorityAt = Emergency(q) || style == 4 ? b.Time : b.Time + b.Config.RadioDelay;
-            q.PriorityStatus = "Передаю: " + CommanderPriorities.StyleName(q.PendingStyle) + " / " + CommanderPriorities.IntentName(q.PendingIntent);
+            q.PriorityStatus =
+                "Передаю: "
+                + CommanderPriorities.StyleName(q.PendingStyle)
+                + " / "
+                + CommanderPriorities.IntentName(q.PendingIntent);
             if (q.PriorityAt <= b.Time)
                 ApplyPending(b, q);
         }
@@ -85,7 +99,8 @@ namespace SilentOrders.Core
 
         public static void Execute(BattleSimulation b, Squad q, bool hard)
         {
-            bool wasEmergency = Emergency(q), wasFlanks = Flanks(q);
+            bool wasEmergency = Emergency(q),
+                wasFlanks = Flanks(q);
             var oldIntent = q.Intent;
             var nextStyle = q.PendingStyle;
             var nextIntent = q.PendingIntent == ManeuverIntent.Breakthrough ? ManeuverIntent.Center : q.PendingIntent;
@@ -99,7 +114,11 @@ namespace SilentOrders.Core
 
             // Cancel old tasks BEFORE installing a new owner for movement. Preserve contacts,
             // physical injuries, suppression, ammunition, projectiles and weapon cooldowns.
-            bool sameIntent = oldIntent == nextIntent && !wasEmergency && q.Style != CombatStyle.Withdraw && nextStyle != CombatStyle.Withdraw;
+            bool sameIntent =
+                oldIntent == nextIntent
+                && !wasEmergency
+                && q.Style != CombatStyle.Withdraw
+                && nextStyle != CombatStyle.Withdraw;
             if (hard)
                 Reset(b, q, nextStyle != CombatStyle.EmergencyWithdraw);
             else if (!sameIntent || nextStyle == CombatStyle.Passive)
@@ -128,7 +147,12 @@ namespace SilentOrders.Core
             q.NextPlan = b.Time;
             q.NextPriorityPlan = b.Time;
             q.NextPairReview = 0f;
-            q.PriorityStatus = Emergency(q) ? "ДА НУ НАХЕР! Всем немедленно отрываться!" : "Принято: " + CommanderPriorities.StyleName(q.Style) + " / " + CommanderPriorities.IntentName(q.Intent);
+            q.PriorityStatus = Emergency(q)
+                ? "ДА НУ НАХЕР! Всем немедленно отрываться!"
+                : "Принято: "
+                    + CommanderPriorities.StyleName(q.Style)
+                    + " / "
+                    + CommanderPriorities.IntentName(q.Intent);
             q.Plan = q.CommanderOrder = q.Execution = q.PriorityStatus;
             b.Log(q.Side, q.PriorityStatus);
             if (q.LeaderId >= 0 && q.LeaderId < b.Soldiers.Count)
@@ -226,7 +250,14 @@ namespace SilentOrders.Core
 
         public static bool ServiceActive(Soldier s)
         {
-            return (SupplyRecovery.Active(s) || HandLauncher.Active(s)) || BuddyActions.Active(s) || s.RescueTargetId >= 0 || s.RescuerId >= 0 || s.RescuePhase != RescuePhase.None || s.TreatmentUntil > 0 || s.SupplyDonorId >= 0 || s.SupplyReceiverId >= 0;
+            return (SupplyRecovery.Active(s) || HandLauncher.Active(s))
+                || BuddyActions.Active(s)
+                || s.RescueTargetId >= 0
+                || s.RescuerId >= 0
+                || s.RescuePhase != RescuePhase.None
+                || s.TreatmentUntil > 0
+                || s.SupplyDonorId >= 0
+                || s.SupplyReceiverId >= 0;
         }
 
         public static void Reset(BattleSimulation b, Squad q, bool preserveServices = false)
@@ -475,7 +506,7 @@ namespace SilentOrders.Core
                 lateral * 4,
                 lateral * -4,
                 axis * -4,
-                axis * 2
+                axis * 2,
             };
             foreach (var o in offsets)
             {
@@ -487,9 +518,11 @@ namespace SilentOrders.Core
                 if (d < .35f)
                     continue;
                 float risk = PositionLogic.Exposure(b, s, p);
-                float score = -V2.Distance(p, wanted) * 1.3f - d * .08f + (cover ? 2.5f : 0) - risk * (sprint ? 2f : 4f);
+                float score =
+                    -V2.Distance(p, wanted) * 1.3f - d * .08f + (cover ? 2.5f : 0) - risk * (sprint ? 2f : 4f);
                 if (Emergency(b.Team(s)) && threat != null)
-                    score += Math.Min(15, V2.Distance(p, threat.Position) - V2.Distance(s.Position, threat.Position)) * 1.5f;
+                    score +=
+                        Math.Min(15, V2.Distance(p, threat.Position) - V2.Distance(s.Position, threat.Position)) * 1.5f;
                 candidates.Add(new KeyValuePair<float, V2>(score, p));
             }
 
@@ -529,7 +562,10 @@ namespace SilentOrders.Core
 
         public static bool TrySmoke(BattleSimulation b, Soldier s, Contact threat)
         {
-            var purpose = Emergency(b.Team(s)) || WithdrawalTactics.Active(b.Team(s)) || RedCounterattack.Retreating(b, s) ? SmokePurpose.Withdrawal : SmokePurpose.Route;
+            var purpose =
+                Emergency(b.Team(s)) || WithdrawalTactics.Active(b.Team(s)) || RedCounterattack.Retreating(b, s)
+                    ? SmokePurpose.Withdrawal
+                    : SmokePurpose.Route;
             return SmokeTactics.Request(b, b.Team(s), s, s.Destination, purpose, s);
         }
 
@@ -553,7 +589,15 @@ namespace SilentOrders.Core
 
             if (s.PriorityMovement.Transfer)
             {
-                if (s.PriorityMovement.FastTransfer && (s.Suppression >= .65f || s.Morale < .40f || ConcussionEffects.Current(b, s) > .45f || !FlankTactics.HasEnoughReceivingSupport(b, s)))
+                if (
+                    s.PriorityMovement.FastTransfer
+                    && (
+                        s.Suppression >= .65f
+                        || s.Morale < .40f
+                        || ConcussionEffects.Current(b, s) > .45f
+                        || !FlankTactics.HasEnoughReceivingSupport(b, s)
+                    )
+                )
                     FlankTactics.DowngradeFastTransfer(b, s);
                 // Even a supported fast crossing is executed by the normal combat loop:
                 // it can fire, reload and take short bounds, never a magic no-combat sprint.

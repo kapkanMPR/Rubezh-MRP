@@ -21,9 +21,12 @@ namespace Rubezh.UnityPort.Editor
     {
         void OnPreprocessTexture()
         {
-            if (!assetPath.StartsWith("Assets/Rubezh/Resources/Loading/") && !assetPath.StartsWith("Assets/Rubezh/Art/"))
+            if (
+                !assetPath.StartsWith("Assets/Rubezh/Resources/Loading/") && !assetPath.StartsWith("Assets/Rubezh/Art/")
+            )
                 return;
-            if (assetPath.StartsWith(BuildResourcePreparation.Source+"/", System.StringComparison.Ordinal)) return;
+            if (assetPath.StartsWith(BuildResourcePreparation.Source + "/", System.StringComparison.Ordinal))
+                return;
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Default;
             importer.alphaIsTransparency = true;

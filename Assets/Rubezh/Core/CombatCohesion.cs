@@ -9,10 +9,25 @@ namespace SilentOrders.Core
     {
         public const float IdleReviewSeconds = 6f;
         public const float HelpSuppressionThreshold = .72f;
+
         static bool Suitable(BattleSimulation b, Soldier s)
         {
             var q = b.Team(s);
-            return !AreaSuppression.Reserved(b, s) && !CounterSniper.Reserved(b, s) && s.Available && !s.Busy && s.SupplyReceiverId < 0 && !s.VehicleRally && !s.VehicleDisperse && s.FlagResponseUntil <= b.Time && !s.Broken && !TacticalOrders.PriorityMover(b, s) && !RedCounterattack.Retreating(b, s) && q.Style != CombatStyle.Withdraw && !TacticalOrders.Emergency(q) && !q.Breakthrough.Active && s.Health > 28f;
+            return !AreaSuppression.Reserved(b, s)
+                && !CounterSniper.Reserved(b, s)
+                && s.Available
+                && !s.Busy
+                && s.SupplyReceiverId < 0
+                && !s.VehicleRally
+                && !s.VehicleDisperse
+                && s.FlagResponseUntil <= b.Time
+                && !s.Broken
+                && !TacticalOrders.PriorityMover(b, s)
+                && !RedCounterattack.Retreating(b, s)
+                && q.Style != CombatStyle.Withdraw
+                && !TacticalOrders.Emergency(q)
+                && !q.Breakthrough.Active
+                && s.Health > 28f;
         }
 
         static bool FreshContact(BattleSimulation b, Contact c)
@@ -58,7 +73,9 @@ namespace SilentOrders.Core
         static bool SameElement(BattleSimulation b, Soldier a, Soldier z)
         {
             var team = b.Team(a);
-            return !TacticalOrders.Flanks(team) || !team.FlankPlan.Active || FlankTactics.SideOf(team, a.Id) == FlankTactics.SideOf(team, z.Id);
+            return !TacticalOrders.Flanks(team)
+                || !team.FlankPlan.Active
+                || FlankTactics.SideOf(team, a.Id) == FlankTactics.SideOf(team, z.Id);
         }
 
         // Called once per simulation tick, after suppression is updated. It only
@@ -67,7 +84,12 @@ namespace SilentOrders.Core
         {
             foreach (var pinned in b.Soldiers)
             {
-                if (!Suitable(b, pinned) || pinned.Suppression < HelpSuppressionThreshold || b.Time - pinned.LastIncoming > 2.4f || b.Time < pinned.NextHelpRequest)
+                if (
+                    !Suitable(b, pinned)
+                    || pinned.Suppression < HelpSuppressionThreshold
+                    || b.Time - pinned.LastIncoming > 2.4f
+                    || b.Time < pinned.NextHelpRequest
+                )
                     continue;
                 Contact threat = KnownThreat(b, pinned);
                 pinned.NextHelpRequest = b.Time + 10f;
@@ -84,7 +106,16 @@ namespace SilentOrders.Core
                     float score = float.MaxValue;
                     foreach (var helper in b.Soldiers)
                     {
-                        if (helper.Side != pinned.Side || helper.Id == pinned.Id || !Suitable(b, helper) || !GroupCoordination.CanLend(b, helper, pinned) || helper.Suppression > .65f || helper.Morale < .24f || helper.HelpTargetId >= 0 && helper.HelpUntil > b.Time || helper.Ammo + helper.Reserve <= 0)
+                        if (
+                            helper.Side != pinned.Side
+                            || helper.Id == pinned.Id
+                            || !Suitable(b, helper)
+                            || !GroupCoordination.CanLend(b, helper, pinned)
+                            || helper.Suppression > .65f
+                            || helper.Morale < .24f
+                            || helper.HelpTargetId >= 0 && helper.HelpUntil > b.Time
+                            || helper.Ammo + helper.Reserve <= 0
+                        )
                             continue;
                         bool same = SameElement(b, pinned, helper);
                         if (pass == 0 && !same)
@@ -180,7 +211,18 @@ namespace SilentOrders.Core
             }
 
             // Do not mistake deliberate overwatch or a useful firing sector for idleness.
-            if (s.Ammo <= 0 || s.Role == Role.Medic || s.Sniper || !InCombat(b, s.Side) || b.Time - s.LastFire < 4f || PositionLogic.HasSector(b, s, s.Position) || s.Suppression > .65f || s.Morale < .32f || s.ReloadUntil > b.Time || (s.PathCursor < s.Path.Count && s.MoveAuthorized))
+            if (
+                s.Ammo <= 0
+                || s.Role == Role.Medic
+                || s.Sniper
+                || !InCombat(b, s.Side)
+                || b.Time - s.LastFire < 4f
+                || PositionLogic.HasSector(b, s, s.Position)
+                || s.Suppression > .65f
+                || s.Morale < .32f
+                || s.ReloadUntil > b.Time
+                || (s.PathCursor < s.Path.Count && s.MoveAuthorized)
+            )
             {
                 s.IdleCombatSince = -1f;
                 return false;
@@ -190,7 +232,11 @@ namespace SilentOrders.Core
             // team is attacking. This includes a radio report only when we can see
             // the actual target ourselves.
             var direct = KnownThreat(b, s);
-            if (direct != null && s.Visible.Contains(direct.EnemyId) && PositionLogic.CanEngage(b, s, s.Position, direct))
+            if (
+                direct != null
+                && s.Visible.Contains(direct.EnemyId)
+                && PositionLogic.CanEngage(b, s, s.Position, direct)
+            )
             {
                 s.IdleCombatSince = -1f;
                 return false;
@@ -226,7 +272,12 @@ namespace SilentOrders.Core
                 Soldier partner = null;
                 if (s.BuddyId >= 0 && s.BuddyId < b.Soldiers.Count && s.BuddyId != s.Id)
                     partner = b.Soldiers[s.BuddyId];
-                if (partner == null || !partner.Available || partner.Broken || V2.Distance(partner.Position, s.Position) > 7f)
+                if (
+                    partner == null
+                    || !partner.Available
+                    || partner.Broken
+                    || V2.Distance(partner.Position, s.Position) > 7f
+                )
                     return false;
             }
 
@@ -253,34 +304,54 @@ namespace SilentOrders.Core
             // Bounded local search. Distance to the known contact must improve, or
             // a firing lane must be gained; never use a hidden enemy coordinate.
             for (int row = 0; row < 3; row++)
-                for (int side = 0; side < 2; side++)
-                {
-                    float step = row == 0 ? 3.5f : row == 1 ? 5.5f : 8f;
-                    float spread = (side == 0 ? 1 : -1) * wing * (row == 2 ? 6f : 3.5f);
-                    V2 desired = s.Position + forward * step + lateral * spread;
-                    V2 post = TacticalOrders.Open(b, desired);
-                    if (!b.Map.Walkable(post) || !CommandHierarchy.WithinManeuver(b, s, post) || PositionLogic.Occupied(b, s, post) || V2.Distance(s.Position, post) < 1.5f)
-                        continue;
-                    float targetDistance = V2.Distance(post, threat.Position);
-                    bool canFire = targetDistance <= range && PositionLogic.CanEngage(b, s, post, threat);
-                    float progress = V2.Distance(s.Position, threat.Position) - targetDistance;
-                    if (!canFire && progress < 1.5f)
-                        continue;
-                    float risk = PositionLogic.Exposure(b, s, post);
-                    bool cover = PositionLogic.Protected(b, s, post);
-                    if (!aggressive && (!cover && risk > .35f || V2.Distance(s.Position, post) > 3.8f || V2.Distance(post, b.Soldiers[s.BuddyId].Position) > 7f))
-                        continue;
-                    float score = (canFire ? 18f : 0f) + progress * .7f + (cover ? 3f : 0f) - risk * (aggressive ? 1.2f : 3f) - Math.Abs(targetDistance - range * .85f) * .3f;
-                    if (score <= best)
-                        continue;
-                    var path = LossMemory.Find(b, s, post, p => PositionLogic.Exposure(b, s, p) * (aggressive ? 1f : 2.5f));
-                    b.Stats.Paths++;
-                    if (path.Count == 0 || SupportAI.PathLength(s.Position, path) > 17f)
-                        continue;
-                    best = score;
-                    selectedPath = path;
-                    bestPosition = post;
-                }
+            for (int side = 0; side < 2; side++)
+            {
+                float step =
+                    row == 0 ? 3.5f
+                    : row == 1 ? 5.5f
+                    : 8f;
+                float spread = (side == 0 ? 1 : -1) * wing * (row == 2 ? 6f : 3.5f);
+                V2 desired = s.Position + forward * step + lateral * spread;
+                V2 post = TacticalOrders.Open(b, desired);
+                if (
+                    !b.Map.Walkable(post)
+                    || !CommandHierarchy.WithinManeuver(b, s, post)
+                    || PositionLogic.Occupied(b, s, post)
+                    || V2.Distance(s.Position, post) < 1.5f
+                )
+                    continue;
+                float targetDistance = V2.Distance(post, threat.Position);
+                bool canFire = targetDistance <= range && PositionLogic.CanEngage(b, s, post, threat);
+                float progress = V2.Distance(s.Position, threat.Position) - targetDistance;
+                if (!canFire && progress < 1.5f)
+                    continue;
+                float risk = PositionLogic.Exposure(b, s, post);
+                bool cover = PositionLogic.Protected(b, s, post);
+                if (
+                    !aggressive
+                    && (
+                        !cover && risk > .35f
+                        || V2.Distance(s.Position, post) > 3.8f
+                        || V2.Distance(post, b.Soldiers[s.BuddyId].Position) > 7f
+                    )
+                )
+                    continue;
+                float score =
+                    (canFire ? 18f : 0f)
+                    + progress * .7f
+                    + (cover ? 3f : 0f)
+                    - risk * (aggressive ? 1.2f : 3f)
+                    - Math.Abs(targetDistance - range * .85f) * .3f;
+                if (score <= best)
+                    continue;
+                var path = LossMemory.Find(b, s, post, p => PositionLogic.Exposure(b, s, p) * (aggressive ? 1f : 2.5f));
+                b.Stats.Paths++;
+                if (path.Count == 0 || SupportAI.PathLength(s.Position, path) > 17f)
+                    continue;
+                best = score;
+                selectedPath = path;
+                bestPosition = post;
+            }
 
             if (selectedPath == null)
                 return false;
@@ -314,7 +385,11 @@ namespace SilentOrders.Core
 
             var threat = KnownThreat(b, victim) ?? KnownThreat(b, helper);
             bool lane = threat != null && PositionLogic.CanEngage(b, helper, helper.Position, threat);
-            if (threat != null && b.Time >= helper.HelpNextSmoke && (helper.HelpSmokePreferred || !lane || victim.Suppression > .87f))
+            if (
+                threat != null
+                && b.Time >= helper.HelpNextSmoke
+                && (helper.HelpSmokePreferred || !lane || victim.Suppression > .87f)
+            )
             {
                 helper.HelpNextSmoke = b.Time + 3f;
                 TryHelpSmoke(b, helper, victim, threat);
@@ -322,7 +397,10 @@ namespace SilentOrders.Core
 
             // A short verbal/local report carries a *known* contact, never the current
             // position of an enemy hidden from the squad. Firing still requires line of fire.
-            if (threat != null && (!helper.Contacts.TryGetValue(threat.EnemyId, out var known) || known.SeenAt < threat.SeenAt))
+            if (
+                threat != null
+                && (!helper.Contacts.TryGetValue(threat.EnemyId, out var known) || known.SeenAt < threat.SeenAt)
+            )
             {
                 var report = threat.Copy();
                 report.Reported = true;
@@ -369,8 +447,18 @@ namespace SilentOrders.Core
             V2 lateral = new V2(-forward.Y, forward.X);
             for (int i = 0; i < 6; i++)
             {
-                V2 p = TacticalOrders.Open(b, helper.Position + forward * (2f + (i / 2) * 2f) + lateral * (i % 2 == 0 ? 3f : -3f));
-                if (!b.Map.Walkable(p) || !CommandHierarchy.WithinManeuver(b, helper, p) || PositionLogic.Occupied(b, helper, p) || V2.Distance(p, victim.Position) > 11f || V2.Distance(helper.Position, p) < 1f || !PositionLogic.CanEngage(b, helper, p, threat))
+                V2 p = TacticalOrders.Open(
+                    b,
+                    helper.Position + forward * (2f + (i / 2) * 2f) + lateral * (i % 2 == 0 ? 3f : -3f)
+                );
+                if (
+                    !b.Map.Walkable(p)
+                    || !CommandHierarchy.WithinManeuver(b, helper, p)
+                    || PositionLogic.Occupied(b, helper, p)
+                    || V2.Distance(p, victim.Position) > 11f
+                    || V2.Distance(helper.Position, p) < 1f
+                    || !PositionLogic.CanEngage(b, helper, p, threat)
+                )
                     continue;
                 var path = Pathfinder.Find(b.Map, helper.Position, p, q => PositionLogic.Exposure(b, helper, q) * 2f);
                 b.Stats.Paths++;
@@ -394,7 +482,14 @@ namespace SilentOrders.Core
 
         public static bool TryHelpSmoke(BattleSimulation b, Soldier helper, Soldier victim, Contact threat)
         {
-            bool used = SmokeTactics.Request(b, b.Team(helper), victim, victim.OrderAnchor, SmokePurpose.Rescue, helper);
+            bool used = SmokeTactics.Request(
+                b,
+                b.Team(helper),
+                victim,
+                victim.OrderAnchor,
+                SmokePurpose.Rescue,
+                helper
+            );
             if (used)
                 helper.HelpActions++;
             return used;

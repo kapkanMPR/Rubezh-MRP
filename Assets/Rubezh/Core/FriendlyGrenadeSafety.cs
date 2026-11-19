@@ -7,27 +7,58 @@ namespace SilentOrders.Core
     public static class FriendlyGrenadeSafety
     {
         // Legacy defaults for future battles only.
-        public static bool Enabled = true, FragmentDodgeEnabled = true;
-        public const float Lead = .25f, HoldAfter = .35f, HearingRange = 24f;
+        public static bool Enabled = true,
+            FragmentDodgeEnabled = true;
+        public const float Lead = .25f,
+            HoldAfter = .35f,
+            HearingRange = 24f;
+
         public sealed class Metrics
         {
-            public int Shouts, Ducks, FriendlyRolls, EnemyRolls, FriendlyBypasses, EnemyBypasses;
+            public int Shouts,
+                Ducks,
+                FriendlyRolls,
+                EnemyRolls,
+                FriendlyBypasses,
+                EnemyBypasses;
             internal readonly Dictionary<int, float> Until = new Dictionary<int, float>();
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, Metrics> States = new ConditionalWeakTable<BattleSimulation, Metrics>();
+        static readonly ConditionalWeakTable<BattleSimulation, Metrics> States =
+            new ConditionalWeakTable<BattleSimulation, Metrics>();
+
         public static Metrics Stats(BattleSimulation b) => States.GetValue(b, _ => new Metrics());
+
         public static void Warn(BattleSimulation b, Soldier thrower, ArcProjectile p)
         {
-            if (!b.Rules.FriendlyGrenadeWarnings || !CombatTraining.Skill(thrower, 2, "warn") || thrower.Side != Side.Green || p.Kind != 1)
+            if (
+                !b.Rules.FriendlyGrenadeWarnings
+                || !CombatTraining.Skill(thrower, 2, "warn")
+                || thrower.Side != Side.Green
+                || p.Kind != 1
+            )
                 return;
             p.WarningListeners = new List<int>();
             foreach (var s in b.Soldiers)
-                if (s.Side == thrower.Side && s.Alive && s.Deployed && V2.Distance(s.Position, thrower.Position) <= HearingRange)
+                if (
+                    s.Side == thrower.Side
+                    && s.Alive
+                    && s.Deployed
+                    && V2.Distance(s.Position, thrower.Position) <= HearingRange
+                )
                     p.WarningListeners.Add(s.Id);
             Stats(b).Shouts++;
             b.Say(thrower, "СВОЯ!", urgent: true);
-            b.History.Event(b, "friendlyGrenadeWarning", thrower.Id, -1, thrower.Position, p.To, HandGrenades.Type(p), HandGrenades.Name(HandGrenades.Type(p)));
+            b.History.Event(
+                b,
+                "friendlyGrenadeWarning",
+                thrower.Id,
+                -1,
+                thrower.Position,
+                p.To,
+                HandGrenades.Type(p),
+                HandGrenades.Name(HandGrenades.Type(p))
+            );
         }
 
         public static float ExpectedExplosion(BattleSimulation b, ArcProjectile p, out V2 point)
@@ -35,7 +66,8 @@ namespace SilentOrders.Core
             point = p.Landed ? p.Position : ArcedOrdnance.ArcImpact(b, p.From, p.To, 1);
             if (p.Rethrown || p.Landed)
                 return p.DetonateAt;
-            float length = V2.Distance(p.From, p.To), distance = V2.Distance(p.From, point);
+            float length = V2.Distance(p.From, p.To),
+                distance = V2.Distance(p.From, point);
             float arrival = p.Born + p.Duration * (length > .001f ? Util.Clamp(distance / length, 0, 1) : 1);
             return arrival + (p.ImpactFuse ? 0 : OrdnanceExperiment.LandingFuse(b, distance, p.F1 ? 8 : 9));
         }
@@ -51,14 +83,30 @@ namespace SilentOrders.Core
                 if (id < 0 || id >= b.Soldiers.Count)
                     continue;
                 var s = b.Soldiers[id];
-                if (!CombatTraining.Skill(s, 2, "warn") || !s.Alive || !s.Deployed || s.Side != Side.Green || V2.Distance(s.Position, point) > radius + .35f || !b.Map.LineOfSight(point, s.Position))
+                if (
+                    !CombatTraining.Skill(s, 2, "warn")
+                    || !s.Alive
+                    || !s.Deployed
+                    || s.Side != Side.Green
+                    || V2.Distance(s.Position, point) > radius + .35f
+                    || !b.Map.LineOfSight(point, s.Position)
+                )
                     continue;
                 float old;
                 state.Until.TryGetValue(id, out old);
                 if (old <= b.Time)
                 {
                     state.Ducks++;
-                    b.History.Event(b, "friendlyGrenadeDuck", s.Id, p.ShooterId, s.Position, point, until - b.Time, "СВОЯ!");
+                    b.History.Event(
+                        b,
+                        "friendlyGrenadeDuck",
+                        s.Id,
+                        p.ShooterId,
+                        s.Position,
+                        point,
+                        until - b.Time,
+                        "СВОЯ!"
+                    );
                 }
 
                 state.Until[id] = Math.Max(old, until);
@@ -91,7 +139,13 @@ namespace SilentOrders.Core
         {
             Metrics state;
             float until;
-            return b.Rules.FriendlyGrenadeWarnings && s.Side == Side.Green && s.Alive && s.Deployed && States.TryGetValue(b, out state) && state.Until.TryGetValue(s.Id, out until) && until > b.Time;
+            return b.Rules.FriendlyGrenadeWarnings
+                && s.Side == Side.Green
+                && s.Alive
+                && s.Deployed
+                && States.TryGetValue(b, out state)
+                && state.Until.TryGetValue(s.Id, out until)
+                && until > b.Time;
         }
 
         public static bool Hold(BattleSimulation b, Soldier s)

@@ -10,7 +10,13 @@ namespace SilentOrders.Core
         {
             foreach (var patient in b.Soldiers)
             {
-                if (!patient.Alive || !patient.Deployed || patient.RescuerId >= 0 || patient.TreatmentUntil > 0f || (!patient.Bleeding && patient.Health > 40f))
+                if (
+                    !patient.Alive
+                    || !patient.Deployed
+                    || patient.RescuerId >= 0
+                    || patient.TreatmentUntil > 0f
+                    || (!patient.Bleeding && patient.Health > 40f)
+                )
                     continue;
                 var team = b.Team(patient);
                 if (TacticalOrders.Emergency(team) || RedCounterattack.Retreating(b, patient))
@@ -19,10 +25,25 @@ namespace SilentOrders.Core
                 float best = 1.1f;
                 foreach (var candidate in b.Soldiers)
                 {
-                    if (candidate.Id == patient.Id || candidate.Side != patient.Side || RedCounterattack.Retreating(b, candidate) || !candidate.Available || candidate.Broken || candidate.Suppression > .85f || candidate.Health < 25f || !candidate.Deployed || MedicalInventory.Choose(candidate, patient) == 0)
+                    if (
+                        candidate.Id == patient.Id
+                        || candidate.Side != patient.Side
+                        || RedCounterattack.Retreating(b, candidate)
+                        || !candidate.Available
+                        || candidate.Broken
+                        || candidate.Suppression > .85f
+                        || candidate.Health < 25f
+                        || !candidate.Deployed
+                        || MedicalInventory.Choose(candidate, patient) == 0
+                    )
                         continue;
                     float distance = V2.Distance(candidate.Position, patient.Position);
-                    if (distance < best && !candidate.Busy && candidate.SupplyReceiverId < 0 && InteractionReach.Can(b, candidate.Position, patient.Position, 1.1f))
+                    if (
+                        distance < best
+                        && !candidate.Busy
+                        && candidate.SupplyReceiverId < 0
+                        && InteractionReach.Can(b, candidate.Position, patient.Position, 1.1f)
+                    )
                     {
                         best = distance;
                         helper = candidate;
