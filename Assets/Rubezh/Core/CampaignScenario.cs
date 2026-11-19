@@ -5,169 +5,30 @@ namespace SilentOrders.Core
 {
     public static class CampaignScenario
     {
-        public static readonly int[, ] Missions = new int[20, 6]
+        public static readonly int[,] Missions = new int[20, 6]
         {
-            {
-                2,
-                0,
-                0,
-                0,
-                0,
-                0
-            },
-            {
-                3,
-                0,
-                0,
-                0,
-                0,
-                0
-            },
-            {
-                3,
-                0,
-                0,
-                0,
-                0,
-                1
-            },
-            {
-                4,
-                0,
-                0,
-                0,
-                0,
-                1
-            },
-            {
-                4,
-                1,
-                0,
-                0,
-                0,
-                0
-            },
-            {
-                4,
-                0,
-                1,
-                0,
-                0,
-                2
-            },
-            {
-                4,
-                1,
-                0,
-                0,
-                1,
-                1
-            },
-            {
-                4,
-                0,
-                1,
-                1,
-                0,
-                2
-            },
-            {
-                5,
-                1,
-                1,
-                1,
-                0,
-                2
-            },
-            {
-                5,
-                1,
-                1,
-                1,
-                1,
-                3
-            },
-            {
-                5,
-                1,
-                1,
-                1,
-                1,
-                3
-            },
-            {
-                5,
-                1,
-                1,
-                1,
-                1,
-                5
-            },
-            {
-                5,
-                2,
-                1,
-                0,
-                1,
-                3
-            },
-            {
-                5,
-                1,
-                1,
-                2,
-                0,
-                3
-            },
-            {
-                6,
-                1,
-                1,
-                1,
-                1,
-                3
-            },
-            {
-                6,
-                2,
-                1,
-                1,
-                0,
-                4
-            },
-            {
-                7,
-                2,
-                1,
-                1,
-                1,
-                4
-            },
-            {
-                8,
-                2,
-                1,
-                2,
-                1,
-                5
-            },
-            {
-                8,
-                2,
-                2,
-                1,
-                1,
-                6
-            },
-            {
-                10,
-                2,
-                2,
-                2,
-                2,
-                6
-            }
+            { 2, 0, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0, 0 },
+            { 3, 0, 0, 0, 0, 1 },
+            { 4, 0, 0, 0, 0, 1 },
+            { 4, 1, 0, 0, 0, 0 },
+            { 4, 0, 1, 0, 0, 2 },
+            { 4, 1, 0, 0, 1, 1 },
+            { 4, 0, 1, 1, 0, 2 },
+            { 5, 1, 1, 1, 0, 2 },
+            { 5, 1, 1, 1, 1, 3 },
+            { 5, 1, 1, 1, 1, 3 },
+            { 5, 1, 1, 1, 1, 5 },
+            { 5, 2, 1, 0, 1, 3 },
+            { 5, 1, 1, 2, 0, 3 },
+            { 6, 1, 1, 1, 1, 3 },
+            { 6, 2, 1, 1, 0, 4 },
+            { 7, 2, 1, 1, 1, 4 },
+            { 8, 2, 1, 2, 1, 5 },
+            { 8, 2, 2, 1, 1, 6 },
+            { 10, 2, 2, 2, 2, 6 },
         };
+
         private static int TrainingCost(int n)
         {
             int result;
@@ -190,52 +51,59 @@ namespace SilentOrders.Core
             return result;
         }
 
-        public static int SoldierCost(SilentOrders.Core.Soldier s)
+        public static int SoldierCost(Soldier s)
         {
-            int num = (s.Sniper ? 200 : ((s.Role == SilentOrders.Core.Role.MachineGunner) ? 200 : ((s.Role == SilentOrders.Core.Role.Medic) ? 200 : ((s.Role != SilentOrders.Core.Role.Grenadier) ? (s.SupplyPack ? 150 : 0) : ((s.LauncherKind == 1) ? 200 : 150)))));
+            int loadoutCost = (
+                s.Sniper
+                    ? 200
+                    : (
+                        (s.Role == Role.MachineGunner)
+                            ? 200
+                            : (
+                                (s.Role == Role.Medic)
+                                    ? 200
+                                    : (
+                                        (s.Role != Role.Grenadier)
+                                            ? (s.SupplyPack ? 150 : 0)
+                                            : ((s.LauncherKind == 1) ? 200 : 150)
+                                    )
+                            )
+                    )
+            );
             if (s.Underbarrel)
             {
-                num += 50;
+                loadoutCost += 50;
             }
 
-            num += s.RigLevel * 50 + s.ArmorLevel * 100;
-            int num2 = ((s.GrenadeType == 0) ? s.SmokeCharges : s.GrenadeCharges);
-            int[, ] array = new int[3, 4]
+            loadoutCost += s.RigLevel * 50 + s.ArmorLevel * 100;
+            int grenadeCount = ((s.GrenadeType == 0) ? s.SmokeCharges : s.GrenadeCharges);
+            int[,] array = new int[3, 4]
             {
-                {
-                    0,
-                    40,
-                    70,
-                    100
-                },
-                {
-                    0,
-                    50,
-                    80,
-                    110
-                },
-                {
-                    0,
-                    60,
-                    110,
-                    150
-                }
+                { 0, 40, 70, 100 },
+                { 0, 50, 80, 110 },
+                { 0, 60, 110, 150 },
             };
-            return num + HandGrenades.Price(3, Math.Min(3, GrenadePockets.Count(s, 3))) + HandGrenades.Price(4, Math.Min(3, GrenadePockets.Count(s, 4))) + HandGrenades.Price(5, Math.Min(3, GrenadePockets.Count(s, 5))) + array[0, Math.Min(3, s.SmokeCharges)] + array[1, Math.Min(3, GrenadePockets.Count(s, 1))] + array[2, Math.Min(3, GrenadePockets.Count(s, 2) - (s.WeaponVariant == 2 ? s.LoadedUnderbarrel : 0))];
+            return loadoutCost
+                + HandGrenades.Price(3, Math.Min(3, GrenadePockets.Count(s, 3)))
+                + HandGrenades.Price(4, Math.Min(3, GrenadePockets.Count(s, 4)))
+                + HandGrenades.Price(5, Math.Min(3, GrenadePockets.Count(s, 5)))
+                + array[0, Math.Min(3, s.SmokeCharges)]
+                + array[1, Math.Min(3, GrenadePockets.Count(s, 1))]
+                + array[2, Math.Min(3, GrenadePockets.Count(s, 2) - (s.WeaponVariant == 2 ? s.LoadedUnderbarrel : 0))];
         }
 
-        public static int Cost(SilentOrders.Core.BattleSimulation b)
+        public static int Cost(BattleSimulation b)
         {
-            int num = 0;
+            int squadCost = 0;
             for (int i = 0; i < 5; i++)
             {
-                num += SoldierCost(b.Soldiers[i]);
+                squadCost += SoldierCost(b.Soldiers[i]);
             }
 
-            return num;
+            return squadCost;
         }
 
-        public static bool Apply(SilentOrders.Core.BattleSimulation b, string spec)
+        public static bool Apply(BattleSimulation b, string spec)
         {
             if (b.Time != 0f || spec == null)
             {
@@ -272,7 +140,16 @@ namespace SilentOrders.Core
 
             if (array2[6] < 0 || array2[6] > CombatTraining.Max(array2[1]))
                 return false;
-            if (Cost(b) - (array2[0] == 6 ? SoldierCost(b.Soldiers[4]) : 0) + TrainingCost(array2[2]) + TrainingCost(array2[3]) + TrainingCost(array2[4]) + TrainingCost(array2[5]) + CombatTraining.Price(array2[6]) > CampaignProgression.Budget(array2[1]))
+            if (
+                Cost(b)
+                    - (array2[0] == 6 ? SoldierCost(b.Soldiers[4]) : 0)
+                    + TrainingCost(array2[2])
+                    + TrainingCost(array2[3])
+                    + TrainingCost(array2[4])
+                    + TrainingCost(array2[5])
+                    + CombatTraining.Price(array2[6])
+                > CampaignProgression.Budget(array2[1])
+            )
             {
                 return false;
             }
@@ -286,20 +163,22 @@ namespace SilentOrders.Core
             b.Map.ConfigureMission(array2[0]);
             for (int k = 0; k < 5; k++)
             {
-                SilentOrders.Core.Soldier soldier = b.Soldiers[k];
+                Soldier soldier = b.Soldiers[k];
                 soldier.ReloadFactor = 1f - (float)array2[2] * 0.05f;
                 soldier.AidSeconds = 3f - (float)array2[3] * 0.2f;
                 MoraleDynamics.ConfigureTraining(b, soldier, array2[4]);
                 soldier.AccuracyFactor = 1f + (float)array2[5] * 0.05f;
-                soldier.Position = b.Map.NearestOpen(b.Map.Entry + new SilentOrders.Core.V2((k % 2 == 0) ? 0f : (-1.5f), (float)(k - 2) * 1.8f));
+                soldier.Position = b.Map.NearestOpen(
+                    b.Map.Entry + new V2((k % 2 == 0) ? 0f : (-1.5f), (float)(k - 2) * 1.8f)
+                );
                 soldier.OrderAnchor = (soldier.Destination = soldier.Position);
             }
 
-            int num = b.CampaignTotal - b.CampaignReserve;
+            int firstReserve = b.CampaignTotal - b.CampaignReserve;
             System.Collections.Generic.List<int> list = EnemyKits(b.CampaignLevel);
             for (int l = 0; l < 5; l++)
             {
-                if (l < num)
+                if (l < firstReserve)
                 {
                     b.Soldiers[l + 5] = Enemy(b, l + 5, l, list[l], reserve: false);
                     continue;
@@ -310,40 +189,44 @@ namespace SilentOrders.Core
             }
 
             b.Red.LeaderId = 5;
-            RedCounterattack.Configure(b, num);
+            RedCounterattack.Configure(b, firstReserve);
             b.Red.Initialized = false;
-            b.Log(SilentOrders.Core.Side.Green, "Кампания: операция " + b.CampaignLevel + " / 20. Противников: " + b.CampaignTotal + ((b.CampaignReserve > 0) ? ", часть находится в резерве" : ""));
+            b.Log(
+                Side.Green,
+                "Кампания: операция "
+                    + b.CampaignLevel
+                    + " / 20. Противников: "
+                    + b.CampaignTotal
+                    + ((b.CampaignReserve > 0) ? ", часть находится в резерве" : "")
+            );
             return true;
         }
 
         public static System.Collections.Generic.List<int> EnemyKits(int level)
         {
-            int num = level - 1;
-            System.Collections.Generic.List<int> list = new System.Collections.Generic.List<int>
-            {
-                0
-            };
+            int missionIndex = level - 1;
+            System.Collections.Generic.List<int> list = new System.Collections.Generic.List<int> { 0 };
             int[] array = new int[4]
             {
-                Missions[num, 1],
-                Missions[num, 2],
-                Missions[num, 3],
-                Missions[num, 4]
+                Missions[missionIndex, 1],
+                Missions[missionIndex, 2],
+                Missions[missionIndex, 3],
+                Missions[missionIndex, 4],
             };
-            while (list.Count < Missions[num, 0])
+            while (list.Count < Missions[missionIndex, 0])
             {
-                bool flag = false;
+                bool addedSpecialist = false;
                 for (int i = 0; i < 4; i++)
                 {
-                    if (array[i] > 0 && list.Count < Missions[num, 0])
+                    if (array[i] > 0 && list.Count < Missions[missionIndex, 0])
                     {
                         list.Add(i + 1);
                         array[i]--;
-                        flag = true;
+                        addedSpecialist = true;
                     }
                 }
 
-                if (!flag)
+                if (!addedSpecialist)
                 {
                     list.Add(0);
                 }
@@ -352,22 +235,17 @@ namespace SilentOrders.Core
             return list;
         }
 
-        public static SilentOrders.Core.Soldier Enemy(SilentOrders.Core.BattleSimulation b, int id, int index, int kit, bool reserve)
+        public static Soldier Enemy(BattleSimulation b, int id, int index, int kit, bool reserve)
         {
             int rigLevel = ((b.CampaignLevel >= 10) ? 2 : ((b.CampaignLevel >= 5) ? 1 : 0));
-            SilentOrders.Core.Soldier soldier = new SilentOrders.Core.Soldier(b.Rules);
+            Soldier soldier = new Soldier(b.Rules);
             soldier.Id = id;
-            soldier.Name = (reserve ? ("РЕЗЕРВ-" + (index + 1)) : (new string[5]
-            {
-                "ГРАНИТ",
-                "СЕВЕР",
-                "ДЫМ",
-                "ШИП",
-                "ЯСТРЕБ"
-            }
-
-            )[index % 5]);
-            soldier.Side = SilentOrders.Core.Side.Red;
+            soldier.Name = (
+                reserve
+                    ? ("РЕЗЕРВ-" + (index + 1))
+                    : (new string[5] { "ГРАНИТ", "СЕВЕР", "ДЫМ", "ШИП", "ЯСТРЕБ" })[index % 5]
+            );
+            soldier.Side = Side.Red;
             int role;
             switch (kit)
             {
@@ -385,55 +263,82 @@ namespace SilentOrders.Core
                     break;
             }
 
-            soldier.Role = (SilentOrders.Core.Role)role;
+            soldier.Role = (Role)role;
             soldier.RigLevel = rigLevel;
             soldier.SupplyPack = kit == 4;
             soldier.BuddyId = (reserve ? id : (5 + ((index == 0) ? 1 : 0)));
             soldier.Element = index % 2;
-            soldier.Facing = new SilentOrders.Core.V2(-1f, 0f);
-            SilentOrders.Core.Soldier soldier2 = soldier;
-            soldier2.Position = b.Map.NearestOpen(b.Map.CustomLevel ? b.Map.EnemyEntry + new SilentOrders.Core.V2((index % 2) * 1.7f, (index % 5 - 2) * 1.8f) : new SilentOrders.Core.V2((float)b.Map.Columns - (reserve ? 4.5f : (((b.CampaignLevel == 18 || b.CampaignLevel == 20) ? 19.5f : 9.5f) + (float)(index % 2 * 2))), (float)b.Map.Rows / 2f - 6f + (float)(index % 5 * 3)));
-            soldier2.OrderAnchor = (soldier2.Destination = soldier2.Position);
-            soldier2.Ammo = soldier2.MagazineSize;
-            soldier2.Magazines.Reset(soldier2, soldier2.ReserveCapacity);
-            soldier2.Tourniquets = ((kit != 2) ? 1 : 5);
-            soldier2.Rockets = ((kit == 3) ? 1 : 0);
-            int num = Missions[b.CampaignLevel - 1, 5];
-            int num2 = ((b.CampaignLevel < 15) ? 1 : ((Missions[b.CampaignLevel - 1, 0] + 1) / 2));
-            soldier2.SmokeCharges = ((index == 0) ? System.Math.Min(3, num) : ((index == num2) ? System.Math.Max(0, num - 3) : 0));
-            soldier2.PackRockets = ((kit == 4) ? 2 : 0);
-            soldier2.PackBoxes = ((kit == 4) ? 1 : 0);
-            soldier2.PackMagazines = ((kit == 4) ? 10 : 0);
-            SilentOrders.Core.CampaignEnemyEquipment.Apply(b.CampaignLevel, index, soldier2);
-            WeaponProgression.Assign(b, soldier2,
-                b.EnemyWeaponMission > 0 ? b.EnemyWeaponMission : b.CampaignLevel, b.EnemyWeaponEndless);
-            return soldier2;
+            soldier.Facing = new V2(-1f, 0f);
+            Soldier configuredSoldier = soldier;
+            configuredSoldier.Position = b.Map.NearestOpen(
+                b.Map.CustomLevel
+                    ? b.Map.EnemyEntry + new V2((index % 2) * 1.7f, (index % 5 - 2) * 1.8f)
+                    : new V2(
+                        (float)b.Map.Columns
+                            - (
+                                reserve
+                                    ? 4.5f
+                                    : (
+                                        ((b.CampaignLevel == 18 || b.CampaignLevel == 20) ? 19.5f : 9.5f)
+                                        + (float)(index % 2 * 2)
+                                    )
+                            ),
+                        (float)b.Map.Rows / 2f - 6f + (float)(index % 5 * 3)
+                    )
+            );
+            configuredSoldier.OrderAnchor = (configuredSoldier.Destination = configuredSoldier.Position);
+            configuredSoldier.Ammo = configuredSoldier.MagazineSize;
+            configuredSoldier.Magazines.Reset(configuredSoldier, configuredSoldier.ReserveCapacity);
+            configuredSoldier.Tourniquets = ((kit != 2) ? 1 : 5);
+            configuredSoldier.Rockets = ((kit == 3) ? 1 : 0);
+            int smokeCount = Missions[b.CampaignLevel - 1, 5];
+            int secondSmokeCarrier = ((b.CampaignLevel < 15) ? 1 : ((Missions[b.CampaignLevel - 1, 0] + 1) / 2));
+            configuredSoldier.SmokeCharges = (
+                (index == 0)
+                    ? Math.Min(3, smokeCount)
+                    : ((index == secondSmokeCarrier) ? Math.Max(0, smokeCount - 3) : 0)
+            );
+            configuredSoldier.PackRockets = ((kit == 4) ? 2 : 0);
+            configuredSoldier.PackBoxes = ((kit == 4) ? 1 : 0);
+            configuredSoldier.PackMagazines = ((kit == 4) ? 10 : 0);
+            CampaignEnemyEquipment.Apply(b.CampaignLevel, index, configuredSoldier);
+            WeaponProgression.Assign(
+                b,
+                configuredSoldier,
+                b.EnemyWeaponMission > 0 ? b.EnemyWeaponMission : b.CampaignLevel,
+                b.EnemyWeaponEndless
+            );
+            return configuredSoldier;
         }
 
-        public static void Update(SilentOrders.Core.BattleSimulation b)
+        public static void Update(BattleSimulation b)
         {
             if (b.CustomDefenders || b.CampaignReserve == 0)
             {
                 return;
             }
 
-            bool flag = false;
-            foreach (SilentOrders.Core.Soldier soldier2 in b.Soldiers)
+            bool greenNearObjective = false;
+            foreach (Soldier attacker in b.Soldiers)
             {
-                if (soldier2.Side == SilentOrders.Core.Side.Green && soldier2.Alive && SilentOrders.Core.V2.Distance(soldier2.Position, b.Map.Objective) < 12f)
+                if (
+                    attacker.Side == Side.Green
+                    && attacker.Alive
+                    && V2.Distance(attacker.Position, b.Map.Objective) < 12f
+                )
                 {
-                    flag = true;
+                    greenNearObjective = true;
                 }
             }
 
-            if (b.Alive(SilentOrders.Core.Side.Red) <= 1 || flag || !(b.Time < 110f))
+            if (b.Alive(Side.Red) <= 1 || greenNearObjective || !(b.Time < 110f))
             {
                 System.Collections.Generic.List<int> list = EnemyKits(b.CampaignLevel);
-                int num = b.CampaignTotal - b.CampaignReserve;
-                for (int i = num; i < b.CampaignTotal; i++)
+                int firstReserve = b.CampaignTotal - b.CampaignReserve;
+                for (int i = firstReserve; i < b.CampaignTotal; i++)
                 {
                     int count = b.Soldiers.Count;
-                    SilentOrders.Core.Soldier soldier = Enemy(b, count, i, list[i], reserve: true);
+                    Soldier soldier = Enemy(b, count, i, list[i], reserve: true);
                     soldier.BuddyId = count;
                     b.Soldiers.Add(soldier);
                 }
@@ -445,7 +350,7 @@ namespace SilentOrders.Core
                 b.Red.Defense.Active = false;
                 b.Red.Defense.Movers.Clear();
                 b.Red.NextPlan = 0f;
-                b.Log(SilentOrders.Core.Side.Red, "Резерв вступает в бой на последнем рубеже.");
+                b.Log(Side.Red, "Резерв вступает в бой на последнем рубеже.");
             }
         }
     }

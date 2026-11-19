@@ -6,15 +6,22 @@ namespace SilentOrders.Core
     // Persistent physical firearm. Landing and claim state are authoritative, not renderer-owned.
     public sealed class GroundWeapon
     {
-        public int Id, FromSoldierId;
+        public int Id,
+            FromSoldierId;
         public Role GunRole;
-        public int Variant, Magazine;
+        public int Variant,
+            Magazine;
         public WeaponUpgrade Upgrade;
-        public V2 From, To;
-        public float Born, Duration, Angle;
+        public V2 From,
+            To;
+        public float Born,
+            Duration,
+            Angle;
         public bool Collected;
         public StudioPlaced Scene;
+
         public bool Flying(float now) => Duration > 0 && now < Born + Duration;
+
         public float ArcHeight(float now)
         {
             if (!Flying(now))
@@ -35,8 +42,19 @@ namespace SilentOrders.Core
     public static class CorpseEquipment
     {
         static int Total(Soldier s) => Math.Max(0, s.Ammo) + Math.Max(0, s.Reserve);
+
         static bool Empty(Soldier s) => Total(s) == 0;
-        static bool Mobile(BattleSimulation b, Soldier s) => s != null && s.Available && !s.Broken && s.Deployed && s.Suppression < .72f && s.Morale >= .24f && b.Time - s.LastIncoming >= 2f && !TacticalOrders.Emergency(b.Team(s));
+
+        static bool Mobile(BattleSimulation b, Soldier s) =>
+            s != null
+            && s.Available
+            && !s.Broken
+            && s.Deployed
+            && s.Suppression < .72f
+            && s.Morale >= .24f
+            && b.Time - s.LastIncoming >= 2f
+            && !TacticalOrders.Emergency(b.Team(s));
+
         public static bool ValidDroppedWeaponSite(BattleMap map, V2 candidate)
         {
             if (!map.Walkable(candidate))
@@ -70,17 +88,27 @@ namespace SilentOrders.Core
             // A fallback is allowed only when no safe site exists; still never put it
             // inside a solid/half-cover tile, even on a very small generated map.
             for (int y = 0; y < map.Rows; y++)
-                for (int x = 0; x < map.Columns; x++)
-                {
-                    var test = new V2(x + .5f, y + .5f);
-                    if (ValidDroppedWeaponSite(map, test))
-                        return test;
-                }
+            for (int x = 0; x < map.Columns; x++)
+            {
+                var test = new V2(x + .5f, y + .5f);
+                if (ValidDroppedWeaponSite(map, test))
+                    return test;
+            }
 
             return center;
         }
 
-        public static GroundWeapon Place(BattleSimulation b, Role role, int variant, int magazine, V2 point, int owner, V2 destination, float flight = 0f, WeaponUpgrade upgrade = null)
+        public static GroundWeapon Place(
+            BattleSimulation b,
+            Role role,
+            int variant,
+            int magazine,
+            V2 point,
+            int owner,
+            V2 destination,
+            float flight = 0f,
+            WeaponUpgrade upgrade = null
+        )
         {
             int id = b.GroundWeapons.Count;
             if (!ValidDroppedWeaponSite(b.Map, destination))
@@ -97,7 +125,7 @@ namespace SilentOrders.Core
                 To = destination,
                 Born = b.Time,
                 Duration = flight,
-                Angle = ((id * 71 + owner * 31 + 19) % 628) / 100f
+                Angle = ((id * 71 + owner * 31 + 19) % 628) / 100f,
             };
             b.GroundWeapons.Add(drop);
             return drop;
@@ -111,7 +139,8 @@ namespace SilentOrders.Core
             hash ^= hash >> 16;
             hash *= 2246822519u;
             hash ^= hash >> 13;
-            float a = (hash % 6283u) / 1000f, g = ((hash >> 10) % 6283u) / 1000f;
+            float a = (hash % 6283u) / 1000f,
+                g = ((hash >> 10) % 6283u) / 1000f;
             fallen.CorpseAngle = 1.57f;
             fallen.DroppedWeaponAngle = g; // fixed classic body, randomized gun
             fallen.DroppedWeaponPosition = FindWeaponLanding(b.Map, fallen.Position, g);
@@ -126,7 +155,16 @@ namespace SilentOrders.Core
             if (fallen.HasBackWeapon)
             {
                 var v = FindWeaponLanding(b.Map, fallen.Position, a + 1.9f);
-                Place(b, fallen.BackGunRole, fallen.Side == Side.Red && fallen.BackVariant < 6 ? fallen.BackVariant + 6 : fallen.BackVariant, fallen.BackAmmo, fallen.Position, fallen.Id, v, upgrade: fallen.BackWeaponUpgrade);
+                Place(
+                    b,
+                    fallen.BackGunRole,
+                    fallen.Side == Side.Red && fallen.BackVariant < 6 ? fallen.BackVariant + 6 : fallen.BackVariant,
+                    fallen.BackAmmo,
+                    fallen.Position,
+                    fallen.Id,
+                    v,
+                    upgrade: fallen.BackWeaponUpgrade
+                );
                 fallen.HasBackWeapon = false;
                 fallen.BackAmmo = fallen.BackReserve = 0;
             }
@@ -136,20 +174,45 @@ namespace SilentOrders.Core
         {
             if (!CombatTraining.Skill(looter, 2, "loot"))
                 return false;
-            return looter != null && corpse != null && looter.Id != corpse.Id && looter.Alive && !looter.Incapacitated && !looter.Broken && looter.Deployed && !corpse.Alive && corpse.Deployed && corpse.WeaponDropped && !corpse.WeaponClaimed && corpse.DroppedAmmo > 0 && Empty(looter) && !TacticalOrders.Emergency(b.Team(looter));
+            return looter != null
+                && corpse != null
+                && looter.Id != corpse.Id
+                && looter.Alive
+                && !looter.Incapacitated
+                && !looter.Broken
+                && looter.Deployed
+                && !corpse.Alive
+                && corpse.Deployed
+                && corpse.WeaponDropped
+                && !corpse.WeaponClaimed
+                && corpse.DroppedAmmo > 0
+                && Empty(looter)
+                && !TacticalOrders.Emergency(b.Team(looter));
         }
 
         static bool HasNeedyAlly(BattleSimulation b, Soldier helper)
         {
             foreach (var ally in b.Soldiers)
-                if (ally.Side == helper.Side && ally.Id != helper.Id && ally.Alive && ally.Deployed && !ally.Incapacitated && Empty(ally) && V2.Distance(ally.Position, helper.Position) < 14f)
+                if (
+                    ally.Side == helper.Side
+                    && ally.Id != helper.Id
+                    && ally.Alive
+                    && ally.Deployed
+                    && !ally.Incapacitated
+                    && Empty(ally)
+                    && V2.Distance(ally.Position, helper.Position) < 14f
+                )
                     return true;
             return false;
         }
 
         static bool CanCarry(BattleSimulation b, Soldier looter)
         {
-            return CombatTraining.Skill(looter, 1, "toss") && Mobile(b, looter) && !looter.HasBackWeapon && HasNeedyAlly(b, looter) && Total(looter) > 0;
+            return CombatTraining.Skill(looter, 1, "toss")
+                && Mobile(b, looter)
+                && !looter.HasBackWeapon
+                && HasNeedyAlly(b, looter)
+                && Total(looter) > 0;
         }
 
         static bool CanPlanPickup(BattleSimulation b, Soldier s, Role role, int variant, int rounds, bool forAlly)
@@ -161,9 +224,21 @@ namespace SilentOrders.Core
             return s.Side != Side.Green || SquadLoadout.ClassKit(s.Role, variant % 6, 0);
         }
 
-        static bool Acquire(BattleSimulation b, Soldier s, Role role, int variant, int loaded, bool forAlly, WeaponUpgrade upgrade)
+        static bool Acquire(
+            BattleSimulation b,
+            Soldier s,
+            Role role,
+            int variant,
+            int loaded,
+            bool forAlly,
+            WeaponUpgrade upgrade
+        )
         {
-            if (loaded <= 0 || s.HasBackWeapon || s.Side == Side.Green && !SquadLoadout.ClassKit(s.Role, variant % 6, 0))
+            if (
+                loaded <= 0
+                || s.HasBackWeapon
+                || s.Side == Side.Green && !SquadLoadout.ClassKit(s.Role, variant % 6, 0)
+            )
                 return false;
             // One rifle in hand, exactly one on the back. No reserve ammo is transferred.
             if (Total(s) > 0)
@@ -217,10 +292,26 @@ namespace SilentOrders.Core
                 return false;
             if (looter.Side == Side.Green && corpse.DroppedWeaponRole == Role.MachineGunner)
                 return NewMechanics.InheritMG(b, looter);
-            bool needy = CanTake(b, looter, corpse), carry = CanCarry(b, looter);
-            if ((!needy && !carry) || corpse.DroppedAmmo <= 0 || corpse.WeaponClaimed || V2.Distance(looter.Position, corpse.DroppedWeaponPosition) > 1.55f)
+            bool needy = CanTake(b, looter, corpse),
+                carry = CanCarry(b, looter);
+            if (
+                (!needy && !carry)
+                || corpse.DroppedAmmo <= 0
+                || corpse.WeaponClaimed
+                || V2.Distance(looter.Position, corpse.DroppedWeaponPosition) > 1.55f
+            )
                 return false;
-            if (!Acquire(b, looter, corpse.DroppedWeaponRole, corpse.DroppedWeaponVariant, corpse.DroppedAmmo, carry, corpse.DroppedWeaponUpgrade))
+            if (
+                !Acquire(
+                    b,
+                    looter,
+                    corpse.DroppedWeaponRole,
+                    corpse.DroppedWeaponVariant,
+                    corpse.DroppedAmmo,
+                    carry,
+                    corpse.DroppedWeaponUpgrade
+                )
+            )
                 return false;
             corpse.WeaponClaimed = true;
             corpse.DroppedAmmo = corpse.DroppedReserve = 0;
@@ -229,9 +320,21 @@ namespace SilentOrders.Core
 
         public static bool CollectGround(BattleSimulation b, Soldier looter, GroundWeapon item)
         {
-            if (item != null && item.FromSoldierId >= 0 && item.FromSoldierId < b.Soldiers.Count && !b.Soldiers[item.FromSoldierId].Alive && !CombatTraining.Skill(looter, 2, "loot"))
+            if (
+                item != null
+                && item.FromSoldierId >= 0
+                && item.FromSoldierId < b.Soldiers.Count
+                && !b.Soldiers[item.FromSoldierId].Alive
+                && !CombatTraining.Skill(looter, 2, "loot")
+            )
                 return false;
-            if (item == null || item.Collected || item.Magazine <= 0 || item.Flying(b.Time) || !SceneEquipment.Reach(b, looter.Position, item.To, item.Scene, 1.55f))
+            if (
+                item == null
+                || item.Collected
+                || item.Magazine <= 0
+                || item.Flying(b.Time)
+                || !SceneEquipment.Reach(b, looter.Position, item.To, item.Scene, 1.55f)
+            )
                 return false;
             if (looter.Side == Side.Green && item.GunRole == Role.MachineGunner)
                 return NewMechanics.InheritMG(b, looter);
@@ -252,7 +355,9 @@ namespace SilentOrders.Core
                 return false;
             bool oldWasRecovered = s.ActiveRecoveredWeapon;
             Role oldRole = s.GunRole;
-            int oldVariant = WeaponBalance.Index(s), oldAmmo = s.Ammo, oldReserve = s.Reserve;
+            int oldVariant = WeaponBalance.Index(s),
+                oldAmmo = s.Ammo,
+                oldReserve = s.Reserve;
             var oldMagazines = s.Magazines;
             var oldUpgrade = s.WeaponUpgrade;
             s.WeaponUpgrade = s.BackWeaponUpgrade;
@@ -269,7 +374,16 @@ namespace SilentOrders.Core
             // If a looted weapon ran dry, discard it and retrieve the original from the back.
             if (oldWasRecovered && oldAmmo + oldReserve == 0)
             {
-                Place(b, oldRole, oldVariant, 0, s.Position, s.Id, s.Position + new V2(.5f, -.25f), upgrade: oldUpgrade);
+                Place(
+                    b,
+                    oldRole,
+                    oldVariant,
+                    0,
+                    s.Position,
+                    s.Id,
+                    s.Position + new V2(.5f, -.25f),
+                    upgrade: oldUpgrade
+                );
                 s.HasBackWeapon = false;
                 s.ActiveRecoveredWeapon = false;
                 s.BackAmmo = s.BackReserve = 0;
@@ -290,13 +404,35 @@ namespace SilentOrders.Core
         {
             if (!CombatTraining.Skill(helper, 1, "toss"))
                 return false;
-            if (helper == null || receiver == null || helper.Research.BorrowedMG || helper.Side != receiver.Side || !helper.HasBackWeapon || helper.BackAmmo <= 0 || !helper.Available || !receiver.Alive || receiver.Incapacitated || !Empty(receiver) || TacticalOrders.Emergency(b.Team(helper)))
+            if (
+                helper == null
+                || receiver == null
+                || helper.Research.BorrowedMG
+                || helper.Side != receiver.Side
+                || !helper.HasBackWeapon
+                || helper.BackAmmo <= 0
+                || !helper.Available
+                || !receiver.Alive
+                || receiver.Incapacitated
+                || !Empty(receiver)
+                || TacticalOrders.Emergency(b.Team(helper))
+            )
                 return false;
             float distance = V2.Distance(helper.Position, receiver.Position);
             if (distance > 4f || distance < .6f || !b.Map.LineOfSight(helper.Position, receiver.Position))
                 return false;
             // Use the receiver's current position. One real magazine moves through the air.
-            var ground = Place(b, helper.BackGunRole, helper.BackVariant, helper.BackAmmo, helper.Position, helper.Id, receiver.Position, .38f + .11f * distance, helper.BackWeaponUpgrade);
+            var ground = Place(
+                b,
+                helper.BackGunRole,
+                helper.BackVariant,
+                helper.BackAmmo,
+                helper.Position,
+                helper.Id,
+                receiver.Position,
+                .38f + .11f * distance,
+                helper.BackWeaponUpgrade
+            );
             helper.BackAmmo = helper.BackReserve = 0;
             helper.HasBackWeapon = false;
             if (helper.WeaponAidTargetId >= 0)
@@ -340,7 +476,11 @@ namespace SilentOrders.Core
             return distance <= 9f || needGun && distance <= 12f && BattleVisibility.Sees(b, s, point);
         }
 
-        static bool OwnsRoute(Soldier s) => s.EquipmentRecoveryRoute != null && Object.ReferenceEquals(s.Path, s.EquipmentRecoveryRoute) && V2.Distance(s.OrderAnchor, s.EquipmentRecoveryGoal) < .01f;
+        static bool OwnsRoute(Soldier s) =>
+            s.EquipmentRecoveryRoute != null
+            && Object.ReferenceEquals(s.Path, s.EquipmentRecoveryRoute)
+            && V2.Distance(s.OrderAnchor, s.EquipmentRecoveryGoal) < .01f;
+
         static void ReleaseRoute(Soldier s)
         {
             if (OwnsRoute(s))
@@ -395,7 +535,15 @@ namespace SilentOrders.Core
             Soldier best = null;
             float distance = float.MaxValue;
             foreach (var unit in b.Soldiers)
-                if (unit.Side == helper.Side && unit.Id != helper.Id && unit.Alive && !unit.Incapacitated && unit.Deployed && Empty(unit) && V2.Distance(helper.Position, unit.Position) < distance)
+                if (
+                    unit.Side == helper.Side
+                    && unit.Id != helper.Id
+                    && unit.Alive
+                    && !unit.Incapacitated
+                    && unit.Deployed
+                    && Empty(unit)
+                    && V2.Distance(helper.Position, unit.Position) < distance
+                )
                 {
                     best = unit;
                     distance = V2.Distance(helper.Position, unit.Position);
@@ -406,7 +554,15 @@ namespace SilentOrders.Core
 
         public static bool RecoveryRouteSafe(BattleSimulation b, Soldier mover)
         {
-            if (!OwnsRoute(mover) || (mover.LootTargetId < 0 && mover.LootGroundId < 0 && mover.WeaponAidTargetId < 0) || mover.PathCursor >= mover.Path.Count || !mover.Available || mover.Broken || mover.Suppression > .70f || mover.Morale < .25f)
+            if (
+                !OwnsRoute(mover)
+                || (mover.LootTargetId < 0 && mover.LootGroundId < 0 && mover.WeaponAidTargetId < 0)
+                || mover.PathCursor >= mover.Path.Count
+                || !mover.Available
+                || mover.Broken
+                || mover.Suppression > .70f
+                || mover.Morale < .25f
+            )
                 return false;
             var next = mover.Path[mover.PathCursor];
             return Danger(b, mover, next) < 5f; // never treats direct hostile fire as guaranteed cover
@@ -437,10 +593,23 @@ namespace SilentOrders.Core
         public static bool ValidWeaponAid(BattleSimulation b, Soldier s)
         {
             int id = s.WeaponAidTargetId;
-            if (s.Research.BorrowedMG || id < 0 || id >= b.Soldiers.Count || id == s.Id || !s.HasBackWeapon || s.BackAmmo <= 0 || Total(s) <= 0)
+            if (
+                s.Research.BorrowedMG
+                || id < 0
+                || id >= b.Soldiers.Count
+                || id == s.Id
+                || !s.HasBackWeapon
+                || s.BackAmmo <= 0
+                || Total(s) <= 0
+            )
                 return false;
             var target = b.Soldiers[id];
-            return target.Side == s.Side && target.Alive && target.Deployed && !target.Incapacitated && Empty(target) && V2.Distance(s.Position, target.Position) <= 12f;
+            return target.Side == s.Side
+                && target.Alive
+                && target.Deployed
+                && !target.Incapacitated
+                && Empty(target)
+                && V2.Distance(s.Position, target.Position) <= 12f;
         }
 
         public static void MaintainWeaponAid(BattleSimulation b, Soldier s)
@@ -453,7 +622,13 @@ namespace SilentOrders.Core
             s.NextDecision = 0;
             b.Team(s).NextPlan = 0;
             s.Ai.Rejected = "";
-            b.Diagnostics.Add(b, s, "finish", "Supply", "Доставка оружия отменена: получатель или запасное оружие недоступны");
+            b.Diagnostics.Add(
+                b,
+                s,
+                "finish",
+                "Supply",
+                "Доставка оружия отменена: получатель или запасное оружие недоступны"
+            );
         }
 
         public static bool TryUpdate(BattleSimulation b, Soldier s)
@@ -530,8 +705,17 @@ namespace SilentOrders.Core
             // considered. Otherwise its old route could block a valid replacement.
             if (OwnsRoute(s) && (s.LootTargetId >= 0 || s.LootGroundId >= 0))
             {
-                bool bodyAvailable = s.LootTargetId >= 0 && s.LootTargetId < b.Soldiers.Count && !b.Soldiers[s.LootTargetId].Alive && !b.Soldiers[s.LootTargetId].WeaponClaimed && b.Soldiers[s.LootTargetId].DroppedAmmo > 0;
-                bool groundAvailable = s.LootGroundId >= 0 && s.LootGroundId < b.GroundWeapons.Count && !b.GroundWeapons[s.LootGroundId].Collected && b.GroundWeapons[s.LootGroundId].Magazine > 0;
+                bool bodyAvailable =
+                    s.LootTargetId >= 0
+                    && s.LootTargetId < b.Soldiers.Count
+                    && !b.Soldiers[s.LootTargetId].Alive
+                    && !b.Soldiers[s.LootTargetId].WeaponClaimed
+                    && b.Soldiers[s.LootTargetId].DroppedAmmo > 0;
+                bool groundAvailable =
+                    s.LootGroundId >= 0
+                    && s.LootGroundId < b.GroundWeapons.Count
+                    && !b.GroundWeapons[s.LootGroundId].Collected
+                    && b.GroundWeapons[s.LootGroundId].Magazine > 0;
                 if (!bodyAvailable && !groundAvailable)
                     ReleaseRoute(s);
             }
@@ -569,9 +753,25 @@ namespace SilentOrders.Core
             float best = float.MaxValue;
             foreach (var corpse in b.Soldiers)
             {
-                if (!CombatTraining.Skill(s, 2, "loot") || !CanPlanPickup(b, s, corpse.DroppedWeaponRole, corpse.DroppedWeaponVariant, corpse.DroppedAmmo, aid))
+                if (
+                    !CombatTraining.Skill(s, 2, "loot")
+                    || !CanPlanPickup(
+                        b,
+                        s,
+                        corpse.DroppedWeaponRole,
+                        corpse.DroppedWeaponVariant,
+                        corpse.DroppedAmmo,
+                        aid
+                    )
+                )
                     continue;
-                if (corpse.Alive || !corpse.Deployed || !corpse.WeaponDropped || corpse.WeaponClaimed || corpse.DroppedAmmo <= 0)
+                if (
+                    corpse.Alive
+                    || !corpse.Deployed
+                    || !corpse.WeaponDropped
+                    || corpse.WeaponClaimed
+                    || corpse.DroppedAmmo <= 0
+                )
                     continue;
                 if (!needGun && !aid)
                     continue;
@@ -587,7 +787,12 @@ namespace SilentOrders.Core
 
             foreach (var item in b.GroundWeapons)
             {
-                if (item.FromSoldierId >= 0 && item.FromSoldierId < b.Soldiers.Count && !b.Soldiers[item.FromSoldierId].Alive && !CombatTraining.Skill(s, 2, "loot"))
+                if (
+                    item.FromSoldierId >= 0
+                    && item.FromSoldierId < b.Soldiers.Count
+                    && !b.Soldiers[item.FromSoldierId].Alive
+                    && !CombatTraining.Skill(s, 2, "loot")
+                )
                     continue;
                 if (!CanPlanPickup(b, s, item.GunRole, item.Variant, item.Magazine, aid))
                     continue;
@@ -615,14 +820,27 @@ namespace SilentOrders.Core
                 if (needGun)
                     foreach (var helper in b.Soldiers)
                     {
-                        if (helper.Research.BorrowedMG || helper.Side != s.Side || !helper.Alive || helper.Id == s.Id || !helper.HasBackWeapon || helper.BackAmmo <= 0)
+                        if (
+                            helper.Research.BorrowedMG
+                            || helper.Side != s.Side
+                            || !helper.Alive
+                            || helper.Id == s.Id
+                            || !helper.HasBackWeapon
+                            || helper.BackAmmo <= 0
+                        )
                             continue;
                         float d = V2.Distance(s.Position, helper.Position);
                         if (d > 9f || d < .8f || b.Time < s.WeaponAidRetryAt)
                             continue;
-                        if (!PositionLogic.Protected(b, s, s.Position) && PositionLogic.Protected(b, helper, helper.Position))
+                        if (
+                            !PositionLogic.Protected(b, s, s.Position)
+                            && PositionLogic.Protected(b, helper, helper.Position)
+                        )
                         {
-                            V2 helperRendezvousGoal = TacticalOrders.Open(b, helper.Position + (s.Position - helper.Position).Normalized * 2f);
+                            V2 helperRendezvousGoal = TacticalOrders.Open(
+                                b,
+                                helper.Position + (s.Position - helper.Position).Normalized * 2f
+                            );
                             if (Danger(b, s, helperRendezvousGoal) < 5f)
                             {
                                 Follow(b, s, helperRendezvousGoal, -1, -1, 10f);

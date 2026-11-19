@@ -14,9 +14,18 @@ namespace SilentOrders.Core
             public int Revision = -1;
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, Memory> Data = new ConditionalWeakTable<BattleSimulation, Memory>();
+        static readonly ConditionalWeakTable<BattleSimulation, Memory> Data =
+            new ConditionalWeakTable<BattleSimulation, Memory>();
+
         static int Key(BattleSimulation b, V2 p) => (int)p.Y * b.Map.Columns + (int)p.X;
-        public static V2 ChooseSector(BattleSimulation b, Soldier s, List<KeyValuePair<float, V2>> candidates, List<V2> assigned, V2 fallback)
+
+        public static V2 ChooseSector(
+            BattleSimulation b,
+            Soldier s,
+            List<KeyValuePair<float, V2>> candidates,
+            List<V2> assigned,
+            V2 fallback
+        )
         {
             var m = Data.GetOrCreateValue(b);
             float best = float.MinValue;
@@ -28,7 +37,10 @@ namespace SilentOrders.Core
                     continue;
                 float seen;
                 float age = m.Seen.TryGetValue(Key(b, c.Value), out seen) ? Math.Min(8, b.Time - seen) : 8;
-                float score = c.Key + age * (b.PairExperimentProfile == 4 ? .12f : .3f) - DirectionalVision.Angle(s.Awareness.Look, delta) * (b.PairExperimentProfile == 4 ? .025f : .008f);
+                float score =
+                    c.Key
+                    + age * (b.PairExperimentProfile == 4 ? .12f : .3f)
+                    - DirectionalVision.Angle(s.Awareness.Look, delta) * (b.PairExperimentProfile == 4 ? .025f : .008f);
                 foreach (var p in assigned)
                 {
                     float angle = DirectionalVision.Angle(delta, p - s.Position);
@@ -45,7 +57,11 @@ namespace SilentOrders.Core
 
             // Mark only actually visible candidates; assignment alone never counts as inspection.
             foreach (var c in candidates)
-                if (DirectionalVision.InView(b, s, c.Value) && b.Map.LineOfSight(s.Position, c.Value) && b.SmokeTransmission(s.Position, c.Value) > .8f)
+                if (
+                    DirectionalVision.InView(b, s, c.Value)
+                    && b.Map.LineOfSight(s.Position, c.Value)
+                    && b.SmokeTransmission(s.Position, c.Value) > .8f
+                )
                     m.Seen[Key(b, c.Value)] = b.Time;
             return result;
         }

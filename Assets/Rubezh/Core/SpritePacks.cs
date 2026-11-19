@@ -12,18 +12,22 @@ namespace Rubezh
         public static int MissingSpriteCount => missingSprites.Count;
         public static int LastMissingSprite { get; private set; } = -1;
         static readonly byte[] missingPixels = new byte[4];
+
         public static bool ReportMissingSprite(int id)
         {
             LastMissingSprite = id;
             return missingSprites.Add(id);
         }
+
         public static void ValidateSceneSprites(HashSet<int> required)
         {
             foreach (int id in required)
                 if (!HasSprite(id))
                     throw new InvalidDataException("Scene sprite unavailable before battle: " + id);
         }
-        static readonly HashSet<int> loadedPages = new HashSet<int>(), partialPages = new HashSet<int>();
+
+        static readonly HashSet<int> loadedPages = new HashSet<int>(),
+            partialPages = new HashSet<int>();
         public static bool PackedMode { get; private set; }
 
         public static void ConfigurePacks()
@@ -67,8 +71,10 @@ namespace Rubezh
             }
         }
 
-        static bool IsLookSprite(int id) => (id >= GreenLook.LayerStart && id < RedBeltSprite) || PawnAtlas.Contains(id);
-        public static bool HasPage(int page, HashSet<int> looks, HashSet<int> required=null)
+        static bool IsLookSprite(int id) =>
+            (id >= GreenLook.LayerStart && id < RedBeltSprite) || PawnAtlas.Contains(id);
+
+        public static bool HasPage(int page, HashSet<int> looks, HashSet<int> required = null)
         {
             lock (publishGate)
             {
@@ -76,7 +82,10 @@ namespace Rubezh
                     return true;
                 if (looks == null || !partialPages.Contains(page))
                     return false;
-                if(required!=null)foreach(int id in required)if(SpritePackIndex.Page[id]==page&&!HasSpritePixels(id))return false;
+                if (required != null)
+                    foreach (int id in required)
+                        if (SpritePackIndex.Page[id] == page && !HasSpritePixels(id))
+                            return false;
                 foreach (int id in looks)
                     if (SpritePackIndex.Page[id] == page && !HasSpritePixels(id))
                         return false;
@@ -145,7 +154,10 @@ namespace Rubezh
         {
             var p = new HashSet<int>();
             for (int i = 0; i < 223; i++)
-                if (!(i >= WholeSoldierStart && i < LoadoutSoldierStart + 72 && i != KedrBadge) && SpritePackIndex.Page[SpritePackIndex.Resolve(i)] >= 0)
+                if (
+                    !(i >= WholeSoldierStart && i < LoadoutSoldierStart + 72 && i != KedrBadge)
+                    && SpritePackIndex.Page[SpritePackIndex.Resolve(i)] >= 0
+                )
                     AddPage(p, i);
             p.Add(274);
             AddPage(p, 6824);
@@ -193,8 +205,22 @@ namespace Rubezh
         public static HashSet<int> PagesFor(BattleMap map)
         {
             var pages = CommonPages();
-            if(map!=null && map.DynamicBuildings!=null){AddDebris(pages,"glass");AddDebris(pages,"concrete");foreach(var h in map.DynamicBuildings)foreach(var w in h.Walls)AddDebris(pages,w.Source.material=="wood"?"planks":w.Source.material=="brick"?"red-brick":"concrete");}
-            if(map!=null)for(int tree=101;tree<=104;tree++)AddAsset(pages,StudioCatalog.Find("legacy-"+tree,false));
+            if (map != null && map.DynamicBuildings != null)
+            {
+                AddDebris(pages, "glass");
+                AddDebris(pages, "concrete");
+                foreach (var h in map.DynamicBuildings)
+                foreach (var w in h.Walls)
+                    AddDebris(
+                        pages,
+                        w.Source.material == "wood" ? "planks"
+                            : w.Source.material == "brick" ? "red-brick"
+                            : "concrete"
+                    );
+            }
+            if (map != null)
+                for (int tree = 101; tree <= 104; tree++)
+                    AddAsset(pages, StudioCatalog.Find("legacy-" + tree, false));
             if (map != null && map.Studio != null)
             {
                 foreach (var a in map.Studio.Ground)
@@ -208,33 +234,119 @@ namespace Rubezh
             return pages;
         }
 
-        public static HashSet<int> SceneSprites(BattleSimulation sim){
-            var ids=new HashSet<int>();
+        public static HashSet<int> SceneSprites(BattleSimulation sim)
+        {
+            var ids = new HashSet<int>();
             // Common IDs, not whole pack pages: a page can also contain unrelated HD props.
-            for(int id=0;id<223;id++)
-                if(!(id>=WholeSoldierStart&&id<LoadoutSoldierStart+72&&id!=KedrBadge)) {
-                    int resolved=SpritePackIndex.Resolve(id);
-                    if(SpritePackIndex.Page[resolved]>=0)ids.Add(resolved);
+            for (int id = 0; id < 223; id++)
+                if (!(id >= WholeSoldierStart && id < LoadoutSoldierStart + 72 && id != KedrBadge))
+                {
+                    int resolved = SpritePackIndex.Resolve(id);
+                    if (SpritePackIndex.Page[resolved] >= 0)
+                        ids.Add(resolved);
                 }
-            Action<int> add=id=>{id=SpritePackIndex.Resolve(id);if(id<0||id>=SpritePackIndex.Count||SpritePackIndex.Page[id]<0)throw new InvalidDataException("Scene references removed sprite: "+id);ids.Add(id);};
-            Action<string> debris=key=>{if(string.IsNullOrEmpty(key))return;int[] list;if(DebrisCatalog.Small.TryGetValue(key,out list))foreach(int id in list)add(DebrisCatalog.Sprite(id));if(DebrisCatalog.Large.TryGetValue(key,out list))foreach(int id in list)add(DebrisCatalog.Sprite(id));};
-            Action<StudioAsset> asset=a=>{if(a==null)return;foreach(var s in a.Sprites)add(s.Id);if(a.Caps!=null)foreach(var c in a.Caps)add(c.Sprite.Id);debris(a.DebrisKey);if(a.DebrisExtraKeys!=null)foreach(var key in a.DebrisExtraKeys)debris(key);};
+            Action<int> add = id =>
+            {
+                id = SpritePackIndex.Resolve(id);
+                if (id < 0 || id >= SpritePackIndex.Count || SpritePackIndex.Page[id] < 0)
+                    throw new InvalidDataException("Scene references removed sprite: " + id);
+                ids.Add(id);
+            };
+            Action<string> debris = key =>
+            {
+                if (string.IsNullOrEmpty(key))
+                    return;
+                int[] list;
+                if (DebrisCatalog.Small.TryGetValue(key, out list))
+                    foreach (int id in list)
+                        add(DebrisCatalog.Sprite(id));
+                if (DebrisCatalog.Large.TryGetValue(key, out list))
+                    foreach (int id in list)
+                        add(DebrisCatalog.Sprite(id));
+            };
+            Action<StudioAsset> asset = a =>
+            {
+                if (a == null)
+                    return;
+                foreach (var s in a.Sprites)
+                    add(s.Id);
+                if (a.Caps != null)
+                    foreach (var c in a.Caps)
+                        add(c.Sprite.Id);
+                debris(a.DebrisKey);
+                if (a.DebrisExtraKeys != null)
+                    foreach (var key in a.DebrisExtraKeys)
+                        debris(key);
+            };
             // Reserve every possible future fragment of the materials actually in this scene.
-            if(sim.Map.DynamicBuildings!=null){debris("glass");debris("concrete");foreach(var h in sim.Map.DynamicBuildings)foreach(var w in h.Walls){string m=w.Source.material;debris(m=="wood"||m=="logs"||m=="burnt-wood"||m=="burnt-logs"?"planks":m=="brick"?"red-brick":"concrete");}}
-            add(WeaponAppearance.RareAk);add(WeaponAppearance.EpicAk);
-            foreach(int id in LooseIds)add(id);for(int type=0;type<AmmoArtCount;type++)add(AmmoId(type));add(VogSprite);add(GrenadeSprite);add(TourniquetSprite);
-            for(int id=6825;id<=6830;id++)add(id);
-            for(int tree=101;tree<=104;tree++)asset(StudioCatalog.Find("legacy-"+tree,false));
-            if(sim.Map.Studio!=null){foreach(var a in sim.Map.Studio.Ground)asset(a);foreach(var o in sim.Map.Studio.Objects)asset(o.Asset);foreach(var o in sim.Map.Studio.Decorations)asset(o.Asset);}
-            foreach(int id in LookSprites(sim))add(id);return ids;
+            if (sim.Map.DynamicBuildings != null)
+            {
+                debris("glass");
+                debris("concrete");
+                foreach (var h in sim.Map.DynamicBuildings)
+                foreach (var w in h.Walls)
+                {
+                    string m = w.Source.material;
+                    debris(
+                        m == "wood" || m == "logs" || m == "burnt-wood" || m == "burnt-logs" ? "planks"
+                        : m == "brick" ? "red-brick"
+                        : "concrete"
+                    );
+                }
+            }
+            add(WeaponAppearance.RareAk);
+            add(WeaponAppearance.EpicAk);
+            foreach (int id in LooseIds)
+                add(id);
+            for (int type = 0; type < AmmoArtCount; type++)
+                add(AmmoId(type));
+            add(VogSprite);
+            add(GrenadeSprite);
+            add(TourniquetSprite);
+            for (int id = 6825; id <= 6830; id++)
+                add(id);
+            for (int tree = 101; tree <= 104; tree++)
+                asset(StudioCatalog.Find("legacy-" + tree, false));
+            if (sim.Map.Studio != null)
+            {
+                foreach (var a in sim.Map.Studio.Ground)
+                    asset(a);
+                foreach (var o in sim.Map.Studio.Objects)
+                    asset(o.Asset);
+                foreach (var o in sim.Map.Studio.Decorations)
+                    asset(o.Asset);
+            }
+            foreach (int id in LookSprites(sim))
+                add(id);
+            return ids;
         }
-        public static void KeepRequiredSprites(HashSet<int> required){
-            lock(publishGate){if(!PackedMode)return;for(int id=0;id<atlas.Length;id++)if(atlas[id]!=null&&!required.Contains(id)){atlas[id]=null;int page=SpritePackIndex.Page[id];loadedPages.Remove(page);partialPages.Add(page);}}
+
+        public static void KeepRequiredSprites(HashSet<int> required)
+        {
+            lock (publishGate)
+            {
+                if (!PackedMode)
+                    return;
+                for (int id = 0; id < atlas.Length; id++)
+                    if (atlas[id] != null && !required.Contains(id))
+                    {
+                        atlas[id] = null;
+                        int page = SpritePackIndex.Page[id];
+                        loadedPages.Remove(page);
+                        partialPages.Add(page);
+                    }
+            }
             ClearStampCache();
         }
 
         // Decode in a worker; atomically publish only a complete page. No Unity API here.
-        public static void LoadPage(int page, byte[] bytes, Func<bool> cancelled = null, HashSet<int> looks = null, HashSet<int> required = null)
+        public static void LoadPage(
+            int page,
+            byte[] bytes,
+            Func<bool> cancelled = null,
+            HashSet<int> looks = null,
+            HashSet<int> required = null
+        )
         {
             int epoch = System.Threading.Volatile.Read(ref generation);
             var items = new Dictionary<int, Tex[]>();
@@ -255,16 +367,26 @@ namespace Rubezh
                 {
                     if (cancelled != null && cancelled())
                         throw new OperationCanceledException();
-                    int id = r.ReadInt32(), levels = r.ReadInt32();
-                    if (id < 0 || id >= SpritePackIndex.Count || SpritePackIndex.Page[id] != page || levels < 1 || levels > 32)
+                    int id = r.ReadInt32(),
+                        levels = r.ReadInt32();
+                    if (
+                        id < 0
+                        || id >= SpritePackIndex.Count
+                        || SpritePackIndex.Page[id] != page
+                        || levels < 1
+                        || levels > 32
+                    )
                         throw new InvalidDataException("Invalid page entry");
-                    bool wanted = (looks == null || !IsLookSprite(id) || looks.Contains(id)) && (required == null || required.Contains(id));
+                    bool wanted =
+                        (looks == null || !IsLookSprite(id) || looks.Contains(id))
+                        && (required == null || required.Contains(id));
                     if (!wanted)
                         complete = false;
                     var mip = wanted ? new Tex[levels] : null;
                     for (int j = 0; j < levels; j++)
                     {
-                        int w = r.ReadInt32(), h = r.ReadInt32();
+                        int w = r.ReadInt32(),
+                            h = r.ReadInt32();
                         if (w < 1 || h < 1 || w > 8192 || h > 8192)
                             throw new InvalidDataException("Invalid sprite size");
                         int size = checked(w * h * 4);
@@ -301,7 +423,7 @@ namespace Rubezh
                         {
                             W = w,
                             H = h,
-                            P = pixels
+                            P = pixels,
                         };
                     }
 

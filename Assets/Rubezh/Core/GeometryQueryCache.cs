@@ -9,7 +9,11 @@ namespace SilentOrders.Core
     {
         struct Key : IEquatable<Key>
         {
-            readonly float ax, ay, bx, by;
+            readonly float ax,
+                ay,
+                bx,
+                by;
+
             public Key(V2 a, V2 b)
             {
                 ax = a.X;
@@ -42,13 +46,16 @@ namespace SilentOrders.Core
 
         readonly Dictionary<Key, bool> sight = new Dictionary<Key, bool>();
         readonly Dictionary<Key, float> protection = new Dictionary<Key, float>();
+
         // Terrain is shared by all observers. Cache only inside a synchronous tick;
         // editor/test callers may edit Tiles directly between steps.
         bool inTick;
         byte[] near = Array.Empty<byte>();
         int[] walls = Array.Empty<int>();
-        int terrainRevision, misses;
+        int terrainRevision,
+            misses;
         bool haveWalls;
+
         internal void BeginTick(BattleMap map)
         {
             inTick = true;
@@ -73,7 +80,8 @@ namespace SilentOrders.Core
 
         internal bool Near(BattleMap map, V2 p)
         {
-            int x = (int)p.X, y = (int)p.Y;
+            int x = (int)p.X,
+                y = (int)p.Y;
             if (!inTick || !map.Inside(x, y))
                 return map.NearCoverRaw(p);
             if (terrainRevision != map.Revision)
@@ -86,13 +94,16 @@ namespace SilentOrders.Core
 
         bool NoWalls(BattleMap m, V2 a, V2 b)
         {
-            if(m.DynamicBuildings!=null)return false;
+            if (m.DynamicBuildings != null)
+                return false;
             if (!inTick)
                 return false;
             if (terrainRevision != m.Revision)
                 ResetTerrain(m);
-            int x = (int)Math.Floor(Math.Min(a.X, b.X)), y = (int)Math.Floor(Math.Min(a.Y, b.Y));
-            int r = (int)Math.Floor(Math.Max(a.X, b.X)) + 1, bot = (int)Math.Floor(Math.Max(a.Y, b.Y)) + 1;
+            int x = (int)Math.Floor(Math.Min(a.X, b.X)),
+                y = (int)Math.Floor(Math.Min(a.Y, b.Y));
+            int r = (int)Math.Floor(Math.Max(a.X, b.X)) + 1,
+                bot = (int)Math.Floor(Math.Max(a.Y, b.Y)) + 1;
             if (x < 0 || y < 0 || r > m.Columns || bot > m.Rows)
                 return false;
             int stride = m.Columns + 1;
@@ -106,7 +117,8 @@ namespace SilentOrders.Core
                 Array.Clear(walls, 0, stride);
                 for (int j = 0; j < m.Rows; j++)
                 {
-                    int row = 0, offset = (j + 1) * stride;
+                    int row = 0,
+                        offset = (j + 1) * stride;
                     walls[offset] = 0;
                     for (int i = 0; i < m.Columns; i++)
                     {
@@ -122,7 +134,10 @@ namespace SilentOrders.Core
             return walls[bot * stride + r] - walls[bot * stride + x] == walls[y * stride + r] - walls[y * stride + x];
         }
 
-        int revision = -1, columns = -1, rows = -1;
+        int revision = -1,
+            columns = -1,
+            rows = -1;
+
         void Check(BattleMap map)
         {
             if (revision != map.Revision || columns != map.Columns || rows != map.Rows)

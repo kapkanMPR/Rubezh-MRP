@@ -5,10 +5,15 @@ namespace SilentOrders.Core
 {
     public sealed class StraightPlan
     {
-        public bool SoloApproach, HasLine, Active;
+        public bool SoloApproach,
+            HasLine,
+            Active;
         public ManeuverIntent Mode;
-        public V2 Axis, Origin;
-        public float Since, Rear, Front;
+        public V2 Axis,
+            Origin;
+        public float Since,
+            Rear,
+            Front;
         public int Waits;
         public readonly Dictionary<int, float> Lanes = new Dictionary<int, float>();
     }
@@ -55,7 +60,9 @@ namespace SilentOrders.Core
                 p.Origin += lateral * V2.Dot(mid - p.Origin, lateral);
                 float lateralExtent = Math.Abs(lateral.X) * b.Map.Columns + Math.Abs(lateral.Y) * b.Map.Rows;
                 float half = Math.Min(Math.Max(3, (lateralExtent - 4) * .45f), Math.Max(3, (members.Count - 1) * 3.5f));
-                int followers = members.Count - 1, slot = 0, negative = (followers + 1) / 2;
+                int followers = members.Count - 1,
+                    slot = 0,
+                    negative = (followers + 1) / 2;
                 foreach (var member in members)
                     if (member.Id != q.LeaderId)
                     {
@@ -86,25 +93,21 @@ namespace SilentOrders.Core
             Sync(b, q);
             if (!q.Straight.Active)
                 return;
-            float rear = float.MaxValue, front = float.MinValue;
+            float rear = float.MaxValue,
+                front = float.MinValue;
             int able = 0;
             if (q.Side == Side.Green)
                 foreach (var u in b.Soldiers)
                     if (q.Contains(u) && u.Deployed && u.Alive && !u.Incapacitated)
                         able++;
-            q.Straight.SoloApproach = able == 1 && (q.Style == CombatStyle.Balanced || q.Style == CombatStyle.Aggressive);
+            q.Straight.SoloApproach =
+                able == 1 && (q.Style == CombatStyle.Balanced || q.Style == CombatStyle.Aggressive);
             // Compare combat pairs, not the commander/reserve or a wounded fighter needing help.
             foreach (var p in q.CommandPlan.Pairs)
             {
                 float sum = 0;
                 int n = 0;
-                foreach (int id in new[]
-                {
-                    p.A,
-                    p.B
-                }
-
-                )
+                foreach (int id in new[] { p.A, p.B })
                     if (id >= 0 && id < b.Soldiers.Count)
                     {
                         var s = b.Soldiers[id];
@@ -136,7 +139,13 @@ namespace SilentOrders.Core
         public static bool Waiting(BattleSimulation b, Soldier s)
         {
             var q = b.Team(s);
-            if (q.Intent != ManeuverIntent.Straight && q.Intent != ManeuverIntent.Front || q.Style == CombatStyle.Passive || q.Style == CombatStyle.Withdraw || TacticalOrders.Emergency(q) || CommandPosture.Service(b, s))
+            if (
+                q.Intent != ManeuverIntent.Straight && q.Intent != ManeuverIntent.Front
+                || q.Style == CombatStyle.Passive
+                || q.Style == CombatStyle.Withdraw
+                || TacticalOrders.Emergency(q)
+                || CommandPosture.Service(b, s)
+            )
                 return false;
             Sync(b, q);
             if (q.Intent == ManeuverIntent.Front)
@@ -150,7 +159,9 @@ namespace SilentOrders.Core
                 }
             }
 
-            return !q.Straight.SoloApproach && q.Straight.HasLine && V2.Dot(s.Position - q.Straight.Origin, q.Straight.Axis) > q.Straight.Rear + 3.5f;
+            return !q.Straight.SoloApproach
+                && q.Straight.HasLine
+                && V2.Dot(s.Position - q.Straight.Origin, q.Straight.Axis) > q.Straight.Rear + 3.5f;
         }
 
         public static V2 Goal(BattleSimulation b, Soldier s)
@@ -203,7 +214,10 @@ namespace SilentOrders.Core
             s.Job = s.Id == b.Team(s).LeaderId ? Job.Command : Job.Cover;
             s.MoveAuthorized = true;
             s.ManeuverPaused = false;
-            s.Reason = b.Team(s).Intent == ManeuverIntent.Front ? "Фронтом: прикрываю соседей по широкому рубежу" : "Прямо: прикрываю выравнивание фронта, жду отставшую двойку";
+            s.Reason =
+                b.Team(s).Intent == ManeuverIntent.Front
+                    ? "Фронтом: прикрываю соседей по широкому рубежу"
+                    : "Прямо: прикрываю выравнивание фронта, жду отставшую двойку";
             b.Team(s).Straight.Waits++;
             return true;
         }

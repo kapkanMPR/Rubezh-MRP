@@ -6,8 +6,8 @@ namespace SilentOrders.Core
     public sealed class RadioReport
     {
         public int Sender;
-        public SilentOrders.Core.Side Side;
-        public SilentOrders.Core.Contact Contact;
+        public Side Side;
+        public Contact Contact;
         public float DeliverAt;
     }
 }

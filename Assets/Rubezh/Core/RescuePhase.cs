@@ -8,6 +8,6 @@ namespace SilentOrders.Core
         None,
         Approach,
         Drag,
-        Treat
+        Treat,
     }
 }

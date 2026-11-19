@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using SilentOrders.Core;
 using SilentOrders.Rendering;
 using UnityEngine;
@@ -10,23 +10,36 @@ namespace Rubezh.UnityPort
     public sealed partial class RubezhApp
     {
         float overviewHeight = 1500;
-        void AtlasIcon(Rect rect,int id)
+
+        void AtlasIcon(Rect rect, int id)
         {
-            float side=Mathf.Min(rect.width,rect.height);
-            var fit=new Rect(rect.x+(rect.width-side)*.5f,rect.y+(rect.height-side)*.5f,side,side);
-            NativeUiArt.Draw(fit,"i"+id);
+            float side = Mathf.Min(rect.width, rect.height);
+            var fit = new Rect(rect.x + (rect.width - side) * .5f, rect.y + (rect.height - side) * .5f, side, side);
+            NativeUiArt.Draw(fit, "i" + id);
         }
 
         void WeaponPreview(Rect rect, int weapon)
         {
-            AtlasIcon(rect, weapon == 4 ? 34 : weapon == 2 ? 36 : weapon == 1 ? 9 : 8);
+            AtlasIcon(
+                rect,
+                weapon == 4 ? 34
+                    : weapon == 2 ? 36
+                    : weapon == 1 ? 9
+                    : 8
+            );
         }
 
         void ExtraPreview(Rect rect, int extra)
         {
             if (extra == 0)
                 return;
-            AtlasIcon(rect, extra == 2 ? Rubezh.Graphics.BackpackSprite(true, 2) : extra == 3 ? Rubezh.Graphics.BackpackSprite(false, 2) : extra == 4 ? 6830 : 6829);
+            AtlasIcon(
+                rect,
+                extra == 2 ? Rubezh.Graphics.BackpackSprite(true, 2)
+                    : extra == 3 ? Rubezh.Graphics.BackpackSprite(false, 2)
+                    : extra == 4 ? 6830
+                    : 6829
+            );
         }
 
         string KitInventory(Kit k, int slot)
@@ -35,28 +48,22 @@ namespace Rubezh.UnityPort
             {
                 WeaponVariant = k.weapon,
                 RigLevel = k.rig,
-                Role = k.weapon == 1 ? Role.MachineGunner : k.weapon == 4 ? Role.Sniper : Role.Rifleman
+                Role =
+                    k.weapon == 1 ? Role.MachineGunner
+                    : k.weapon == 4 ? Role.Sniper
+                    : Role.Rifleman,
             };
             var lines = new List<string>
             {
                 "Патроны: " + s.MagazineSize + " в оружии + " + s.ReserveCapacity + " в запасе",
-                "Жгуты: " + ((k.personalTourniquet ? (k.Class(slot) == Role.Medic ? 2 : 1) : 0) + k.bag[6])
+                "Жгуты: " + ((k.personalTourniquet ? (k.Class(slot) == Role.Medic ? 2 : 1) : 0) + k.bag[6]),
             };
             if (k.weapon == 2)
                 lines.Add("Подствольник: 1 заряженный выстрел");
             if (k.extra == 1 || k.extra == 4)
                 lines.Add(Extras[k.extra] + ": 1 готовый пуск");
-            int[] types =
-            {
-                k.grenade,
-                k.grenade2,
-                k.grenade3
-            }, counts =
-            {
-                k.count,
-                k.count2,
-                k.count3
-            };
+            int[] types =  { k.grenade, k.grenade2, k.grenade3 },
+                counts =  { k.count, k.count2, k.count3 };
             for (int j = 0; j < 3; j++)
                 if (counts[j] > 0)
                     lines.Add(Grenades[types[j]] + ": " + counts[j]);
@@ -70,7 +77,12 @@ namespace Rubezh.UnityPort
         void DrawSquadOverview(float x, float y, float width, float height)
         {
             float w = width - 30;
-            detailScroll = TouchScroll("squad-overview", new Rect(x, y, width, height), detailScroll, new Rect(0, 0, w, overviewHeight));
+            detailScroll = TouchScroll(
+                "squad-overview",
+                new Rect(x, y, width, height),
+                detailScroll,
+                new Rect(0, 0, w, overviewHeight)
+            );
             float yy = 0;
             Paragraph(0, ref yy, w, "Развед группа Кедра", equipHeading);
             yy += 12;

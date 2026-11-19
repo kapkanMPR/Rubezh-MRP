@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using SilentOrders.Core;
 using UnityEngine;
 
@@ -9,20 +9,39 @@ namespace Rubezh.UnityPort
     [Serializable]
     public class CampUnit
     {
-        public int headId, lightId, familyId, heavyId;
-        public string name, fighterId;
-        public int role, weapon, extra, extra2, rig, armor;
-        public int weaponRarity, weaponLevel;
-        public bool band, westernWeapon, noWeapon;
-        public string[] pockets, bag, skills;
-        public float aim, reload;
+        public int headId,
+            lightId,
+            familyId,
+            heavyId;
+        public string name,
+            fighterId;
+        public int role,
+            weapon,
+            extra,
+            extra2,
+            rig,
+            armor;
+        public int weaponRarity,
+            weaponLevel;
+        public bool band,
+            westernWeapon,
+            noWeapon;
+        public string[] pockets,
+            bag,
+            skills;
+        public float aim,
+            reload;
+
         public Kit Base()
         {
-            if ((role == 2 || role == 6) && extra != 0 || role == 6 && armor == 2 ||
-                extra == 2 && role != 3 ||
-                role != 1 && (extra == 3 && role != 5 || extra == 4 && role != 4) ||
-                role == 4 && extra != 0 && extra != 1 && extra != 4 ||
-                extra2 != 0 && (role != 4 || extra2 != 1 && extra2 != 4))
+            if (
+                (role == 2 || role == 6) && extra != 0
+                || role == 6 && armor == 2
+                || extra == 2 && role != 3
+                || role != 1 && (extra == 3 && role != 5 || extra == 4 && role != 4)
+                || role == 4 && extra != 0 && extra != 1 && extra != 4
+                || extra2 != 0 && (role != 4 || extra2 != 1 && extra2 != 4)
+            )
                 throw new ArgumentException("Снаряжение запрещено классу бойца");
             var k = new Kit
             {
@@ -31,9 +50,13 @@ namespace Rubezh.UnityPort
                 extra = extra,
                 rig = Math.Max(0, rig),
                 armor = Math.Max(0, armor),
-                personalTourniquet = band
+                personalTourniquet = band,
             };
-            string stem = role == 1 ? "optic" : role == 3 ? "medheal" : role == 6 ? "vision" : null;
+            string stem =
+                role == 1 ? "optic"
+                : role == 3 ? "medheal"
+                : role == 6 ? "vision"
+                : null;
             if (stem != null)
                 for (int i = 1; i <= 3; i++)
                     if (skills.Contains(stem + i))
@@ -44,17 +67,24 @@ namespace Rubezh.UnityPort
         public void Apply(BattleSimulation b, Soldier s)
         {
             s.WesternGun = westernWeapon;
-            if (weaponRarity > 0 && !noWeapon) s.WeaponUpgrade = WeaponProgression.At(WeaponBalance.Index(s), weaponRarity, weaponLevel);
+            if (weaponRarity > 0 && !noWeapon)
+                s.WeaponUpgrade = WeaponProgression.At(WeaponBalance.Index(s), weaponRarity, weaponLevel);
             s.ArmorLevel = armor;
             s.RigLevel = rig;
             s.Magazines.Reset(s, s.ReserveCapacity);
-            if (noWeapon) { s.Deployed = false; s.Health = 0; s.Ammo = 0; s.Reserve = 0; }
+            if (noWeapon)
+            {
+                s.Deployed = false;
+                s.Health = 0;
+                s.Ammo = 0;
+                s.Reserve = 0;
+            }
             s.Look = new Rubezh.GreenLook
             {
                 headId = headId,
                 lightId = lightId,
                 familyId = familyId,
-                        heavyId = heavyId
+                heavyId = heavyId,
             };
             Rubezh.GreenLook.Ensure(s);
             int morale = skills.Count(x => x == "morale" || x == "morale2" || x == "morale3");
@@ -64,11 +94,14 @@ namespace Rubezh.UnityPort
             s.CampSkills = new HashSet<string>(skills);
             s.AccuracyFactor *= 1 + aim;
             s.ReloadFactor *= 1 - reload;
-            var g = pockets.GroupBy(x => Array.IndexOf(new[] { "smoke", "rgd", "vog", "f1", "rgn", "rgo" }, x)).ToArray();
+            var g = pockets
+                .GroupBy(x => Array.IndexOf(new[] { "smoke", "rgd", "vog", "f1", "rgn", "rgo" }, x))
+                .ToArray();
             if (g.Any(x => x.Key < 0) || pockets.Length > GrenadePockets.Limit(rig))
                 throw new ArgumentException("Некорректные ячейки разгрузки");
             var rounds = g.Where(x => x.Key > 0).ToArray();
-            int[] t = new int[3], n = new int[3];
+            int[] t = new int[3],
+                n = new int[3];
             for (int i = 0; i < Math.Min(3, rounds.Length); i++)
             {
                 t[i] = rounds[i].Key;
@@ -138,9 +171,13 @@ namespace Rubezh.UnityPort
     [Serializable]
     public class CampOrder
     {
-        public string op, mode, id, option;
+        public string op,
+            mode,
+            id,
+            option;
         public int value;
-        public int block, mission;
+        public int block,
+            mission;
         public CampUnit[] units;
         public FormationSettings formation;
     }
@@ -148,10 +185,14 @@ namespace Rubezh.UnityPort
     [Serializable]
     public class CampReceipt
     {
-        public string id, mode, error, kind;
+        public string id,
+            mode,
+            error,
+            kind;
         public string[] fighters;
         public FormationSettings formation;
-        public int block, mission;
+        public int block,
+            mission;
         public bool win;
     }
 
@@ -159,26 +200,33 @@ namespace Rubezh.UnityPort
     {
         NativeCampView nativeCamp;
         Rubezh.Camp.CampStore campStore;
-        CampOrder campBattle, formationOrder;
-        bool campBusy, campInitializing;
-        internal bool NativeCampReady => !loading && nativeCamp != null && screen == 0;
+        CampOrder campBattle,
+            formationOrder;
+        bool campBusy,
+            campInitializing;
+        internal bool NativeCampReady => !loading && nativeCamp != null && screen == ScreenId.Camp;
 
         string CampKey => DeveloperBuild.Enabled ? "rb56.dev." : "rb56.game.";
 
-        string NativeCampPath => System.IO.Path.Combine(Application.persistentDataPath, DeveloperBuild.Enabled ? "rubezh-native-camp-dev.json" : "rubezh-native-camp.json");
+        string NativeCampPath =>
+            System.IO.Path.Combine(
+                Application.persistentDataPath,
+                DeveloperBuild.Enabled ? "rubezh-native-camp-dev.json" : "rubezh-native-camp.json"
+            );
 
         void ShowCamp()
         {
             ReleaseSceneGraphics();
-            unityTestBattle=false;
+            unityTestBattle = false;
             ReleaseBattleSamples();
             BuiltinCampaign.ReleaseCached();
-            if (portraits != null) portraits.Clear();
+            if (portraits != null)
+                portraits.Clear();
             ReleaseImportedPortraits();
             Rubezh.Graphics.ReleaseSceneSprites();
             if (nativeCamp != null)
             {
-                screen = 0;
+                screen = ScreenId.Camp;
                 nativeCamp.Show();
                 ConsumeCampReceipt();
                 return;
@@ -191,7 +239,8 @@ namespace Rubezh.UnityPort
         System.Collections.IEnumerator InitializeNativeCamp()
         {
             campInitializing = true;
-            string legacy = null, error = null;
+            string legacy = null,
+                error = null;
             Rubezh.Camp.State state = null;
             try
             {
@@ -203,15 +252,54 @@ namespace Rubezh.UnityPort
             }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-   if(error==null&&state==null){
-    AndroidJavaClass bridge=null;
-    try{bridge=new AndroidJavaClass("com.rubezh.camp.CampHost");using(var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer"))using(var activity=player.GetStatic<AndroidJavaObject>("currentActivity"))bridge.CallStatic("migrate",activity,DeveloperBuild.Enabled);}
-    catch(Exception e){error="Ошибка чтения прежнего прогресса: "+e.Message;}
-    float deadline=Time.realtimeSinceStartup+15f;string raw=null;
-    while(error==null&&string.IsNullOrEmpty(raw)&&Time.realtimeSinceStartup<deadline){try{raw=bridge.CallStatic<string>("migrationResult");}catch(Exception e){error=e.Message;}if(error==null&&string.IsNullOrEmpty(raw))yield return null;}
-    if(bridge!=null)bridge.Dispose();
-    if(error==null){if(string.IsNullOrEmpty(raw))error="Не удалось прочитать прежний прогресс. Перезапусти игру: сохранение не изменено.";else try{if(raw=="null")throw new InvalidOperationException("Не удалось открыть прежнее хранилище Android");legacy=Newtonsoft.Json.JsonConvert.DeserializeObject<string>(raw);}catch(Exception e){error="Ошибка переноса прогресса: "+e.Message;}}
-   }
+            if (error == null && state == null)
+            {
+                AndroidJavaClass bridge = null;
+                try
+                {
+                    bridge = new AndroidJavaClass("com.rubezh.camp.CampHost");
+                    using (var player = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                    using (var activity = player.GetStatic<AndroidJavaObject>("currentActivity"))
+                        bridge.CallStatic("migrate", activity, DeveloperBuild.Enabled);
+                }
+                catch (Exception e)
+                {
+                    error = "Ошибка чтения прежнего прогресса: " + e.Message;
+                }
+                float deadline = Time.realtimeSinceStartup + 15f;
+                string raw = null;
+                while (error == null && string.IsNullOrEmpty(raw) && Time.realtimeSinceStartup < deadline)
+                {
+                    try
+                    {
+                        raw = bridge.CallStatic<string>("migrationResult");
+                    }
+                    catch (Exception e)
+                    {
+                        error = e.Message;
+                    }
+                    if (error == null && string.IsNullOrEmpty(raw))
+                        yield return null;
+                }
+                if (bridge != null)
+                    bridge.Dispose();
+                if (error == null)
+                {
+                    if (string.IsNullOrEmpty(raw))
+                        error = "Не удалось прочитать прежний прогресс. Перезапусти игру: сохранение не изменено.";
+                    else
+                        try
+                        {
+                            if (raw == "null")
+                                throw new InvalidOperationException("Не удалось открыть прежнее хранилище Android");
+                            legacy = Newtonsoft.Json.JsonConvert.DeserializeObject<string>(raw);
+                        }
+                        catch (Exception e)
+                        {
+                            error = "Ошибка переноса прогресса: " + e.Message;
+                        }
+                }
+            }
 #endif
             if (error == null)
                 try
@@ -220,8 +308,17 @@ namespace Rubezh.UnityPort
                     if (asset == null)
                         throw new InvalidOperationException("Нет каталога лагеря");
                     Rubezh.Camp.Catalog catalog;
-                    try { catalog = Newtonsoft.Json.JsonConvert.DeserializeObject<Rubezh.Camp.Catalog>(asset.text, Rubezh.Camp.CampModel.JsonSettings); }
-                    finally { Resources.UnloadAsset(asset); }
+                    try
+                    {
+                        catalog = Newtonsoft.Json.JsonConvert.DeserializeObject<Rubezh.Camp.Catalog>(
+                            asset.text,
+                            Rubezh.Camp.CampModel.JsonSettings
+                        );
+                    }
+                    finally
+                    {
+                        Resources.UnloadAsset(asset);
+                    }
                     if (state == null && !string.IsNullOrEmpty(legacy))
                     {
                         state = Rubezh.Camp.CampModel.Decode(legacy);
@@ -238,7 +335,7 @@ namespace Rubezh.UnityPort
                     nativeCamp.GetOptions = ReadNativeCampOptions;
                     nativeCamp.ResetGame = () => ResetCareer(true);
                     message = "";
-                    screen = 0;
+                    screen = ScreenId.Camp;
                     nativeCamp.Show();
                     ConsumeCampReceipt();
                 }
@@ -266,49 +363,64 @@ namespace Rubezh.UnityPort
 
         bool editingSquadFormation;
         string formationSquadId;
+
         internal static bool CampFormationReady(CampOrder q)
         {
-            var f=q.formation;
-            return f!=null&&f.Valid()&&(f.pairing!=4||f.ManualComplete()||q.mode=="story"&&q.mission==6&&new[]{1,2,3}.All(i=>f.pairSlots.Contains(i)));
+            var f = q.formation;
+            return f != null
+                && f.Valid()
+                && (
+                    f.pairing != 4
+                    || f.ManualComplete()
+                    || q.mode == "story" && q.mission == 6 && new[] { 1, 2, 3 }.All(i => f.pairSlots.Contains(i))
+                );
         }
+
         void OpenNativeCampFormation(CampOrder q)
         {
             if (loading || campBusy || campBattle != null || formationOrder != null)
                 throw new InvalidOperationException("Дождись завершения операции");
-            bool edit=q.op=="edit-formation";
+            bool edit = q.op == "edit-formation";
             if (campStore == null || !edit && !campStore.Model.MissionOpen(q.mode, q.block, q.mission))
                 throw new InvalidOperationException("Сначала пройди предыдущую миссию.");
-            if(!edit)
+            if (!edit)
             {
-                if(!CampFormationReady(q))throw new InvalidOperationException("Проверьте построение отряда: заполните двойки или включите автоподбор.");
+                if (!CampFormationReady(q))
+                    throw new InvalidOperationException(
+                        "Проверьте построение отряда: заполните двойки или включите автоподбор."
+                    );
                 StartCampBattle(q);
                 return;
             }
-            editingSquadFormation=true;
-            formationSquadId=campStore.Model.S.selectedSquad;
+            editingSquadFormation = true;
+            formationSquadId = campStore.Model.S.selectedSquad;
             formationOrder = q;
             formationPickerSlot = -1;
             devDraftMission = 0;
             CancelTouchInput();
             message = "";
-            screen = 6;
+            screen = ScreenId.Formation;
             nativeCamp.Hide();
         }
 
         void CampReceiptFor(CampOrder q, bool win, string error = null, string kind = null)
         {
-            if(q.mode=="test"||q.mode=="test-reference")return;
+            if (q.mode == "test" || q.mode == "test-reference")
+                return;
             var receipt = new CampReceipt
             {
                 id = Guid.NewGuid().ToString("N"),
-                fighters = q.units?.Where(u => u != null && !string.IsNullOrEmpty(u.fighterId) && !u.noWeapon).Select(u => u.fighterId).ToArray(),
+                fighters = q
+                    .units?.Where(u => u != null && !string.IsNullOrEmpty(u.fighterId) && !u.noWeapon)
+                    .Select(u => u.fighterId)
+                    .ToArray(),
                 mode = q.mode,
                 mission = q.mission,
                 block = q.block,
                 win = win,
                 error = error,
                 kind = kind,
-                formation = q.formation
+                formation = q.formation,
             };
             PlayerPrefs.SetString(CampKey + "receipt", JsonUtility.ToJson(receipt));
             PlayerPrefs.Save();
@@ -336,14 +448,7 @@ namespace Rubezh.UnityPort
         {
             if (campStore != null)
                 campStore.Change(() => campStore.Model.Reset());
-            foreach (var suffix in new[]
-            {
-                "",
-                ".bak",
-                ".tmp"
-            }
-
-            )
+            foreach (var suffix in new[] { "", ".bak", ".tmp" })
                 System.IO.File.Delete(SavePath + suffix);
             for (int n = 1; n <= 20; n++)
                 if (DeveloperBuild.Enabled)
@@ -371,7 +476,7 @@ namespace Rubezh.UnityPort
             pickOptions = null;
             pickApply = null;
             CloseDrawer();
-            screen = 0;
+            screen = ScreenId.Camp;
             PlayerPrefs.DeleteKey(CampKey + "receipt");
             PlayerPrefs.Save();
             WebPersistence.Flush();
@@ -381,27 +486,53 @@ namespace Rubezh.UnityPort
 
         void SaveSquadFormationAndReturn()
         {
-            var f=formationOrder==null?null:formationOrder.formation;
-            if(f==null||!f.Valid()||!FormationReady(f)){message="Заполни места в двойках или выбери автоподбор.";return;}
+            var f = formationOrder == null ? null : formationOrder.formation;
+            if (f == null || !f.Valid() || !FormationReady(f))
+            {
+                message = "Заполни места в двойках или выбери автоподбор.";
+                return;
+            }
             try
             {
-                if(campStore.Model.S.selectedSquad!=formationSquadId)throw new InvalidOperationException("Выбран другой отряд");
-                campStore.Change(()=>campStore.Model.S.formation=new Rubezh.Camp.Formation{
-                    quietWork=f.quietWork,pairing=f.pairing,width=f.width,depth=f.depth,
-                    pairSlots=(int[])f.pairSlots.Clone(),positions=(int[])f.positions.Clone()});
-                editingSquadFormation=false;formationSquadId=null;formationOrder=null;formationPickerSlot=-1;
-                CancelTouchInput();ShowCamp();
+                if (campStore.Model.S.selectedSquad != formationSquadId)
+                    throw new InvalidOperationException("Выбран другой отряд");
+                campStore.Change(
+                    () =>
+                        campStore.Model.S.formation = new Rubezh.Camp.Formation
+                        {
+                            quietWork = f.quietWork,
+                            pairing = f.pairing,
+                            width = f.width,
+                            depth = f.depth,
+                            pairSlots = (int[])f.pairSlots.Clone(),
+                            positions = (int[])f.positions.Clone(),
+                        }
+                );
+                editingSquadFormation = false;
+                formationSquadId = null;
+                formationOrder = null;
+                formationPickerSlot = -1;
+                CancelTouchInput();
+                ShowCamp();
             }
-            catch(Exception e){message=e.Message;Debug.LogWarning(e);}
+            catch (Exception e)
+            {
+                message = e.Message;
+                Debug.LogWarning(e);
+            }
         }
 
         void BackFromCampFormation()
         {
-            if(editingSquadFormation){SaveSquadFormationAndReturn();return;}
+            if (editingSquadFormation)
+            {
+                SaveSquadFormationAndReturn();
+                return;
+            }
             var q = formationOrder;
             formationOrder = null;
             formationPickerSlot = -1;
-            screen = 0;
+            screen = ScreenId.Camp;
             CancelTouchInput();
             CampReceiptFor(q, false, null, "formation-back");
             ShowCamp();
@@ -409,11 +540,15 @@ namespace Rubezh.UnityPort
 
         void LaunchFromFormation()
         {
-            if(editingSquadFormation){SaveSquadFormationAndReturn();return;}
+            if (editingSquadFormation)
+            {
+                SaveSquadFormationAndReturn();
+                return;
+            }
             if (formationOrder == null)
             {
                 formationPickerSlot = -1;
-                screen = 0;
+                screen = ScreenId.Camp;
                 CancelTouchInput();
                 CloseDrawer();
                 message = "Не выбран состав для выхода. Открой подготовку в лагере и выбери бой заново.";
@@ -448,20 +583,33 @@ namespace Rubezh.UnityPort
         {
             if (q.units == null || q.units.Length != 5 || q.units.Any(u => u == null) || q.units.All(u => u.noWeapon))
                 throw new ArgumentException("Нет вооружённых бойцов для выхода");
-            bool test=q.mode=="test"||q.mode=="test-reference";
-            bool story=q.mode=="story"||(test&&q.mission==20);
-            int index = test ? (q.mission==20?20:1) : q.mode == "raid" ? (q.mission+1)/2 : story ? (test?20:q.mission) : (q.block - 1) * 10 + q.mission;
+            bool test = q.mode == "test" || q.mode == "test-reference";
+            bool story = q.mode == "story" || (test && q.mission == 20);
+            int index =
+                test ? (q.mission == 20 ? 20 : 1)
+                : q.mode == "raid" ? (q.mission + 1) / 2
+                : story ? (test ? 20 : q.mission)
+                : (q.block - 1) * 10 + q.mission;
             var sim = new BattleSimulation(8000 + 97 * index);
             if (story)
             {
                 var basic = string.Join(";", Enumerable.Range(0, 5).Select(i => new Kit().Encode()));
-                if (!SquadLoadout.Apply(sim, basic) || !CampaignScenario.Apply(sim, index + "," + (index - 1) + ",0,0,0,0,0"))
+                if (
+                    !SquadLoadout.Apply(sim, basic)
+                    || !CampaignScenario.Apply(sim, index + "," + (index - 1) + ",0,0,0,0,0")
+                )
                     throw new InvalidOperationException("Ошибка сценария.");
             }
 
             if (story)
             {
-                if (!(preparedMap!=null?RubezhLevelRuntime.ApplyLevel(sim,preparedMap):RubezhLevelRuntime.Apply(sim, true, index)))
+                if (
+                    !(
+                        preparedMap != null
+                            ? RubezhLevelRuntime.ApplyLevel(sim, preparedMap)
+                            : RubezhLevelRuntime.Apply(sim, true, index)
+                    )
+                )
                     throw new InvalidOperationException(RubezhLevelRuntime.LastError);
                 if (index == 6)
                 {
@@ -469,9 +617,10 @@ namespace Rubezh.UnityPort
                     sim.Soldiers[4].Health = 0;
                 }
             }
-            else if(preparedMap!=null)
+            else if (preparedMap != null)
             {
-                if(!RubezhLevelRuntime.ApplyLevel(sim,preparedMap))throw new InvalidOperationException(RubezhLevelRuntime.LastError);
+                if (!RubezhLevelRuntime.ApplyLevel(sim, preparedMap))
+                    throw new InvalidOperationException(RubezhLevelRuntime.LastError);
             }
             else
             {
@@ -498,44 +647,83 @@ namespace Rubezh.UnityPort
                 var u = q.units[i];
                 var soldier = sim.Soldiers[i];
                 u.Apply(sim, soldier);
-                if (soldier.Side != Side.Green || soldier.Id != i || soldier.Name != u.name || (int)soldier.Role + 1 != u.role || soldier.WeaponVariant != u.weapon || !soldier.ClassKitAssigned)
+                if (
+                    soldier.Side != Side.Green
+                    || soldier.Id != i
+                    || soldier.Name != u.name
+                    || (int)soldier.Role + 1 != u.role
+                    || soldier.WeaponVariant != u.weapon
+                    || !soldier.ClassKitAssigned
+                )
                     throw new InvalidOperationException("Не перенесён комплект бойца: " + u.name);
             }
 
             WeaponProgression.Configure(sim, index, !story);
-            if(q.mode=="raid")RaidCombat.ConfigureEnemies(sim,q.mission);
+            if (q.mode == "raid")
+                RaidCombat.ConfigureEnemies(sim, q.mission);
             sim.Green.Formation = q.formation.Copy();
             OperationMode.Apply(sim);
-            sim.InitializeCombatRandom(test?(q.mission==20?200020:200001):NewCombatSeed());
+            sim.InitializeCombatRandom(test ? (q.mission == 20 ? 200020 : 200001) : NewCombatSeed());
             return sim;
         }
 
         void StartCampBattle(CampOrder q)
         {
-            if(q.mode=="test"||q.mode=="test-reference"){OpenHybridRange();return;}
-            if(q.mode=="raid"){StartRaid(q);return;}
+            if (q.mode == "test" || q.mode == "test-reference")
+            {
+                OpenHybridRange();
+                return;
+            }
+            if (q.mode == "raid")
+            {
+                StartRaid(q);
+                return;
+            }
 #if UNITY_5_3_OR_NEWER
-            SetCampBattleContext(q);BeginNativeTestLoad(q);return;
-#endif
+            SetCampBattleContext(q);
+            BeginNativeTestLoad(q);
+#else
             var sim = BuildCampSimulation(q);
             SetCampBattleContext(q);
-            QueueBattleLoad(sim, () =>
-            {
-                campBusy = false;
-                campBattle = q;
-                CompleteBattleStart(sim);
-            });
+            QueueBattleLoad(
+                sim,
+                () =>
+                {
+                    campBusy = false;
+                    campBattle = q;
+                    CompleteBattleStart(sim);
+                }
+            );
+#endif
         }
+
         void SetCampBattleContext(CampOrder q)
         {
-            if(q.mode=="test-reference")q.mode="test";
-            testBattle=q.mode=="test";unityTestBattle=true;
-            if(testBattle){testMapLabel=q.mission==20?"СЮЖЕТ · УРОВЕНЬ 20":"ЛЕС · ПРОСЕКА";testMapSeed=q.mission==20?200020:200001;testPreviousQuality=graphicsTier;testPreviousSoftware=forceSoftware;testPreviousVisibility=fullVisibility;testPreviousFog=hardcoreFog;graphicsTier=3;forceSoftware=false;fullVisibility=true;hardcoreFog=false;unityTestError=null;diagDisableSmoke=diagDisableRoofs=diagDisableScenery=false;diagnosticIndex=diagnosticCount=0;diagnosticHistory.Clear();}
+            if (q.mode == "test-reference")
+                q.mode = "test";
+            testBattle = q.mode == "test";
+            unityTestBattle = true;
+            if (testBattle)
+            {
+                testMapLabel = q.mission == 20 ? "СЮЖЕТ · УРОВЕНЬ 20" : "ЛЕС · ПРОСЕКА";
+                testMapSeed = q.mission == 20 ? 200020 : 200001;
+                testPreviousQuality = graphicsTier;
+                testPreviousSoftware = forceSoftware;
+                testPreviousVisibility = fullVisibility;
+                testPreviousFog = hardcoreFog;
+                graphicsTier = 3;
+                forceSoftware = false;
+                fullVisibility = true;
+                hardcoreFog = false;
+                unityTestError = null;
+                diagDisableSmoke = diagDisableRoofs = diagDisableScenery = false;
+                diagnosticIndex = diagnosticCount = 0;
+                diagnosticHistory.Clear();
+            }
             mission = q.mode == "story" ? q.mission : (q.block - 1) * 10 + q.mission;
             campaignMode = q.mode == "story";
             campBusy = true;
             nativeCamp.Hide();
-
         }
     }
 }

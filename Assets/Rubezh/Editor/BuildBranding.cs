@@ -31,15 +31,28 @@ namespace Rubezh.UnityPort.Editor
 
             PlayerSettings.SetIcons(NamedBuildTarget.Unknown, new[] { icon }, IconKind.Any);
 #if UNITY_ANDROID
-   foreach(var kind in new[]{UnityEditor.Android.AndroidPlatformIconKind.Legacy,UnityEditor.Android.AndroidPlatformIconKind.Round,UnityEditor.Android.AndroidPlatformIconKind.Adaptive}){
-    var slots=PlayerSettings.GetPlatformIcons(NamedBuildTarget.Android,kind);
-    foreach(var slot in slots){
-     var layers=new Texture2D[slot.maxLayerCount];
-     for(int i=0;i<layers.Length;i++)layers[i]=kind==UnityEditor.Android.AndroidPlatformIconKind.Adaptive?(i==0?foreground:background):icon;
-     slot.SetTextures(layers);
-    }
-    PlayerSettings.SetPlatformIcons(NamedBuildTarget.Android,kind,slots);
-   }
+            foreach (
+                var kind in new[]
+                {
+                    UnityEditor.Android.AndroidPlatformIconKind.Legacy,
+                    UnityEditor.Android.AndroidPlatformIconKind.Round,
+                    UnityEditor.Android.AndroidPlatformIconKind.Adaptive,
+                }
+            )
+            {
+                var slots = PlayerSettings.GetPlatformIcons(NamedBuildTarget.Android, kind);
+                foreach (var slot in slots)
+                {
+                    var layers = new Texture2D[slot.maxLayerCount];
+                    for (int i = 0; i < layers.Length; i++)
+                        layers[i] =
+                            kind == UnityEditor.Android.AndroidPlatformIconKind.Adaptive
+                                ? (i == 0 ? foreground : background)
+                                : icon;
+                    slot.SetTextures(layers);
+                }
+                PlayerSettings.SetPlatformIcons(NamedBuildTarget.Android, kind, slots);
+            }
 #endif
         }
 
@@ -48,7 +61,10 @@ namespace Rubezh.UnityPort.Editor
             string path = "Assets/Rubezh/Art/" + name;
             if (File.Exists(path))
             {
-                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+                AssetDatabase.ImportAsset(
+                    path,
+                    ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport
+                );
                 var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
                 if (texture != null)
                     return texture;
@@ -73,7 +89,12 @@ namespace Rubezh.UnityPort.Editor
             }
 
             if (required)
-                throw new BuildFailedException("Не удалось загрузить " + path + ". Проверьте Fetch/Pull origin и текущую ветку. Папка проекта: " + Application.dataPath);
+                throw new BuildFailedException(
+                    "Не удалось загрузить "
+                        + path
+                        + ". Проверьте Fetch/Pull origin и текущую ветку. Папка проекта: "
+                        + Application.dataPath
+                );
             Debug.LogWarning("Не загружен дополнительный слой иконки: " + path + ". Используется резервный вариант.");
             return null;
         }

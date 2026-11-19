@@ -8,6 +8,7 @@ namespace SilentOrders.Core
         public static Action<string> Begin;
         public static Action End;
 #endif
+
         public CpuSample(string name)
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD || RUBEZH_BENCH

@@ -5,9 +5,18 @@ namespace SilentOrders.Core
 {
     public sealed class TacticalMarchState
     {
-        public bool Initialized, Quiet, CoverAssigned;
-        public float LastDanger = -100, NextSectors, ContactAt = -100, NextRoute;
-        public int Contacts, Resumes, Coverer = -1, Handovers, EmergencyReleases;
+        public bool Initialized,
+            Quiet,
+            CoverAssigned;
+        public float LastDanger = -100,
+            NextSectors,
+            ContactAt = -100,
+            NextRoute;
+        public int Contacts,
+            Resumes,
+            Coverer = -1,
+            Handovers,
+            EmergencyReleases;
         public readonly Dictionary<int, Contact> Danger = new Dictionary<int, Contact>();
         public readonly Dictionary<int, V2> Sectors = new Dictionary<int, V2>();
         public readonly HashSet<int> Dispersed = new HashSet<int>();
@@ -22,18 +31,55 @@ namespace SilentOrders.Core
             if (ReconCombatPhase.Active(b) || !b.TacticalMarchEnabled || b.Historical01225 || q.Side != Side.Green)
                 return false;
             foreach (var s in b.Soldiers)
-                if (q.Contains(s) && s.Deployed && s.Available && (CombatTraining.Skill(s, 2, "contact") || s.CampSkills == null && b.PairExperimentMarch && s.Side == Side.Green))
+                if (
+                    q.Contains(s)
+                    && s.Deployed
+                    && s.Available
+                    && (
+                        CombatTraining.Skill(s, 2, "contact")
+                        || s.CampSkills == null && b.PairExperimentMarch && s.Side == Side.Green
+                    )
+                )
                     return true;
             return false;
         }
 
         static bool MarchOrder(Squad q) => q.Style == CombatStyle.Balanced || q.Style == CombatStyle.Aggressive;
-        internal static bool Free(BattleSimulation b, Soldier s) => (CombatTraining.Skill(s, 2, "contact") || s.CampSkills == null && b.PairExperimentMarch && s.Side == Side.Green) && GroupMovement.Ordinary(b, s) && !TacticalOrders.ServiceActive(s) && !EngagementPolicy.Active(b, s) && s.LootTargetId < 0 && s.LootGroundId < 0 && s.LauncherPickupId < 0 && s.WeaponAidTargetId < 0 && !s.PriorityMovement.Transfer && !AreaSuppression.Reserved(b, s) && !ProgressRecovery.Active(b, s) && !b.Team(s).Breakthrough.Active && !b.Team(s).CommandTransition.Waiting && s.PairRegroupUntil <= b.Time && !HandLauncher.Active(s) && !PairExchange.Active(b, s) && !FriendlyGrenadeSafety.Active(b, s) && s.HandsBusyUntil <= b.Time && s.ReloadUntil <= b.Time;
-        public static bool Quiet(BattleSimulation b, Squad q) => Enabled(b, q) && MarchOrder(q) && q.CommandPlan.March.Quiet;
+
+        internal static bool Free(BattleSimulation b, Soldier s) =>
+            (
+                CombatTraining.Skill(s, 2, "contact")
+                || s.CampSkills == null && b.PairExperimentMarch && s.Side == Side.Green
+            )
+            && GroupMovement.Ordinary(b, s)
+            && !TacticalOrders.ServiceActive(s)
+            && !EngagementPolicy.Active(b, s)
+            && s.LootTargetId < 0
+            && s.LootGroundId < 0
+            && s.LauncherPickupId < 0
+            && s.WeaponAidTargetId < 0
+            && !s.PriorityMovement.Transfer
+            && !AreaSuppression.Reserved(b, s)
+            && !ProgressRecovery.Active(b, s)
+            && !b.Team(s).Breakthrough.Active
+            && !b.Team(s).CommandTransition.Waiting
+            && s.PairRegroupUntil <= b.Time
+            && !HandLauncher.Active(s)
+            && !PairExchange.Active(b, s)
+            && !FriendlyGrenadeSafety.Active(b, s)
+            && s.HandsBusyUntil <= b.Time
+            && s.ReloadUntil <= b.Time;
+
+        public static bool Quiet(BattleSimulation b, Squad q) =>
+            Enabled(b, q) && MarchOrder(q) && q.CommandPlan.March.Quiet;
+
         static V2 Rotate(V2 v, float degrees)
         {
             float a = degrees * (float)Math.PI / 180;
-            return new V2(v.X * (float)Math.Cos(a) - v.Y * (float)Math.Sin(a), v.X * (float)Math.Sin(a) + v.Y * (float)Math.Cos(a));
+            return new V2(
+                v.X * (float)Math.Cos(a) - v.Y * (float)Math.Sin(a),
+                v.X * (float)Math.Sin(a) + v.Y * (float)Math.Cos(a)
+            );
         }
 
         static void Voice(BattleSimulation b, Squad q, Soldier speaker, string text)
@@ -52,21 +98,16 @@ namespace SilentOrders.Core
                 if (q.Contains(s) && s.Available && !s.Broken && V2.Distance(s.Position, c.Position) < 7)
                 {
                     bool clear = true;
-                    foreach (var offset in new[]
-                    {
-                        new V2(),
-                        new V2(2, 0),
-                        new V2(-2, 0),
-                        new V2(0, 2),
-                        new V2(0, -2)
-                    }
-
-                    )
+                    foreach (var offset in new[] { new V2(), new V2(2, 0), new V2(-2, 0), new V2(0, 2), new V2(0, -2) })
                     {
                         var p = c.Position + offset;
                         if (!b.Map.Walkable(p))
                             continue;
-                        if (!DirectionalVision.InView(b, s, p) || !b.Map.LineOfSight(s.Position, p) || b.SmokeTransmission(s.Position, p) < .8f)
+                        if (
+                            !DirectionalVision.InView(b, s, p)
+                            || !b.Map.LineOfSight(s.Position, p)
+                            || b.SmokeTransmission(s.Position, p) < .8f
+                        )
                         {
                             clear = false;
                             break;
@@ -124,7 +165,11 @@ namespace SilentOrders.Core
                 }
 
                 foreach (var s in b.Soldiers)
-                    if (q.Contains(s) && s.Available && V2.Distance(s.Position, c.Position) < DirectionalVision.FrontRange(b, s) + 6)
+                    if (
+                        q.Contains(s)
+                        && s.Available
+                        && V2.Distance(s.Position, c.Position) < DirectionalVision.FrontRange(b, s) + 6
+                    )
                     {
                         danger = true;
                         break;
@@ -165,7 +210,15 @@ namespace SilentOrders.Core
                     st.Contacts++;
                     Voice(b, q, observer, "КОНТАКТ!!");
                     foreach (var s in b.Soldiers)
-                        if (q.Contains(s) && Free(b, s) && s.GunMachineGunner && s.Ammo >= 3 && s.Suppression < .65f && fresh != null && PositionLogic.CanEngage(b, s, s.Position, fresh))
+                        if (
+                            q.Contains(s)
+                            && Free(b, s)
+                            && s.GunMachineGunner
+                            && s.Ammo >= 3
+                            && s.Suppression < .65f
+                            && fresh != null
+                            && PositionLogic.CanEngage(b, s, s.Position, fresh)
+                        )
                         {
                             st.Coverer = s.Id;
                             st.CoverAssigned = true;
@@ -197,7 +250,14 @@ namespace SilentOrders.Core
             if (!st.Quiet && !st.CoverAssigned && MarchOrder(q) && b.Time - st.ContactAt < 8 && fresh != null)
             {
                 foreach (var s in b.Soldiers)
-                    if (q.Contains(s) && Free(b, s) && s.GunMachineGunner && s.Ammo >= 3 && s.Suppression < .65f && PositionLogic.CanEngage(b, s, s.Position, fresh))
+                    if (
+                        q.Contains(s)
+                        && Free(b, s)
+                        && s.GunMachineGunner
+                        && s.Ammo >= 3
+                        && s.Suppression < .65f
+                        && PositionLogic.CanEngage(b, s, s.Position, fresh)
+                    )
                     {
                         st.Coverer = s.Id;
                         st.CoverAssigned = true;
@@ -208,12 +268,19 @@ namespace SilentOrders.Core
             if (st.Coverer >= 0)
             {
                 var gun = b.Soldiers[st.Coverer];
-                int ready = 0, others = 0;
+                int ready = 0,
+                    others = 0;
                 foreach (var s in b.Soldiers)
                     if (q.Contains(s) && s != gun && s.Available)
                     {
                         others++;
-                        if (PositionLogic.Able(s, b) && b.Time - s.LastFire < 2 && st.Threat != null && PositionLogic.CanEngage(b, s, s.Position, st.Threat) && PositionLogic.Protected(b, s, s.Position))
+                        if (
+                            PositionLogic.Able(s, b)
+                            && b.Time - s.LastFire < 2
+                            && st.Threat != null
+                            && PositionLogic.CanEngage(b, s, s.Position, st.Threat)
+                            && PositionLogic.Protected(b, s, s.Position)
+                        )
                             ready++;
                     }
 
@@ -223,7 +290,14 @@ namespace SilentOrders.Core
                     st.Coverer = -1;
                     gun.NextDecision = b.Time;
                 }
-                else if (!Free(b, gun) || gun.Ammo < 3 || gun.Health < 35 || gun.Suppression > .65f || (b.Time - st.ContactAt > 8 && fresh == null) || !MarchOrder(q))
+                else if (
+                    !Free(b, gun)
+                    || gun.Ammo < 3
+                    || gun.Health < 35
+                    || gun.Suppression > .65f
+                    || (b.Time - st.ContactAt > 8 && fresh == null)
+                    || !MarchOrder(q)
+                )
                 {
                     st.EmergencyReleases++;
                     st.Coverer = -1;
@@ -241,15 +315,15 @@ namespace SilentOrders.Core
             foreach (var s in b.Soldiers)
                 if (q.Contains(s) && s.Available && !s.Broken)
                 {
-                    V2 axis = MotionCombat.HasRoute(s) ? (s.Path[s.PathCursor] - s.Position).Normalized : TacticalOrders.Axis(b, s.Side);
+                    V2 axis = MotionCombat.HasRoute(s)
+                        ? (s.Path[s.PathCursor] - s.Position).Normalized
+                        : TacticalOrders.Axis(b, s.Side);
                     if (axis.Length < .1f)
                         axis = TacticalOrders.Axis(b, s.Side);
-                    V2 fallback = s.Position + Rotate(axis, new[] { 0f, -70f, 70f, -140f, 140f }[index++ % 5]) * 8, best = fallback;
+                    V2 fallback = s.Position + Rotate(axis, new[] { 0f, -70f, 70f, -140f, 140f }[index++ % 5]) * 8,
+                        best = fallback;
                     float bestScore = float.MinValue;
-                    var candidates = new List<KeyValuePair<float, V2>>
-                    {
-                        new KeyValuePair<float, V2>(1, fallback)
-                    };
+                    var candidates = new List<KeyValuePair<float, V2>> { new KeyValuePair<float, V2>(1, fallback) };
                     foreach (var c in st.Danger.Values)
                         if (V2.Distance(s.Position, c.Position) < DirectionalVision.FrontRange(b, s) + 4)
                             candidates.Add(new KeyValuePair<float, V2>(7, c.Position));
@@ -264,17 +338,15 @@ namespace SilentOrders.Core
                             {
                                 V2 side = new V2(-dir.Y, dir.X);
                                 bool found = false;
-                                foreach (int sign in new[]
-                                {
-                                    -1,
-                                    1
-                                }
-
-                                )
+                                foreach (int sign in new[] { -1, 1 })
                                     for (int offset = 1; offset <= 4; offset++)
                                     {
                                         var edge = point + side * (sign * offset);
-                                        if (b.Map.Walkable(edge) && b.Map.LineOfSight(s.Position, edge) && b.SmokeTransmission(s.Position, edge) > .5f)
+                                        if (
+                                            b.Map.Walkable(edge)
+                                            && b.Map.LineOfSight(s.Position, edge)
+                                            && b.SmokeTransmission(s.Position, edge) > .5f
+                                        )
                                         {
                                             candidates.Add(new KeyValuePair<float, V2>(4, edge));
                                             found = true;
@@ -283,7 +355,9 @@ namespace SilentOrders.Core
                                     }
 
                                 if (!found)
-                                    candidates.Add(new KeyValuePair<float, V2>(2, s.Position + dir * Math.Max(1, d - 1)));
+                                    candidates.Add(
+                                        new KeyValuePair<float, V2>(2, s.Position + dir * Math.Max(1, d - 1))
+                                    );
                                 break;
                             }
                         }
@@ -347,7 +421,15 @@ namespace SilentOrders.Core
                     V2 goal = pair == null ? b.Map.Objective : pair.Goal;
                     if (V2.Distance(goal, s.Position) < 1)
                         continue;
-                    var path = LossMemory.Find(b, s, TacticalOrders.Open(b, goal), v => FireLaneSafety.PathCost(b, s, v) + (PositionLogic.Occupied(b, s, v) ? 12 : 0) + PairExperiment.RouteCost(b, s, v));
+                    var path = LossMemory.Find(
+                        b,
+                        s,
+                        TacticalOrders.Open(b, goal),
+                        v =>
+                            FireLaneSafety.PathCost(b, s, v)
+                            + (PositionLogic.Occupied(b, s, v) ? 12 : 0)
+                            + PairExperiment.RouteCost(b, s, v)
+                    );
                     b.Stats.Paths++;
                     if (path.Count == 0)
                         continue;
@@ -420,7 +502,12 @@ namespace SilentOrders.Core
             V2 post;
             if (PositionLogic.TryPost(b, s, s.Position, 7, false, out post) && V2.Distance(post, s.Position) > .7f)
             {
-                var path = LossMemory.Find(b, s, post, v => PositionLogic.Exposure(b, s, v) * 4 + (PositionLogic.Occupied(b, s, v) ? 15 : 0));
+                var path = LossMemory.Find(
+                    b,
+                    s,
+                    post,
+                    v => PositionLogic.Exposure(b, s, v) * 4 + (PositionLogic.Occupied(b, s, v) ? 15 : 0)
+                );
                 b.Stats.Paths++;
                 if (path.Count > 0)
                 {

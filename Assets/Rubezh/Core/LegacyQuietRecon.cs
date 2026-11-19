@@ -8,20 +8,38 @@ namespace SilentOrders.Core
     {
         sealed class State
         {
-            public bool Used, Active;
-            public float Until, Started, ProgressAt;
-            public int Revision, Scout = -1, Cursor;
-            public V2 Goal, Progress;
+            public bool Used,
+                Active;
+            public float Until,
+                Started,
+                ProgressAt;
+            public int Revision,
+                Scout = -1,
+                Cursor;
+            public V2 Goal,
+                Progress;
             public List<V2> Route;
             public readonly HashSet<int> Known = new HashSet<int>();
             public readonly ReconStats Stats = new ReconStats();
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, State> Data = new ConditionalWeakTable<BattleSimulation, State>();
-        public static bool Owns(BattleSimulation b, Soldier s) => s.Side == Side.Green && Active(b) && Data.GetOrCreateValue(b).Scout == s.Id && Data.GetOrCreateValue(b).Route != null;
+        static readonly ConditionalWeakTable<BattleSimulation, State> Data =
+            new ConditionalWeakTable<BattleSimulation, State>();
+
+        public static bool Owns(BattleSimulation b, Soldier s) =>
+            s.Side == Side.Green
+            && Active(b)
+            && Data.GetOrCreateValue(b).Scout == s.Id
+            && Data.GetOrCreateValue(b).Route != null;
+
         public static ReconStats Stats(BattleSimulation b) => Data.GetOrCreateValue(b).Stats;
-        public static bool Active(BattleSimulation b) => b.QuietReconEnabled && !b.Historical01225 && Data.GetOrCreateValue(b).Active;
-        static bool Eligible(BattleSimulation b, Soldier s) => s.Side == Side.Green && s.Deployed && s.Available && !s.Broken && !s.Bleeding && TacticalMarch.Free(b, s);
+
+        public static bool Active(BattleSimulation b) =>
+            b.QuietReconEnabled && !b.Historical01225 && Data.GetOrCreateValue(b).Active;
+
+        static bool Eligible(BattleSimulation b, Soldier s) =>
+            s.Side == Side.Green && s.Deployed && s.Available && !s.Broken && !s.Bleeding && TacticalMarch.Free(b, s);
+
         // Belief only: observed direction/fire, never enemy Visible/Contacts/rest state.
         public static bool SeemsUnaware(BattleSimulation b, Soldier s, Contact c)
         {
@@ -30,7 +48,10 @@ namespace SilentOrders.Core
             float d = V2.Distance(s.Position, c.Position);
             if (d < 7)
                 return false;
-            float facing = c.ObservedFacing.Length < .1f ? 1 : V2.Dot(c.ObservedFacing.Normalized, (s.Position - c.Position).Normalized);
+            float facing =
+                c.ObservedFacing.Length < .1f
+                    ? 1
+                    : V2.Dot(c.ObservedFacing.Normalized, (s.Position - c.Position).Normalized);
             return facing < .25f || d > DirectionalVision.FrontRange(b, s) * .9f;
         }
 
@@ -41,7 +62,13 @@ namespace SilentOrders.Core
                 if (s.Side == Side.Green && s.Alive && s.Deployed)
                 {
                     n++;
-                    if (!Eligible(b, s) || s.LastFire >= 0 || b.Time - s.LastIncoming < 5 || b.Time - s.LastBlast < 5 || s.Suppression > .15f)
+                    if (
+                        !Eligible(b, s)
+                        || s.LastFire >= 0
+                        || b.Time - s.LastIncoming < 5
+                        || b.Time - s.LastBlast < 5
+                        || s.Suppression > .15f
+                    )
                         return false;
                     foreach (var c in Knowledge.Contacts(b, s))
                         if (c.Visual && !c.Inferred && b.Time - c.SeenAt <= 1 && !SeemsUnaware(b, s, c))
@@ -134,7 +161,16 @@ namespace SilentOrders.Core
                             st.Revision = b.Green.Revision;
                             st.Stats.Starts++;
                             st.Known.Add(c.EnemyId);
-                            b.History.Event(b, "reconStart", s.Id, c.EnemyId, s.Position, c.Position, 0, "suspected_unnoticed");
+                            b.History.Event(
+                                b,
+                                "reconStart",
+                                s.Id,
+                                c.EnemyId,
+                                s.Position,
+                                c.Position,
+                                0,
+                                "suspected_unnoticed"
+                            );
                             Plan(b, st, s, c);
                             return;
                         }
@@ -148,7 +184,12 @@ namespace SilentOrders.Core
                     float d = V2.Distance(p, c.Position);
                     if (d < Math.Min(8, V2.Distance(s.Position, c.Position) - .25f))
                         return false;
-                    if (b.Map.LineOfSight(p, c.Position) && c.ObservedFacing.Length > .1f && V2.Dot(c.ObservedFacing.Normalized, (p - c.Position).Normalized) > .35f && d < V2.Distance(s.Position, c.Position) - .5f)
+                    if (
+                        b.Map.LineOfSight(p, c.Position)
+                        && c.ObservedFacing.Length > .1f
+                        && V2.Dot(c.ObservedFacing.Normalized, (p - c.Position).Normalized) > .35f
+                        && d < V2.Distance(s.Position, c.Position) - .5f
+                    )
                         return false;
                 }
 
@@ -166,13 +207,22 @@ namespace SilentOrders.Core
             foreach (var slot in b.Tactics.Slots)
                 points.Add(slot.Position);
             for (int y = -5; y <= 5; y++)
-                for (int x = -5; x <= 5; x++)
-                    if (x * x + y * y <= 25)
-                        points.Add(new V2((float)Math.Floor(s.Position.X) + x + .5f, (float)Math.Floor(s.Position.Y) + y + .5f));
+            for (int x = -5; x <= 5; x++)
+                if (x * x + y * y <= 25)
+                    points.Add(
+                        new V2((float)Math.Floor(s.Position.X) + x + .5f, (float)Math.Floor(s.Position.Y) + y + .5f)
+                    );
             foreach (var p in points)
             {
                 float d = V2.Distance(p, s.Position);
-                if (!b.Map.Walkable(p) || d < 1 || d > 5 || !CommandHierarchy.WithinManeuver(b, s, p) || PositionLogic.Occupied(b, s, p) || !SafePoint(b, s, p))
+                if (
+                    !b.Map.Walkable(p)
+                    || d < 1
+                    || d > 5
+                    || !CommandHierarchy.WithinManeuver(b, s, p)
+                    || PositionLogic.Occupied(b, s, p)
+                    || !SafePoint(b, s, p)
+                )
                     continue;
                 int gain = 0;
                 for (int k = 0; k < 8; k++)
@@ -187,7 +237,11 @@ namespace SilentOrders.Core
                 {
                     float a = k * (float)Math.PI / 6;
                     var probe = s.Position + new V2((float)Math.Cos(a), (float)Math.Sin(a)) * 8;
-                    if (b.Map.Walkable(probe) && (!DirectionalVision.InView(b, s, probe) || !b.Map.LineOfSight(s.Position, probe)) && b.Map.LineOfSight(p, probe))
+                    if (
+                        b.Map.Walkable(probe)
+                        && (!DirectionalVision.InView(b, s, probe) || !b.Map.LineOfSight(s.Position, probe))
+                        && b.Map.LineOfSight(p, probe)
+                    )
                         gain++;
                 }
 

@@ -5,22 +5,28 @@ namespace SilentOrders.Core
 {
     public sealed class ReactionContact
     {
-        public float Seen = -100, Ready;
+        public float Seen = -100,
+            Ready;
     }
 
     public sealed class ReactionState
     {
         public readonly Dictionary<int, ReactionContact> Contacts = new Dictionary<int, ReactionContact>();
-        public int Target = -1, Switches;
-        public float ReadyAt, LastShot = -100;
-        public int AimTarget = -1, AimProfile = -1;
-        public float AimReadyAt, AimReactionAt;
+        public int Target = -1,
+            Switches;
+        public float ReadyAt,
+            LastShot = -100;
+        public int AimTarget = -1,
+            AimProfile = -1;
+        public float AimReadyAt,
+            AimReactionAt;
         public double WaitSeconds;
     }
 
     public static class ReactionTiming
     {
         public static float Delay(float angle) => .5f + Util.Clamp((angle - 30) / 150f, 0, 1);
+
         public static void Observe(BattleSimulation b, Soldier s, int id, V2 position, V2 look)
         {
             if (!b.ReactionTimingEnabled || b.Historical01225)
@@ -76,7 +82,9 @@ namespace SilentOrders.Core
             if (st.Target != target.EnemyId)
             {
                 bool visible = seen != null && b.Time - seen.Seen <= b.Config.PerceptionPeriod * 2.1f;
-                float delay = visible ? .5f : Delay(DirectionalVision.Angle(s.Awareness.Look, target.Position - s.Position));
+                float delay = visible
+                    ? .5f
+                    : Delay(DirectionalVision.Angle(s.Awareness.Look, target.Position - s.Position));
                 // Detection already started acquisition; do not append a second delay to it.
                 st.ReadyAt = st.Target < 0 && visible ? seen.Ready : Math.Max(b.Time + delay, visible ? seen.Ready : 0);
                 st.Target = target.EnemyId;

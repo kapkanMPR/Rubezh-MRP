@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,13 +12,14 @@ namespace Rubezh.UnityPort
         {
             yield return root;
             foreach (var c in root.Children())
-                foreach (var d in Descendants(c))
-                    yield return d;
+            foreach (var d in Descendants(c))
+                yield return d;
         }
 
         void ApplyResponsiveMetrics()
         {
-            bool landscape = vw >= 590 && vw > vh, shortLandscape = landscape && vh <= 540;
+            bool landscape = vw >= 590 && vw > vh,
+                shortLandscape = landscape && vh <= 540;
             foreach (var e in Descendants(main).ToArray())
             {
                 if (e.ClassListContains("card-portrait"))
@@ -40,7 +41,9 @@ namespace Rubezh.UnityPort
                 }
 
                 if (e.ClassListContains("doll") && landscape)
-                    e.style.height = shortLandscape ? Mathf.Clamp(vh * .31f, 107, 165) : Mathf.Clamp(vh * .24f, 112, 245);
+                    e.style.height = shortLandscape
+                        ? Mathf.Clamp(vh * .31f, 107, 165)
+                        : Mathf.Clamp(vh * .24f, 112, 245);
                 if (e.ClassListContains("slot") && landscape)
                     e.style.width = Mathf.Clamp(vw * .1f, 62, 110);
                 if (e.ClassListContains("slot-label") && shortLandscape)
@@ -48,7 +51,8 @@ namespace Rubezh.UnityPort
                 if (e.ClassListContains("slot-image") && landscape)
                     e.style.height = Mathf.Clamp(vh * .042f, 18, 42);
                 if (e.ClassListContains("bag-cells"))
-                    e.style.maxWidth = ((e.childCount + 1) / 2) * ((landscape ? Mathf.Clamp(vw * .06f, 46, 70) : 70) + 4);
+                    e.style.maxWidth =
+                        ((e.childCount + 1) / 2) * ((landscape ? Mathf.Clamp(vw * .06f, 46, 70) : 70) + 4);
                 if (e.ClassListContains("pocket") && landscape)
                 {
                     e.style.width = Mathf.Clamp(vw * .06f, 46, 70);
@@ -96,7 +100,10 @@ namespace Rubezh.UnityPort
             }
             box.style.width = shipment ? Mathf.Min(760, vw - 20) : Mathf.Min(820, vw * .9f);
             box.style.maxWidth = vw - 20;
-            box.style.maxHeight = shipment ? vh - 20 : vh <= 600 && vw > 650 ? vh - 16 : vh * .88f;
+            box.style.maxHeight =
+                shipment ? vh - 20
+                : vh <= 600 && vw > 650 ? vh - 16
+                : vh * .88f;
             if (shipment)
                 box.style.height = Mathf.Min(530, vh - 20);
         }

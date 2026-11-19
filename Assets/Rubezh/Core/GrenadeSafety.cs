@@ -14,25 +14,52 @@ namespace SilentOrders.Core
 
     public static class GrenadeSafety
     {
-        public const float Fuse = 1.5f, Margin = .35f;
+        public const float Fuse = 1.5f,
+            Margin = .35f;
+
         public static float ScatterRadius(BattleSimulation b, Soldier shooter, Contact target, int kind)
         {
-            bool personal = target.Visual && shooter.Visible.Contains(target.EnemyId) && b.Time - target.SeenAt <= b.Config.PerceptionPeriod * 2 && b.Map.LineOfSight(shooter.Position, target.Position) && b.SmokeTransmission(shooter.Position, target.Position) >= .25f;
-            float bonus = shooter.Side == Side.Green && (kind == 2 ? shooter.Role == Role.Grenadier : shooter.Role == Role.Rifleman) ? 1f : 0f;
-            return Math.Max(0, (kind == 2 ? 3f : 2f) / Ballistics.DistanceBonus(V2.Distance(shooter.Position, target.Position), ArcedOrdnance.Range(b, kind)) * (personal ? 1 : 2) - bonus) + target.Uncertainty;
+            bool personal =
+                target.Visual
+                && shooter.Visible.Contains(target.EnemyId)
+                && b.Time - target.SeenAt <= b.Config.PerceptionPeriod * 2
+                && b.Map.LineOfSight(shooter.Position, target.Position)
+                && b.SmokeTransmission(shooter.Position, target.Position) >= .25f;
+            float bonus =
+                shooter.Side == Side.Green
+                && (kind == 2 ? shooter.Role == Role.Grenadier : shooter.Role == Role.Rifleman)
+                    ? 1f
+                    : 0f;
+            return Math.Max(
+                    0,
+                    (kind == 2 ? 3f : 2f)
+                        / Ballistics.DistanceBonus(
+                            V2.Distance(shooter.Position, target.Position),
+                            ArcedOrdnance.Range(b, kind)
+                        )
+                        * (personal ? 1 : 2)
+                        - bonus
+                ) + target.Uncertainty;
         }
 
         public static V2 Scatter(BattleSimulation b, Soldier shooter, Contact target, int kind)
         {
-            float angle = b.Random.Value() * (float)Math.PI * 2, radius = (float)Math.Sqrt(b.Random.Value()) * ScatterRadius(b, shooter, target, kind);
+            float angle = b.Random.Value() * (float)Math.PI * 2,
+                radius = (float)Math.Sqrt(b.Random.Value()) * ScatterRadius(b, shooter, target, kind);
             return target.Position + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * radius;
         }
 
-        public static bool Live(BattleSimulation b, ArcProjectile p) => p != null && p.Kind == 1 && p.Landed && b.Projectiles.Contains(p);
+        public static bool Live(BattleSimulation b, ArcProjectile p) =>
+            p != null && p.Kind == 1 && p.Landed && b.Projectiles.Contains(p);
+
         public static bool Dangerous(BattleSimulation b, V2 point)
         {
             foreach (var p in b.Projectiles)
-                if (Live(b, p) && V2.Distance(point, p.Position) < ArcedOrdnance.BlastRadius(p) + Margin && b.Map.LineOfSight(p.Position, point))
+                if (
+                    Live(b, p)
+                    && V2.Distance(point, p.Position) < ArcedOrdnance.BlastRadius(p) + Margin
+                    && b.Map.LineOfSight(p.Position, point)
+                )
                     return true;
             return false;
         }
@@ -42,7 +69,12 @@ namespace SilentOrders.Core
             ArcProjectile best = null;
             float time = float.MaxValue;
             foreach (var p in b.Projectiles)
-                if (Live(b, p) && p.DetonateAt < time && V2.Distance(s.Position, p.Position) < ArcedOrdnance.BlastRadius(p) + Margin && b.Map.LineOfSight(p.Position, s.Position))
+                if (
+                    Live(b, p)
+                    && p.DetonateAt < time
+                    && V2.Distance(s.Position, p.Position) < ArcedOrdnance.BlastRadius(p) + Margin
+                    && b.Map.LineOfSight(p.Position, s.Position)
+                )
                 {
                     best = p;
                     time = p.DetonateAt;
@@ -70,7 +102,10 @@ namespace SilentOrders.Core
             }
 
             foreach (var actor in b.Soldiers)
-                if (actor.SupplyDonorId >= 0 && (actor.Id == s.Id || actor.SupplyDonorId == s.Id || actor.SupplyReceiverId == s.Id))
+                if (
+                    actor.SupplyDonorId >= 0
+                    && (actor.Id == s.Id || actor.SupplyDonorId == s.Id || actor.SupplyReceiverId == s.Id)
+                )
                     SupplyAI.Cancel(b, actor);
             s.TreatmentUntil = 0;
             s.TreatmentKind = 0;
@@ -92,16 +127,16 @@ namespace SilentOrders.Core
             for (int i = 0; i < 16; i++)
             {
                 float angle = i * (float)Math.PI / 8;
-                V2 d = new V2(away.X * (float)Math.Cos(angle) - away.Y * (float)Math.Sin(angle), away.X * (float)Math.Sin(angle) + away.Y * (float)Math.Cos(angle));
+                V2 d = new V2(
+                    away.X * (float)Math.Cos(angle) - away.Y * (float)Math.Sin(angle),
+                    away.X * (float)Math.Sin(angle) + away.Y * (float)Math.Cos(angle)
+                );
                 V2 goal = threat.Position + d * (ArcedOrdnance.BlastRadius(threat) + Margin + .3f);
                 if (!b.Map.Walkable(goal) || Dangerous(b, goal))
                     continue;
-                var path = Locomotion.WalkableSegment(b, s.Position, goal) ? new List<V2>
-                {
-                    goal
-                }
-
-                : Pathfinder.Find(b.Map, s.Position, goal);
+                var path = Locomotion.WalkableSegment(b, s.Position, goal)
+                    ? new List<V2> { goal }
+                    : Pathfinder.Find(b.Map, s.Position, goal);
                 if (path.Count == 0)
                     continue;
                 float length = 0;
@@ -164,10 +199,22 @@ namespace SilentOrders.Core
                 Plan(b, s, threat);
             while (state.Cursor < state.Path.Count && V2.Distance(s.Position, state.Path[state.Cursor]) < .08f)
                 state.Cursor++;
-            V2 direction = state.Cursor < state.Path.Count ? (state.Path[state.Cursor] - s.Position).Normalized : (s.Position - threat.Position).Normalized;
-            float speed = b.Config.MoveSpeed * (s.Incapacitated ? .32f : s.Health < 45 ? .75f : 1f) * ConcussionEffects.MovementMultiplier(ConcussionEffects.Current(b, s));
-            float distance = state.Cursor < state.Path.Count ? V2.Distance(s.Position, state.Path[state.Cursor]) : speed * dt;
-            V2 desired = direction * Math.Min(distance, speed * dt), next;
+            V2 direction =
+                state.Cursor < state.Path.Count
+                    ? (state.Path[state.Cursor] - s.Position).Normalized
+                    : (s.Position - threat.Position).Normalized;
+            float speed =
+                b.Config.MoveSpeed
+                * (
+                    s.Incapacitated ? .32f
+                    : s.Health < 45 ? .75f
+                    : 1f
+                )
+                * ConcussionEffects.MovementMultiplier(ConcussionEffects.Current(b, s));
+            float distance =
+                state.Cursor < state.Path.Count ? V2.Distance(s.Position, state.Path[state.Cursor]) : speed * dt;
+            V2 desired = direction * Math.Min(distance, speed * dt),
+                next;
             if (Locomotion.TryStep(b, s, desired, out next))
             {
                 s.DistanceTravelled += V2.Distance(s.Position, next);
@@ -184,7 +231,9 @@ namespace SilentOrders.Core
 
             s.Crouched = s.Incapacitated;
             s.State = s.Incapacitated ? ActionState.Incapacitated : ActionState.Move;
-            s.Reason = s.Incapacitated ? "Граната рядом — отползаю из зоны взрыва" : "Граната рядом — срочно отбегаю, даже из укрытия";
+            s.Reason = s.Incapacitated
+                ? "Граната рядом — отползаю из зоны взрыва"
+                : "Граната рядом — срочно отбегаю, даже из укрытия";
             return true;
         }
     }

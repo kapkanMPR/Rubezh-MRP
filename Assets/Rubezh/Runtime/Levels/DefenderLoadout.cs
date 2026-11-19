@@ -9,7 +9,7 @@ namespace Rubezh.UnityPort
     {
         Hold,
         Attack,
-        Pullback
+        Pullback,
     }
 
     [Serializable]
@@ -24,27 +24,17 @@ namespace Rubezh.UnityPort
     {
         public string name = "Группа обороны";
         public Vector2Int position = new Vector2Int(20, 12);
-        public float arrivalSeconds, holdRadius = 6f;
+        public float arrivalSeconds,
+            holdRadius = 6f;
         public bool legacyReserveTrigger;
         public bool vehicleArrival; // Red: permitted only for delayed groups. At most one active in a level.
         public DefenderBehavior behavior;
-        public List<DefenderSlot> soldiers = new List<DefenderSlot>
-        {
-            new DefenderSlot()
-        };
+        public List<DefenderSlot> soldiers = new List<DefenderSlot> { new DefenderSlot() };
     }
 
     public static class DefenderLoadout
     {
-        public static readonly int[] Weapons =
-        {
-            0,
-            1,
-            2,
-            3,
-            4,
-            5
-        };
+        public static readonly int[] Weapons = { 0, 1, 2, 3, 4, 5 };
         public static readonly string[] WeaponNames =
         {
             "M4 с прицелом",
@@ -52,7 +42,7 @@ namespace Rubezh.UnityPort
             "АК-74 с подствольником",
             "M16 с подствольником",
             "СВД",
-            "M24"
+            "M24",
         };
         public static readonly string[] Extras =
         {
@@ -60,7 +50,7 @@ namespace Rubezh.UnityPort
             "РПГ",
             "Медицинский рюкзак",
             "Рюкзак снабжения",
-            "РШГ"
+            "РШГ",
         };
         public static readonly string[] BagNames =
         {
@@ -75,11 +65,14 @@ namespace Rubezh.UnityPort
             "Ф-1",
             "РГН",
             "РГО",
-            "Запасные РШГ"
+            "Запасные РШГ",
         };
+
         public static int WeaponPrice(int w)
         {
-            return w == 5 ? Kit.WeaponPrice(4) : w == 3 ? Kit.WeaponPrice(2) : Kit.WeaponPrice(w);
+            return w == 5 ? Kit.WeaponPrice(4)
+                : w == 3 ? Kit.WeaponPrice(2)
+                : Kit.WeaponPrice(w);
         }
 
         public static int Cost(Kit k)
@@ -89,7 +82,23 @@ namespace Rubezh.UnityPort
 
         public static bool Valid(Kit k)
         {
-            if (k == null || k.armor < 0 || k.armor > 2 || k.weapon < 0 || k.weapon > 5 || k.extra < 0 || k.extra > 4 || k.rig < 0 || k.rig > 2 || k.grenade < 0 || k.grenade > 5 || k.count < 0 || k.count > 3 || k.bag == null || (k.bag.Length != 8 && k.bag.Length != 9 && k.bag.Length != 11 && k.bag.Length != 12))
+            if (
+                k == null
+                || k.armor < 0
+                || k.armor > 2
+                || k.weapon < 0
+                || k.weapon > 5
+                || k.extra < 0
+                || k.extra > 4
+                || k.rig < 0
+                || k.rig > 2
+                || k.grenade < 0
+                || k.grenade > 5
+                || k.count < 0
+                || k.count > 3
+                || k.bag == null
+                || (k.bag.Length != 8 && k.bag.Length != 9 && k.bag.Length != 11 && k.bag.Length != 12)
+            )
                 return false;
             if (!k.PocketsValid)
                 return false;
@@ -133,7 +142,7 @@ namespace Rubezh.UnityPort
             k.NormalizeBag();
             for (int i = 0; i < k.bag.Length; i++)
                 k.bag[i] = k.Allows(i) ? Mathf.Clamp(k.bag[i], 0, Kit.Caps[i]) : 0;
-        // Do not silently trim an overfull bag; validation explains the limit.
+            // Do not silently trim an overfull bag; validation explains the limit.
         }
 
         public static Soldier Build(DefenderSlot slot, GameplayRules rules = null)
@@ -148,7 +157,12 @@ namespace Rubezh.UnityPort
                 WeaponVariant = k.weapon,
                 RigLevel = k.rig,
                 ArmorLevel = k.armor,
-                Role = k.weapon >= 4 ? Role.Sniper : k.weapon == 1 ? Role.MachineGunner : k.extra == 2 ? Role.Medic : k.extra == 1 || k.extra == 4 ? Role.Grenadier : Role.Rifleman,
+                Role =
+                    k.weapon >= 4 ? Role.Sniper
+                    : k.weapon == 1 ? Role.MachineGunner
+                    : k.extra == 2 ? Role.Medic
+                    : k.extra == 1 || k.extra == 4 ? Role.Grenadier
+                    : Role.Rifleman,
                 SupplyPack = k.extra == 3,
                 LauncherKind = k.extra == 4 ? 1 : 0,
                 GrenadeType = k.grenade,
@@ -166,7 +180,7 @@ namespace Rubezh.UnityPort
                 PackRockets = k.bag[2],
                 PackSmokes = k.bag[3],
                 PackGrenades = k.bag[4],
-                PackUnderbarrel = k.bag[5]
+                PackUnderbarrel = k.bag[5],
             };
             GrenadePockets.Equip(s, k.grenade, k.count, k.grenade2, k.count2, k.grenade3, k.count3);
             s.Ammo = s.MagazineSize;
@@ -179,7 +193,11 @@ namespace Rubezh.UnityPort
             return new Kit
             {
                 weapon = s.WeaponVariant,
-                extra = s.SupplyPack ? 3 : s.Role == Role.Medic ? 2 : s.Rockets > 0 ? (s.LauncherKind == 1 ? 4 : 1) : 0,
+                extra =
+                    s.SupplyPack ? 3
+                    : s.Role == Role.Medic ? 2
+                    : s.Rockets > 0 ? (s.LauncherKind == 1 ? 4 : 1)
+                    : 0,
                 armor = s.ArmorLevel,
                 rig = s.RigLevel,
                 grenade = s.GrenadeType,
@@ -201,8 +219,8 @@ namespace Rubezh.UnityPort
                     s.PackF1,
                     s.PackRGN,
                     s.PackRGO,
-                    s.PackRshg
-                }
+                    s.PackRshg,
+                },
             };
         }
     }

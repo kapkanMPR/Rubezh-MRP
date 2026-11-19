@@ -7,6 +7,7 @@ namespace Rubezh.UnityPort
     public static class LevelJson
     {
         static readonly Regex Point = new Regex("\"(?:flag|playerSpawn|botSpawn|position)\"\\s*:\\s*\\{[^{}]*\\}");
+
         public static string ToUnity(string json)
         {
             return Point.Replace(json, m => m.Value.Replace("\"x\"", "\"m_X\"").Replace("\"y\"", "\"m_Y\""));

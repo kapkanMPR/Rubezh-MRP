@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using SilentOrders.Core;
+using UnityEngine;
 
 namespace Rubezh.UnityPort
 {
@@ -9,13 +9,24 @@ namespace Rubezh.UnityPort
     {
         readonly Dictionary<SmokeCloud, AudioSource> smokeVoices = new Dictionary<SmokeCloud, AudioSource>();
         readonly List<SmokeCloud> expiredSmokeVoices = new List<SmokeCloud>();
+
         void UpdateSmokeAudio()
         {
-            bool active = battle != null && screen == 2 && battle.Outcome == Outcome.Running && soundEnabled && !paused;
+            bool active =
+                battle != null
+                && screen == ScreenId.Battle
+                && battle.Outcome == Outcome.Running
+                && soundEnabled
+                && !paused;
             expiredSmokeVoices.Clear();
             foreach (var pair in smokeVoices)
             {
-                if (battle == null || !battle.Smoke.Contains(pair.Key) || pair.Key.Until <= battle.Time || screen != 2)
+                if (
+                    battle == null
+                    || !battle.Smoke.Contains(pair.Key)
+                    || pair.Key.Until <= battle.Time
+                    || screen != ScreenId.Battle
+                )
                 {
                     pair.Value.Stop();
                     Destroy(pair.Value);

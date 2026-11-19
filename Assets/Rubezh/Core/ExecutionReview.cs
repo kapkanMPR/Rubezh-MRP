@@ -4,11 +4,28 @@ namespace SilentOrders.Core
 {
     public sealed class ExecutionMemory
     {
-        public float NextSample, SampleAt, StalledSince = -1, NextRepair, FailedUntil, NextReturn;
-        public int FailedMapRevision = -1, FailedOrderRevision = -1;
-        public int Repairs, RejectedRepeats, ReturnedTasks, CommanderReviews, ReleasedSupport;
-        public float WorkingSeconds, ServiceSeconds, PressureSeconds, ObservationSeconds, BlockedSeconds, WaitSeconds, NoSectorSeconds;
-        public string Cause = "Начало", LastRepair = "";
+        public float NextSample,
+            SampleAt,
+            StalledSince = -1,
+            NextRepair,
+            FailedUntil,
+            NextReturn;
+        public int FailedMapRevision = -1,
+            FailedOrderRevision = -1;
+        public int Repairs,
+            RejectedRepeats,
+            ReturnedTasks,
+            CommanderReviews,
+            ReleasedSupport;
+        public float WorkingSeconds,
+            ServiceSeconds,
+            PressureSeconds,
+            ObservationSeconds,
+            BlockedSeconds,
+            WaitSeconds,
+            NoSectorSeconds;
+        public string Cause = "Начало",
+            LastRepair = "";
         public V2 FailedGoal;
     }
 
@@ -19,9 +36,23 @@ namespace SilentOrders.Core
         {
             var e = s.Execution;
             var q = b.Team(s);
-            if (TacticalOrders.Emergency(q) || q.Style == CombatStyle.Withdraw || ExecutionReview.ProtectedTask(b, s) || job != Job.Advance && job != Job.Flank && job != Job.Reposition && job != Job.Cover && job != Job.Hold && job != Job.Command)
+            if (
+                TacticalOrders.Emergency(q)
+                || q.Style == CombatStyle.Withdraw
+                || ExecutionReview.ProtectedTask(b, s)
+                || job != Job.Advance
+                    && job != Job.Flank
+                    && job != Job.Reposition
+                    && job != Job.Cover
+                    && job != Job.Hold
+                    && job != Job.Command
+            )
                 return false;
-            bool reject = e.FailedUntil > b.Time && e.FailedMapRevision == b.Map.Revision && e.FailedOrderRevision == q.Revision && V2.Distance(goal, e.FailedGoal) < 1.2f;
+            bool reject =
+                e.FailedUntil > b.Time
+                && e.FailedMapRevision == b.Map.Revision
+                && e.FailedOrderRevision == q.Revision
+                && V2.Distance(goal, e.FailedGoal) < 1.2f;
             if (reject)
             {
                 e.RejectedRepeats++;
@@ -36,7 +67,9 @@ namespace SilentOrders.Core
             if (!s.Available || !s.Deployed)
                 return false;
             bool route = s.PathCursor < s.Path.Count;
-            return route && (b.Time - s.Progress.ProgressAt < 8 || s.OrderUntil > b.Time || TacticalOrders.ServiceActive(s)) || !route && s.OrderUntil > b.Time && V2.Distance(s.OrderAnchor, s.Position) > .6f;
+            return route
+                    && (b.Time - s.Progress.ProgressAt < 8 || s.OrderUntil > b.Time || TacticalOrders.ServiceActive(s))
+                || !route && s.OrderUntil > b.Time && V2.Distance(s.OrderAnchor, s.Position) > .6f;
         }
 
         public static bool WorkingSector(BattleSimulation b, Soldier s)
@@ -48,10 +81,20 @@ namespace SilentOrders.Core
                 V2 muzzle;
                 if (!Ballistics.TryMuzzle(b, s, c.Position, out muzzle))
                     continue;
-                bool visual = c.Visual && !c.Inferred && s.Visible.Contains(c.EnemyId) && b.Time - c.SeenAt <= b.Config.PerceptionPeriod * 2;
+                bool visual =
+                    c.Visual
+                    && !c.Inferred
+                    && s.Visible.Contains(c.EnemyId)
+                    && b.Time - c.SeenAt <= b.Config.PerceptionPeriod * 2;
                 if (visual)
                     return true;
-                if (!s.Sniper && c.Visual && !c.Inferred && b.Time - c.SeenAt <= (s.GunMachineGunner ? 7 : 4) && CombatCoordination.CanSuppress(b, s))
+                if (
+                    !s.Sniper
+                    && c.Visual
+                    && !c.Inferred
+                    && b.Time - c.SeenAt <= (s.GunMachineGunner ? 7 : 4)
+                    && CombatCoordination.CanSuppress(b, s)
+                )
                     return true;
             }
 
@@ -60,7 +103,24 @@ namespace SilentOrders.Core
 
         public static bool ProtectedTask(BattleSimulation b, Soldier s)
         {
-            return ContactMovement.Active(b, s) || ContactMovement.Supporting(b, s) || (SupplyRecovery.Active(s) || HandLauncher.Active(s)) || BuddyActions.Active(s) || !PositionLogic.ShelterEligible(b, s) || SniperTactics.OwnsSpecialPost(b, s) || EngagementPolicy.Active(b, s) || s.LootTargetId >= 0 || s.LootGroundId >= 0 || s.LauncherPickupId >= 0 || s.WeaponAidTargetId >= 0 || s.PriorityMovement.Transfer || AreaSuppression.Reserved(b, s) || ProgressRecovery.Active(b, s) || PositionLogic.OwnsShelter(s) && s.Tactical.ShelterUntil > b.Time && s.PathCursor < s.Path.Count || b.Team(s).Breakthrough.Active || b.Team(s).CommandTransition.Waiting || s.PairRegroupUntil > b.Time;
+            return ContactMovement.Active(b, s)
+                || ContactMovement.Supporting(b, s)
+                || (SupplyRecovery.Active(s) || HandLauncher.Active(s))
+                || BuddyActions.Active(s)
+                || !PositionLogic.ShelterEligible(b, s)
+                || SniperTactics.OwnsSpecialPost(b, s)
+                || EngagementPolicy.Active(b, s)
+                || s.LootTargetId >= 0
+                || s.LootGroundId >= 0
+                || s.LauncherPickupId >= 0
+                || s.WeaponAidTargetId >= 0
+                || s.PriorityMovement.Transfer
+                || AreaSuppression.Reserved(b, s)
+                || ProgressRecovery.Active(b, s)
+                || PositionLogic.OwnsShelter(s) && s.Tactical.ShelterUntil > b.Time && s.PathCursor < s.Path.Count
+                || b.Team(s).Breakthrough.Active
+                || b.Team(s).CommandTransition.Waiting
+                || s.PairRegroupUntil > b.Time;
         }
 
         public static bool UsefulWatch(BattleSimulation b, Soldier s)
@@ -68,7 +128,13 @@ namespace SilentOrders.Core
             if (WorkingSector(b, s) || b.Time - s.LastFire < 8)
                 return true;
             foreach (var a in b.Soldiers)
-                if (a != s && b.Team(s).Contains(a) && a.Available && a.Moving && PositionLogic.UsefulSupport(b, s, a, a.Destination))
+                if (
+                    a != s
+                    && b.Team(s).Contains(a)
+                    && a.Available
+                    && a.Moving
+                    && PositionLogic.UsefulSupport(b, s, a, a.Destination)
+                )
                     return true;
             return false;
         }
@@ -118,7 +184,15 @@ namespace SilentOrders.Core
             {
                 var q = b.Team(s);
                 var pair = CommandHierarchy.Pair(q, s.Assignment.PairId);
-                bool expected = q.Side == Side.Green && q.Style != CombatStyle.Passive && q.Style != CombatStyle.Withdraw && CommandHierarchy.Owns(q) && pair != null && (pair.Duty == PairDuty.Advance || pair.Duty == PairDuty.Maneuver) && V2.Distance(s.Position, pair.Goal) > 3 && !StraightAdvance.Waiting(b, s);
+                bool expected =
+                    q.Side == Side.Green
+                    && q.Style != CombatStyle.Passive
+                    && q.Style != CombatStyle.Withdraw
+                    && CommandHierarchy.Owns(q)
+                    && pair != null
+                    && (pair.Duty == PairDuty.Advance || pair.Duty == PairDuty.Maneuver)
+                    && V2.Distance(s.Position, pair.Goal) > 3
+                    && !StraightAdvance.Waiting(b, s);
                 e.Cause = expected ? "Нет продвижения к задаче без контакта" : "Наблюдение без известной цели";
                 if (expected)
                 {

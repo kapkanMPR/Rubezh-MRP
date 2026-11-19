@@ -7,7 +7,10 @@ namespace Rubezh.UnityPort
     [Serializable]
     public class CampaignTransfer
     {
-        public string format = "rubezh-mobile-campaign-v2", game_version = "0.12.55", campaignTitle = "Рубеж", exportedAt = "";
+        public string format = "rubezh-mobile-campaign-v2",
+            game_version = "0.12.55",
+            campaignTitle = "Рубеж",
+            exportedAt = "";
         public List<LevelTransfer> missions = new List<LevelTransfer>();
     }
 
@@ -22,13 +25,26 @@ namespace Rubezh.UnityPort
         public List<LevelRoofCell> proceduralRoofCells = new List<LevelRoofCell>();
         public List<string> proceduralWallIds = new List<string>();
         public List<LevelRoofCell> roof = new List<LevelRoofCell>();
-        public int formatVersion = 6, campaignMission, columns, rows, theme;
-        public string name, operationDescription, expectedThreats;
-        public bool enabledInGame, useInQuickBattle, customDefenders, greenVehicleArrival, overrideBriefing;
-        public Vector2Int flag, playerSpawn, botSpawn;
+        public int formatVersion = 6,
+            campaignMission,
+            columns,
+            rows,
+            theme;
+        public string name,
+            operationDescription,
+            expectedThreats;
+        public bool enabledInGame,
+            useInQuickBattle,
+            customDefenders,
+            greenVehicleArrival,
+            overrideBriefing;
+        public Vector2Int flag,
+            playerSpawn,
+            botSpawn;
         public List<LevelObjectCell> objects;
         public List<LevelGroundCell> ground;
         public List<DefenderSpawn> defenders;
+
         public RubezhLevel Create()
         {
             var l = ScriptableObject.CreateInstance<RubezhLevel>();

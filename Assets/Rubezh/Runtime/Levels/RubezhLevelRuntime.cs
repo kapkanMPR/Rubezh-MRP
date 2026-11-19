@@ -15,12 +15,19 @@ namespace Rubezh.UnityPort
             if (campaign)
             {
                 var regenerated = BuiltinCampaign.Find(mission);
-                if(regenerated != null && regenerated.terrainVisual != null)return regenerated;
+                if (regenerated != null && regenerated.terrainVisual != null)
+                    return regenerated;
                 var canonical = Resources.Load<RubezhLevel>("Levels/Campaign_" + mission.ToString("00"));
                 string error;
-                if (canonical != null && canonical.enabledInGame && canonical.campaignMission == mission && LevelValidation.Valid(canonical, out error))
+                if (
+                    canonical != null
+                    && canonical.enabledInGame
+                    && canonical.campaignMission == mission
+                    && LevelValidation.Valid(canonical, out error)
+                )
                     return canonical;
-                if (canonical != null) Resources.UnloadAsset(canonical);
+                if (canonical != null)
+                    Resources.UnloadAsset(canonical);
                 var embedded = BuiltinCampaign.Find(mission);
                 if (embedded != null)
                     return embedded;
@@ -31,9 +38,14 @@ namespace Rubezh.UnityPort
             Array.Sort(levels, (a, b) => string.CompareOrdinal(a == null ? "" : a.name, b == null ? "" : b.name));
             RubezhLevel chosen = null;
             foreach (var level in levels)
-                if (level != null && level.enabledInGame && level.useInQuickBattle) { chosen=level; break; }
+                if (level != null && level.enabledInGame && level.useInQuickBattle)
+                {
+                    chosen = level;
+                    break;
+                }
             foreach (var level in levels)
-                if (level != null && level != chosen) Resources.UnloadAsset(level);
+                if (level != null && level != chosen)
+                    Resources.UnloadAsset(level);
             return chosen;
         }
 
@@ -58,8 +70,15 @@ namespace Rubezh.UnityPort
                 return false;
             }
 
-            try { return ApplyLevel(battle, level); }
-            finally { if (!BuiltinCampaign.Owns(level)) Resources.UnloadAsset(level); }
+            try
+            {
+                return ApplyLevel(battle, level);
+            }
+            finally
+            {
+                if (!BuiltinCampaign.Owns(level))
+                    Resources.UnloadAsset(level);
+            }
         }
 
         // Explicit level snapshot, independent of editor/custom campaign overrides.
@@ -82,7 +101,21 @@ namespace Rubezh.UnityPort
             string error;
             if (!LevelValidation.Valid(level, out error))
             {
-                LastError = "Миссия " + mission + " / " + level.name + " [" + level.columns + "x" + level.rows + "] флаг=" + level.flag + ", спавн=" + level.playerSpawn + ": " + error;
+                LastError =
+                    "Миссия "
+                    + mission
+                    + " / "
+                    + level.name
+                    + " ["
+                    + level.columns
+                    + "x"
+                    + level.rows
+                    + "] флаг="
+                    + level.flag
+                    + ", спавн="
+                    + level.playerSpawn
+                    + ": "
+                    + error;
                 Debug.LogError("[Rubezh Levels] " + LastError);
                 return false;
             }
@@ -114,7 +147,10 @@ namespace Rubezh.UnityPort
                         continue;
                     int i = tile.y * map.Columns + tile.x;
                     map.Studio.Ground[i] = StudioCatalog.Find(tile.assetId, tile.mirrored);
-                    map.Tiles[i] = tile.kind == LevelGroundKind.Road ? Tile.Road : tile.kind == LevelGroundKind.Rubble ? Tile.Rubble : Tile.Ground;
+                    map.Tiles[i] =
+                        tile.kind == LevelGroundKind.Road ? Tile.Road
+                        : tile.kind == LevelGroundKind.Rubble ? Tile.Rubble
+                        : Tile.Ground;
                 }
 
             if (level.objects != null)
@@ -138,7 +174,7 @@ namespace Rubezh.UnityPort
                             Angle = obj.rotationDegrees,
                             ScaleX = LevelObjectCell.SafeScale(obj.scaleX),
                             ScaleY = LevelObjectCell.SafeScale(obj.scaleY),
-                            Root = obj.y * map.Columns + obj.x
+                            Root = obj.y * map.Columns + obj.x,
                         };
                         if (asset.Decor)
                         {
@@ -148,13 +184,13 @@ namespace Rubezh.UnityPort
 
                         map.Studio.Objects.Add(placed);
                         for (int y = obj.y; y < obj.y + asset.Height; y++)
-                            for (int x = obj.x; x < obj.x + asset.Width; x++)
-                            {
-                                int cell = y * map.Columns + x;
-                                map.Studio.Cells[cell] = placed;
-                                if (asset.Blocking)
-                                    map.Tiles[cell] = StudioRules.Cell(asset, x - obj.x, y - obj.y);
-                            }
+                        for (int x = obj.x; x < obj.x + asset.Width; x++)
+                        {
+                            int cell = y * map.Columns + x;
+                            map.Studio.Cells[cell] = placed;
+                            if (asset.Blocking)
+                                map.Tiles[cell] = StudioRules.Cell(asset, x - obj.x, y - obj.y);
+                        }
 
                         continue;
                     }
@@ -210,7 +246,7 @@ namespace Rubezh.UnityPort
                         Attack = source.behavior != DefenderBehavior.Hold,
                         Pullback = source.behavior == DefenderBehavior.Pullback,
                         LegacyReserveTrigger = source.legacyReserveTrigger,
-                        VehicleArrival = source.vehicleArrival
+                        VehicleArrival = source.vehicleArrival,
                     };
                     foreach (var slot in source.soldiers)
                         group.Members.Add(DefenderLoadout.Build(slot, battle.Rules));
@@ -239,14 +275,16 @@ namespace Rubezh.UnityPort
 
         static V2 Center(Vector2Int p, BattleMap map)
         {
-            int x = Mathf.Clamp(p.x, 0, map.Columns - 1), y = Mathf.Clamp(p.y, 0, map.Rows - 1);
+            int x = Mathf.Clamp(p.x, 0, map.Columns - 1),
+                y = Mathf.Clamp(p.y, 0, map.Rows - 1);
             return map.NearestOpen(new V2(x + .5f, y + .5f));
         }
 
         static void SpawnBothTeams(BattleSimulation battle)
         {
             var used = new bool[battle.Map.Tiles.Length];
-            int green = 0, red = 0;
+            int green = 0,
+                red = 0;
             foreach (var soldier in battle.Soldiers)
             {
                 if (!soldier.Deployed || !soldier.Alive)
@@ -254,7 +292,10 @@ namespace Rubezh.UnityPort
                 bool isGreen = soldier.Side == Side.Green;
                 int rank = isGreen ? green++ : red++;
                 V2 origin = isGreen ? battle.Map.Entry : battle.Map.EnemyEntry;
-                var preference = new V2(origin.X + (isGreen ? -1f : 1f) * (rank / 5) * 1.4f, origin.Y + ((rank % 5) - 2) * 1.5f);
+                var preference = new V2(
+                    origin.X + (isGreen ? -1f : 1f) * (rank / 5) * 1.4f,
+                    origin.Y + ((rank % 5) - 2) * 1.5f
+                );
                 var point = DistinctOpen(battle.Map, preference, used);
                 soldier.Position = point;
                 soldier.Destination = point;
@@ -277,7 +318,8 @@ namespace Rubezh.UnityPort
                 if (used[i] || !map.Walkable(i % map.Columns, i / map.Columns))
                     continue;
                 V2 p = map.Center(i);
-                float dx = p.X - preferred.X, dy = p.Y - preferred.Y;
+                float dx = p.X - preferred.X,
+                    dy = p.Y - preferred.Y;
                 float dist = dx * dx + dy * dy;
                 if (dist < score)
                 {

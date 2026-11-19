@@ -10,6 +10,7 @@ namespace SilentOrders.Core
             public bool X;
             public int Type;
             public byte[] H;
+
             public Shape(bool x, int t, byte[] h)
             {
                 X = x;
@@ -84,7 +85,7 @@ namespace SilentOrders.Core
             68,
             66,
             55,
-            38
+            38,
         };
         static readonly byte[] p1 =
         {
@@ -152,7 +153,7 @@ namespace SilentOrders.Core
             239,
             239,
             239,
-            239
+            239,
         };
         static readonly byte[] p2 =
         {
@@ -220,7 +221,7 @@ namespace SilentOrders.Core
             57,
             56,
             53,
-            49
+            49,
         };
         static readonly byte[] p3 =
         {
@@ -288,7 +289,7 @@ namespace SilentOrders.Core
             239,
             240,
             240,
-            240
+            240,
         };
         static readonly byte[] p4 =
         {
@@ -356,7 +357,7 @@ namespace SilentOrders.Core
             52,
             48,
             45,
-            43
+            43,
         };
         static readonly byte[] p5 =
         {
@@ -424,7 +425,7 @@ namespace SilentOrders.Core
             239,
             238,
             238,
-            238
+            238,
         };
         static readonly byte[] p6 =
         {
@@ -492,7 +493,7 @@ namespace SilentOrders.Core
             64,
             62,
             59,
-            57
+            57,
         };
         static readonly byte[] p7 =
         {
@@ -560,7 +561,7 @@ namespace SilentOrders.Core
             239,
             240,
             240,
-            239
+            239,
         };
         static readonly byte[] p8 =
         {
@@ -628,7 +629,7 @@ namespace SilentOrders.Core
             80,
             78,
             76,
-            74
+            74,
         };
         static readonly byte[] p9 =
         {
@@ -696,7 +697,7 @@ namespace SilentOrders.Core
             239,
             239,
             239,
-            239
+            239,
         };
         static readonly byte[] p10 =
         {
@@ -764,7 +765,7 @@ namespace SilentOrders.Core
             65,
             64,
             62,
-            60
+            60,
         };
         static readonly byte[] p11 =
         {
@@ -832,7 +833,7 @@ namespace SilentOrders.Core
             239,
             240,
             240,
-            239
+            239,
         };
         static readonly byte[] p12 =
         {
@@ -900,7 +901,7 @@ namespace SilentOrders.Core
             201,
             205,
             212,
-            220
+            220,
         };
         static readonly byte[] p13 =
         {
@@ -968,7 +969,7 @@ namespace SilentOrders.Core
             240,
             240,
             240,
-            240
+            240,
         };
         static readonly byte[] p14 =
         {
@@ -1036,7 +1037,7 @@ namespace SilentOrders.Core
             238,
             226,
             220,
-            219
+            219,
         };
         static readonly byte[] p15 =
         {
@@ -1104,7 +1105,7 @@ namespace SilentOrders.Core
             240,
             240,
             240,
-            240
+            240,
         };
         static readonly byte[] p16 =
         {
@@ -1172,7 +1173,7 @@ namespace SilentOrders.Core
             215,
             219,
             221,
-            223
+            223,
         };
         static readonly byte[] p17 =
         {
@@ -1240,7 +1241,7 @@ namespace SilentOrders.Core
             240,
             240,
             240,
-            240
+            240,
         };
         static readonly byte[] p18 =
         {
@@ -1308,7 +1309,7 @@ namespace SilentOrders.Core
             220,
             227,
             232,
-            235
+            235,
         };
         static readonly byte[] p19 =
         {
@@ -1376,7 +1377,7 @@ namespace SilentOrders.Core
             240,
             240,
             240,
-            240
+            240,
         };
         static readonly byte[] p20 =
         {
@@ -1444,7 +1445,7 @@ namespace SilentOrders.Core
             206,
             211,
             215,
-            219
+            219,
         };
         static readonly byte[] p21 =
         {
@@ -1512,7 +1513,7 @@ namespace SilentOrders.Core
             240,
             240,
             240,
-            240
+            240,
         };
         static readonly byte[] p22 =
         {
@@ -1580,7 +1581,7 @@ namespace SilentOrders.Core
             203,
             208,
             211,
-            214
+            214,
         };
         static readonly byte[] p23 =
         {
@@ -1648,459 +1649,124 @@ namespace SilentOrders.Core
             240,
             240,
             240,
-            240
+            240,
         };
         public static readonly Dictionary<string, Shape> Shapes = new Dictionary<string, Shape>
         {
-            {
-                "S01-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "S01-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "S01-03",
-                new Shape(true, 3, null)
-            },
-            {
-                "S01-04",
-                new Shape(false, 3, null)
-            },
-            {
-                "S01-05",
-                new Shape(true, 3, null)
-            },
-            {
-                "S01-06",
-                new Shape(false, 3, null)
-            },
-            {
-                "S01-07",
-                new Shape(true, 3, null)
-            },
-            {
-                "S01-08",
-                new Shape(false, 3, null)
-            },
-            {
-                "S01-09",
-                new Shape(true, 3, null)
-            },
-            {
-                "S01-10",
-                new Shape(false, 3, null)
-            },
-            {
-                "S01-11",
-                new Shape(true, 3, null)
-            },
-            {
-                "S01-12",
-                new Shape(false, 3, null)
-            },
-            {
-                "S02-01",
-                new Shape(true, 2, null)
-            },
-            {
-                "S02-02",
-                new Shape(false, 2, null)
-            },
-            {
-                "S02-03",
-                new Shape(true, 2, null)
-            },
-            {
-                "S02-04",
-                new Shape(false, 2, null)
-            },
-            {
-                "S02-05",
-                new Shape(true, 2, null)
-            },
-            {
-                "S02-06",
-                new Shape(false, 2, null)
-            },
-            {
-                "S02-07",
-                new Shape(true, 2, null)
-            },
-            {
-                "S02-08",
-                new Shape(false, 2, null)
-            },
-            {
-                "S02-09",
-                new Shape(true, 2, null)
-            },
-            {
-                "S02-10",
-                new Shape(false, 2, null)
-            },
-            {
-                "S02-11",
-                new Shape(true, 2, null)
-            },
-            {
-                "S02-12",
-                new Shape(false, 2, null)
-            },
-            {
-                "S19-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "S19-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "S19-03",
-                new Shape(true, 3, null)
-            },
-            {
-                "S19-04",
-                new Shape(false, 3, null)
-            },
-            {
-                "S19-05",
-                new Shape(true, 3, null)
-            },
-            {
-                "S19-06",
-                new Shape(false, 3, null)
-            },
-            {
-                "S19-07",
-                new Shape(true, 3, null)
-            },
-            {
-                "S19-08",
-                new Shape(false, 3, null)
-            },
-            {
-                "S19-09",
-                new Shape(true, 3, null)
-            },
-            {
-                "S19-10",
-                new Shape(false, 3, null)
-            },
-            {
-                "S19-11",
-                new Shape(true, 3, null)
-            },
-            {
-                "S19-12",
-                new Shape(false, 3, null)
-            },
-            {
-                "S30-01",
-                new Shape(true, 1, p0)
-            },
-            {
-                "S30-02",
-                new Shape(false, 1, p1)
-            },
-            {
-                "S30-03",
-                new Shape(true, 1, p2)
-            },
-            {
-                "S30-04",
-                new Shape(false, 1, p3)
-            },
-            {
-                "S30-05",
-                new Shape(true, 1, p4)
-            },
-            {
-                "S30-06",
-                new Shape(false, 1, p5)
-            },
-            {
-                "S30-07",
-                new Shape(true, 1, p6)
-            },
-            {
-                "S30-08",
-                new Shape(false, 1, p7)
-            },
-            {
-                "S30-09",
-                new Shape(true, 1, p8)
-            },
-            {
-                "S30-10",
-                new Shape(false, 1, p9)
-            },
-            {
-                "S30-11",
-                new Shape(true, 1, p10)
-            },
-            {
-                "S30-12",
-                new Shape(false, 1, p11)
-            },
-            {
-                "wide-S12-01-x",
-                new Shape(true, 1, p12)
-            },
-            {
-                "wide-S12-01-y",
-                new Shape(false, 1, p12)
-            },
-            {
-                "wide-S12-02-x",
-                new Shape(true, 1, p13)
-            },
-            {
-                "wide-S12-02-y",
-                new Shape(false, 1, p13)
-            },
-            {
-                "wide-S12-03-x",
-                new Shape(true, 1, p14)
-            },
-            {
-                "wide-S12-03-y",
-                new Shape(false, 1, p14)
-            },
-            {
-                "wide-S12-04-x",
-                new Shape(true, 1, p15)
-            },
-            {
-                "wide-S12-04-y",
-                new Shape(false, 1, p15)
-            },
-            {
-                "wide-S12-05-x",
-                new Shape(true, 1, p16)
-            },
-            {
-                "wide-S12-05-y",
-                new Shape(false, 1, p16)
-            },
-            {
-                "wide-S12-06-x",
-                new Shape(true, 1, p17)
-            },
-            {
-                "wide-S12-06-y",
-                new Shape(false, 1, p17)
-            },
-            {
-                "wide-S12-07-x",
-                new Shape(true, 1, p18)
-            },
-            {
-                "wide-S12-07-y",
-                new Shape(false, 1, p18)
-            },
-            {
-                "wide-S12-08-x",
-                new Shape(true, 1, p19)
-            },
-            {
-                "wide-S12-08-y",
-                new Shape(false, 1, p19)
-            },
-            {
-                "wide-S12-09-x",
-                new Shape(true, 1, p20)
-            },
-            {
-                "wide-S12-09-y",
-                new Shape(false, 1, p20)
-            },
-            {
-                "wide-S12-10-x",
-                new Shape(true, 1, p21)
-            },
-            {
-                "wide-S12-10-y",
-                new Shape(false, 1, p21)
-            },
-            {
-                "wide-S12-11-x",
-                new Shape(true, 1, p22)
-            },
-            {
-                "wide-S12-11-y",
-                new Shape(false, 1, p22)
-            },
-            {
-                "wide-S12-12-x",
-                new Shape(true, 1, p23)
-            },
-            {
-                "wide-S12-12-y",
-                new Shape(false, 1, p23)
-            },
-            {
-                "W41-0-S01-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-0-S01-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-0-S02-01",
-                new Shape(true, 2, null)
-            },
-            {
-                "W41-0-S02-02",
-                new Shape(false, 2, null)
-            },
-            {
-                "W41-0-S19-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-0-S19-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-0-S30-01",
-                new Shape(true, 1, p0)
-            },
-            {
-                "W41-0-S30-02",
-                new Shape(false, 1, p1)
-            },
-            {
-                "W41-0-wide-S12-01-x",
-                new Shape(true, 1, p12)
-            },
-            {
-                "W41-0-wide-S12-01-y",
-                new Shape(false, 1, p12)
-            },
-            {
-                "W41-1-S01-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-1-S01-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-1-S02-01",
-                new Shape(true, 2, null)
-            },
-            {
-                "W41-1-S02-02",
-                new Shape(false, 2, null)
-            },
-            {
-                "W41-1-S19-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-1-S19-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-1-S30-01",
-                new Shape(true, 1, p0)
-            },
-            {
-                "W41-1-S30-02",
-                new Shape(false, 1, p1)
-            },
-            {
-                "W41-1-wide-S12-01-x",
-                new Shape(true, 1, p12)
-            },
-            {
-                "W41-1-wide-S12-01-y",
-                new Shape(false, 1, p12)
-            },
-            {
-                "W41-2-S01-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-2-S01-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-2-S02-01",
-                new Shape(true, 2, null)
-            },
-            {
-                "W41-2-S02-02",
-                new Shape(false, 2, null)
-            },
-            {
-                "W41-2-S19-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-2-S19-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-2-S30-01",
-                new Shape(true, 1, p0)
-            },
-            {
-                "W41-2-S30-02",
-                new Shape(false, 1, p1)
-            },
-            {
-                "W41-2-wide-S12-01-x",
-                new Shape(true, 1, p12)
-            },
-            {
-                "W41-2-wide-S12-01-y",
-                new Shape(false, 1, p12)
-            },
-            {
-                "W41-3-S01-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-3-S01-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-3-S02-01",
-                new Shape(true, 2, null)
-            },
-            {
-                "W41-3-S02-02",
-                new Shape(false, 2, null)
-            },
-            {
-                "W41-3-S19-01",
-                new Shape(true, 3, null)
-            },
-            {
-                "W41-3-S19-02",
-                new Shape(false, 3, null)
-            },
-            {
-                "W41-3-S30-01",
-                new Shape(true, 1, p0)
-            },
-            {
-                "W41-3-S30-02",
-                new Shape(false, 1, p1)
-            },
-            {
-                "W41-3-wide-S12-01-x",
-                new Shape(true, 1, p12)
-            },
-            {
-                "W41-3-wide-S12-01-y",
-                new Shape(false, 1, p12)
-            },
+            { "S01-01", new Shape(true, 3, null) },
+            { "S01-02", new Shape(false, 3, null) },
+            { "S01-03", new Shape(true, 3, null) },
+            { "S01-04", new Shape(false, 3, null) },
+            { "S01-05", new Shape(true, 3, null) },
+            { "S01-06", new Shape(false, 3, null) },
+            { "S01-07", new Shape(true, 3, null) },
+            { "S01-08", new Shape(false, 3, null) },
+            { "S01-09", new Shape(true, 3, null) },
+            { "S01-10", new Shape(false, 3, null) },
+            { "S01-11", new Shape(true, 3, null) },
+            { "S01-12", new Shape(false, 3, null) },
+            { "S02-01", new Shape(true, 2, null) },
+            { "S02-02", new Shape(false, 2, null) },
+            { "S02-03", new Shape(true, 2, null) },
+            { "S02-04", new Shape(false, 2, null) },
+            { "S02-05", new Shape(true, 2, null) },
+            { "S02-06", new Shape(false, 2, null) },
+            { "S02-07", new Shape(true, 2, null) },
+            { "S02-08", new Shape(false, 2, null) },
+            { "S02-09", new Shape(true, 2, null) },
+            { "S02-10", new Shape(false, 2, null) },
+            { "S02-11", new Shape(true, 2, null) },
+            { "S02-12", new Shape(false, 2, null) },
+            { "S19-01", new Shape(true, 3, null) },
+            { "S19-02", new Shape(false, 3, null) },
+            { "S19-03", new Shape(true, 3, null) },
+            { "S19-04", new Shape(false, 3, null) },
+            { "S19-05", new Shape(true, 3, null) },
+            { "S19-06", new Shape(false, 3, null) },
+            { "S19-07", new Shape(true, 3, null) },
+            { "S19-08", new Shape(false, 3, null) },
+            { "S19-09", new Shape(true, 3, null) },
+            { "S19-10", new Shape(false, 3, null) },
+            { "S19-11", new Shape(true, 3, null) },
+            { "S19-12", new Shape(false, 3, null) },
+            { "S30-01", new Shape(true, 1, p0) },
+            { "S30-02", new Shape(false, 1, p1) },
+            { "S30-03", new Shape(true, 1, p2) },
+            { "S30-04", new Shape(false, 1, p3) },
+            { "S30-05", new Shape(true, 1, p4) },
+            { "S30-06", new Shape(false, 1, p5) },
+            { "S30-07", new Shape(true, 1, p6) },
+            { "S30-08", new Shape(false, 1, p7) },
+            { "S30-09", new Shape(true, 1, p8) },
+            { "S30-10", new Shape(false, 1, p9) },
+            { "S30-11", new Shape(true, 1, p10) },
+            { "S30-12", new Shape(false, 1, p11) },
+            { "wide-S12-01-x", new Shape(true, 1, p12) },
+            { "wide-S12-01-y", new Shape(false, 1, p12) },
+            { "wide-S12-02-x", new Shape(true, 1, p13) },
+            { "wide-S12-02-y", new Shape(false, 1, p13) },
+            { "wide-S12-03-x", new Shape(true, 1, p14) },
+            { "wide-S12-03-y", new Shape(false, 1, p14) },
+            { "wide-S12-04-x", new Shape(true, 1, p15) },
+            { "wide-S12-04-y", new Shape(false, 1, p15) },
+            { "wide-S12-05-x", new Shape(true, 1, p16) },
+            { "wide-S12-05-y", new Shape(false, 1, p16) },
+            { "wide-S12-06-x", new Shape(true, 1, p17) },
+            { "wide-S12-06-y", new Shape(false, 1, p17) },
+            { "wide-S12-07-x", new Shape(true, 1, p18) },
+            { "wide-S12-07-y", new Shape(false, 1, p18) },
+            { "wide-S12-08-x", new Shape(true, 1, p19) },
+            { "wide-S12-08-y", new Shape(false, 1, p19) },
+            { "wide-S12-09-x", new Shape(true, 1, p20) },
+            { "wide-S12-09-y", new Shape(false, 1, p20) },
+            { "wide-S12-10-x", new Shape(true, 1, p21) },
+            { "wide-S12-10-y", new Shape(false, 1, p21) },
+            { "wide-S12-11-x", new Shape(true, 1, p22) },
+            { "wide-S12-11-y", new Shape(false, 1, p22) },
+            { "wide-S12-12-x", new Shape(true, 1, p23) },
+            { "wide-S12-12-y", new Shape(false, 1, p23) },
+            { "W41-0-S01-01", new Shape(true, 3, null) },
+            { "W41-0-S01-02", new Shape(false, 3, null) },
+            { "W41-0-S02-01", new Shape(true, 2, null) },
+            { "W41-0-S02-02", new Shape(false, 2, null) },
+            { "W41-0-S19-01", new Shape(true, 3, null) },
+            { "W41-0-S19-02", new Shape(false, 3, null) },
+            { "W41-0-S30-01", new Shape(true, 1, p0) },
+            { "W41-0-S30-02", new Shape(false, 1, p1) },
+            { "W41-0-wide-S12-01-x", new Shape(true, 1, p12) },
+            { "W41-0-wide-S12-01-y", new Shape(false, 1, p12) },
+            { "W41-1-S01-01", new Shape(true, 3, null) },
+            { "W41-1-S01-02", new Shape(false, 3, null) },
+            { "W41-1-S02-01", new Shape(true, 2, null) },
+            { "W41-1-S02-02", new Shape(false, 2, null) },
+            { "W41-1-S19-01", new Shape(true, 3, null) },
+            { "W41-1-S19-02", new Shape(false, 3, null) },
+            { "W41-1-S30-01", new Shape(true, 1, p0) },
+            { "W41-1-S30-02", new Shape(false, 1, p1) },
+            { "W41-1-wide-S12-01-x", new Shape(true, 1, p12) },
+            { "W41-1-wide-S12-01-y", new Shape(false, 1, p12) },
+            { "W41-2-S01-01", new Shape(true, 3, null) },
+            { "W41-2-S01-02", new Shape(false, 3, null) },
+            { "W41-2-S02-01", new Shape(true, 2, null) },
+            { "W41-2-S02-02", new Shape(false, 2, null) },
+            { "W41-2-S19-01", new Shape(true, 3, null) },
+            { "W41-2-S19-02", new Shape(false, 3, null) },
+            { "W41-2-S30-01", new Shape(true, 1, p0) },
+            { "W41-2-S30-02", new Shape(false, 1, p1) },
+            { "W41-2-wide-S12-01-x", new Shape(true, 1, p12) },
+            { "W41-2-wide-S12-01-y", new Shape(false, 1, p12) },
+            { "W41-3-S01-01", new Shape(true, 3, null) },
+            { "W41-3-S01-02", new Shape(false, 3, null) },
+            { "W41-3-S02-01", new Shape(true, 2, null) },
+            { "W41-3-S02-02", new Shape(false, 2, null) },
+            { "W41-3-S19-01", new Shape(true, 3, null) },
+            { "W41-3-S19-02", new Shape(false, 3, null) },
+            { "W41-3-S30-01", new Shape(true, 1, p0) },
+            { "W41-3-S30-02", new Shape(false, 1, p1) },
+            { "W41-3-wide-S12-01-x", new Shape(true, 1, p12) },
+            { "W41-3-wide-S12-01-y", new Shape(false, 1, p12) },
         };
+
         public static bool Has(StudioPlaced o)
         {
             return o != null && !o.Destroyed && Shapes.ContainsKey(o.Asset.Id);

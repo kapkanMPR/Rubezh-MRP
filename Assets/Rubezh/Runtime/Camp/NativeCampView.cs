@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using Rubezh.Camp;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Rubezh.Camp;
 using CampUnitInfo = Rubezh.Camp.Unit;
 
 namespace Rubezh.UnityPort
@@ -15,18 +15,12 @@ namespace Rubezh.UnityPort
 
         public CampModel M
         {
-            get
-            {
-                return Store.Model;
-            }
+            get { return Store.Model; }
         }
 
         State S
         {
-            get
-            {
-                return M.S;
-            }
+            get { return M.S; }
         }
 
         public Action<CampOrder> StartOperation;
@@ -37,7 +31,13 @@ namespace Rubezh.UnityPort
         public bool Developer;
         UIDocument document;
         PanelSettings panel;
-        VisualElement root, header, main, nav, overlay, modalContent, modalFoot;
+        VisualElement root,
+            header,
+            main,
+            nav,
+            overlay,
+            modalContent,
+            modalFoot;
         Label toast;
         readonly ResidencyCache<string, Texture2D> textures = new ResidencyCache<string, Texture2D>(t =>
         {
@@ -46,20 +46,27 @@ namespace Rubezh.UnityPort
         });
         bool textureResidencyDirty;
         readonly HashSet<Texture> visibleTextures = new HashSet<Texture>();
+
         void CollectTextures(VisualElement v)
         {
             if (v is Image i && i.image != null)
                 visibleTextures.Add(i.image);
             // Backgrounds belong to the current screen, not the global stylesheet.
-            string backdrop = v.ClassListContains("portrait-card") || v.ClassListContains("fighter-card-modal") ||
-                v.ClassListContains("outfit-footer") || (v.ClassListContains("outfit-drawer") && outfitDrawerOpen)
-                ? "character-background.png" : v.ClassListContains("operations") ? "operation-background.png"
-                : v.ClassListContains("card") ? "card-background.png" : null;
+            string backdrop =
+                v.ClassListContains("portrait-card")
+                || v.ClassListContains("fighter-card-modal")
+                || v.ClassListContains("outfit-footer")
+                || (v.ClassListContains("outfit-drawer") && outfitDrawerOpen)
+                    ? "character-background.png"
+                : v.ClassListContains("operations") ? "operation-background.png"
+                : v.ClassListContains("card") ? "card-background.png"
+                : null;
             if (backdrop != null)
             {
                 var background = Texture(backdrop);
                 v.style.backgroundImage = new StyleBackground(background);
-                if (background != null) visibleTextures.Add(background);
+                if (background != null)
+                    visibleTextures.Add(background);
             }
             for (int n = 0; n < v.childCount; n++)
                 CollectTextures(v[n]);
@@ -79,28 +86,35 @@ namespace Rubezh.UnityPort
 
         readonly List<IVisualElementScheduledItem> animations = new List<IVisualElementScheduledItem>();
         readonly List<IVisualElementScheduledItem> modalAnimations = new List<IVisualElementScheduledItem>();
-        string screen = "home", selected = "kedr", trainee = "kedr", storeTab = "shop", trainingFrom, filterType = "", filterRole = "", filterRarity = "", filterUnit = "", sort = "default", pickSlot;
+        string screen = "home",
+            selected = "kedr",
+            trainee = "kedr",
+            storeTab = "shop",
+            trainingFrom,
+            filterType = "",
+            filterRole = "",
+            filterRarity = "",
+            filterUnit = "",
+            sort = "default",
+            pickSlot;
         int pickIndex;
-        float vw = 1000, vh = 600, scale = 1;
+        float vw = 1000,
+            vh = 600,
+            scale = 1;
         Rect lastSafe;
-        bool ready, rendering;
+        bool ready,
+            rendering;
         Vector2 treeScroll;
         float toastUntil;
         Action reopenModal;
         public string ScreenName
         {
-            get
-            {
-                return screen;
-            }
+            get { return screen; }
         }
 
         public VisualElement Root
         {
-            get
-            {
-                return root;
-            }
+            get { return root; }
         }
 
         public void Initialize(CampStore store, bool developer)
@@ -130,7 +144,7 @@ namespace Rubezh.UnityPort
             TrimTextures();
             bool viewportChanged = Screen.safeArea != lastSafe;
 #if UNITY_EDITOR
-   viewportChanged&=!validationViewport;
+            viewportChanged &= !validationViewport;
 #endif
             if (viewportChanged)
                 UpdateViewport();
@@ -144,7 +158,11 @@ namespace Rubezh.UnityPort
         {
             lastSafe = Screen.safeArea;
 #if UNITY_ANDROID && !UNITY_EDITOR
-   using(var a=new AndroidJavaClass("com.unity3d.player.UnityPlayer"))using(var activity=a.GetStatic<AndroidJavaObject>("currentActivity"))using(var resources=activity.Call<AndroidJavaObject>("getResources"))using(var metrics=resources.Call<AndroidJavaObject>("getDisplayMetrics"))scale=Mathf.Max(1,metrics.Get<float>("density"));
+            using (var a = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (var activity = a.GetStatic<AndroidJavaObject>("currentActivity"))
+            using (var resources = activity.Call<AndroidJavaObject>("getResources"))
+            using (var metrics = resources.Call<AndroidJavaObject>("getDisplayMetrics"))
+                scale = Mathf.Max(1, metrics.Get<float>("density"));
 #else
             scale = 1;
 #endif
@@ -220,7 +238,11 @@ namespace Rubezh.UnityPort
         {
             screen = page;
             trainingFrom = null;
-            if (page == "battlePrep" && !M.SquadReady) { screen="prepare"; Toast("Заполните все 5 слотов отряда"); }
+            if (page == "battlePrep" && !M.SquadReady)
+            {
+                screen = "prepare";
+                Toast("Заполните все 5 слотов отряда");
+            }
             if (page == "warehouse")
             {
                 screen = "store";
@@ -256,7 +278,7 @@ namespace Rubezh.UnityPort
                 trainingFrom = null;
             }
             else if (screen == "personnel" || screen == "squads" || screen == "store" && storeTab == "recruit")
-                screen="barracks";
+                screen = "barracks";
             else if (screen == "prepare" || screen == "battlePrep")
                 screen = "home";
             else if (screen == "formation")
@@ -316,12 +338,15 @@ namespace Rubezh.UnityPort
                     nav.RemoveFromHierarchy();
                 bool campHome = screen == "home";
                 root.EnableInClassList("camp-home", campHome);
-                root.EnableInClassList("outfit-screen",screen=="prepare" || screen=="battlePrep");
+                root.EnableInClassList("outfit-screen", screen == "prepare" || screen == "battlePrep");
                 root.style.left = campHome ? 0 : lastSafe.x / scale;
                 root.style.top = campHome ? 0 : (Screen.height - lastSafe.yMax) / scale;
                 root.style.width = campHome ? Screen.width / scale : vw;
                 root.style.height = campHome ? Screen.height / scale : vh;
-                bool isolated = screen == "battlePrep" || screen == "formation" || screen == "training" && trainingFrom == "battlePrep";
+                bool isolated =
+                    screen == "battlePrep"
+                    || screen == "formation"
+                    || screen == "training" && trainingFrom == "battlePrep";
                 header = V("header hub-header");
                 header.style.display = DisplayStyle.Flex;
                 root.Insert(0, header);
@@ -367,14 +392,16 @@ namespace Rubezh.UnityPort
                 nav = V("nav row hub-nav");
                 root.Insert(2, nav);
                 nav.style.display = DisplayStyle.None;
-                if(screen != "home" && screen != "prepare" && !isolated)
+                if (screen != "home" && screen != "prepare" && !isolated)
                 {
                     nav.style.display = DisplayStyle.Flex;
-                    Button(nav,"‹ Назад",Back,"hub-back");
+                    Button(nav, "‹ Назад", Back, "hub-back");
                     if (screen == "store" && storeTab == "warehouse")
                     {
-                        var hide = new Toggle("Скрыть выданное"); hide.name = "warehouse-hide-issued";
-                        hide.value = S.hideIssued; hide.style.marginLeft = 12;
+                        var hide = new Toggle("Скрыть выданное");
+                        hide.name = "warehouse-hide-issued";
+                        hide.value = S.hideIssued;
+                        hide.style.marginLeft = 12;
                         hide.RegisterValueChangedCallback(e => Change(() => S.hideIssued = e.newValue));
                         nav.Add(hide);
                     }
@@ -383,9 +410,9 @@ namespace Rubezh.UnityPort
                 ApplyResponsiveMetrics();
                 if (campHome)
                 {
-                    header.style.left=lastSafe.x/scale;
-                    header.style.right=(Screen.width-lastSafe.xMax)/scale;
-                    header.style.top=(Screen.height-lastSafe.yMax)/scale;
+                    header.style.left = lastSafe.x / scale;
+                    header.style.right = (Screen.width - lastSafe.xMax) / scale;
+                    header.style.top = (Screen.height - lastSafe.yMax) / scale;
                     header.BringToFront();
                 }
                 if (toast == null)
@@ -408,7 +435,14 @@ namespace Rubezh.UnityPort
 
         void BattleTop()
         {
-            if(!M.SquadReady) { screen="prepare";Close();Render();Toast("Заполните все 5 слотов отряда");return; }
+            if (!M.SquadReady)
+            {
+                screen = "prepare";
+                Close();
+                Render();
+                Toast("Заполните все 5 слотов отряда");
+                return;
+            }
             if (screen == "battlePrep")
                 EnterFormation();
             else
@@ -421,21 +455,40 @@ namespace Rubezh.UnityPort
 
         void EnterFormation()
         {
-            CampModel.Check(M.MissionOpen(S.operation.mode, S.operation.block, S.operation.mission), "Миссия ещё не открыта");
+            CampModel.Check(
+                M.MissionOpen(S.operation.mode, S.operation.block, S.operation.mission),
+                "Миссия ещё не открыта"
+            );
             SaveView();
             if (StartOperation == null)
                 throw new InvalidOperationException("Бой недоступен");
             var order = CreateOrder();
             var absent = order.units.Where(u => u.noWeapon).Select(u => u.name).ToArray();
-            CampModel.Check(absent.Length < order.units.Length, "Никто не вооружён. Выдайте оружие хотя бы одному бойцу.");
+            CampModel.Check(
+                absent.Length < order.units.Length,
+                "Никто не вооружён. Выдайте оружие хотя бы одному бойцу."
+            );
             if (absent.Length > 0)
             {
-                Modal("Без оружия — остаются в лагере", (c, f) =>
-                {
-                    Label(c, string.Join(", ", absent) + ". Эти бойцы не выйдут в бой.", "paragraph");
-                    Button(f, "Вернуться к снаряжению", Close);
-                    Button(f, "Выйти остальными", () => Try(() => { Close(); StartOperation(order); }), "gold");
-                });
+                Modal(
+                    "Без оружия — остаются в лагере",
+                    (c, f) =>
+                    {
+                        Label(c, string.Join(", ", absent) + ". Эти бойцы не выйдут в бой.", "paragraph");
+                        Button(f, "Вернуться к снаряжению", Close);
+                        Button(
+                            f,
+                            "Выйти остальными",
+                            () =>
+                                Try(() =>
+                                {
+                                    Close();
+                                    StartOperation(order);
+                                }),
+                            "gold"
+                        );
+                    }
+                );
                 return;
             }
             StartOperation(order);
@@ -443,7 +496,7 @@ namespace Rubezh.UnityPort
 
         public CampOrder CreateOrder()
         {
-            CampModel.Check(M.SquadReady,"Заполните все 5 слотов отряда");
+            CampModel.Check(M.SquadReady, "Заполните все 5 слотов отряда");
             var o = S.operation;
             return new CampOrder
             {
@@ -458,42 +511,65 @@ namespace Rubezh.UnityPort
                     pairSlots = (int[])S.formation.pairSlots.Clone(),
                     width = S.formation.width,
                     depth = S.formation.depth,
-                    positions = (int[])S.formation.positions.Clone()
+                    positions = (int[])S.formation.positions.Clone(),
                 },
-                units = S.active.Select(id =>
-                {
-                    var u = M.Soldier(id);
-                    var g = S.gear[id];
-                    var l = S.looks[id];
-                    var upgradedWeapon = M.FighterWeapon(id);
-                    var skills = M.Person(id).skills.Where(p => p.Value > 0).Select(p => p.Key).ToArray();
-                    Func<string, float> stat = key => M.Data.skills.Where(k => skills.Contains(k.id) && k.effect != null && k.effect.stat == key).Sum(k => Math.Abs(k.effect.delta) / 100);
-                    return new CampUnit
+                units = S
+                    .active.Select(id =>
                     {
-                        fighterId = id,
-                        weaponRarity = upgradedWeapon == null ? 0 : upgradedWeapon.rarity,
-                        weaponLevel = upgradedWeapon == null ? 1 : upgradedWeapon.level,
-                        noWeapon = !M.Armed(id),
-                        name = u.name,
-                        role = Array.IndexOf(new[] { "Командир", "Пулемётчик", "Медик", "Гранатомётчик", "Стрелок", "Снайпер" }, u.role) + 1,
-                        weapon = g.weapon == "pkm" || g.weapon == "m249" ? 1 : g.weapon == "gp" ? 2 : g.weapon == "m4gp" ? 3 : g.weapon == "svd" ? 4 : g.weapon == "m24" ? 5 : 0,
-                        westernWeapon = g.weapon == "m4" || g.weapon == "m4gp" || g.weapon == "m249" || g.weapon == "m24",
-                        extra2 = g.extra2 == "rpg" ? 1 : g.extra2 == "rshg" ? 4 : 0,
-                        extra = g.extra == "rpg" ? 1 : g.extra == "medbag" ? 2 : g.extra == "supply" ? 3 : g.extra == "rshg" ? 4 : 0,
-                        rig = CampModel.GearLevel(g.rig),
-                        armor = CampModel.GearLevel(g.armor),
-                        band = g.tourniquet == "band",
-                        pockets = g.rigSlots.Where(x => x != null).ToArray(),
-                        bag = g.bag.Where(x => x != null && !x.StartsWith("@", StringComparison.Ordinal)).ToArray(),
-                        skills = skills,
-                        aim = stat("accuracy"),
-                        reload = stat("reloadTime"),
-                        headId = l.headId,
-                        lightId = l.lightId,
-                        familyId = l.familyId,
-                        heavyId = l.heavyId
-                    };
-                }).ToArray()
+                        var u = M.Soldier(id);
+                        var g = S.gear[id];
+                        var l = S.looks[id];
+                        var upgradedWeapon = M.FighterWeapon(id);
+                        var skills = M.Person(id).skills.Where(p => p.Value > 0).Select(p => p.Key).ToArray();
+                        Func<string, float> stat = key =>
+                            M.Data.skills.Where(k => skills.Contains(k.id) && k.effect != null && k.effect.stat == key)
+                                .Sum(k => Math.Abs(k.effect.delta) / 100);
+                        return new CampUnit
+                        {
+                            fighterId = id,
+                            weaponRarity = upgradedWeapon == null ? 0 : upgradedWeapon.rarity,
+                            weaponLevel = upgradedWeapon == null ? 1 : upgradedWeapon.level,
+                            noWeapon = !M.Armed(id),
+                            name = u.name,
+                            role =
+                                Array.IndexOf(
+                                    new[] { "Командир", "Пулемётчик", "Медик", "Гранатомётчик", "Стрелок", "Снайпер" },
+                                    u.role
+                                ) + 1,
+                            weapon =
+                                g.weapon == "pkm" || g.weapon == "m249" ? 1
+                                : g.weapon == "gp" ? 2
+                                : g.weapon == "m4gp" ? 3
+                                : g.weapon == "svd" ? 4
+                                : g.weapon == "m24" ? 5
+                                : 0,
+                            westernWeapon =
+                                g.weapon == "m4" || g.weapon == "m4gp" || g.weapon == "m249" || g.weapon == "m24",
+                            extra2 =
+                                g.extra2 == "rpg" ? 1
+                                : g.extra2 == "rshg" ? 4
+                                : 0,
+                            extra =
+                                g.extra == "rpg" ? 1
+                                : g.extra == "medbag" ? 2
+                                : g.extra == "supply" ? 3
+                                : g.extra == "rshg" ? 4
+                                : 0,
+                            rig = CampModel.GearLevel(g.rig),
+                            armor = CampModel.GearLevel(g.armor),
+                            band = g.tourniquet == "band",
+                            pockets = g.rigSlots.Where(x => x != null).ToArray(),
+                            bag = g.bag.Where(x => x != null && !x.StartsWith("@", StringComparison.Ordinal)).ToArray(),
+                            skills = skills,
+                            aim = stat("accuracy"),
+                            reload = stat("reloadTime"),
+                            headId = l.headId,
+                            lightId = l.lightId,
+                            familyId = l.familyId,
+                            heavyId = l.heavyId,
+                        };
+                    })
+                    .ToArray(),
             };
         }
 
@@ -533,10 +609,7 @@ namespace Rubezh.UnityPort
 
         Button Button(VisualElement parent, string text, Action action, string cls = "")
         {
-            var b = new Button(() => Try(action))
-            {
-                text = text
-            };
+            var b = new Button(action == null ? (Action)null : () => Try(action)) { text = text };
             b.name = "action-" + text;
             b.AddToClassList("camp-button");
             foreach (var c in cls.Split(' '))
@@ -562,7 +635,8 @@ namespace Rubezh.UnityPort
             foreach (var c in cls.Split(' '))
                 if (c.Length > 0)
                     s.AddToClassList(c);
-            s.horizontalScrollerVisibility = mode == ScrollViewMode.Vertical ? ScrollerVisibility.Hidden : ScrollerVisibility.Auto;
+            s.horizontalScrollerVisibility =
+                mode == ScrollViewMode.Vertical ? ScrollerVisibility.Hidden : ScrollerVisibility.Auto;
             s.verticalScrollerVisibility = ScrollerVisibility.Auto;
             parent.Add(s);
             return s;
@@ -578,7 +652,8 @@ namespace Rubezh.UnityPort
             {
                 textures.Remove(path);
                 t = Resources.Load<Texture2D>("FieldCamp/Art/" + path);
-                if(t != null) textures.Add(path, t, 4L * t.width * t.height);
+                if (t != null)
+                    textures.Add(path, t, 4L * t.width * t.height);
                 textureResidencyDirty = true;
                 if (t == null)
                     Debug.LogError("Нет изображения лагеря: " + path);
@@ -593,7 +668,7 @@ namespace Rubezh.UnityPort
             {
                 image = Texture(path),
                 scaleMode = ScaleMode.ScaleToFit,
-                pickingMode = PickingMode.Ignore
+                pickingMode = PickingMode.Ignore,
             };
             foreach (var c in cls.Split(' '))
                 if (c.Length > 0)
@@ -603,22 +678,34 @@ namespace Rubezh.UnityPort
 
         VisualElement Portrait(CampUnitInfo u, Look appearance = null, Gear kit = null, string direction = "front")
         {
-            var canonicalArt=M.PortraitArt(u.id);
-            if(canonicalArt!=null) {
-                var artFrame=V("portrait canonical-portrait");
-                var art=Art(canonicalArt,"canonical-art");
-                art.scaleMode=ScaleMode.ScaleToFit;
+            var canonicalArt = M.PortraitArt(u.id);
+            if (canonicalArt != null)
+            {
+                var artFrame = V("portrait canonical-portrait");
+                var art = Art(canonicalArt, "canonical-art");
+                art.scaleMode = ScaleMode.ScaleToFit;
                 artFrame.Add(art);
-                art.style.position=Position.Absolute;art.style.top=0;art.style.left=0;
-                artFrame.RegisterCallback<GeometryChangedEvent>(evt=>{
-                    if(art.image==null || evt.newRect.width<=0)return;
-                    float w=evt.newRect.width,h=evt.newRect.height;
-                    float ratio=(float)art.image.height/art.image.width;
+                art.style.position = Position.Absolute;
+                art.style.top = 0;
+                art.style.left = 0;
+                artFrame.RegisterCallback<GeometryChangedEvent>(evt =>
+                {
+                    if (art.image == null || evt.newRect.width <= 0)
+                        return;
+                    float w = evt.newRect.width,
+                        h = evt.newRect.height;
+                    float ratio = (float)art.image.height / art.image.width;
                     // Preparation uses a height-bounded crop: show at least 72% of the source.
                     // Wide layouts must never zoom into only the head and shoulders.
-                    bool waist = artFrame.ClassListContains("doll-picture") || artFrame.ClassListContains("member-picture") || artFrame.ClassListContains("outfit-hero") || artFrame.ClassListContains("outfit-thumbnail");
-                    float width = waist ? Mathf.Min(w, h / (ratio * .72f)) : Mathf.Max(w,h/ratio);
-                    art.style.width=width;art.style.height=width*ratio;art.style.left=(w-width)*.5f;
+                    bool waist =
+                        artFrame.ClassListContains("doll-picture")
+                        || artFrame.ClassListContains("member-picture")
+                        || artFrame.ClassListContains("outfit-hero")
+                        || artFrame.ClassListContains("outfit-thumbnail");
+                    float width = waist ? Mathf.Min(w, h / (ratio * .72f)) : Mathf.Max(w, h / ratio);
+                    art.style.width = width;
+                    art.style.height = width * ratio;
+                    art.style.left = (w - width) * .5f;
                 });
                 return artFrame;
             }
@@ -641,17 +728,14 @@ namespace Rubezh.UnityPort
 
             frame.RegisterCallback<GeometryChangedEvent>(ev =>
             {
-                float w = ev.newRect.width, h = ev.newRect.height, k = Mathf.Min(w / 176, h / 238);
+                float w = ev.newRect.width,
+                    h = ev.newRect.height,
+                    k = Mathf.Min(w / 176, h / 238);
                 canvas.style.left = (w - 176 * k) / 2;
                 canvas.style.top = (h - 238 * k) / 2;
                 canvas.style.width = 176 * k;
                 canvas.style.height = 238 * k;
-                foreach (var e in new[]
-                {
-                    pawn
-                }
-
-                )
+                foreach (var e in new[] { pawn })
                 {
                     e.style.left = 8 * k;
                     e.style.top = 7 * k;
@@ -672,34 +756,52 @@ namespace Rubezh.UnityPort
 
         void AddClassBadge(VisualElement parent, string role)
         {
-            int index=RoleIndex(role);
-            if(index<0)return;
-            var badge=Art("class-"+index+".png","portrait-class-badge");
-            badge.tooltip=role;
+            int index = RoleIndex(role);
+            if (index < 0)
+                return;
+            var badge = Art("class-" + index + ".png", "portrait-class-badge");
+            badge.tooltip = role;
             parent.Add(badge);
         }
 
         void CardHeading(VisualElement card, CampUnitInfo u)
         {
-            var heading=Row(card,"person-heading");
-            Label(heading,u.name,"card-title grow");
-            Label(heading,"Ур. "+M.Person(u.id).level,"person-level");
-            var badge=Art("class-"+RoleIndex(u.role)+".png","person-class");heading.Add(badge);
+            var heading = Row(card, "person-heading");
+            Label(heading, u.name, "card-title grow");
+            Label(heading, "Ур. " + M.Person(u.id).level, "person-level");
+            var badge = Art("class-" + RoleIndex(u.role) + ".png", "person-class");
+            heading.Add(badge);
         }
+
         void SoftenPortrait(VisualElement portrait, Color color)
         {
             // Small UI strips approximate a smooth edge fade without duplicating textures.
-            const int steps=24;
-            for(int i=0;i<steps;i++) {
-                float alpha=1f-(i+.5f)/steps;
-                foreach(int side in new[]{0,1,2}) {
-                    var strip=new VisualElement { pickingMode=PickingMode.Ignore };
-                    strip.style.position=Position.Absolute;
-                    strip.style.backgroundColor=new Color(color.r,color.g,color.b,alpha*alpha);
-                    if(side<2) {
-                        strip.style.top=0;strip.style.bottom=0;strip.style.width=Length.Percent(8f/steps+.04f);
-                        if(side==0)strip.style.left=Length.Percent(i*8f/steps);else strip.style.right=Length.Percent(i*8f/steps);
-                    } else {strip.style.left=0;strip.style.right=0;strip.style.height=Length.Percent(9f/steps+.04f);strip.style.bottom=Length.Percent(i*9f/steps);}
+            const int steps = 24;
+            for (int i = 0; i < steps; i++)
+            {
+                float alpha = 1f - (i + .5f) / steps;
+                foreach (int side in new[] { 0, 1, 2 })
+                {
+                    var strip = new VisualElement { pickingMode = PickingMode.Ignore };
+                    strip.style.position = Position.Absolute;
+                    strip.style.backgroundColor = new Color(color.r, color.g, color.b, alpha * alpha);
+                    if (side < 2)
+                    {
+                        strip.style.top = 0;
+                        strip.style.bottom = 0;
+                        strip.style.width = Length.Percent(8f / steps + .04f);
+                        if (side == 0)
+                            strip.style.left = Length.Percent(i * 8f / steps);
+                        else
+                            strip.style.right = Length.Percent(i * 8f / steps);
+                    }
+                    else
+                    {
+                        strip.style.left = 0;
+                        strip.style.right = 0;
+                        strip.style.height = Length.Percent(9f / steps + .04f);
+                        strip.style.bottom = Length.Percent(i * 9f / steps);
+                    }
                     portrait.Add(strip);
                 }
             }
@@ -726,13 +828,15 @@ namespace Rubezh.UnityPort
             foreach (var a in animations)
                 a.Pause();
             animations.Clear();
-            foreach (var job in modalAnimations) job.Pause();
+            foreach (var job in modalAnimations)
+                job.Pause();
             modalAnimations.Clear();
         }
 
         void Close()
         {
-            foreach (var job in modalAnimations) job.Pause();
+            foreach (var job in modalAnimations)
+                job.Pause();
             modalAnimations.Clear();
             textureResidencyDirty = true;
             if (overlay != null)
@@ -766,12 +870,15 @@ namespace Rubezh.UnityPort
 
         void Confirm(string title, string body, string accept, Action action)
         {
-            Modal(title, (c, f) =>
-            {
-                Label(c, body, "paragraph");
-                Button(f, "Отмена", Close);
-                Button(f, accept, () => Change(action, Close), "gold");
-            });
+            Modal(
+                title,
+                (c, f) =>
+                {
+                    Label(c, body, "paragraph");
+                    Button(f, "Отмена", Close);
+                    Button(f, accept, () => Change(action, Close), "gold");
+                }
+            );
         }
 
         void Dropdown(VisualElement parent, string label, string[] choices, int index, Action<int> changed)
@@ -787,8 +894,14 @@ namespace Rubezh.UnityPort
     public sealed class NativeCampOptions
     {
         public int fps = 60;
-        public int quality, effects, music;
+        public int quality,
+            effects,
+            music;
         public int uiScale = 100;
-        public bool cpu, sound, musicOn, visibility, fog;
+        public bool cpu,
+            sound,
+            musicOn,
+            visibility,
+            fog;
     }
 }

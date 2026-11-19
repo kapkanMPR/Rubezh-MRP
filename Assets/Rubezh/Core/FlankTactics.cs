@@ -10,22 +10,16 @@ namespace SilentOrders.Core
         public readonly Dictionary<int, int> Wing = new Dictionary<int, int>();
         public readonly HashSet<int> FixedSupport = new HashSet<int>();
         public int CommanderWing = -1;
+
         // Rapid crossing is a brief allowance only when changing between flank variants.
         // Every other maneuver uses ordinary covered bounds immediately.
         public float FastTransferEndsAt;
         public float NextCommanderSwitch;
-        public readonly int[] LocalMover =
-        {
-            -1,
-            -1
-        };
-        public readonly float[] NextBound =
-        {
-            0,
-            0
-        };
+        public readonly int[] LocalMover = { -1, -1 };
+        public readonly float[] NextBound = { 0, 0 };
         public readonly Dictionary<int, int> PairMover = new Dictionary<int, int>();
         public readonly Dictionary<int, float> PairNextBound = new Dictionary<int, float>();
+
         public void Clear()
         {
             PairMover.Clear();
@@ -104,10 +98,17 @@ namespace SilentOrders.Core
             {
                 // Explicit four-slot mode has fixed left/right wings; older numeric
                 // presets retain their historical side chosen from starting geography.
-                int leftWing = saved.pairing == 4 ? -1 : people.Count == 0 ? -1 : V2.Dot(people[0].Position - b.Map.Entry, TacticalOrders.Lateral(b)) <= 0 ? -1 : 1;
+                int leftWing =
+                    saved.pairing == 4 ? -1
+                    : people.Count == 0 ? -1
+                    : V2.Dot(people[0].Position - b.Map.Entry, TacticalOrders.Lateral(b)) <= 0 ? -1
+                    : 1;
                 foreach (var member in people)
                 {
-                    int leftSlot = saved.DisplaySlot(0), leftPartner = saved.DisplaySlot(1), rightSlot = saved.DisplaySlot(2), rightPartner = saved.DisplaySlot(3);
+                    int leftSlot = saved.DisplaySlot(0),
+                        leftPartner = saved.DisplaySlot(1),
+                        rightSlot = saved.DisplaySlot(2),
+                        rightPartner = saved.DisplaySlot(3);
                     if (member.Id == leftSlot || member.Id == leftPartner)
                         plan.Wing[member.Id] = leftWing;
                     else if (member.Id == rightSlot || member.Id == rightPartner)
@@ -120,7 +121,11 @@ namespace SilentOrders.Core
                     // two-person element rather than wait for a dead preferred partner.
                     if (people.Count == 2 && plan.Wing[people[0].Id] != plan.Wing[people[1].Id])
                     {
-                        int wing = V2.Distance(people[0].Position, b.Map.Objective) < V2.Distance(people[1].Position, b.Map.Objective) ? plan.Wing[people[0].Id] : plan.Wing[people[1].Id];
+                        int wing =
+                            V2.Distance(people[0].Position, b.Map.Objective)
+                            < V2.Distance(people[1].Position, b.Map.Objective)
+                                ? plan.Wing[people[0].Id]
+                                : plan.Wing[people[1].Id];
                         plan.Wing[people[0].Id] = plan.Wing[people[1].Id] = wing;
                     }
 
@@ -152,7 +157,8 @@ namespace SilentOrders.Core
                 }
 
                 V2 lateral = TacticalOrders.Lateral(b);
-                V2 first = (people[0].Position + people[best].Position) * .5f, second = new V2();
+                V2 first = (people[0].Position + people[best].Position) * .5f,
+                    second = new V2();
                 for (int i = 1; i < 4; i++)
                     if (i != best)
                         second += people[i].Position;
@@ -195,7 +201,11 @@ namespace SilentOrders.Core
         public static void Configure(BattleSimulation b, Squad q, ManeuverIntent oldIntent, bool retain)
         {
             var st = q.FlankPlan;
-            bool changedFlank = retain && TacticalOrders.IsFlank(oldIntent) && TacticalOrders.IsFlank(q.Intent) && oldIntent != q.Intent;
+            bool changedFlank =
+                retain
+                && TacticalOrders.IsFlank(oldIntent)
+                && TacticalOrders.IsFlank(q.Intent)
+                && oldIntent != q.Intent;
             st.FastTransferEndsAt = changedFlank ? b.Time + 2.5f : 0f;
             if (!retain || !st.Active || (q.Intent == ManeuverIntent.Both || Envelopment(q)) && oldIntent != q.Intent)
                 AssignPairs(b, q);
@@ -210,8 +220,8 @@ namespace SilentOrders.Core
                 foreach (var s in b.Soldiers)
                     if (q.Contains(s) && Mobile(s) && SideOf(q, s.Id) == -target)
                         st.FixedSupport.Add(s.Id);
-            // When entering directly without separated wings, the initial role-diverse
-            // assignment still supplies a whole opposite pair (never a weapon-priority sort).
+                // When entering directly without separated wings, the initial role-diverse
+                // assignment still supplies a whole opposite pair (never a weapon-priority sort).
             }
             else if (q.Intent != ManeuverIntent.Both)
             {
@@ -229,7 +239,13 @@ namespace SilentOrders.Core
                             if (!s.Sniper)
                                 opposite.Add(s);
                         }
-                        else if (!s.Sniper && !s.Broken && s.Suppression < .70f && s.Morale >= .25f && s.Ammo + s.Reserve > 0)
+                        else if (
+                            !s.Sniper
+                            && !s.Broken
+                            && s.Suppression < .70f
+                            && s.Morale >= .25f
+                            && s.Ammo + s.Reserve > 0
+                        )
                             receiving++;
                     }
 
@@ -243,7 +259,11 @@ namespace SilentOrders.Core
                 if (changedFlank)
                 {
                     foreach (var s in opposite)
-                        if (!TacticalOrders.ServiceActive(s) && !s.GrenadeEscape.Active && !CounterSniper.Reserved(b, s))
+                        if (
+                            !TacticalOrders.ServiceActive(s)
+                            && !s.GrenadeEscape.Active
+                            && !CounterSniper.Reserved(b, s)
+                        )
                             s.PriorityMovement.Transfer = true;
                     foreach (var s in opposite)
                         if (s.PriorityMovement.Transfer)
@@ -279,7 +299,8 @@ namespace SilentOrders.Core
             {
                 for (int pair = 0; pair < 2; pair++)
                 {
-                    int a = form.DisplaySlot(pair * 2), z = form.DisplaySlot(pair * 2 + 1);
+                    int a = form.DisplaySlot(pair * 2),
+                        z = form.DisplaySlot(pair * 2 + 1);
                     if (a < 0 || z < 0 || a >= b.Soldiers.Count || z >= b.Soldiers.Count)
                         continue;
                     var x = b.Soldiers[a];
@@ -300,19 +321,20 @@ namespace SilentOrders.Core
                 available.RemoveAll(u => used.Contains(u.Id));
                 while (available.Count > 1)
                 {
-                    Soldier bestA = null, bestB = null;
+                    Soldier bestA = null,
+                        bestB = null;
                     float best = float.MinValue;
                     for (int i = 0; i < available.Count; i++)
-                        for (int j = i + 1; j < available.Count; j++)
+                    for (int j = i + 1; j < available.Count; j++)
+                    {
+                        float score = PairScore(available[i], available[j]);
+                        if (score > best)
                         {
-                            float score = PairScore(available[i], available[j]);
-                            if (score > best)
-                            {
-                                best = score;
-                                bestA = available[i];
-                                bestB = available[j];
-                            }
+                            best = score;
+                            bestA = available[i];
+                            bestB = available[j];
                         }
+                    }
 
                     bestA.BuddyId = bestB.Id;
                     bestB.BuddyId = bestA.Id;
@@ -356,7 +378,8 @@ namespace SilentOrders.Core
             if (!Mobile(commander) || TacticalOrders.ServiceActive(commander))
                 return;
             var st = q.FlankPlan;
-            int left = Members(b, q, -1, false).Count, right = Members(b, q, 1, false).Count;
+            int left = Members(b, q, -1, false).Count,
+                right = Members(b, q, 1, false).Count;
             int wanted = st.CommanderWing;
             bool vacancy = left == 1 && right >= 2 || right == 1 && left >= 2;
             if (left == 1 && right >= 2)
@@ -365,7 +388,8 @@ namespace SilentOrders.Core
                 wanted = 1;
             else if (b.Time >= st.NextCommanderSwitch)
             {
-                float l = Pressure(b, q, -1), r = Pressure(b, q, 1);
+                float l = Pressure(b, q, -1),
+                    r = Pressure(b, q, 1);
                 if (l > r + .7f)
                     wanted = -1;
                 else if (r > l + .7f)
@@ -382,11 +406,22 @@ namespace SilentOrders.Core
                 TacticalOrders.CancelUnit(b, commander);
                 int receiving = 0;
                 foreach (var u in b.Soldiers)
-                    if (q.Contains(u) && u.Id != commander.Id && Mobile(u) && SideOf(q, u.Id) == wanted && !u.PriorityMovement.Transfer && !u.Broken && u.Suppression < .7f)
+                    if (
+                        q.Contains(u)
+                        && u.Id != commander.Id
+                        && Mobile(u)
+                        && SideOf(q, u.Id) == wanted
+                        && !u.PriorityMovement.Transfer
+                        && !u.Broken
+                        && u.Suppression < .7f
+                    )
                         receiving++;
                 // A casualty is not a change of flank maneuver: no automatic sprint.
                 BeginTransfer(b, commander, wanted, false, 1);
-                b.Log(q.Side, commander.Name + ": перехожу на " + (wanted < 0 ? "левый" : "правый") + " фланг, не ждать прикрытия");
+                b.Log(
+                    q.Side,
+                    commander.Name + ": перехожу на " + (wanted < 0 ? "левый" : "правый") + " фланг, не ждать прикрытия"
+                );
             }
         }
 
@@ -410,7 +445,10 @@ namespace SilentOrders.Core
             s.MoveAuthorized = true;
             s.Job = fast ? Job.Reposition : Job.Cover;
             s.PriorityMovement.Goal = s.Position + TacticalOrders.Lateral(b) * side * 4;
-            s.Order = (fast ? "Быстро перейти на " : "Перейти боевыми перебежками на ") + (side < 0 ? "левый" : "правый") + " фланг";
+            s.Order =
+                (fast ? "Быстро перейти на " : "Перейти боевыми перебежками на ")
+                + (side < 0 ? "левый" : "правый")
+                + " фланг";
             s.NextDecision = b.Time;
             TransferRoute(b, s, true);
         }
@@ -468,7 +506,14 @@ namespace SilentOrders.Core
                 if (q.LeaderId >= 0 && q.LeaderId < b.Soldiers.Count)
                 {
                     var leader = b.Soldiers[q.LeaderId];
-                    if (Mobile(leader) && leader.Available && !leader.Broken && SideOf(q, leader.Id) == side && leader.BuddyId != leader.Id && list.Exists(u => u.Id == leader.BuddyId))
+                    if (
+                        Mobile(leader)
+                        && leader.Available
+                        && !leader.Broken
+                        && SideOf(q, leader.Id) == side
+                        && leader.BuddyId != leader.Id
+                        && list.Exists(u => u.Id == leader.BuddyId)
+                    )
                         list.Add(leader);
                 }
 
@@ -494,7 +539,13 @@ namespace SilentOrders.Core
                     // Rotate between actual buddies, including a free medic. A medic should
                     // NOT remain the permanent stationary half of his pair.
                     foreach (var unit in list)
-                        if (unit.Id != old && unit.Available && !unit.Broken && !unit.Sniper && (unit.Role != Role.Medic || MedicTactics.FreeToFight(b, unit)))
+                        if (
+                            unit.Id != old
+                            && unit.Available
+                            && !unit.Broken
+                            && !unit.Sniper
+                            && (unit.Role != Role.Medic || MedicTactics.FreeToFight(b, unit))
+                        )
                         {
                             pick = unit.Id;
                             break;
@@ -502,7 +553,12 @@ namespace SilentOrders.Core
 
                     if (pick < 0)
                         foreach (var unit in list)
-                            if (unit.Available && !unit.Broken && !unit.Sniper && (unit.Role != Role.Medic || MedicTactics.FreeToFight(b, unit)))
+                            if (
+                                unit.Available
+                                && !unit.Broken
+                                && !unit.Sniper
+                                && (unit.Role != Role.Medic || MedicTactics.FreeToFight(b, unit))
+                            )
                             {
                                 pick = unit.Id;
                                 break;
@@ -520,8 +576,13 @@ namespace SilentOrders.Core
                 }
             }
 
-            q.SupportStatus = Envelopment(q) ? "Противоположный фланг прикрывает независимо от оружия" : "Двойки работают самостоятельно";
-            q.Plan = q.Execution = q.Intent == ManeuverIntent.Both ? "Две автономные двойки; командир — резерв" : CommanderPriorities.IntentName(q.Intent) + "; перебежки без ожидания другого фланга";
+            q.SupportStatus = Envelopment(q)
+                ? "Противоположный фланг прикрывает независимо от оружия"
+                : "Двойки работают самостоятельно";
+            q.Plan = q.Execution =
+                q.Intent == ManeuverIntent.Both
+                    ? "Две автономные двойки; командир — резерв"
+                    : CommanderPriorities.IntentName(q.Intent) + "; перебежки без ожидания другого фланга";
             return true;
         }
 
@@ -530,7 +591,13 @@ namespace SilentOrders.Core
             V2 sum = new V2();
             int n = 0;
             foreach (var s in b.Soldiers)
-                if (q.Contains(s) && s.Id != omit && Mobile(s) && SideOf(q, s.Id) == side && !s.PriorityMovement.Transfer)
+                if (
+                    q.Contains(s)
+                    && s.Id != omit
+                    && Mobile(s)
+                    && SideOf(q, s.Id) == side
+                    && !s.PriorityMovement.Transfer
+                )
                 {
                     sum += s.Position;
                     n++;
@@ -542,7 +609,10 @@ namespace SilentOrders.Core
             var axis = PositionLogic.Axis(b);
             var lateral = TacticalOrders.Lateral(b);
             float progress = V2.Dot(self.Position - b.Map.Entry, axis);
-            return TacticalOrders.Open(b, b.Map.Entry + axis * progress + lateral * side * 7 * FormationAI.LateralMultiplier(q));
+            return TacticalOrders.Open(
+                b,
+                b.Map.Entry + axis * progress + lateral * side * 7 * FormationAI.LateralMultiplier(q)
+            );
         }
 
         public static int MoverFor(Squad q, Soldier s)
@@ -560,7 +630,12 @@ namespace SilentOrders.Core
                 if (q.Contains(a) && Mobile(a) && a.BuddyId > a.Id && a.BuddyId < b.Soldiers.Count)
                 {
                     var z = b.Soldiers[a.BuddyId];
-                    if (!Mobile(z) || z.BuddyId != a.Id || SideOf(q, a.Id) != SideOf(q, z.Id) || st.FixedSupport.Contains(a.Id))
+                    if (
+                        !Mobile(z)
+                        || z.BuddyId != a.Id
+                        || SideOf(q, a.Id) != SideOf(q, z.Id)
+                        || st.FixedSupport.Contains(a.Id)
+                    )
                         continue;
                     int key = a.Id;
                     st.PairMover.TryGetValue(key, out int old);
@@ -569,15 +644,24 @@ namespace SilentOrders.Core
                     if (st.PairNextBound.ContainsKey(key) && old >= 0 && old < b.Soldiers.Count)
                     {
                         var current = b.Soldiers[old];
-                        if (current.Available && current.MoveAuthorized && current.PathCursor < current.Path.Count && b.Time - current.LastMoved < 2.5f)
+                        if (
+                            current.Available
+                            && current.MoveAuthorized
+                            && current.PathCursor < current.Path.Count
+                            && b.Time - current.LastMoved < 2.5f
+                        )
                         {
                             st.PairNextBound[key] = b.Time + 1;
                             continue;
                         }
                     }
 
-                    Soldier first = old == a.Id ? z : a, second = first == a ? z : a;
-                    Soldier pick = BoundReady(b, first) ? first : BoundReady(b, second) ? second : null;
+                    Soldier first = old == a.Id ? z : a,
+                        second = first == a ? z : a;
+                    Soldier pick =
+                        BoundReady(b, first) ? first
+                        : BoundReady(b, second) ? second
+                        : null;
                     st.PairMover[key] = pick == null ? -1 : pick.Id;
                     st.PairNextBound[key] = b.Time + (pick == null ? 1 : 4);
                 }
@@ -585,7 +669,11 @@ namespace SilentOrders.Core
 
         static bool BoundReady(BattleSimulation b, Soldier s)
         {
-            return s.Available && !s.Broken && !s.Sniper && !TacticalOrders.ServiceActive(s) && (s.Role != Role.Medic || MedicTactics.FreeToFight(b, s));
+            return s.Available
+                && !s.Broken
+                && !s.Sniper
+                && !TacticalOrders.ServiceActive(s)
+                && (s.Role != Role.Medic || MedicTactics.FreeToFight(b, s));
         }
 
         // Fast deployment must never secretly become an offensive route: every
@@ -631,7 +719,17 @@ namespace SilentOrders.Core
                 return false;
             int receiving = 0;
             foreach (var s in b.Soldiers)
-                if (s.Side == mover.Side && s.Id != mover.Id && Mobile(s) && !s.Broken && !s.PriorityMovement.Transfer && s.Suppression < .70f && s.Morale >= .25f && s.Ammo + s.Reserve > 0 && SideOf(q, s.Id) == movement.DestinationWing)
+                if (
+                    s.Side == mover.Side
+                    && s.Id != mover.Id
+                    && Mobile(s)
+                    && !s.Broken
+                    && !s.PriorityMovement.Transfer
+                    && s.Suppression < .70f
+                    && s.Morale >= .25f
+                    && s.Ammo + s.Reserve > 0
+                    && SideOf(q, s.Id) == movement.DestinationWing
+                )
                     receiving++;
             return receiving >= movement.TransferGroupSize;
         }
@@ -654,7 +752,17 @@ namespace SilentOrders.Core
 
             bool protectedByWing = false;
             foreach (var u in b.Soldiers)
-                if (u.Id != s.Id && u.Side == s.Side && u.Available && !u.Broken && !u.PriorityMovement.Transfer && u.Suppression < .55f && u.Ammo > 0 && SideOf(b.Team(s), u.Id) == s.PriorityMovement.DestinationWing && PositionLogic.UsefulSupport(b, u, s, s.Destination))
+                if (
+                    u.Id != s.Id
+                    && u.Side == s.Side
+                    && u.Available
+                    && !u.Broken
+                    && !u.PriorityMovement.Transfer
+                    && u.Suppression < .55f
+                    && u.Ammo > 0
+                    && SideOf(b.Team(s), u.Id) == s.PriorityMovement.DestinationWing
+                    && PositionLogic.UsefulSupport(b, u, s, s.Destination)
+                )
                 {
                     protectedByWing = true;
                     break;
@@ -676,7 +784,11 @@ namespace SilentOrders.Core
         // Expiration also invalidates any long exposed waypoint created during the sprint.
         public static void ExpireFastTransfer(BattleSimulation b, Soldier s)
         {
-            if (s.PriorityMovement.Transfer && s.PriorityMovement.FastTransfer && (b.Time >= b.Team(s).FlankPlan.FastTransferEndsAt || !HasEnoughReceivingSupport(b, s)))
+            if (
+                s.PriorityMovement.Transfer
+                && s.PriorityMovement.FastTransfer
+                && (b.Time >= b.Team(s).FlankPlan.FastTransferEndsAt || !HasEnoughReceivingSupport(b, s))
+            )
                 DowngradeFastTransfer(b, s);
         }
 
@@ -694,14 +806,25 @@ namespace SilentOrders.Core
                 DowngradeFastTransfer(b, s);
             var q = b.Team(s);
             V2 center = WingCenter(b, q, st.DestinationWing, s.Id);
-            var wanted = TacticalOrders.Open(b, center + PositionLogic.Axis(b) * -1.8f + TacticalOrders.Lateral(b) * (s.Id % 2 == 0 ? 1.3f : -1.3f));
+            var wanted = TacticalOrders.Open(
+                b,
+                center + PositionLogic.Axis(b) * -1.8f + TacticalOrders.Lateral(b) * (s.Id % 2 == 0 ? 1.3f : -1.3f)
+            );
             var threat = TacticalOrders.ClosestKnown(b, s);
             // Route around the rear before crossing when the direct transfer is exposed.
             if (V2.Dot(s.Position - center, PositionLogic.Axis(b)) <= -3f)
                 st.RearLegCompleted = true;
-            if (!st.RearLegCompleted && threat != null && V2.SegmentDistance(threat.Position, s.Position, wanted) < b.WeaponRange(s) * .65f && V2.Dot(s.Position - center, PositionLogic.Axis(b)) > -3f)
+            if (
+                !st.RearLegCompleted
+                && threat != null
+                && V2.SegmentDistance(threat.Position, s.Position, wanted) < b.WeaponRange(s) * .65f
+                && V2.Dot(s.Position - center, PositionLogic.Axis(b)) > -3f
+            )
             {
-                wanted = TacticalOrders.Open(b, s.Position - PositionLogic.Axis(b) * 4f + TacticalOrders.Lateral(b) * st.DestinationWing * 2f);
+                wanted = TacticalOrders.Open(
+                    b,
+                    s.Position - PositionLogic.Axis(b) * 4f + TacticalOrders.Lateral(b) * st.DestinationWing * 2f
+                );
             }
 
             if (V2.Distance(s.Position, center) < 3f)
@@ -779,7 +902,12 @@ namespace SilentOrders.Core
         public static bool CanAdvance(BattleSimulation b, Soldier s)
         {
             var assignment = s.Assignment;
-            if (CommandHierarchy.Owns(b.Team(s)) && assignment.Active && assignment.IsBound && V2.Distance(assignment.Goal, s.Destination) < .2f)
+            if (
+                CommandHierarchy.Owns(b.Team(s))
+                && assignment.Active
+                && assignment.IsBound
+                && V2.Distance(assignment.Goal, s.Destination) < .2f
+            )
                 return CommandHierarchy.MovementAllowed(b, s);
             if (CoverWaitPolicy.Allow(b, s))
                 return true;
@@ -795,14 +923,18 @@ namespace SilentOrders.Core
                 return q.Style == CombatStyle.Aggressive || !CombatCohesion.InCombat(b, s.Side);
             // While a pair is engaged, only its designated mover advances; the
             // other member must remain available for overwatch, including on Balance.
-            int wing = SideOf(q, s.Id), wingSlot = wing < 0 ? 0 : 1;
+            int wing = SideOf(q, s.Id),
+                wingSlot = wing < 0 ? 0 : 1;
             var buddy = s.BuddyId >= 0 && s.BuddyId < b.Soldiers.Count ? b.Soldiers[s.BuddyId] : s;
             bool paired = buddy.Id != s.Id && Mobile(buddy) && SideOf(q, buddy.Id) == wing;
             bool combat = CombatCohesion.InCombat(b, s.Side);
             // Sniper is a legitimate alternate mover of this pair, despite the normal
             // LocalMover token being assigned to the rifleman. He must stay near him.
             if (paired && s.Sniper && s.SniperMoving)
-                return !buddy.Moving && buddy.PathCursor >= buddy.Path.Count && SniperTactics.BuddyCanCover(b, buddy) && V2.Distance(s.Destination, buddy.Position) <= SniperTactics.PairPostLimit;
+                return !buddy.Moving
+                    && buddy.PathCursor >= buddy.Path.Count
+                    && SniperTactics.BuddyCanCover(b, buddy)
+                    && V2.Distance(s.Destination, buddy.Position) <= SniperTactics.PairPostLimit;
             // A paired sniper's moving step owns the bound; the rifleman stays to cover.
             if (paired && buddy.Sniper && buddy.SniperMoving && buddy.PathCursor < buddy.Path.Count)
                 return false;
@@ -929,7 +1061,8 @@ namespace SilentOrders.Core
 
                     if (near != null && distance > 3.5f)
                     {
-                        V2 regroupGoal = s.Position + (near.Position - s.Position).Normalized * Math.Min(3.5f, distance - 2.5f);
+                        V2 regroupGoal =
+                            s.Position + (near.Position - s.Position).Normalized * Math.Min(3.5f, distance - 2.5f);
                         if (TacticalOrders.Route(b, s, regroupGoal, true, false))
                         {
                             s.PairRegroupUntil = b.Time + 3.5f;
@@ -950,7 +1083,10 @@ namespace SilentOrders.Core
 
             // The stationary partner covers even in aggressive mode. One mobile fighter
             // per pair, unless the other is incapacitated or no battle is underway.
-            if ((support && PositionLogic.HasSector(b, s, s.Position)) || (!support && partner && (contact || groupInCombat) && s.Id != mover))
+            if (
+                (support && PositionLogic.HasSector(b, s, s.Position))
+                || (!support && partner && (contact || groupInCombat) && s.Id != mover)
+            )
             {
                 // Keep a previously assigned short covering reposition alive. Otherwise
                 // a remote partner can freeze forever without an effective firing sector.
@@ -965,7 +1101,12 @@ namespace SilentOrders.Core
                 if (!hasLane && threat != null && b.Time >= s.PriorityMovement.NextRoute)
                 {
                     V2 alternative;
-                    if (PositionLogic.TryPost(b, s, s.Position, 3f, true, out alternative) && V2.Distance(alternative, s.Position) > 1.1f && V2.Distance(alternative, buddy.Position) < 7f && TacticalOrders.Route(b, s, alternative, true, false))
+                    if (
+                        PositionLogic.TryPost(b, s, s.Position, 3f, true, out alternative)
+                        && V2.Distance(alternative, s.Position) > 1.1f
+                        && V2.Distance(alternative, buddy.Position) < 7f
+                        && TacticalOrders.Route(b, s, alternative, true, false)
+                    )
                     {
                         s.Job = Job.Cover;
                         s.MoveAuthorized = true;
@@ -1012,7 +1153,13 @@ namespace SilentOrders.Core
             var lateral = TacticalOrders.Lateral(b);
             float lateralPos = V2.Dot(s.Position - b.Map.Entry, lateral) * side;
             float range = b.WeaponRange(s);
-            if (threat != null && V2.Distance(s.Position, threat.Position) <= range && PositionLogic.CanEngage(b, s, s.Position, threat) && (support || q.Style == CombatStyle.Passive || lateralPos >= 4f) && (s.Visible.Contains(threat.EnemyId) || b.Time - s.LastFire < 3f))
+            if (
+                threat != null
+                && V2.Distance(s.Position, threat.Position) <= range
+                && PositionLogic.CanEngage(b, s, s.Position, threat)
+                && (support || q.Style == CombatStyle.Passive || lateralPos >= 4f)
+                && (s.Visible.Contains(threat.EnemyId) || b.Time - s.LastFire < 3f)
+            )
             {
                 TacticalAI.Stop(s);
                 s.OrderAnchor = s.Position;
@@ -1032,7 +1179,10 @@ namespace SilentOrders.Core
             }
             else
             {
-                float forward = Math.Min(V2.Dot(b.Map.Objective - b.Map.Entry, axis) - 1f, V2.Dot(s.Position - b.Map.Entry, axis) + 6f);
+                float forward = Math.Min(
+                    V2.Dot(b.Map.Objective - b.Map.Entry, axis) - 1f,
+                    V2.Dot(s.Position - b.Map.Entry, axis) + 6f
+                );
                 float spread = (6f + (s.Id % 2) * 2f) * FormationAI.LateralMultiplier(q);
                 wanted = b.Map.Entry + axis * forward + lateral * side * spread;
             }
@@ -1051,7 +1201,11 @@ namespace SilentOrders.Core
             // Standard tactical moves are short. 7-unit fast bounds only exist in the
             // first five seconds of an eligible *flank-to-flank* maneuver switch.
             V2 delta = wanted - s.Position;
-            float boundLength = medic ? 3.2f : q.Style == CombatStyle.Passive ? 2.5f : (contact || groupInCombat) ? 3.8f : 4.5f;
+            float boundLength =
+                medic ? 3.2f
+                : q.Style == CombatStyle.Passive ? 2.5f
+                : (contact || groupInCombat) ? 3.8f
+                : 4.5f;
             if (delta.Length > boundLength)
                 wanted = s.Position + delta.Normalized * boundLength;
             bool requireCover = partner && !support && groupInCombat;
@@ -1062,7 +1216,11 @@ namespace SilentOrders.Core
                 // but only once the pair has been allowed to seek covering fire/smoke.
                 if (s.PriorityMovement.WaitSince < 0)
                     s.PriorityMovement.WaitSince = b.Time;
-                if (b.Time - s.PriorityMovement.WaitSince >= 2.5f && CanAdvance(b, s) && ((aggressive && !medic) || !groupInCombat))
+                if (
+                    b.Time - s.PriorityMovement.WaitSince >= 2.5f
+                    && CanAdvance(b, s)
+                    && ((aggressive && !medic) || !groupInCombat)
+                )
                 {
                     route = TacticalOrders.Route(b, s, wanted, false, false);
                     s.PriorityMovement.WaitSince = -1;
@@ -1075,7 +1233,10 @@ namespace SilentOrders.Core
             s.ManeuverPaused = false;
             if (route)
             {
-                s.Reason = atWingEdge && !usefulHere && !support ? "Край фланга достигнут, двигаюсь к району флага" : aggressive ? "Обхожу через доступную местность; укрытие желательно, но не обязательно" : "Работаю со своей двойкой, не жду дальний фланг";
+                s.Reason =
+                    atWingEdge && !usefulHere && !support ? "Край фланга достигнут, двигаюсь к району флага"
+                    : aggressive ? "Обхожу через доступную местность; укрытие желательно, но не обязательно"
+                    : "Работаю со своей двойкой, не жду дальний фланг";
             }
             else if (contact)
                 TacticalOrders.TrySmoke(b, s, threat);

@@ -8,6 +8,6 @@ namespace SilentOrders.Core
         Running,
         GreenCaptured,
         GreenEliminated,
-        RedHeld
+        RedHeld,
     }
 }

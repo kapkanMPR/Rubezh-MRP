@@ -7,6 +7,6 @@ namespace SilentOrders.Core
     {
         Cautious,
         Balanced,
-        Persistent
+        Persistent,
     }
 }

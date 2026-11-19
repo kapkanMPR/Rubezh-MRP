@@ -14,6 +14,7 @@ namespace SilentOrders.Core
 
         Tile[] tiles;
         readonly List<Change> history = new List<Change>();
+
         public void Record(BattleMap map, int[] roots)
         {
             if (!ReferenceEquals(tiles, map.Tiles))

@@ -10,6 +10,6 @@ namespace SilentOrders.Core
         Medic,
         Grenadier,
         Rifleman,
-        Sniper
+        Sniper,
     }
 }

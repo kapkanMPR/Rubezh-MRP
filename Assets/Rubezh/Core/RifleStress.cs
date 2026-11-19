@@ -21,7 +21,14 @@ namespace SilentOrders.Core
             return 1f; // frontal fire
         }
 
-        public static void RifleHit(BattleSimulation battle, Soldier shooter, Soldier victim, float damage, float suppression, float morale)
+        public static void RifleHit(
+            BattleSimulation battle,
+            Soldier shooter,
+            Soldier victim,
+            float damage,
+            float suppression,
+            float morale
+        )
         {
             float bonus = Multiplier(victim, shooter.Position);
             // Health damage deliberately remains unchanged.
@@ -32,6 +39,7 @@ namespace SilentOrders.Core
     public static class MoraleDynamics
     {
         public const float BrokenRecoveryPause = 2f;
+
         public static void ConfigureTraining(BattleSimulation b, Soldier s, int level)
         {
             level = Math.Max(0, Math.Min(3, level));
@@ -42,8 +50,11 @@ namespace SilentOrders.Core
             s.Morale = s.MoraleMaximum;
         }
 
-        public static float RecoveryRate(Soldier s, float rate) => rate > 0 ? rate * s.MoraleFactor + s.MoraleRegenBonus : rate;
+        public static float RecoveryRate(Soldier s, float rate) =>
+            rate > 0 ? rate * s.MoraleFactor + s.MoraleRegenBonus : rate;
+
         public static float RecoveryPause(Soldier s) => Math.Max(0, BrokenRecoveryPause - s.MoraleBlockReduction);
+
         public static bool EnterBroken(BattleSimulation b, Soldier s)
         {
             if (!s.Alive || s.Broken)
@@ -66,7 +77,11 @@ namespace SilentOrders.Core
 
         public static bool CanRecover(BattleSimulation b, Soldier s)
         {
-            return s.Broken && b.Time >= s.MoraleRecoveryBlockedUntil && b.Time - s.LastIncoming > 3f && s.Suppression < .28f && s.Morale >= .2f;
+            return s.Broken
+                && b.Time >= s.MoraleRecoveryBlockedUntil
+                && b.Time - s.LastIncoming > 3f
+                && s.Suppression < .28f
+                && s.Morale >= .2f;
         }
     }
 }

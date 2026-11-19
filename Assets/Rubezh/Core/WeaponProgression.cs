@@ -5,10 +5,18 @@ namespace SilentOrders.Core
     // Immutable per-weapon state. Shared safely between corpse, ground and carrier.
     public sealed class WeaponUpgrade
     {
-        public readonly int Variant, Rarity, Level;
+        public readonly int Variant,
+            Rarity,
+            Level;
         public readonly WeaponBalance.Spec Spec;
+
         internal WeaponUpgrade(int variant, int rarity, int level, WeaponBalance.Spec spec)
-        { Variant = variant; Rarity = rarity; Level = level; Spec = spec; }
+        {
+            Variant = variant;
+            Rarity = rarity;
+            Level = level;
+            Spec = spec;
+        }
     }
 
     public static class WeaponProgression
@@ -21,16 +29,27 @@ namespace SilentOrders.Core
             float sniper = variant % 6 >= 4 ? 5 : 0;
             float originalMin = 18 * p.Damage + p.DamageBonus + sniper;
             float originalMax = 30 * p.Damage + p.DamageBonus + sniper;
-            float low = originalMin * (15f / 18f), high = originalMax * (20f / 30f);
+            float low = originalMin * (15f / 18f),
+                high = originalMax * (20f / 30f);
             float min = low + (originalMin * 1.15f - low) * progress;
             float max = high + (originalMax * 1.15f - high) * progress;
             float multiplier = (max - min) / 12;
-            return new WeaponBalance.Spec(p.Range, p.Accuracy * (.9f + .25f * progress),
-                multiplier, p.FireSeconds, p.Magazine, p.Suppression, p.Morale, p.DistanceFalloff)
+            return new WeaponBalance.Spec(
+                p.Range,
+                p.Accuracy * (.9f + .25f * progress),
+                multiplier,
+                p.FireSeconds,
+                p.Magazine,
+                p.Suppression,
+                p.Morale,
+                p.DistanceFalloff
+            )
             {
                 DamageBonus = min - 18 * multiplier - sniper,
-                CriticalBonus = p.CriticalBonus, Spread = p.Spread,
-                AccuracyAfterPenalties = p.AccuracyAfterPenalties, AimSeconds = p.AimSeconds
+                CriticalBonus = p.CriticalBonus,
+                Spread = p.Spread,
+                AccuracyAfterPenalties = p.AccuracyAfterPenalties,
+                AimSeconds = p.AimSeconds,
             };
         }
 
@@ -69,8 +88,11 @@ namespace SilentOrders.Core
 
         public static void Assign(BattleSimulation b, Soldier s, int mission, bool endless)
         {
-            if (s.Side != Side.Red || mission < 1) return;
-            int variant = WeaponBalance.Index(s), low, high;
+            if (s.Side != Side.Red || mission < 1)
+                return;
+            int variant = WeaponBalance.Index(s),
+                low,
+                high;
             Bounds(mission, endless, variant >= 6, out low, out high);
             // Independent hash: no combat RNG consumption, stable for late reinforcements.
             uint h = unchecked((uint)s.Id * 747796405u + (uint)b.Seed * 2891336453u);
@@ -79,14 +101,18 @@ namespace SilentOrders.Core
             if (variant >= 6)
                 s.WeaponUpgrade = step <= 29 ? At(variant, 2, step + 1) : At(variant, 3, step);
             else
-                s.WeaponUpgrade = step <= 19 ? At(variant, 1, step + 1) :
-                    step <= 30 ? At(variant, 2, step) : At(variant, 3, step - 1);
+                s.WeaponUpgrade =
+                    step <= 19 ? At(variant, 1, step + 1)
+                    : step <= 30 ? At(variant, 2, step)
+                    : At(variant, 3, step - 1);
         }
 
         public static void Configure(BattleSimulation b, int mission, bool endless)
         {
-            b.EnemyWeaponMission = mission; b.EnemyWeaponEndless = endless;
-            foreach (var s in b.Soldiers) Assign(b, s, mission, endless);
+            b.EnemyWeaponMission = mission;
+            b.EnemyWeaponEndless = endless;
+            foreach (var s in b.Soldiers)
+                Assign(b, s, mission, endless);
         }
     }
 }

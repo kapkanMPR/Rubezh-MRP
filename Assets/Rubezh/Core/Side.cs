@@ -6,6 +6,6 @@ namespace SilentOrders.Core
     public enum Side
     {
         Green,
-        Red
+        Red,
     }
 }

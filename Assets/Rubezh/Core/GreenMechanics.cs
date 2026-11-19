@@ -5,26 +5,54 @@ namespace SilentOrders.Core
     [Serializable]
     public sealed class GreenMechanicsState
     {
-        public int RecoveryKind, MedicalPickups, LauncherPickups, TemporaryShots;
-        public bool MedicalBag, MedicalTaken, HandLauncher;
-        public float HandUntil, HandNextPlan;
+        public int RecoveryKind,
+            MedicalPickups,
+            LauncherPickups,
+            TemporaryShots;
+        public bool MedicalBag,
+            MedicalTaken,
+            HandLauncher;
+        public float HandUntil,
+            HandNextPlan;
         public int HandRevision;
-        public int RecoveryTarget = -1, PackOwner = -1, RecoveryRevision;
-        public float RecoveryUntil, RecoveryNext, UnpackAt = -1, GoalX, GoalY;
-        public float AreaStartAt, AreaStartX, AreaStartY, AreaProgress;
-        public int AreaUseful, AreaStalled;
-        public int AreaStarts, AreaShots, RecoveryStarts, RecoveryCompleted, RecoveryCancelled, RecoveredMagazines, RecoveredBoxes;
+        public int RecoveryTarget = -1,
+            PackOwner = -1,
+            RecoveryRevision;
+        public float RecoveryUntil,
+            RecoveryNext,
+            UnpackAt = -1,
+            GoalX,
+            GoalY;
+        public float AreaStartAt,
+            AreaStartX,
+            AreaStartY,
+            AreaProgress;
+        public int AreaUseful,
+            AreaStalled;
+        public int AreaStarts,
+            AreaShots,
+            RecoveryStarts,
+            RecoveryCompleted,
+            RecoveryCancelled,
+            RecoveredMagazines,
+            RecoveredBoxes;
     }
 
     public static class GreenMechanics
     {
         public const int FeatureMask = 11;
+
         public static bool SuppressEnabled(BattleSimulation b, Soldier s)
         {
-            return (FeatureMask & 1) != 0 && s.Side == Side.Green && (!s.GunMachineGunner || s.Role == Role.MachineGunner || s.Role == Role.Commander) && CombatTraining.Skill(s, 2, "suppress") && b.Team(s).Style == CombatStyle.Aggressive;
+            return (FeatureMask & 1) != 0
+                && s.Side == Side.Green
+                && (!s.GunMachineGunner || s.Role == Role.MachineGunner || s.Role == Role.Commander)
+                && CombatTraining.Skill(s, 2, "suppress")
+                && b.Team(s).Style == CombatStyle.Aggressive;
         }
 
         public static bool TaskBound(Soldier s) => (FeatureMask & 8) != 0 && s.Side == Side.Green;
+
         public static bool SuppressionTaskReady(BattleSimulation b, Soldier s)
         {
             if (!TaskBound(s))
@@ -59,7 +87,10 @@ namespace SilentOrders.Core
             var mover = FireSupportTask.Assigned(b, s);
             var a = s.Mechanics;
             if (mover != null)
-                a.AreaProgress = Math.Max(a.AreaProgress, V2.Distance(mover.Position, new V2(a.AreaStartX, a.AreaStartY)));
+                a.AreaProgress = Math.Max(
+                    a.AreaProgress,
+                    V2.Distance(mover.Position, new V2(a.AreaStartX, a.AreaStartY))
+                );
             if (!TaskBound(s))
                 return true;
             if (mover == null)

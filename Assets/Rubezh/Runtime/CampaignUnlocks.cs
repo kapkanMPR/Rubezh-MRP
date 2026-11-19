@@ -5,8 +5,12 @@ namespace Rubezh.UnityPort
 {
     public sealed class EquipmentUnlock
     {
-        public readonly string Kind, Name, Detail;
-        public readonly int Id, After;
+        public readonly string Kind,
+            Name,
+            Detail;
+        public readonly int Id,
+            After;
+
         public EquipmentUnlock(string kind, int id, int after, string name, string detail)
         {
             Kind = kind;
@@ -19,31 +23,18 @@ namespace Rubezh.UnityPort
 
     public static class CampaignUnlocks
     {
-        public static readonly string[] Weapons =
-        {
-            "АК-74 с прицелом",
-            "ПКМ",
-            "АК-74 + подствольник",
-            "СВД"
-        };
+        public static readonly string[] Weapons = { "АК-74 с прицелом", "ПКМ", "АК-74 + подствольник", "СВД" };
         public static readonly string[] Extras =
         {
             "Без оборудования",
             "РПГ-26",
             "Медицинский рюкзак",
             "Рюкзак с боекомплектом",
-            "РШГ"
+            "РШГ",
         };
-        public static readonly string[] Grenades =
-        {
-            "Дым",
-            "РГД-5",
-            "Выстрел подствольника",
-            "Ф-1",
-            "РГН",
-            "РГО"
-        };
+        public static readonly string[] Grenades = { "Дым", "РГД-5", "Выстрел подствольника", "Ф-1", "РГН", "РГО" };
         public static readonly EquipmentUnlock[] Items = Build();
+
         static EquipmentUnlock[] Build()
         {
             var items = new System.Collections.Generic.List<EquipmentUnlock>
@@ -60,32 +51,54 @@ namespace Rubezh.UnityPort
                 new EquipmentUnlock("grenade", 5, 18, Grenades[5], "Усиленная осколочная граната: взрыв при падении"),
                 new EquipmentUnlock("grenade", 3, 9, Grenades[3], "Ручная граната с усиленным осколочным действием"),
                 new EquipmentUnlock("grenade", 2, 7, Grenades[2], "Боеприпас для АК-74 с подствольником"),
-                new EquipmentUnlock("rig", 1, 3, "Средняя разгрузка · уровень 2", "Увеличенный запас боеприпасов и второй слот гранат"),
-                new EquipmentUnlock("rig", 2, 11, "Тяжёлая разгрузка · уровень 3", "Больше боеприпасов и третий слот гранат")
+                new EquipmentUnlock(
+                    "rig",
+                    1,
+                    3,
+                    "Средняя разгрузка · уровень 2",
+                    "Увеличенный запас боеприпасов и второй слот гранат"
+                ),
+                new EquipmentUnlock(
+                    "rig",
+                    2,
+                    11,
+                    "Тяжёлая разгрузка · уровень 3",
+                    "Больше боеприпасов и третий слот гранат"
+                ),
             };
             items.Add(new EquipmentUnlock("armor", 1, 7, "Армейский бронежилет", "Броня уровня 2"));
             items.Add(new EquipmentUnlock("armor", 2, 18, "Штурмовой бронежилет", "Броня уровня 3"));
             for (int t = 1; t <= 3; t++)
-                items.Add(new EquipmentUnlock("training", t, SilentOrders.Core.CampaignProgression.TrainingAfter(t), "Подготовка отряда · уровень " + t, "Все четыре направления подготовки"));
+                items.Add(
+                    new EquipmentUnlock(
+                        "training",
+                        t,
+                        SilentOrders.Core.CampaignProgression.TrainingAfter(t),
+                        "Подготовка отряда · уровень " + t,
+                        "Все четыре направления подготовки"
+                    )
+                );
             for (int t = 1; t <= 3; t++)
-                items.Add(new EquipmentUnlock("combatTraining", t, new[] { 0, 6, 14, 17 }[t], "Боевая тренировка · уровень " + t, "Новые навыки группы · покупка необратима"));
-            int[] after =
-            {
-                3,
-                4,
-                10,
-                3,
-                7,
-                7,
-                1,
-                6,
-                9,
-                11,
-                18,
-                14
-            };
+                items.Add(
+                    new EquipmentUnlock(
+                        "combatTraining",
+                        t,
+                        new[] { 0, 6, 14, 17 }[t],
+                        "Боевая тренировка · уровень " + t,
+                        "Новые навыки группы · покупка необратима"
+                    )
+                );
+            int[] after = { 3, 4, 10, 3, 7, 7, 1, 6, 9, 11, 18, 14 };
             for (int i = 0; i < after.Length; i++)
-                items.Add(new EquipmentUnlock("bag", i, after[i], UiCatalog.BagNames[i], i == 6 || i == 7 ? "Содержимое медицинского рюкзака" : "Запас для рюкзака снабжения"));
+                items.Add(
+                    new EquipmentUnlock(
+                        "bag",
+                        i,
+                        after[i],
+                        UiCatalog.BagNames[i],
+                        i == 6 || i == 7 ? "Содержимое медицинского рюкзака" : "Запас для рюкзака снабжения"
+                    )
+                );
             return items.OrderBy(i => i.After).ToArray();
         }
 
@@ -97,7 +110,9 @@ namespace Rubezh.UnityPort
 
         public static EquipmentUnlock[] Between(int before, int after)
         {
-            return after <= before ? new EquipmentUnlock[0] : Items.Where(i => i.After > before && i.After <= after).ToArray();
+            return after <= before
+                ? new EquipmentUnlock[0]
+                : Items.Where(i => i.After > before && i.After <= after).ToArray();
         }
     }
 }

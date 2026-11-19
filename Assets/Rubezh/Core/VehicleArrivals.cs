@@ -14,14 +14,13 @@ namespace SilentOrders.Core
         public float StartTime;
         public float AmbushSpeechAt = -1f;
         public int AmbushCommanderId = -1;
-        public bool Active, Stopped, AmbushShotAttempted;
+        public bool Active,
+            Stopped,
+            AmbushShotAttempted;
         public DefenderGroupState DefenderGroup;
         public int Direction
         {
-            get
-            {
-                return Side == Side.Green ? 2 : 0;
-            }
+            get { return Side == Side.Green ? 2 : 0; }
         }
     }
 
@@ -31,23 +30,37 @@ namespace SilentOrders.Core
         public const int WidthCells = 4;
         const float HalfLength = LengthCells * .5f;
         const float HalfWidth = WidthCells * .5f;
+
         // Extra clearance for the edges of tires and animated soldier feet.
         const float SoldierClearance = .48f;
         const float Travel = 4f;
         const float Seconds = 4f;
+
         // Keep transport away from new procedural walls: legacy clearing only removes catalog objects.
-        public static int ProceduralLane(int columns, int rows, Side side, Func<int,bool> occupied)
+        public static int ProceduralLane(int columns, int rows, Side side, Func<int, bool> occupied)
         {
-            int middle=rows/2;
-            for(int distance=0;distance<rows;distance++)foreach(int y in new[]{middle-distance,middle+distance})
-            {
-                if(y<2||y>rows-2)continue;
-                bool clear=true;int left=side==Side.Green?0:columns-9,right=side==Side.Green?8:columns-1;
-                for(int yy=y-2;yy<=y+1&&clear;yy++)for(int x=left;x<=right;x++)if(occupied(yy*columns+x)){clear=false;break;}
-                if(clear)return y;
-            }
+            int middle = rows / 2;
+            for (int distance = 0; distance < rows; distance++)
+                foreach (int y in new[] { middle - distance, middle + distance })
+                {
+                    if (y < 2 || y > rows - 2)
+                        continue;
+                    bool clear = true;
+                    int left = side == Side.Green ? 0 : columns - 9,
+                        right = side == Side.Green ? 8 : columns - 1;
+                    for (int yy = y - 2; yy <= y + 1 && clear; yy++)
+                    for (int x = left; x <= right; x++)
+                        if (occupied(yy * columns + x))
+                        {
+                            clear = false;
+                            break;
+                        }
+                    if (clear)
+                        return y;
+                }
             return -1;
         }
+
         public static VehicleArrivalState Start(BattleSimulation b, Side side, DefenderGroupState group = null)
         {
             var existing = side == Side.Green ? b.GreenVehicle : b.RedVehicle;
@@ -58,10 +71,20 @@ namespace SilentOrders.Core
             // Integer centres place even-sized (8 x 4) hull between grid cell centres.
             // Initial position may be partly outside the map: transport drives in from the edge.
             float centerY = (float)Math.Floor(b.Map.Rows * .5f);
-            if(b.Map.DynamicBuildings!=null&&b.Map.DynamicBuildings.Count>0){
-                int lane=ProceduralLane(b.Map.Columns,b.Map.Rows,side,i=>i==b.Map.Index(b.Map.Objective)||b.Map.ProceduralCells!=null&&b.Map.ProceduralCells[i]&&b.Map.ProceduralHeight[i]>.02f||StudioRules.Permanent(b.Map,i));
-                if(lane<0)throw new InvalidOperationException("Нет свободного маршрута транспорта");
-                centerY=lane;
+            if (b.Map.DynamicBuildings != null && b.Map.DynamicBuildings.Count > 0)
+            {
+                int lane = ProceduralLane(
+                    b.Map.Columns,
+                    b.Map.Rows,
+                    side,
+                    i =>
+                        i == b.Map.Index(b.Map.Objective)
+                        || b.Map.ProceduralCells != null && b.Map.ProceduralCells[i] && b.Map.ProceduralHeight[i] > .02f
+                        || StudioRules.Permanent(b.Map, i)
+                );
+                if (lane < 0)
+                    throw new InvalidOperationException("Нет свободного маршрута транспорта");
+                centerY = lane;
             }
             var state = new VehicleArrivalState
             {
@@ -71,7 +94,7 @@ namespace SilentOrders.Core
                 Stopped = false,
                 Center = new V2(from, centerY),
                 Landing = new V2(stop, centerY),
-                DefenderGroup = group
+                DefenderGroup = group,
             };
             if (side == Side.Green)
             {
@@ -112,17 +135,17 @@ namespace SilentOrders.Core
             // Solid, infinite-health walls block movement, shots and grenades while the
             // visual vehicle replaces their generic wall geometry.
             for (int y = 0; y < b.Map.Rows; y++)
-                for (int x = 0; x < b.Map.Columns; x++)
-                {
-                    int i = y * b.Map.Columns + x;
-                    if (!InsideFootprint(b.Map.Center(i), v.Center))
-                        continue;
-                    b.Map.Tiles[i] = Tile.LowCover;
-                    b.Map.CoverHealth[i] = float.PositiveInfinity;
-                    b.Map.LevelProps[i] = 0;
-                    b.Map.LowCoverStyle[i] = 0;
-                    b.Map.VehicleFootprint[i] = 1;
-                }
+            for (int x = 0; x < b.Map.Columns; x++)
+            {
+                int i = y * b.Map.Columns + x;
+                if (!InsideFootprint(b.Map.Center(i), v.Center))
+                    continue;
+                b.Map.Tiles[i] = Tile.LowCover;
+                b.Map.CoverHealth[i] = float.PositiveInfinity;
+                b.Map.LevelProps[i] = 0;
+                b.Map.LowCoverStyle[i] = 0;
+                b.Map.VehicleFootprint[i] = 1;
+            }
 
             b.Map.Revision++;
             v.Stopped = true;
@@ -130,7 +153,12 @@ namespace SilentOrders.Core
             {
                 DeployGreen(b, v);
                 foreach (var commander in b.Soldiers)
-                    if (commander.Side == Side.Green && commander.Role == Role.Commander && commander.Deployed && commander.Alive)
+                    if (
+                        commander.Side == Side.Green
+                        && commander.Role == Role.Commander
+                        && commander.Deployed
+                        && commander.Alive
+                    )
                     {
                         v.AmbushCommanderId = commander.Id;
                         v.AmbushSpeechAt = b.Time;
@@ -152,17 +180,33 @@ namespace SilentOrders.Core
             float nearest = float.MaxValue;
             foreach (var s in b.Soldiers)
             {
-                if (s.Side != Side.Red || !s.Deployed || !s.Available || s.Busy || s.Rockets <= 0 || s.LauncherKind != 0)
+                if (
+                    s.Side != Side.Red
+                    || !s.Deployed
+                    || !s.Available
+                    || s.Busy
+                    || s.Rockets <= 0
+                    || s.LauncherKind != 0
+                )
                     continue;
                 float distance = V2.Distance(s.Position, v.Center);
                 if (distance < 4.5f)
                     continue;
                 var impact = b.Map.LauncherImpact(s.Position, v.Center);
-                if (V2.Distance(s.Position, impact) > SpecialWeapons.Range(b) || !VehicleArrivals.InsideFootprint(impact, v.Center) || b.FriendlyInLane(s, impact))
+                if (
+                    V2.Distance(s.Position, impact) > SpecialWeapons.Range(b)
+                    || !VehicleArrivals.InsideFootprint(impact, v.Center)
+                    || b.FriendlyInLane(s, impact)
+                )
                     continue;
                 bool safe = true;
                 foreach (var mate in b.Soldiers)
-                    if (mate.Side == s.Side && mate.Deployed && mate.Alive && V2.Distance(mate.Position, impact) < SpecialWeapons.Radius(s) + .4f)
+                    if (
+                        mate.Side == s.Side
+                        && mate.Deployed
+                        && mate.Alive
+                        && V2.Distance(mate.Position, impact) < SpecialWeapons.Radius(s) + .4f
+                    )
                         safe = false;
                 if (safe && distance < nearest)
                 {
@@ -173,7 +217,10 @@ namespace SilentOrders.Core
 
             if (shooter == null)
             {
-                b.Log(Side.Red, "Засада: вступительный пуск невозможен — нет готового гранатомётчика с открытой линией к машине");
+                b.Log(
+                    Side.Red,
+                    "Засада: вступительный пуск невозможен — нет готового гранатомётчика с открытой линией к машине"
+                );
                 return;
             }
 
@@ -189,7 +236,8 @@ namespace SilentOrders.Core
 
         static bool TooCloseToVehicle(V2 p, V2 center)
         {
-            return Math.Abs(p.X - center.X) < HalfLength + SoldierClearance && Math.Abs(p.Y - center.Y) < HalfWidth + SoldierClearance;
+            return Math.Abs(p.X - center.X) < HalfLength + SoldierClearance
+                && Math.Abs(p.Y - center.Y) < HalfWidth + SoldierClearance;
         }
 
         static void ClearPath(BattleSimulation b, V2 center)
@@ -201,24 +249,33 @@ namespace SilentOrders.Core
             int maxY = Math.Min(map.Rows - 1, (int)Math.Ceiling(center.Y + HalfWidth));
             bool dirty = false;
             for (int y = minY; y <= maxY; y++)
-                for (int x = minX; x <= maxX; x++)
+            for (int x = minX; x <= maxX; x++)
+            {
+                if (!InsideFootprint(map.Center(y * map.Columns + x), center))
+                    continue;
+                int index = y * map.Columns + x;
+                if (StudioRules.Permanent(map, index))
+                    continue;
+                if (map.Tiles[index] == Tile.LowCover || map.Tiles[index] == Tile.Wall)
                 {
-                    if (!InsideFootprint(map.Center(y * map.Columns + x), center))
-                        continue;
-                    int index = y * map.Columns + x;
-                    if (StudioRules.Permanent(map, index))
-                        continue;
-                    if (map.Tiles[index] == Tile.LowCover || map.Tiles[index] == Tile.Wall)
-                    {
-                        if (map.Tiles[index] == Tile.LowCover)
-                            map.BrokenCovers.Add(new CoverBreakEvent { Index = index, Prop = (byte)(StudioRules.At(map, index)?.Asset.DebrisProp ?? map.LevelProps[index]), LegacyStyle = (byte)(StudioRules.At(map, index)?.Asset.DebrisStyle ?? map.LowCoverStyle[index]) });
-                        StudioRules.Remove(map, index);
-                        map.Tiles[index] = Tile.Rubble;
-                        map.CoverHealth[index] = 0f;
-                        map.LevelProps[index] = map.LowCoverStyle[index] = 0;
-                        dirty = true;
-                    }
+                    if (map.Tiles[index] == Tile.LowCover)
+                        map.BrokenCovers.Add(
+                            new CoverBreakEvent
+                            {
+                                Index = index,
+                                Prop = (byte)(StudioRules.At(map, index)?.Asset.DebrisProp ?? map.LevelProps[index]),
+                                LegacyStyle = (byte)(
+                                    StudioRules.At(map, index)?.Asset.DebrisStyle ?? map.LowCoverStyle[index]
+                                ),
+                            }
+                        );
+                    StudioRules.Remove(map, index);
+                    map.Tiles[index] = Tile.Rubble;
+                    map.CoverHealth[index] = 0f;
+                    map.LevelProps[index] = map.LowCoverStyle[index] = 0;
+                    dirty = true;
                 }
+            }
 
             // Move occupied soldiers sideways, never damage them. Also recalculate destinations.
             foreach (var soldier in b.Soldiers)
@@ -242,8 +299,10 @@ namespace SilentOrders.Core
         {
             // Prefer free cells outside the tires, then cells already occupied if every
             // nearby free cell is taken. Never fall back INSIDE the vehicle.
-            int fallback = -1, free = -1;
-            float freeDist = float.MaxValue, anyDist = float.MaxValue;
+            int fallback = -1,
+                free = -1;
+            float freeDist = float.MaxValue,
+                anyDist = float.MaxValue;
             for (int i = 0; i < b.Map.Tiles.Length; i++)
             {
                 var p = b.Map.Center(i);
@@ -293,7 +352,10 @@ namespace SilentOrders.Core
                 if (soldier.Side != Side.Green || !soldier.Alive)
                     continue;
                 float side = i % 2 == 0 ? -1f : 1f;
-                var near = new V2(v.Center.X + (i % 5 - 2) * 1.5f, v.Center.Y + side * (HalfWidth + SoldierClearance + .7f));
+                var near = new V2(
+                    v.Center.X + (i % 5 - 2) * 1.5f,
+                    v.Center.Y + side * (HalfWidth + SoldierClearance + .7f)
+                );
                 var p = SafeNear(b, near, v.Center);
                 soldier.Position = soldier.Destination = soldier.OrderAnchor = p;
                 soldier.Path.Clear();
@@ -334,7 +396,10 @@ namespace SilentOrders.Core
                 {
                     if (other == soldier || !other.Alive || !other.Deployed)
                         continue;
-                    if (V2.Distance(other.Position, pos) < .85f || (other.VehicleDisperse && V2.Distance(other.VehicleDisperseTarget, pos) < 2.2f))
+                    if (
+                        V2.Distance(other.Position, pos) < .85f
+                        || (other.VehicleDisperse && V2.Distance(other.VehicleDisperseTarget, pos) < 2.2f)
+                    )
                     {
                         occupied = true;
                         break;
@@ -346,14 +411,15 @@ namespace SilentOrders.Core
                 // Cover neighbouring the destination is desirable, but never worth
                 // crossing the vehicle or packing two soldiers onto the same spot.
                 float bonus = 0f;
-                int cx = (int)pos.X, cy = (int)pos.Y;
+                int cx = (int)pos.X,
+                    cy = (int)pos.Y;
                 for (int yy = Math.Max(0, cy - 1); yy <= Math.Min(b.Map.Rows - 1, cy + 1); yy++)
-                    for (int xx = Math.Max(0, cx - 1); xx <= Math.Min(b.Map.Columns - 1, cx + 1); xx++)
-                    {
-                        var tile = b.Map.Tiles[yy * b.Map.Columns + xx];
-                        if (tile == Tile.LowCover || tile == Tile.Wall)
-                            bonus = 1.25f;
-                    }
+                for (int xx = Math.Max(0, cx - 1); xx <= Math.Min(b.Map.Columns - 1, cx + 1); xx++)
+                {
+                    var tile = b.Map.Tiles[yy * b.Map.Columns + xx];
+                    if (tile == Tile.LowCover || tile == Tile.Wall)
+                        bonus = 1.25f;
+                }
 
                 float score = deviation + V2.Distance(pos, soldier.Position) * .09f - bonus;
                 if (score < bestScore)
@@ -468,7 +534,12 @@ namespace SilentOrders.Core
             int slot = s.DefenderGroup.Members.IndexOf(s);
             var offset = new V2((slot % 3 - 1) * 2.4f, (slot / 3 == 0 ? -1 : 1) * 2.4f);
             var target = b.Map.NearestOpen(s.DefenderGroup.Spawn + offset);
-            if (V2.Distance(s.Position, target) < 1.4f || V2.Distance(s.Position, s.DefenderGroup.Spawn) <= Math.Max(3f, s.DefenderGroup.Radius) || s.Visible.Count > 0 || b.Time - s.LastIncoming < 2f && b.Time > 2f)
+            if (
+                V2.Distance(s.Position, target) < 1.4f
+                || V2.Distance(s.Position, s.DefenderGroup.Spawn) <= Math.Max(3f, s.DefenderGroup.Radius)
+                || s.Visible.Count > 0
+                || b.Time - s.LastIncoming < 2f && b.Time > 2f
+            )
             {
                 s.VehicleRally = false;
                 s.Path.Clear();

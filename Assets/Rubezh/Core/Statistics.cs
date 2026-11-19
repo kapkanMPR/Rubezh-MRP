@@ -29,7 +29,9 @@ namespace SilentOrders.Core
         public int Cowers;
         public int Rallies;
         public int AmmunitionShares;
-        public int AmmoMagazinesThrown, AmmoBoxesThrown, AmmoDropsCollected;
+        public int AmmoMagazinesThrown,
+            AmmoBoxesThrown,
+            AmmoDropsCollected;
         public int Arrivals;
         public float CoverSeconds;
         public float ExposedSeconds;

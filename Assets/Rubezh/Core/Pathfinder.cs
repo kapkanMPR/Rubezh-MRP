@@ -6,23 +6,33 @@ namespace SilentOrders.Core
     public static class Pathfinder
     {
 #if RUBEZH_BENCH
-        public static System.Action<BattleMap, V2, V2, System.Func<V2, float>> TraceRequest;
+        public static Action<BattleMap, V2, V2, Func<V2, float>> TraceRequest;
 #endif
+
         // Per-thread A* storage. Search epochs avoid clearing the entire map per request.
-        [System.ThreadStatic]
+        [ThreadStatic]
         private static PathScratch scratch;
+
         private sealed class PathScratch
         {
-            public float[] Costs = System.Array.Empty<float>(), Scores = System.Array.Empty<float>(), Risks = System.Array.Empty<float>();
-            public int[] Previous = System.Array.Empty<int>(), HeapPosition = System.Array.Empty<int>(), Insertion = System.Array.Empty<int>();
-            public byte[] Flags = System.Array.Empty<byte>(), Geometry = System.Array.Empty<byte>();
-            public uint[] Visited = System.Array.Empty<uint>(), GeometryVisited = System.Array.Empty<uint>();
+            public float[] Costs = Array.Empty<float>(),
+                Scores = Array.Empty<float>(),
+                Risks = Array.Empty<float>();
+            public int[] Previous = Array.Empty<int>(),
+                HeapPosition = Array.Empty<int>(),
+                Insertion = Array.Empty<int>();
+            public byte[] Flags = Array.Empty<byte>(),
+                Geometry = Array.Empty<byte>();
+            public uint[] Visited = Array.Empty<uint>(),
+                GeometryVisited = Array.Empty<uint>();
             public uint Epoch;
             int nextInsertion;
             bool unorderedScores;
             public readonly System.Collections.Generic.List<int> Open = new System.Collections.Generic.List<int>(128);
             public bool Busy;
+
             public byte State(int cell) => Visited[cell] == Epoch ? Flags[cell] : (byte)0;
+
             public void Mark(int cell, byte state)
             {
                 Visited[cell] = Epoch;
@@ -48,8 +58,8 @@ namespace SilentOrders.Core
                 if (Epoch == uint.MaxValue)
                 {
                     // Clear the full capacity, including cells outside a temporarily smaller map.
-                    System.Array.Clear(Visited, 0, Visited.Length);
-                    System.Array.Clear(GeometryVisited, 0, GeometryVisited.Length);
+                    Array.Clear(Visited, 0, Visited.Length);
+                    Array.Clear(GeometryVisited, 0, GeometryVisited.Length);
                     Epoch = 1;
                 }
                 else
@@ -75,6 +85,7 @@ namespace SilentOrders.Core
 
             // Equal scores retain first insertion order, exactly like the previous linear list.
             bool Before(int a, int b) => Scores[a] < Scores[b] || Scores[a] == Scores[b] && Insertion[a] < Insertion[b];
+
             void Swap(int a, int b)
             {
                 int node = Open[a];
@@ -149,7 +160,8 @@ namespace SilentOrders.Core
                                 index = i;
                 }
 
-                int result = Open[index], last = Open.Count - 1;
+                int result = Open[index],
+                    last = Open.Count - 1;
                 if (index != last)
                 {
                     Open[index] = Open[last];
@@ -164,7 +176,13 @@ namespace SilentOrders.Core
             }
         }
 
-        public static System.Collections.Generic.List<SilentOrders.Core.V2> Find(SilentOrders.Core.BattleMap map, SilentOrders.Core.V2 start, SilentOrders.Core.V2 end, System.Func<SilentOrders.Core.V2, float> risk = null, System.Func<SilentOrders.Core.V2, SilentOrders.Core.V2, bool> edgeAllowed = null)
+        public static System.Collections.Generic.List<V2> Find(
+            BattleMap map,
+            V2 start,
+            V2 end,
+            Func<V2, float> risk = null,
+            Func<V2, V2, bool> edgeAllowed = null
+        )
         {
             using (var sample = new SilentOrders.Core.CpuSample("Rubezh.AI.Pathfinder"))
             {
@@ -172,26 +190,40 @@ namespace SilentOrders.Core
                 TraceRequest?.Invoke(map, start, end, risk);
 #endif
                 // Validate coordinates, not only their flattened index (x=-1 can alias another row).
-                if (!(start.X >= 0 && start.Y >= 0 && start.X < map.Columns && start.Y < map.Rows && end.X >= 0 && end.Y >= 0 && end.X < map.Columns && end.Y < map.Rows))
-                    return new System.Collections.Generic.List<SilentOrders.Core.V2>();
-                int num = map.Index(start);
-                int num2 = map.Index(end);
-                int num3 = map.Columns * map.Rows;
-                if (num < 0 || num >= num3 || num2 < 0 || num2 >= num3 || !map.Walkable(end))
+                if (
+                    !(
+                        start.X >= 0
+                        && start.Y >= 0
+                        && start.X < map.Columns
+                        && start.Y < map.Rows
+                        && end.X >= 0
+                        && end.Y >= 0
+                        && end.X < map.Columns
+                        && end.Y < map.Rows
+                    )
+                )
+                    return new System.Collections.Generic.List<V2>();
+                int startIndex = map.Index(start);
+                int goalIndex = map.Index(end);
+                int cellCount = map.Columns * map.Rows;
+                if (
+                    startIndex < 0
+                    || startIndex >= cellCount
+                    || goalIndex < 0
+                    || goalIndex >= cellCount
+                    || !map.Walkable(end)
+                )
                 {
-                    return new System.Collections.Generic.List<SilentOrders.Core.V2>();
+                    return new System.Collections.Generic.List<V2>();
                 }
 
-                if (num == num2)
+                if (startIndex == goalIndex)
                 {
                     if (edgeAllowed != null && !edgeAllowed(start, end))
-                        return new System.Collections.Generic.List<SilentOrders.Core.V2>();
-                    return (SilentOrders.Core.V2.Distance(start, end) > 0.001f) ? new System.Collections.Generic.List<SilentOrders.Core.V2>
-                    {
-                        end
-                    }
-
-                    : new System.Collections.Generic.List<SilentOrders.Core.V2>();
+                        return new System.Collections.Generic.List<V2>();
+                    return (V2.Distance(start, end) > 0.001f)
+                        ? new System.Collections.Generic.List<V2> { end }
+                        : new System.Collections.Generic.List<V2>();
                 }
 
                 PathScratch workspace = scratch;
@@ -206,78 +238,99 @@ namespace SilentOrders.Core
                 workspace.Busy = true;
                 try
                 {
-                    workspace.Begin(num3);
-                    float[] array = workspace.Costs;
-                    float[] array2 = workspace.Scores;
-                    int[] array3 = workspace.Previous;
-                    array[num] = 0f;
-                    array2[num] = SilentOrders.Core.V2.Distance(start, end);
-                    workspace.Mark(num, 1);
-                    workspace.Add(num);
+                    workspace.Begin(cellCount);
+                    float[] costs = workspace.Costs;
+                    float[] scores = workspace.Scores;
+                    int[] previousCells = workspace.Previous;
+                    costs[startIndex] = 0f;
+                    scores[startIndex] = V2.Distance(start, end);
+                    workspace.Mark(startIndex, 1);
+                    workspace.Add(startIndex);
                     while (workspace.Open.Count > 0)
                     {
-                        int num4 = workspace.Pop();
-                        workspace.Mark(num4, 2);
-                        if (num4 == num2)
+                        int currentIndex = workspace.Pop();
+                        workspace.Mark(currentIndex, 2);
+                        if (currentIndex == goalIndex)
                         {
-                            System.Collections.Generic.List<SilentOrders.Core.V2> list2 = new System.Collections.Generic.List<SilentOrders.Core.V2>();
-                            while (num4 != num)
+                            System.Collections.Generic.List<V2> path = new System.Collections.Generic.List<V2>();
+                            while (currentIndex != startIndex)
                             {
-                                list2.Add(map.Center(num4));
-                                num4 = array3[num4];
+                                path.Add(map.Center(currentIndex));
+                                currentIndex = previousCells[currentIndex];
                             }
 
-                            list2.Reverse();
-                            return list2;
+                            path.Reverse();
+                            return path;
                         }
 
-                        int num5 = num4 % map.Columns;
-                        int num6 = num4 / map.Columns;
-                        for (int k = -1; k <= 1; k++)
+                        int currentX = currentIndex % map.Columns;
+                        int currentY = currentIndex / map.Columns;
+                        for (int offsetY = -1; offsetY <= 1; offsetY++)
                         {
-                            for (int l = -1; l <= 1; l++)
+                            for (int offsetX = -1; offsetX <= 1; offsetX++)
                             {
-                                if ((l == 0 && k == 0) || !workspace.Walk(map, num5 + l, num6 + k) || (l != 0 && k != 0 && (!workspace.Walk(map, num5 + l, num6) || !workspace.Walk(map, num5, num6 + k))))
+                                if (
+                                    (offsetX == 0 && offsetY == 0)
+                                    || !workspace.Walk(map, currentX + offsetX, currentY + offsetY)
+                                    || (
+                                        offsetX != 0
+                                        && offsetY != 0
+                                        && (
+                                            !workspace.Walk(map, currentX + offsetX, currentY)
+                                            || !workspace.Walk(map, currentX, currentY + offsetY)
+                                        )
+                                    )
+                                )
                                 {
                                     continue;
                                 }
 
-                                int num7 = (num6 + k) * map.Columns + num5 + l;
-                                if (workspace.State(num7) == 2)
+                                int neighborIndex = (currentY + offsetY) * map.Columns + currentX + offsetX;
+                                if (workspace.State(neighborIndex) == 2)
                                 {
                                     continue;
                                 }
 
-                                SilentOrders.Core.V2 v = map.Center(num7);
-                                if (edgeAllowed != null && !edgeAllowed(num4 == num ? start : map.Center(num4), v))
+                                V2 v = map.Center(neighborIndex);
+                                if (
+                                    edgeAllowed != null
+                                    && !edgeAllowed(currentIndex == startIndex ? start : map.Center(currentIndex), v)
+                                )
                                     continue;
                                 // Risk callbacks describe a fixed world snapshot during one search.
-                                float extra = workspace.State(num7) == 0 ? float.NaN : workspace.Risks[num7];
+                                float extra =
+                                    workspace.State(neighborIndex) == 0 ? float.NaN : workspace.Risks[neighborIndex];
                                 if (float.IsNaN(extra))
                                 {
                                     extra = risk?.Invoke(v) ?? 0f;
-                                    workspace.Risks[num7] = extra;
+                                    workspace.Risks[neighborIndex] = extra;
                                 }
 
-                                float num8 = array[num4] + ((l == 0 || k == 0) ? 1f : 1.414214f) + extra;
-                                if (!(num8 >= (workspace.State(num7) == 0 ? float.MaxValue : array[num7])))
+                                float tentativeCost =
+                                    costs[currentIndex] + ((offsetX == 0 || offsetY == 0) ? 1f : 1.414214f) + extra;
+                                if (
+                                    !(
+                                        tentativeCost
+                                        >= (workspace.State(neighborIndex) == 0 ? float.MaxValue : costs[neighborIndex])
+                                    )
+                                )
                                 {
-                                    array[num7] = num8;
-                                    array3[num7] = num4;
-                                    array2[num7] = num8 + SilentOrders.Core.V2.Distance(v, end);
-                                    if (workspace.State(num7) != 1)
+                                    costs[neighborIndex] = tentativeCost;
+                                    previousCells[neighborIndex] = currentIndex;
+                                    scores[neighborIndex] = tentativeCost + V2.Distance(v, end);
+                                    if (workspace.State(neighborIndex) != 1)
                                     {
-                                        workspace.Mark(num7, 1);
-                                        workspace.Add(num7);
+                                        workspace.Mark(neighborIndex, 1);
+                                        workspace.Add(neighborIndex);
                                     }
                                     else
-                                        workspace.Changed(num7);
+                                        workspace.Changed(neighborIndex);
                                 }
                             }
                         }
                     }
 
-                    return new System.Collections.Generic.List<SilentOrders.Core.V2>();
+                    return new System.Collections.Generic.List<V2>();
                 }
                 finally
                 {

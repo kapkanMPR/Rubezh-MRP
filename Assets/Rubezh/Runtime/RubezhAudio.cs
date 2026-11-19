@@ -1,19 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using SilentOrders.Core;
+using UnityEngine;
 
 namespace Rubezh.UnityPort
 {
     public sealed partial class RubezhApp
     {
-        float effectsVolume = .8f, musicVolume = .4f, musicBlend = 1f;
-        bool musicEnabled = true, audioLoading;
-        AudioSource musicA, musicB, engineSource;
+        float effectsVolume = .8f,
+            musicVolume = .4f,
+            musicBlend = 1f;
+        bool musicEnabled = true,
+            audioLoading;
+        AudioSource musicA,
+            musicB,
+            engineSource;
         AudioClip engineClip;
         string audioContext = "";
-        int musicTrack = -1, settingsReturn;
+        int musicTrack = -1,
+            settingsReturn;
         bool settingsPaused;
         readonly List<int> musicQueue = new List<int>();
         readonly System.Random audioRandom = new System.Random();
@@ -21,7 +27,8 @@ namespace Rubezh.UnityPort
         {
             get
             {
-                return battle != null && (screen == 2 || screen == 5 && settingsReturn == 2);
+                return battle != null
+                    && (screen == ScreenId.Battle || screen == ScreenId.Settings && settingsReturn == ScreenId.Battle);
             }
         }
 
@@ -40,7 +47,12 @@ namespace Rubezh.UnityPort
             for (int i = 0; i < data.Length; i++)
             {
                 float t = i / (float)rate;
-                data[i] = (.24f * Mathf.Sin(t * 2 * Mathf.PI * 44) + .12f * Mathf.Sin(t * 2 * Mathf.PI * 88) + .06f * Mathf.Sin(t * 2 * Mathf.PI * 132)) * (.85f + .15f * Mathf.Sin(t * 2 * Mathf.PI * 11));
+                data[i] =
+                    (
+                        .24f * Mathf.Sin(t * 2 * Mathf.PI * 44)
+                        + .12f * Mathf.Sin(t * 2 * Mathf.PI * 88)
+                        + .06f * Mathf.Sin(t * 2 * Mathf.PI * 132)
+                    ) * (.85f + .15f * Mathf.Sin(t * 2 * Mathf.PI * 11));
             }
 
             engineClip = AudioClip.Create("VehicleEngine", data.Length, 1, rate, false);
@@ -132,7 +144,17 @@ namespace Rubezh.UnityPort
                 return;
             bool inBattle = AudioBattle;
             string wanted = inBattle && battle.CampaignLevel != 20 ? "battle" : "theme";
-            if (musicEnabled && !loading && !audioLoading && (audioContext != wanted || musicA.clip != null && musicEnabled && (!musicA.isPlaying || musicA.clip.length - musicA.time < .8f)))
+            if (
+                musicEnabled
+                && !loading
+                && !audioLoading
+                && (
+                    audioContext != wanted
+                    || musicA.clip != null
+                        && musicEnabled
+                        && (!musicA.isPlaying || musicA.clip.length - musicA.time < .8f)
+                )
+            )
                 StartCoroutine(LoadMusic(wanted == "theme" ? 0 : NextMusic(), wanted));
             musicBlend = Mathf.MoveTowards(musicBlend, 1, Time.unscaledDeltaTime / 1.2f);
             float gain = musicVolume * (inBattle ? .65f : .42f);
@@ -140,28 +162,44 @@ namespace Rubezh.UnityPort
             musicB.volume = musicEnabled ? gain * (1 - musicBlend) : 0;
             if (musicBlend >= 1 && musicB.clip != null)
             {
-                var old=musicB.clip; musicB.Stop(); musicB.clip=null;
-                if(old!=musicA.clip) Resources.UnloadAsset(old);
+                var old = musicB.clip;
+                musicB.Stop();
+                musicB.clip = null;
+                if (old != musicA.clip)
+                    Resources.UnloadAsset(old);
             }
             soundSource.volume = effectsVolume;
-            bool moving = screen == 2 && battle != null && !paused && battle.Outcome == Outcome.Running && ((battle.GreenVehicle != null && battle.GreenVehicle.Active && !battle.GreenVehicle.Stopped) || (battle.RedVehicle != null && battle.RedVehicle.Active && !battle.RedVehicle.Stopped));
-            engineSource.volume = Mathf.MoveTowards(engineSource.volume, soundEnabled && moving ? effectsVolume * .32f : 0, Time.unscaledDeltaTime * 2);
+            bool moving =
+                screen == ScreenId.Battle
+                && battle != null
+                && !paused
+                && battle.Outcome == Outcome.Running
+                && (
+                    (battle.GreenVehicle != null && battle.GreenVehicle.Active && !battle.GreenVehicle.Stopped)
+                    || (battle.RedVehicle != null && battle.RedVehicle.Active && !battle.RedVehicle.Stopped)
+                );
+            engineSource.volume = Mathf.MoveTowards(
+                engineSource.volume,
+                soundEnabled && moving ? effectsVolume * .32f : 0,
+                Time.unscaledDeltaTime * 2
+            );
             if (moving && soundEnabled && !engineSource.isPlaying)
                 engineSource.Play();
             else if (engineSource.volume <= 0 && engineSource.isPlaying)
                 engineSource.Stop();
         }
 
-        bool KeepBattleView => screen == 2 || (screen == 5 && settingsReturn == 2);
+        bool KeepBattleView =>
+            screen == ScreenId.Battle || (screen == ScreenId.Settings && settingsReturn == ScreenId.Battle);
 
         void OpenSettings()
         {
             settingsReturn = screen;
             settingsPaused = paused;
-            if (screen == 2)
+            if (screen == ScreenId.Battle)
                 paused = true;
             CloseDrawer();
-            screen = 5;
+            screen = ScreenId.Settings;
             message = "";
         }
 
@@ -169,11 +207,11 @@ namespace Rubezh.UnityPort
         {
             SaveAudio();
             CancelTouchInput();
-            if (settingsReturn == 2)
+            if (settingsReturn == ScreenId.Battle)
             {
                 if (battle == null)
                 {
-                    screen = 0;
+                    screen = ScreenId.Camp;
                     return;
                 }
 

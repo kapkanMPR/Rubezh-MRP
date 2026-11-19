@@ -10,7 +10,8 @@ namespace SilentOrders.Core
             var s = StudioCatalog.Sprite(o);
             if (o.Asset.Decor)
             {
-                float factor = DecorRules.Scale(o), lift = DecorRules.Lift(o);
+                float factor = DecorRules.Scale(o),
+                    lift = DecorRules.Lift(o);
                 s.X = 11 + (s.X - 11) * factor + 11 * (o.OffsetX + o.OffsetY);
                 s.Y = s.Y * factor - lift + 5 * (o.OffsetY - o.OffsetX);
                 s.W *= factor;
@@ -27,8 +28,20 @@ namespace SilentOrders.Core
 
             if (o.Asset.Legacy)
             {
-                float sx = o.ScaleX * wear, sy = o.ScaleY * wear, angle = (o.Asset.Mirrored ? -o.Angle : o.Angle) * (float)Math.PI / 180, dx = (s.X - 11) * sx, dy = s.Y * sy;
-                Rubezh.Graphics.StudioSprite(canvas, s.Id, x + 11 + dx * (float)Math.Cos(angle) - dy * (float)Math.Sin(angle), y + dx * (float)Math.Sin(angle) + dy * (float)Math.Cos(angle), s.W * sx, s.H * sy, angle);
+                float sx = o.ScaleX * wear,
+                    sy = o.ScaleY * wear,
+                    angle = (o.Asset.Mirrored ? -o.Angle : o.Angle) * (float)Math.PI / 180,
+                    dx = (s.X - 11) * sx,
+                    dy = s.Y * sy;
+                Rubezh.Graphics.StudioSprite(
+                    canvas,
+                    s.Id,
+                    x + 11 + dx * (float)Math.Cos(angle) - dy * (float)Math.Sin(angle),
+                    y + dx * (float)Math.Sin(angle) + dy * (float)Math.Cos(angle),
+                    s.W * sx,
+                    s.H * sy,
+                    angle
+                );
                 return;
             }
 

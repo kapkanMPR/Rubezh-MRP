@@ -8,7 +8,7 @@ namespace SilentOrders.Core
         public int EnemyId;
         public int TargetPriority = 6;
         public float ObservedWeaponRange;
-        public SilentOrders.Core.V2 Position;
+        public V2 Position;
         public V2 ObservedFacing;
         public V2 ObservedVelocity;
         public float SeenAt;
@@ -18,9 +18,10 @@ namespace SilentOrders.Core
         public bool Reported;
         public bool Inferred;
         public float Uncertainty;
-        public SilentOrders.Core.Contact Copy()
+
+        public Contact Copy()
         {
-            return (SilentOrders.Core.Contact)MemberwiseClone();
+            return (Contact)MemberwiseClone();
         }
     }
 }

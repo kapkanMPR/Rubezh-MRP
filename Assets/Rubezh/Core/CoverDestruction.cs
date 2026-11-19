@@ -6,20 +6,23 @@ namespace SilentOrders.Core
     {
         Weak,
         Medium,
-        Strong
+        Strong,
     }
 
     public enum CoverBlast
     {
         Grenade,
         Rshg,
-        Rpg
+        Rpg,
     }
 
     public sealed class CoverDamageState
     {
         Tile[] source;
-        public int[] BulletHits, GrenadeHits, RshgHits;
+        public int[] BulletHits,
+            GrenadeHits,
+            RshgHits;
+
         public void Ensure(BattleMap map)
         {
             if (ReferenceEquals(source, map.Tiles))
@@ -49,13 +52,47 @@ namespace SilentOrders.Core
 
         static bool Eligible(BattleMap map, int i)
         {
-            return i >= 0 && i < map.Tiles.Length && (map.Tiles[i] == Tile.LowCover || StudioRules.Obstacle(map, i)) && !StudioRules.Permanent(map, i) && (map.VehicleFootprint == null || i >= map.VehicleFootprint.Length || map.VehicleFootprint[i] == 0);
+            return i >= 0
+                && i < map.Tiles.Length
+                && (map.Tiles[i] == Tile.LowCover || StudioRules.Obstacle(map, i))
+                && !StudioRules.Permanent(map, i)
+                && (map.VehicleFootprint == null || i >= map.VehicleFootprint.Length || map.VehicleFootprint[i] == 0);
         }
 
-        static void Emit(BattleMap map, int i, V2 source, V2 direction, int count, float reach, bool blast, bool destroyed)
+        static void Emit(
+            BattleMap map,
+            int i,
+            V2 source,
+            V2 direction,
+            int count,
+            float reach,
+            bool blast,
+            bool destroyed
+        )
         {
             var obj = StudioRules.At(map, i);
-            map.BrokenCovers.Add(new CoverBreakEvent { DebrisKey = obj?.Asset.DebrisKey, HasCenter = obj != null, Center = obj == null ? map.Center(i) : new V2(obj.X + obj.Asset.Width * .5f, obj.Y + obj.Asset.Height * .5f), RemnantKey = i, Footprint = obj == null ? 1 : Math.Max(obj.Asset.Width, obj.Asset.Height), Index = i, Prop = (byte)(StudioRules.At(map, i)?.Asset.DebrisProp ?? map.LevelProps[i]), LegacyStyle = (byte)(StudioRules.At(map, i)?.Asset.DebrisStyle ?? map.LowCoverStyle[i]), Source = source, Direction = direction, MaxPieces = count, MaxReach = reach, Blast = blast, Destroyed = destroyed });
+            map.BrokenCovers.Add(
+                new CoverBreakEvent
+                {
+                    DebrisKey = obj?.Asset.DebrisKey,
+                    HasCenter = obj != null,
+                    Center =
+                        obj == null
+                            ? map.Center(i)
+                            : new V2(obj.X + obj.Asset.Width * .5f, obj.Y + obj.Asset.Height * .5f),
+                    RemnantKey = i,
+                    Footprint = obj == null ? 1 : Math.Max(obj.Asset.Width, obj.Asset.Height),
+                    Index = i,
+                    Prop = (byte)(StudioRules.At(map, i)?.Asset.DebrisProp ?? map.LevelProps[i]),
+                    LegacyStyle = (byte)(StudioRules.At(map, i)?.Asset.DebrisStyle ?? map.LowCoverStyle[i]),
+                    Source = source,
+                    Direction = direction,
+                    MaxPieces = count,
+                    MaxReach = reach,
+                    Blast = blast,
+                    Destroyed = destroyed,
+                }
+            );
         }
 
         static void Destroy(BattleMap map, int i)
@@ -107,56 +144,62 @@ namespace SilentOrders.Core
             map.CoverDamage.Ensure(map);
             int destroyed = 0;
             var visited = new System.Collections.Generic.HashSet<int>();
-            int x0 = Math.Max(0, (int)Math.Floor(impact.X - radius)), x1 = Math.Min(map.Columns - 1, (int)Math.Floor(impact.X + radius));
-            int y0 = Math.Max(0, (int)Math.Floor(impact.Y - radius)), y1 = Math.Min(map.Rows - 1, (int)Math.Floor(impact.Y + radius));
+            int x0 = Math.Max(0, (int)Math.Floor(impact.X - radius)),
+                x1 = Math.Min(map.Columns - 1, (int)Math.Floor(impact.X + radius));
+            int y0 = Math.Max(0, (int)Math.Floor(impact.Y - radius)),
+                y1 = Math.Min(map.Rows - 1, (int)Math.Floor(impact.Y + radius));
             for (int y = y0; y <= y1; y++)
-                for (int x = x0; x <= x1; x++)
+            for (int x = x0; x <= x1; x++)
+            {
+                int i = y * map.Columns + x;
+                if (!Eligible(map, i))
+                    continue;
+                int root = StudioRules.Root(map, i);
+                if (visited.Contains(root))
+                    continue;
+                V2 center = map.Center(i);
+                if (V2.Distance(center, impact) > radius || !map.LineOfSight(impact, center))
+                    continue;
+                i = root;
+                visited.Add(root);
+                CoverStrength strength = Strength(map, i);
+                bool breaks = StudioRules.Obstacle(map, i) || kind == CoverBlast.Rpg || strength == CoverStrength.Weak;
+                if (!breaks && strength == CoverStrength.Medium)
                 {
-                    int i = y * map.Columns + x;
-                    if (!Eligible(map, i))
-                        continue;
-                    int root = StudioRules.Root(map, i);
-                    if (visited.Contains(root))
-                        continue;
-                    V2 center = map.Center(i);
-                    if (V2.Distance(center, impact) > radius || !map.LineOfSight(impact, center))
-                        continue;
-                    i = root;
-                    visited.Add(root);
-                    CoverStrength strength = Strength(map, i);
-                    bool breaks = StudioRules.Obstacle(map, i) || kind == CoverBlast.Rpg || strength == CoverStrength.Weak;
-                    if (!breaks && strength == CoverStrength.Medium)
-                    {
-                        if (kind == CoverBlast.Rshg)
-                            breaks = true;
-                        else
-                            breaks = ++map.CoverDamage.GrenadeHits[i] >= 2 || b.Random.Value() < .5f;
-                    }
-
-                    if (!breaks && strength == CoverStrength.Strong && kind == CoverBlast.Rshg)
-                        breaks = ++map.CoverDamage.RshgHits[i] >= 2 || b.Random.Value() < .5f;
-                    bool cosmetic = strength == CoverStrength.Strong && kind == CoverBlast.Grenade;
-                    V2 axis = center - impact;
-                    if (axis.Length < .001f)
-                        axis = incoming;
-                    int pieces = breaks ? 3 : 2;
-                    if (strength == CoverStrength.Medium && kind == CoverBlast.Grenade && map.CoverDamage.GrenadeHits[i] == 1)
-                        pieces = 2;
-                    Emit(map, i, impact, axis, pieces, cosmetic ? 2 : 4, true, breaks);
-                    if (breaks)
-                    {
-                        Destroy(map, i);
-                        destroyed++;
-                    }
-                    else if (!cosmetic)
-                    {
-                        StudioRules.Health(map, i, Math.Min(map.CoverHealth[i], 50));
-                        map.SceneryChanges.Record(map, new[] { i });
-                    }
-
-                    if (!cosmetic)
-                        b.Stats.CoverDamaged++;
+                    if (kind == CoverBlast.Rshg)
+                        breaks = true;
+                    else
+                        breaks = ++map.CoverDamage.GrenadeHits[i] >= 2 || b.Random.Value() < .5f;
                 }
+
+                if (!breaks && strength == CoverStrength.Strong && kind == CoverBlast.Rshg)
+                    breaks = ++map.CoverDamage.RshgHits[i] >= 2 || b.Random.Value() < .5f;
+                bool cosmetic = strength == CoverStrength.Strong && kind == CoverBlast.Grenade;
+                V2 axis = center - impact;
+                if (axis.Length < .001f)
+                    axis = incoming;
+                int pieces = breaks ? 3 : 2;
+                if (
+                    strength == CoverStrength.Medium
+                    && kind == CoverBlast.Grenade
+                    && map.CoverDamage.GrenadeHits[i] == 1
+                )
+                    pieces = 2;
+                Emit(map, i, impact, axis, pieces, cosmetic ? 2 : 4, true, breaks);
+                if (breaks)
+                {
+                    Destroy(map, i);
+                    destroyed++;
+                }
+                else if (!cosmetic)
+                {
+                    StudioRules.Health(map, i, Math.Min(map.CoverHealth[i], 50));
+                    map.SceneryChanges.Record(map, new[] { i });
+                }
+
+                if (!cosmetic)
+                    b.Stats.CoverDamaged++;
+            }
 
             b.Stats.CoverDestroyed += destroyed;
             return destroyed;

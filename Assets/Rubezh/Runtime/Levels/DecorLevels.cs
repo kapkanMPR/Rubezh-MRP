@@ -33,11 +33,30 @@ namespace Rubezh.UnityPort
                 return false;
             if (support != null && string.IsNullOrEmpty(support.uid))
                 support.uid = Guid.NewGuid().ToString();
-            l.objects.Add(new LevelObjectCell { uid = Guid.NewGuid().ToString(), parentUid = support == null ? "" : support.uid, assetId = id, mirrored = mirrored, x = x, y = y, offsetX = count == 1 ? -.25f : count == 2 ? .25f : 0, offsetY = count == 1 ? -.15f : count == 2 ? .15f : 0 });
+            l.objects.Add(
+                new LevelObjectCell
+                {
+                    uid = Guid.NewGuid().ToString(),
+                    parentUid = support == null ? "" : support.uid,
+                    assetId = id,
+                    mirrored = mirrored,
+                    x = x,
+                    y = y,
+                    offsetX =
+                        count == 1 ? -.25f
+                        : count == 2 ? .25f
+                        : 0,
+                    offsetY =
+                        count == 1 ? -.15f
+                        : count == 2 ? .15f
+                        : 0,
+                }
+            );
             return true;
         }
 
         public static bool ValidOffset(float v) => !float.IsNaN(v) && !float.IsInfinity(v) && Math.Abs(v) <= .45f;
+
         public static bool Valid(RubezhLevel l, out string error)
         {
             error = "";
@@ -65,7 +84,15 @@ namespace Rubezh.UnityPort
                 int count;
                 occupied.TryGetValue(key, out count);
                 occupied[key] = count + 1;
-                if (!l.Inside(o.x, o.y) || count >= 3 || !ValidOffset(o.offsetX) || !ValidOffset(o.offsetY) || o.rotationDegrees != 0 || o.scaleX != 0 && o.scaleX != 1 || o.scaleY != 0 && o.scaleY != 1)
+                if (
+                    !l.Inside(o.x, o.y)
+                    || count >= 3
+                    || !ValidOffset(o.offsetX)
+                    || !ValidOffset(o.offsetY)
+                    || o.rotationDegrees != 0
+                    || o.scaleX != 0 && o.scaleX != 1
+                    || o.scaleY != 0 && o.scaleY != 1
+                )
                 {
                     error = "Неверное размещение декора.";
                     return false;
@@ -96,7 +123,12 @@ namespace Rubezh.UnityPort
                         return false;
                     }
                 }
-                else if (support == null || support.uid != o.parentUid || StudioCatalog.Find(support.assetId)?.SupportHeight <= 0 || StudioCatalog.Find(support.assetId) == null)
+                else if (
+                    support == null
+                    || support.uid != o.parentUid
+                    || StudioCatalog.Find(support.assetId)?.SupportHeight <= 0
+                    || StudioCatalog.Find(support.assetId) == null
+                )
                 {
                     error = "Нет подходящей опоры под декором.";
                     return false;

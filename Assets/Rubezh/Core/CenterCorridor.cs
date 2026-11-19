@@ -6,6 +6,7 @@ namespace SilentOrders.Core
     public static class CenterCorridor
     {
         const float HalfWidth = 4.0f;
+
         static V2 Lateral(BattleSimulation b)
         {
             return TacticalOrders.Lateral(b);
@@ -30,7 +31,15 @@ namespace SilentOrders.Core
         public static float Penalty(BattleSimulation b, Soldier s, V2 point)
         {
             var q = b.Team(s);
-            if (q.Side != Side.Green || q.Intent != ManeuverIntent.Center || q.Style == CombatStyle.Withdraw || q.Style == CombatStyle.Passive || TacticalOrders.Emergency(q) || CommandPosture.Service(b, s) || b.Time - s.LastIncoming < 2f)
+            if (
+                q.Side != Side.Green
+                || q.Intent != ManeuverIntent.Center
+                || q.Style == CombatStyle.Withdraw
+                || q.Style == CombatStyle.Passive
+                || TacticalOrders.Emergency(q)
+                || CommandPosture.Service(b, s)
+                || b.Time - s.LastIncoming < 2f
+            )
                 return 0;
             float outside = Math.Abs(V2.Dot(point - Middle(b), Lateral(b))) - HalfWidth;
             return Math.Max(0, outside) * .9f;

@@ -6,14 +6,12 @@ namespace SilentOrders.Core
     [Serializable]
     public struct HistoryPoint
     {
-        public float x, y;
+        public float x,
+            y;
+
         public static implicit operator HistoryPoint(V2 p)
         {
-            return new HistoryPoint
-            {
-                x = p.X,
-                y = p.Y
-            };
+            return new HistoryPoint { x = p.X, y = p.Y };
         }
     }
 
@@ -22,28 +20,62 @@ namespace SilentOrders.Core
     {
         public bool lateralComplete;
         public int maneuverSide;
-        public int group, pair, leader, a, z, mover, supportPair, revision, completed, failures;
-        public string duty, reason;
+        public int group,
+            pair,
+            leader,
+            a,
+            z,
+            mover,
+            supportPair,
+            revision,
+            completed,
+            failures;
+        public string duty,
+            reason;
         public HistoryPoint goal;
     }
 
     [Serializable]
     public sealed class HistoryCommandPlan
     {
-        public int group, leader, deputy, generation, successions, pairSuccessions, assignments, completed, localFailures, pairFailures, merges, limitedBounds;
-        public int volleyDesired, volleyActual, volleyMaximum;
+        public int group,
+            leader,
+            deputy,
+            generation,
+            successions,
+            pairSuccessions,
+            assignments,
+            completed,
+            localFailures,
+            pairFailures,
+            merges,
+            limitedBounds;
+        public int volleyDesired,
+            volleyActual,
+            volleyMaximum;
         public string breakthroughPhase;
         public int snailBounds;
         public int[] withdrawMovers;
         public bool straight;
-        public float straightRear, straightFront;
+        public float straightRear,
+            straightFront;
         public HistoryPoint straightAxis;
         public bool active;
-        public string scheme, reason;
-        public int style, intent, withdrawMover, withdrawBounds, withdrawCompleted, withdrawCoverWaits, withdrawCohesionWaits, localHoldMoves, holdDriftRejected;
+        public string scheme,
+            reason;
+        public int style,
+            intent,
+            withdrawMover,
+            withdrawBounds,
+            withdrawCompleted,
+            withdrawCoverWaits,
+            withdrawCohesionWaits,
+            localHoldMoves,
+            holdDriftRejected;
         public float modeSince;
         public HistoryPoint retreatDirection;
         public List<HistoryPairTask> pairs = new List<HistoryPairTask>();
+
         public static HistoryCommandPlan Capture(Squad q, int group)
         {
             var s = q.CommandPlan;
@@ -84,10 +116,29 @@ namespace SilentOrders.Core
                 localHoldMoves = q.Posture.LocalMoves,
                 holdDriftRejected = q.Posture.RejectedDrift,
                 modeSince = q.Posture.Since,
-                retreatDirection = q.Withdrawal.Rear
+                retreatDirection = q.Withdrawal.Rear,
             };
             foreach (var p in s.Pairs)
-                r.pairs.Add(new HistoryPairTask { lateralComplete = p.LateralComplete, maneuverSide = p.ManeuverSide, group = group, pair = p.Id, leader = p.Leader, a = p.A, z = p.B, mover = p.Mover, supportPair = p.SupportPair, revision = p.Revision, completed = p.Completed, failures = p.Failures, duty = p.Duty.ToString(), reason = p.Reason, goal = p.Goal });
+                r.pairs.Add(
+                    new HistoryPairTask
+                    {
+                        lateralComplete = p.LateralComplete,
+                        maneuverSide = p.ManeuverSide,
+                        group = group,
+                        pair = p.Id,
+                        leader = p.Leader,
+                        a = p.A,
+                        z = p.B,
+                        mover = p.Mover,
+                        supportPair = p.SupportPair,
+                        revision = p.Revision,
+                        completed = p.Completed,
+                        failures = p.Failures,
+                        duty = p.Duty.ToString(),
+                        reason = p.Reason,
+                        goal = p.Goal,
+                    }
+                );
             return r;
         }
     }
@@ -97,43 +148,118 @@ namespace SilentOrders.Core
     {
         public int enemy;
         public HistoryPoint position;
-        public float seen, confidence, uncertainty;
-        public bool visual, inferred;
+        public float seen,
+            confidence,
+            uncertainty;
+        public bool visual,
+            inferred;
     }
 
     [Serializable]
     public sealed class HistoryUnit
     {
-        public bool seated, automaticCrouch;
+        public bool seated,
+            automaticCrouch;
         public float standRemaining;
-        public int exchangePartner, exchanges;
+        public int exchangePartner,
+            exchanges;
         public string exchangeReason;
-        public bool fastRun, wallTravel, shoulderPair;
-        public int frontId, rearId, groupMovingPeak, movingShots, movingSmokes, wallBounds, shoulderShots;
+        public bool fastRun,
+            wallTravel,
+            shoulderPair;
+        public int frontId,
+            rearId,
+            groupMovingPeak,
+            movingShots,
+            movingSmokes,
+            wallBounds,
+            shoulderShots;
         public float sprintRecovery;
-        public int packM4Magazines, packM24Magazines, packM249Boxes;
-        public int ammoFamily, heavyReviews, heavyReserved, packMagazines, packBoxes;
+        public int packM4Magazines,
+            packM24Magazines,
+            packM249Boxes;
+        public int ammoFamily,
+            heavyReviews,
+            heavyReserved,
+            packMagazines,
+            packBoxes;
         public bool snailBound;
         public int coverId;
         public bool hasHoldAnchor;
         public HistoryPoint holdAnchor;
         public int commandStyle;
-        public int pairId, pairLeader, taskGeneration, taskRevision;
-        public string taskOwner, taskStatus;
+        public int pairId,
+            pairLeader,
+            taskGeneration,
+            taskRevision;
+        public string taskOwner,
+            taskStatus;
         public string executionCause;
         public float stalledSince;
-        public int localRepairs, returnedTasks, rejectedRepeats;
-        public float visionRange, lookX, lookY, approachRemaining;
+        public int localRepairs,
+            returnedTasks,
+            rejectedRepeats;
+        public float visionRange,
+            lookX,
+            lookY,
+            approachRemaining;
         public bool focused;
-        public int focusTarget, approachTarget, emergencyShots;
-        public float observedProgressAt, recoveryRemaining;
-        public int recoveryStarted, recoveryFinished, recoveryAborted;
+        public int focusTarget,
+            approachTarget,
+            emergencyShots;
+        public float observedProgressAt,
+            recoveryRemaining;
+        public int recoveryStarted,
+            recoveryFinished,
+            recoveryAborted;
         public string fireStatus;
-        public int id, group, weapon, ammo, reserve, shots, rescuer, patient, helpTarget, buddy, pathCursor, pathLength, smokes, grenades, rockets, tourniquets;
-        public string name, side, role, state, job, order, reason, rejected, counterSniper;
-        public HistoryPoint position, goal;
-        public float health, morale, suppression, lastFire, lastIncoming, lastMoved, nextShot, reloadUntil, helpUntil, weaponRange;
-        public bool deployed, incapacitated, bleeding, broken, busy, moving, moveAuthorized, supportReady, sniperRetreatCover, areaSuppression;
+        public int id,
+            group,
+            weapon,
+            ammo,
+            reserve,
+            shots,
+            rescuer,
+            patient,
+            helpTarget,
+            buddy,
+            pathCursor,
+            pathLength,
+            smokes,
+            grenades,
+            rockets,
+            tourniquets;
+        public string name,
+            side,
+            role,
+            state,
+            job,
+            order,
+            reason,
+            rejected,
+            counterSniper;
+        public HistoryPoint position,
+            goal;
+        public float health,
+            morale,
+            suppression,
+            lastFire,
+            lastIncoming,
+            lastMoved,
+            nextShot,
+            reloadUntil,
+            helpUntil,
+            weaponRange;
+        public bool deployed,
+            incapacitated,
+            bleeding,
+            broken,
+            busy,
+            moving,
+            moveAuthorized,
+            supportReady,
+            sniperRetreatCover,
+            areaSuppression;
         public List<HistoryPoint> route = new List<HistoryPoint>();
         public List<HistoryContact> contacts = new List<HistoryContact>();
     }
@@ -142,9 +268,14 @@ namespace SilentOrders.Core
     public sealed class HistoryGroup
     {
         public bool hunt;
-        public int huntCover = -1, huntTarget = -1;
-        public int id, mover;
-        public string name, phase, duty, reason;
+        public int huntCover = -1,
+            huntTarget = -1;
+        public int id,
+            mover;
+        public string name,
+            phase,
+            duty,
+            reason;
         public HistoryPoint anchor;
         public bool clear;
     }
@@ -154,36 +285,54 @@ namespace SilentOrders.Core
     {
         public int sourceSide = -1;
         public HistoryPoint position;
-        public float born, until;
+        public float born,
+            until;
     }
 
     [Serializable]
     public sealed class HistoryProjectile
     {
-        public int shooter, kind;
-        public HistoryPoint position, target;
-        public float height, detonateAt;
+        public int shooter,
+            kind;
+        public HistoryPoint position,
+            target;
+        public float height,
+            detonateAt;
         public bool landed;
     }
 
     [Serializable]
     public sealed class HistoryAmmo
     {
-        public int id, from, to, family, rounds;
-        public bool box, flying;
-        public HistoryPoint position, landing;
+        public int id,
+            from,
+            to,
+            family,
+            rounds;
+        public bool box,
+            flying;
+        public HistoryPoint position,
+            landing;
     }
 
     [Serializable]
     public sealed class HistoryFrame
     {
         public List<HistoryAmmo> ammunition = new List<HistoryAmmo>();
-        public float time, capture;
+        public float time,
+            capture;
         public int mapRevision;
-        public string outcome, greenOrder, redOrder;
-        public string commandPhase, commandReason;
-        public int acceptedStyle, acceptedIntent, executingStyle, executingIntent;
-        public float commandAcceptedAt, commandExecuteAt;
+        public string outcome,
+            greenOrder,
+            redOrder;
+        public string commandPhase,
+            commandReason;
+        public int acceptedStyle,
+            acceptedIntent,
+            executingStyle,
+            executingIntent;
+        public float commandAcceptedAt,
+            commandExecuteAt;
         public bool commandTransition;
         public List<HistoryCommandPlan> commandPlans = new List<HistoryCommandPlan>();
         public List<HistoryUnit> units = new List<HistoryUnit>();
@@ -195,20 +344,34 @@ namespace SilentOrders.Core
     [Serializable]
     public sealed class HistoryEvent
     {
-        public float time, amount, accuracy;
+        public float time,
+            amount,
+            accuracy;
         public int shot;
-        public string kind, text;
-        public int actor, target;
-        public HistoryPoint from, to;
+        public string kind,
+            text;
+        public int actor,
+            target;
+        public HistoryPoint from,
+            to;
     }
 
     [Serializable]
     public sealed class HistoryMap
     {
-        public int columns, rows, theme;
-        public HistoryPoint entry, enemyEntry, objective;
-        public int[] tiles, props;
-        public float[] health, rotation, scaleX, scaleY;
+        public int columns,
+            rows,
+            theme;
+        public HistoryPoint entry,
+            enemyEntry,
+            objective;
+        public int[] tiles,
+            props;
+        public float[] health,
+            rotation,
+            scaleX,
+            scaleY;
+
         public static HistoryMap Capture(BattleMap m)
         {
             var result = new HistoryMap
@@ -224,7 +387,7 @@ namespace SilentOrders.Core
                 scaleX = (float[])m.LevelPropScaleX.Clone(),
                 scaleY = (float[])m.LevelPropScaleY.Clone(),
                 tiles = new int[m.Tiles.Length],
-                props = new int[m.LevelProps.Length]
+                props = new int[m.LevelProps.Length],
             };
             for (int i = 0; i < result.tiles.Length; i++)
                 result.tiles[i] = (int)m.Tiles[i];
@@ -236,15 +399,30 @@ namespace SilentOrders.Core
 
     public sealed class BattleHistory
     {
-        public const int FrameLimit = 900, EventLimit = 16384, UnitSampleLimit = 30000;
+        public const int FrameLimit = 900,
+            EventLimit = 16384,
+            UnitSampleLimit = 30000;
         public const float Interval = 2;
         public HistoryMap InitialMap;
         public HistoryFrame Initial;
         public readonly List<HistoryFrame> Frames = new List<HistoryFrame>();
         public readonly List<HistoryEvent> Events = new List<HistoryEvent>();
-        public int DroppedFrames, DroppedEvents;
+        public int DroppedFrames,
+            DroppedEvents;
         float next;
-        public void Event(BattleSimulation b, string kind, int actor, int target, V2 from, V2 to, float amount = 0, string text = "", int shot = 0, float accuracy = 0)
+
+        public void Event(
+            BattleSimulation b,
+            string kind,
+            int actor,
+            int target,
+            V2 from,
+            V2 to,
+            float amount = 0,
+            string text = "",
+            int shot = 0,
+            float accuracy = 0
+        )
         {
             if (!b.Diagnostics.Enabled)
                 return;
@@ -254,7 +432,21 @@ namespace SilentOrders.Core
                 DroppedEvents += 256;
             }
 
-            Events.Add(new HistoryEvent { time = b.Time, kind = kind, actor = actor, target = target, from = from, to = to, amount = amount, text = text, shot = shot, accuracy = accuracy });
+            Events.Add(
+                new HistoryEvent
+                {
+                    time = b.Time,
+                    kind = kind,
+                    actor = actor,
+                    target = target,
+                    from = from,
+                    to = to,
+                    amount = amount,
+                    text = text,
+                    shot = shot,
+                    accuracy = accuracy,
+                }
+            );
         }
 
         public void Sample(BattleSimulation b)
@@ -288,7 +480,7 @@ namespace SilentOrders.Core
                 mapRevision = b.Map.Revision,
                 outcome = b.Outcome.ToString(),
                 greenOrder = b.Green.CommanderOrder,
-                redOrder = b.Red.CommanderOrder
+                redOrder = b.Red.CommanderOrder,
             };
             f.commandPlans.Add(HistoryCommandPlan.Capture(b.Green, -1));
             if (!b.CustomDefenders)
@@ -332,7 +524,9 @@ namespace SilentOrders.Core
                     heavyReserved = s.HeavyRocket.Reserved + s.HeavyUnderbarrel.Reserved,
                     packMagazines = s.PackMagazines,
                     packBoxes = s.PackBoxes,
-                    packM4Magazines = s.PackM4Magazines, packM24Magazines = s.PackM24Magazines, packM249Boxes = s.PackM249Boxes,
+                    packM4Magazines = s.PackM4Magazines,
+                    packM24Magazines = s.PackM24Magazines,
+                    packM249Boxes = s.PackM249Boxes,
                     snailBound = s.Assignment.SnailBound,
                     coverId = s.Assignment.CoverId,
                     pairId = s.Assignment.PairId,
@@ -406,13 +600,24 @@ namespace SilentOrders.Core
                     moveAuthorized = s.MoveAuthorized,
                     supportReady = s.SupportReady,
                     sniperRetreatCover = SniperRetreatCover.Holding(b, s),
-                    areaSuppression = AreaSuppression.Active(b, s)
+                    areaSuppression = AreaSuppression.Active(b, s),
                 };
                 for (int i = s.PathCursor; i < s.Path.Count && u.route.Count < 128; i++)
                     u.route.Add(s.Path[i]);
                 foreach (var c in Knowledge.Contacts(b, s))
                     if (u.contacts.Count < 64)
-                        u.contacts.Add(new HistoryContact { enemy = c.EnemyId, position = c.Position, seen = c.SeenAt, confidence = c.Confidence, uncertainty = c.Uncertainty, visual = c.Visual && s.Visible.Contains(c.EnemyId), inferred = c.Inferred });
+                        u.contacts.Add(
+                            new HistoryContact
+                            {
+                                enemy = c.EnemyId,
+                                position = c.Position,
+                                seen = c.SeenAt,
+                                confidence = c.Confidence,
+                                uncertainty = c.Uncertainty,
+                                visual = c.Visual && s.Visible.Contains(c.EnemyId),
+                                inferred = c.Inferred,
+                            }
+                        );
                 V2 hold;
                 u.commandStyle = (int)b.Team(s).Style;
                 u.hasHoldAnchor = b.Team(s).Posture.Anchors.TryGetValue(s.Id, out hold);
@@ -423,16 +628,63 @@ namespace SilentOrders.Core
             for (int i = 0; i < b.DefenderGroups.Count; i++)
             {
                 var g = b.DefenderGroups[i];
-                f.groups.Add(new HistoryGroup { hunt = LastOpponentHunt.GroupActive(b, g), huntCover = g.Hunt.CoverId, huntTarget = g.Hunt.Target == null ? -1 : g.Hunt.Target.EnemyId, id = i, name = g.Name, phase = g.Counterattack.Phase.ToString(), duty = g.Cooperation.Duty.ToString(), reason = g.Cooperation.Reason, anchor = g.Cooperation.Anchor, mover = g.Counterattack.LastMoverId, clear = g.Counterattack.RetreatClear });
+                f.groups.Add(
+                    new HistoryGroup
+                    {
+                        hunt = LastOpponentHunt.GroupActive(b, g),
+                        huntCover = g.Hunt.CoverId,
+                        huntTarget = g.Hunt.Target == null ? -1 : g.Hunt.Target.EnemyId,
+                        id = i,
+                        name = g.Name,
+                        phase = g.Counterattack.Phase.ToString(),
+                        duty = g.Cooperation.Duty.ToString(),
+                        reason = g.Cooperation.Reason,
+                        anchor = g.Cooperation.Anchor,
+                        mover = g.Counterattack.LastMoverId,
+                        clear = g.Counterattack.RetreatClear,
+                    }
+                );
             }
 
             foreach (var c in b.Smoke)
-                f.smoke.Add(new HistoryCloud { sourceSide = c.SourceSide, position = c.Position, born = c.Born, until = c.Until });
+                f.smoke.Add(
+                    new HistoryCloud
+                    {
+                        sourceSide = c.SourceSide,
+                        position = c.Position,
+                        born = c.Born,
+                        until = c.Until,
+                    }
+                );
             foreach (var p in b.Projectiles)
-                f.projectiles.Add(new HistoryProjectile { shooter = p.ShooterId, kind = p.Kind, position = p.Position, target = p.To, height = p.Height, landed = p.Landed, detonateAt = p.DetonateAt });
+                f.projectiles.Add(
+                    new HistoryProjectile
+                    {
+                        shooter = p.ShooterId,
+                        kind = p.Kind,
+                        position = p.Position,
+                        target = p.To,
+                        height = p.Height,
+                        landed = p.Landed,
+                        detonateAt = p.DetonateAt,
+                    }
+                );
             foreach (var a in b.GroundAmmo)
                 if (!a.Collected)
-                    f.ammunition.Add(new HistoryAmmo { id = a.Id, from = a.FromSoldierId, to = a.IntendedFor, family = a.Family, rounds = a.Rounds, box = a.Box, flying = a.Flying(b.Time), position = a.Position(b.Time), landing = a.To });
+                    f.ammunition.Add(
+                        new HistoryAmmo
+                        {
+                            id = a.Id,
+                            from = a.FromSoldierId,
+                            to = a.IntendedFor,
+                            family = a.Family,
+                            rounds = a.Rounds,
+                            box = a.Box,
+                            flying = a.Flying(b.Time),
+                            position = a.Position(b.Time),
+                            landing = a.To,
+                        }
+                    );
             return f;
         }
     }

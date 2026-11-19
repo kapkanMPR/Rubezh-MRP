@@ -7,28 +7,50 @@ namespace Rubezh.UnityPort
     [Serializable]
     public sealed class Kit
     {
-        public int classCode, classTraining;
+        public int classCode,
+            classTraining;
         public bool personalTourniquet;
+
         public Role Class(int slot)
         {
-            return slot == 0 ? Role.Commander : classCode > 0 ? (Role)(classCode - 1) : weapon >= 4 ? Role.Sniper : weapon == 1 ? Role.MachineGunner : extra == 2 ? Role.Medic : (extra == 1 || extra == 4) ? Role.Grenadier : Role.Rifleman;
+            return slot == 0 ? Role.Commander
+                : classCode > 0 ? (Role)(classCode - 1)
+                : weapon >= 4 ? Role.Sniper
+                : weapon == 1 ? Role.MachineGunner
+                : extra == 2 ? Role.Medic
+                : (extra == 1 || extra == 4) ? Role.Grenadier
+                : Role.Rifleman;
         }
 
-        public int weapon, extra, count, rig, grenade, armor;
-        public int grenade2, count2, grenade3, count3;
+        public int weapon,
+            extra,
+            count,
+            rig,
+            grenade,
+            armor;
+        public int grenade2,
+            count2,
+            grenade3,
+            count3;
         public int PocketLimit
         {
-            get
-            {
-                return GrenadePockets.Limit(rig);
-            }
+            get { return GrenadePockets.Limit(rig); }
         }
 
         public bool PocketsValid
         {
             get
             {
-                return GrenadePockets.Valid(rig, grenade, count, grenade2, count2, weapon == 2 || weapon == 3, grenade3, count3);
+                return GrenadePockets.Valid(
+                    rig,
+                    grenade,
+                    count,
+                    grenade2,
+                    count2,
+                    weapon == 2 || weapon == 3,
+                    grenade3,
+                    count3
+                );
             }
         }
 
@@ -57,8 +79,12 @@ namespace Rubezh.UnityPort
         {
             NormalizeBag();
             count = Math.Max(0, Math.Min(count, Math.Min(3, PocketLimit)));
-            count2 = rig >= 1 && grenade2 != grenade ? Math.Max(0, Math.Min(count2, Math.Min(3, PocketLimit - count))) : 0;
-            count3 = rig == 2 && grenade3 != grenade && (count2 == 0 || grenade3 != grenade2) ? Math.Max(0, Math.Min(count3, Math.Min(3, PocketLimit - count - count2))) : 0;
+            count2 =
+                rig >= 1 && grenade2 != grenade ? Math.Max(0, Math.Min(count2, Math.Min(3, PocketLimit - count))) : 0;
+            count3 =
+                rig == 2 && grenade3 != grenade && (count2 == 0 || grenade3 != grenade2)
+                    ? Math.Max(0, Math.Min(count3, Math.Min(3, PocketLimit - count - count2)))
+                    : 0;
         }
 
         public void SetRig(int value)
@@ -68,42 +94,11 @@ namespace Rubezh.UnityPort
         }
 
         public int[] bag = new int[12];
-        public static readonly int[] Prices =
-        {
-            5,
-            50,
-            35,
-            20,
-            25,
-            30,
-            40,
-            60,
-            30,
-            35,
-            40,
-            50
-        };
-        public static readonly int[] Caps =
-        {
-            30,
-            3,
-            4,
-            7,
-            6,
-            5,
-            3,
-            2,
-            6,
-            6,
-            6,
-            4
-        };
+        public static readonly int[] Prices = { 5, 50, 35, 20, 25, 30, 40, 60, 30, 35, 40, 50 };
+        public static readonly int[] Caps = { 30, 3, 4, 7, 6, 5, 3, 2, 6, 6, 6, 4 };
         public int BagCost
         {
-            get
-            {
-                return bag.Select((n, i) => n * Prices[i]).Sum();
-            }
+            get { return bag.Select((n, i) => n * Prices[i]).Sum(); }
         }
 
         public bool Allows(int i)
@@ -157,24 +152,25 @@ namespace Rubezh.UnityPort
 
         public string Encode()
         {
-            return string.Join(",", new[] { weapon, extra, count, rig, grenade }.Concat(bag.Take(8)).Concat(new[] { grenade2, count2, armor, F1Stock, RGNStock, RGOStock, grenade3, count3, RshgStock }).Concat(new[] { classCode, classTraining, personalTourniquet ? 1 : 0 }));
+            return string.Join(
+                ",",
+                new[] { weapon, extra, count, rig, grenade }
+                    .Concat(bag.Take(8))
+                    .Concat(new[] { grenade2, count2, armor, F1Stock, RGNStock, RGOStock, grenade3, count3, RshgStock })
+                    .Concat(new[] { classCode, classTraining, personalTourniquet ? 1 : 0 })
+            );
         }
 
         public static int WeaponPrice(int value)
         {
-            return value == 1 || value >= 4 ? 200 : value == 2 ? 50 : 0;
+            return value == 1 || value >= 4 ? 200
+                : value == 2 ? 50
+                : 0;
         }
 
         public static int ExtraPrice(int value)
         {
-            return new[]
-            {
-                0,
-                150,
-                200,
-                150,
-                200
-            }[value];
+            return new[] { 0, 150, 200, 150, 200 }[value];
         }
 
         public static int GrenadePrice(int type, int count)
@@ -184,20 +180,20 @@ namespace Rubezh.UnityPort
 
         public int Cost
         {
-            get
-            {
-                return WeaponPrice(weapon) + ExtraPrice(extra) + rig * 50 + armor * 100 + PocketCost;
-            }
+            get { return WeaponPrice(weapon) + ExtraPrice(extra) + rig * 50 + armor * 100 + PocketCost; }
         }
     }
 
     [Serializable]
     public sealed class Progress
     {
-        public int version = 1, completed, budgetMission;
+        public int version = 1,
+            completed,
+            budgetMission;
         public Kit[] kits = FreshKits();
         public const int TrainingCount = 5;
         public int[] training = new int[TrainingCount];
+
         public void MigrateTraining()
         {
             if (training != null && training.Length >= 3 && training.Length < TrainingCount)
@@ -205,6 +201,7 @@ namespace Rubezh.UnityPort
         }
 
         public FormationSettings formation = new FormationSettings();
+
         public static Kit[] FreshKits()
         {
             return Enumerable.Range(0, 5).Select(i => new Kit()).ToArray();
@@ -219,7 +216,9 @@ namespace Rubezh.UnityPort
         {
             get
             {
-                return kits.Sum(k => k.Cost) + training.Take(4).Sum(t => new[] { 0, 100, 250, 450 }[t]) + CombatTraining.Price(training[4]);
+                return kits.Sum(k => k.Cost)
+                    + training.Take(4).Sum(t => new[] { 0, 100, 250, 450 }[t])
+                    + CombatTraining.Price(training[4]);
             }
         }
 
@@ -238,19 +237,29 @@ namespace Rubezh.UnityPort
 
         public bool WithinBudget
         {
-            get
-            {
-                return Cost - (budgetMission == 6 ? kits[4].Cost : 0) <= CampaignProgression.Budget(completed);
-            }
+            get { return Cost - (budgetMission == 6 ? kits[4].Cost : 0) <= CampaignProgression.Budget(completed); }
         }
 
         // Price changes are not file corruption. Preserve the saved career and loadout.
         public bool StructurallyValid()
         {
-            if (version != 1 || completed < 0 || completed > 20 || kits == null || kits.Length != 5 || training == null || training.Length != TrainingCount || training.Any(t => t < 0 || t > 3))
+            if (
+                version != 1
+                || completed < 0
+                || completed > 20
+                || kits == null
+                || kits.Length != 5
+                || training == null
+                || training.Length != TrainingCount
+                || training.Any(t => t < 0 || t > 3)
+            )
                 return false;
             foreach (var k in kits)
-                if (k == null || k.bag == null || (k.bag.Length != 8 && k.bag.Length != 9 && k.bag.Length != 11 && k.bag.Length != 12))
+                if (
+                    k == null
+                    || k.bag == null
+                    || (k.bag.Length != 8 && k.bag.Length != 9 && k.bag.Length != 11 && k.bag.Length != 12)
+                )
                     return false;
             if (formation != null && !formation.Valid())
                 return false;

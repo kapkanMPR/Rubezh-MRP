@@ -7,19 +7,21 @@ namespace SilentOrders.Core
     {
         public string Name;
         public V2 Spawn;
-        public float SpawnTime, Radius = 6f;
+        public float SpawnTime,
+            Radius = 6f;
         public bool Pullback;
         public float NextAssist;
         public readonly HuntState Hunt = new HuntState();
         public readonly GroupCommandState Cooperation = new GroupCommandState();
-        public bool Attack, LegacyReserveTrigger, Deployed, VehicleArrival;
+        public bool Attack,
+            LegacyReserveTrigger,
+            Deployed,
+            VehicleArrival;
         public readonly List<Soldier> Members = new List<Soldier>(5);
         public readonly List<Soldier> Available = new List<Soldier>(5);
-        public readonly Squad Command = new Squad
-        {
-            Side = Side.Red
-        };
+        public readonly Squad Command = new Squad { Side = Side.Red };
         public readonly RedCounterattackState Counterattack = new RedCounterattackState();
+
         public DefenderGroupState()
         {
             Command.DefenderGroup = this;
@@ -136,7 +138,9 @@ namespace SilentOrders.Core
                 s.Side = Side.Red;
                 s.Deployed = true;
                 V2 origin = g.VehicleArrival && b.RedVehicle != null ? b.RedVehicle.Center : g.Spawn;
-                V2 preferred = g.VehicleArrival ? origin + new V2((s.Id % 2 == 0 ? -2f : 2f), (s.Id % 3 - 1) * 2f) : origin;
+                V2 preferred = g.VehicleArrival
+                    ? origin + new V2((s.Id % 2 == 0 ? -2f : 2f), (s.Id % 3 - 1) * 2f)
+                    : origin;
                 V2 point = g.VehicleArrival ? VehicleArrivals.SafeNear(b, preferred, origin) : OpenSpawn(b, origin);
                 s.VehicleRally = g.VehicleArrival && V2.Distance(point, g.Spawn) > 1.05f;
                 s.VehicleRouteAt = b.Time;
@@ -145,7 +149,12 @@ namespace SilentOrders.Core
                 s.MoveAuthorized = true;
                 s.Facing = (b.Map.Entry - point).Normalized;
                 s.NextDecision = b.Time;
-                WeaponProgression.Assign(b, s, b.EnemyWeaponMission > 0 ? b.EnemyWeaponMission : b.CampaignLevel, b.EnemyWeaponEndless);
+                WeaponProgression.Assign(
+                    b,
+                    s,
+                    b.EnemyWeaponMission > 0 ? b.EnemyWeaponMission : b.CampaignLevel,
+                    b.EnemyWeaponEndless
+                );
                 b.Soldiers.Add(s);
                 if (g.VehicleArrival && b.RedVehicle != null)
                     VehicleArrivals.BeginDispersal(b, s, b.RedVehicle, disembarkIndex++);
@@ -159,7 +168,18 @@ namespace SilentOrders.Core
                 s.Element = i % 2;
             }
 
-            b.Log(Side.Red, g.Name + ": " + g.Members.Count + " бойцов, " + (g.Pullback ? "оттяжка" : g.Attack ? "атака" : "удержание своего рубежа"));
+            b.Log(
+                Side.Red,
+                g.Name
+                    + ": "
+                    + g.Members.Count
+                    + " бойцов, "
+                    + (
+                        g.Pullback ? "оттяжка"
+                        : g.Attack ? "атака"
+                        : "удержание своего рубежа"
+                    )
+            );
         }
 
         static V2 OpenSpawn(BattleSimulation b, V2 origin)

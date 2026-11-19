@@ -50,7 +50,20 @@ namespace SilentOrders.Core
 
         static bool Free(BattleSimulation b, Soldier s)
         {
-            return !AreaSuppression.Reserved(b, s) && !CounterSniper.Reserved(b, s) && s.Available && !s.Busy && !s.Broken && !s.VehicleDisperse && !s.VehicleRally && s.SupplyReceiverId < 0 && s.RescuerId < 0 && s.LootGroundId < 0 && s.LootTargetId < 0 && s.LauncherPickupId < 0 && s.WeaponAidTargetId < 0 && s.HandsBusyUntil <= b.Time;
+            return !AreaSuppression.Reserved(b, s)
+                && !CounterSniper.Reserved(b, s)
+                && s.Available
+                && !s.Busy
+                && !s.Broken
+                && !s.VehicleDisperse
+                && !s.VehicleRally
+                && s.SupplyReceiverId < 0
+                && s.RescuerId < 0
+                && s.LootGroundId < 0
+                && s.LootTargetId < 0
+                && s.LauncherPickupId < 0
+                && s.WeaponAidTargetId < 0
+                && s.HandsBusyUntil <= b.Time;
         }
 
         public static void Assist(BattleSimulation b, DefenderGroupState group)
@@ -73,7 +86,11 @@ namespace SilentOrders.Core
                         survivors++;
                 bool losses = survivors * 2 <= other.Members.Count;
                 foreach (var s in other.Members)
-                    if (s.Available && b.Time - s.LastIncoming < 3f && (s.Suppression > .65f || losses && s.Suppression > .35f))
+                    if (
+                        s.Available
+                        && b.Time - s.LastIncoming < 3f
+                        && (s.Suppression > .65f || losses && s.Suppression > .35f)
+                    )
                     {
                         float value = s.Suppression + (losses ? .4f : 0);
                         if (value > score)
@@ -89,7 +106,13 @@ namespace SilentOrders.Core
             Soldier helper = null;
             float distance = 18f;
             foreach (var s in group.Members)
-                if (Free(b, s) && group.Cooperation.Mover != s.Id && s.Suppression < .5f && s.Ammo + s.Reserve > 0 && s.FlagResponseUntil <= b.Time)
+                if (
+                    Free(b, s)
+                    && group.Cooperation.Mover != s.Id
+                    && s.Suppression < .5f
+                    && s.Ammo + s.Reserve > 0
+                    && s.FlagResponseUntil <= b.Time
+                )
                 {
                     float d = V2.Distance(s.Position, victim.Position);
                     if (d < distance)
@@ -153,10 +176,17 @@ namespace SilentOrders.Core
                 for (int k = 0; k < 12; k++)
                 {
                     float angle = (chosen.Id * 2 + k) * .5235988f;
-                    V2 candidate = b.Map.NearestOpen(b.Map.Objective + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 1.55f);
+                    V2 candidate = b.Map.NearestOpen(
+                        b.Map.Objective + new V2((float)Math.Cos(angle), (float)Math.Sin(angle)) * 1.55f
+                    );
                     if (V2.Distance(candidate, b.Map.Objective) > 2.1f || PositionLogic.Occupied(b, chosen, candidate))
                         continue;
-                    var route = Pathfinder.Find(b.Map, chosen.Position, candidate, p => PositionLogic.Exposure(b, chosen, p) * 2 + (PositionLogic.Occupied(b, chosen, p) ? 12 : 0));
+                    var route = Pathfinder.Find(
+                        b.Map,
+                        chosen.Position,
+                        candidate,
+                        p => PositionLogic.Exposure(b, chosen, p) * 2 + (PositionLogic.Occupied(b, chosen, p) ? 12 : 0)
+                    );
                     b.Stats.Paths++;
                     if (route.Count == 0 && V2.Distance(chosen.Position, candidate) > .6f)
                         continue;

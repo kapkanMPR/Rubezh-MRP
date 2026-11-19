@@ -7,10 +7,19 @@ namespace SilentOrders.Core
     {
         // Archived showcases retain their exact historical rules.
         public static bool TerrainRequired(BattleSimulation b, Soldier s) => !b.Historical01225 && s.Side == Side.Green;
-        public static bool ShelteredFront(BattleSimulation b, Soldier s) => s != null && (!TerrainRequired(b, s) || PositionLogic.ProtectedRaw(b, s, s.Position));
+
+        public static bool ShelteredFront(BattleSimulation b, Soldier s) =>
+            s != null && (!TerrainRequired(b, s) || PositionLogic.ProtectedRaw(b, s, s.Position));
+
         // The exception belongs to the rear fighter; each threshold is strictly below half.
-        public static bool BelowHalf(Soldier rear) => rear != null && (rear.Health < 50f || rear.Morale < .5f || rear.Suppression < .5f);
-        public static bool AllowsFront(BattleSimulation b, Soldier rear, Soldier front) => rear != null && front != null && (!TerrainRequired(b, rear) || BelowHalf(rear) || PositionLogic.ProtectedRaw(b, front, front.Position));
+        public static bool BelowHalf(Soldier rear) =>
+            rear != null && (rear.Health < 50f || rear.Morale < .5f || rear.Suppression < .5f);
+
+        public static bool AllowsFront(BattleSimulation b, Soldier rear, Soldier front) =>
+            rear != null
+            && front != null
+            && (!TerrainRequired(b, rear) || BelowHalf(rear) || PositionLogic.ProtectedRaw(b, front, front.Position));
+
         public static bool KeepClose(BattleSimulation b, Soldier s)
         {
             if (Linked(b, s))
@@ -18,7 +27,12 @@ namespace SilentOrders.Core
             if (s.Motion.ShoulderApproachUntil > b.Time && AllowsFront(b, s, Unit(b, s.Motion.ApproachFront)))
                 return true;
             foreach (var rear in b.Soldiers)
-                if (rear.Side == s.Side && rear.Motion.ApproachFront == s.Id && rear.Motion.ShoulderApproachUntil > b.Time && AllowsFront(b, rear, s))
+                if (
+                    rear.Side == s.Side
+                    && rear.Motion.ApproachFront == s.Id
+                    && rear.Motion.ShoulderApproachUntil > b.Time
+                    && AllowsFront(b, rear, s)
+                )
                     return true;
             return false;
         }
@@ -46,7 +60,19 @@ namespace SilentOrders.Core
         }
 
         static Soldier Unit(BattleSimulation b, int id) => id >= 0 && id < b.Soldiers.Count ? b.Soldiers[id] : null;
-        static bool Free(BattleSimulation b, Soldier s) => s != null && CombatTraining.Skill(s, 1, "pair") && s.Available && s.Deployed && !s.Busy && !s.Broken && !s.GrenadeEscape.Active && !s.Motion.Fast && s.ReloadUntil <= b.Time && !TacticalOrders.ServiceActive(s);
+
+        static bool Free(BattleSimulation b, Soldier s) =>
+            s != null
+            && CombatTraining.Skill(s, 1, "pair")
+            && s.Available
+            && s.Deployed
+            && !s.Busy
+            && !s.Broken
+            && !s.GrenadeEscape.Active
+            && !s.Motion.Fast
+            && s.ReloadUntil <= b.Time
+            && !TacticalOrders.ServiceActive(s);
+
         public static bool Linked(BattleSimulation b, Soldier s)
         {
             if (s.Motion.PairUntil <= b.Time)
@@ -59,6 +85,7 @@ namespace SilentOrders.Core
         }
 
         public static bool Front(BattleSimulation b, Soldier s) => Linked(b, s) && s.Motion.RearId >= 0;
+
         public static void Update(BattleSimulation b, Soldier rear)
         {
             if (TerrainRequired(b, rear))
@@ -84,7 +111,10 @@ namespace SilentOrders.Core
             }
 
             var front = Unit(b, rear.Motion.FrontId);
-            if (front != null && (!Free(b, rear) || !Free(b, front) || V2.Distance(rear.Position, front.Position) > 1.35f))
+            if (
+                front != null
+                && (!Free(b, rear) || !Free(b, front) || V2.Distance(rear.Position, front.Position) > 1.35f)
+            )
             {
                 rear.Motion.FrontId = -1;
                 front.Motion.RearId = -1;
@@ -95,7 +125,14 @@ namespace SilentOrders.Core
                 return;
             foreach (var first in b.Soldiers)
             {
-                if (first == rear || first.Side != rear.Side || first.DefenderGroup != rear.DefenderGroup || !Free(b, first) || first.Motion.FrontId >= 0 || first.Motion.RearId >= 0 && first.Motion.RearId != rear.Id)
+                if (
+                    first == rear
+                    || first.Side != rear.Side
+                    || first.DefenderGroup != rear.DefenderGroup
+                    || !Free(b, first)
+                    || first.Motion.FrontId >= 0
+                    || first.Motion.RearId >= 0 && first.Motion.RearId != rear.Id
+                )
                     continue;
                 if (!AllowsFront(b, rear, first))
                     continue;
@@ -103,13 +140,29 @@ namespace SilentOrders.Core
                     continue;
                 V2 delta = first.Position - rear.Position;
                 float distance = delta.Length;
-                if (distance > 1.15f && distance <= 2 && !MotionCombat.HasRoute(rear) && !MotionCombat.HasRoute(first) && rear.Motion.ShoulderApproachUntil <= b.Time)
+                if (
+                    distance > 1.15f
+                    && distance <= 2
+                    && !MotionCombat.HasRoute(rear)
+                    && !MotionCombat.HasRoute(first)
+                    && rear.Motion.ShoulderApproachUntil <= b.Time
+                )
                 {
                     var contact = TacticalOrders.ClosestKnown(b, rear);
-                    if (contact != null && V2.SegmentDistance(first.Position, rear.Position, contact.Position) < .45f && V2.Dot(first.Position - rear.Position, contact.Position - rear.Position) > 0)
+                    if (
+                        contact != null
+                        && V2.SegmentDistance(first.Position, rear.Position, contact.Position) < .45f
+                        && V2.Dot(first.Position - rear.Position, contact.Position - rear.Position) > 0
+                    )
                     {
                         V2 goal = first.Position - (contact.Position - first.Position).Normalized * .7f;
-                        if (V2.Distance(rear.Position, goal) <= 1.4f && b.Map.Walkable(goal) && Locomotion.WalkableSegment(b, rear.Position, goal) && PositionLogic.Exposure(b, rear, goal) <= PositionLogic.Exposure(b, rear, rear.Position) + .05f)
+                        if (
+                            V2.Distance(rear.Position, goal) <= 1.4f
+                            && b.Map.Walkable(goal)
+                            && Locomotion.WalkableSegment(b, rear.Position, goal)
+                            && PositionLogic.Exposure(b, rear, goal)
+                                <= PositionLogic.Exposure(b, rear, rear.Position) + .05f
+                        )
                         {
                             rear.Motion.ApproachFront = first.Id;
                             rear.Motion.ShoulderGoal = goal;
@@ -121,7 +174,12 @@ namespace SilentOrders.Core
                     }
                 }
 
-                if (distance < .55f || distance > 1.15f || V2.Dot(delta.Normalized, first.Facing.Normalized) < .85f || V2.Dot(first.Facing.Normalized, rear.Facing.Normalized) < .8f)
+                if (
+                    distance < .55f
+                    || distance > 1.15f
+                    || V2.Dot(delta.Normalized, first.Facing.Normalized) < .85f
+                    || V2.Dot(first.Facing.Normalized, rear.Facing.Normalized) < .8f
+                )
                     continue;
                 bool moving = MotionCombat.HasRoute(first) || MotionCombat.HasRoute(rear);
                 if (moving && (!WallTravel.Active(b, first) || !WallTravel.Active(b, rear)))
@@ -142,7 +200,14 @@ namespace SilentOrders.Core
             if (m.ShoulderApproachUntil <= b.Time)
                 return false;
             var front = Unit(b, m.ApproachFront);
-            if (!Free(b, s) || !Free(b, front) || !AllowsFront(b, s, front) || MotionCombat.HasRoute(s) || MotionCombat.HasRoute(front) || V2.Distance(m.ShoulderGoal, front.Position) > 1.05f)
+            if (
+                !Free(b, s)
+                || !Free(b, front)
+                || !AllowsFront(b, s, front)
+                || MotionCombat.HasRoute(s)
+                || MotionCombat.HasRoute(front)
+                || V2.Distance(m.ShoulderGoal, front.Position) > 1.05f
+            )
             {
                 m.ShoulderApproachUntil = 0;
                 return false;
@@ -157,7 +222,14 @@ namespace SilentOrders.Core
             }
 
             V2 next;
-            if (Locomotion.TryStep(b, s, delta.Normalized * Math.Min(delta.Length, CombatMovement.Speed(b, s) * dt), out next))
+            if (
+                Locomotion.TryStep(
+                    b,
+                    s,
+                    delta.Normalized * Math.Min(delta.Length, CombatMovement.Speed(b, s) * dt),
+                    out next
+                )
+            )
             {
                 s.DistanceTravelled += V2.Distance(s.Position, next);
                 s.Position = next;
@@ -171,7 +243,15 @@ namespace SilentOrders.Core
 
         public static bool CanShootOver(BattleSimulation b, Soldier shooter, Soldier first, V2 target)
         {
-            if (PairExchange.Active(b, shooter) || PairExchange.Active(b, first) || CombatCrouch.Standing(b, first) || shooter.Motion.FrontId != first.Id || !Linked(b, shooter) || !Free(b, first) || !first.Crouched)
+            if (
+                PairExchange.Active(b, shooter)
+                || PairExchange.Active(b, first)
+                || CombatCrouch.Standing(b, first)
+                || shooter.Motion.FrontId != first.Id
+                || !Linked(b, shooter)
+                || !Free(b, first)
+                || !first.Crouched
+            )
                 return false;
             var dir = (target - shooter.Position).Normalized;
             float along = V2.Dot(first.Position - shooter.Position, dir);
@@ -203,7 +283,12 @@ namespace SilentOrders.Core
             if (first != null && V2.Distance(s.Position + step, first.Position) < .6f)
                 return new V2();
             var rear = Unit(b, s.Motion.RearId);
-            if (rear != null && MotionCombat.HasRoute(rear) && V2.Distance(s.Position + step, rear.Position) > 1.15f && b.Time - rear.LastMoved < .8f)
+            if (
+                rear != null
+                && MotionCombat.HasRoute(rear)
+                && V2.Distance(s.Position + step, rear.Position) > 1.15f
+                && b.Time - rear.LastMoved < .8f
+            )
                 return new V2();
             return step;
         }

@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
+using Rubezh.Camp;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Rubezh.Camp;
 
 namespace Rubezh.UnityPort
 {
@@ -10,23 +10,41 @@ namespace Rubezh.UnityPort
     {
         string Victory(string mode, int block, int mission, string[] party)
         {
-            int level = M.PlayerLevel, story = S.story;
+            int level = M.PlayerLevel,
+                story = S.story;
             S.operation = new Operation
             {
                 mode = mode,
                 block = block,
-                mission = mission
+                mission = mission,
             };
             bool won = M.Win(mode, block, mission, party);
             string title = OperationName();
             if (!won)
                 return title + "\nМиссия пройдена повторно. Новых наград нет.\nБаланс: ◈ " + Money(S.balance);
-            string msg = title + "\nКаждому бойцу состава: +" + CampModel.BattleXp(mode, block, mission) + " опыта.\nПервая победа · опыт игрока +100 · учебные пособия +1\nОчки обеспечения: +" + CampModel.Payout(mode, block, mission) + " · баланс: ◈ " + Money(S.balance);
+            string msg =
+                title
+                + "\nКаждому бойцу состава: +"
+                + CampModel.BattleXp(mode, block, mission)
+                + " опыта.\nПервая победа · опыт игрока +100 · учебные пособия +1\nОчки обеспечения: +"
+                + CampModel.Payout(mode, block, mission)
+                + " · баланс: ◈ "
+                + Money(S.balance);
             if (M.PlayerLevel > level)
                 msg += "\nУровень игрока: " + level + " → " + M.PlayerLevel;
             if (mode == "story" && S.story > story)
             {
-                var names = M.Data.items.Where(i => !CampModel.Personal(i.id) && i.unlock > story && i.unlock <= S.story).Select(i => i.name).Concat(M.Data.units.Where(u => u.id != "sup" && M.Data.offers.Any(o => o.id == u.id && o.unlock > story && o.unlock <= S.story)).Select(u => "Вербовка: " + u.role)).ToArray();
+                var names = M
+                    .Data.items.Where(i => !CampModel.Personal(i.id) && i.unlock > story && i.unlock <= S.story)
+                    .Select(i => i.name)
+                    .Concat(
+                        M.Data.units.Where(u =>
+                                u.id != "sup"
+                                && M.Data.offers.Any(o => o.id == u.id && o.unlock > story && o.unlock <= S.story)
+                            )
+                            .Select(u => "Вербовка: " + u.role)
+                    )
+                    .ToArray();
                 if (names.Length > 0)
                     msg += "\nОткрыто сюжетом: " + string.Join(", ", names) + ".";
             }
@@ -37,7 +55,7 @@ namespace Rubezh.UnityPort
                 {
                     key = key,
                     summary = msg,
-                    phase = "gear"
+                    phase = "gear",
                 };
             if (mission < (mode == "war" ? 10 : 20) && !S.completed.Contains(mode + "-" + block + "-" + (mission + 1)))
                 S.operation.mission = mission + 1;
@@ -48,15 +66,18 @@ namespace Rubezh.UnityPort
         {
             CampModel.Check(Developer, "Только для разработчика");
             string summary = null;
-            Change(() => summary = Victory(mode, block, mission, party), () =>
-            {
-                screen = "operations";
-                Render();
-                if (S.rewardView != null)
-                    DrawShipment(true);
-                else
-                    RewardSummary(summary);
-            });
+            Change(
+                () => summary = Victory(mode, block, mission, party),
+                () =>
+                {
+                    screen = "operations";
+                    Render();
+                    if (S.rewardView != null)
+                        DrawShipment(true);
+                    else
+                        RewardSummary(summary);
+                }
+            );
         }
 
         // Commit and acknowledge together; presentation never controls reward accounting.
@@ -78,30 +99,35 @@ namespace Rubezh.UnityPort
                         {
                             quietWork = receipt.formation.quietWork,
                             pairing = receipt.formation.pairing,
-                            pairSlots = receipt.formation.pairSlots == null ? new[]
-                            {
-                                -1,
-                                -1,
-                                -1,
-                                -1
-                            }
-
-                            : (int[])receipt.formation.pairSlots.Clone(),
+                            pairSlots =
+                                receipt.formation.pairSlots == null
+                                    ? new[] { -1, -1, -1, -1 }
+                                    : (int[])receipt.formation.pairSlots.Clone(),
                             width = receipt.formation.width,
                             depth = receipt.formation.depth,
-                            positions = (int[])receipt.formation.positions.Clone()
+                            positions = (int[])receipt.formation.positions.Clone(),
                         };
                     }
 
-                    CampModel.Check(M.MissionOpen(receipt.mode, receipt.block, receipt.mission), "Некорректный результат операции");
+                    CampModel.Check(
+                        M.MissionOpen(receipt.mode, receipt.block, receipt.mission),
+                        "Некорректный результат операции"
+                    );
                     S.operation = new Operation
                     {
                         mode = receipt.mode,
                         block = receipt.block,
-                        mission = receipt.mission
+                        mission = receipt.mission,
                     };
                     if (receipt.win)
-                        summary = Victory(receipt.mode, receipt.block, receipt.mission, receipt.fighters != null && receipt.fighters.Length > 0 ? receipt.fighters : S.active.ToArray());
+                        summary = Victory(
+                            receipt.mode,
+                            receipt.block,
+                            receipt.mission,
+                            receipt.fighters != null && receipt.fighters.Length > 0
+                                ? receipt.fighters
+                                : S.active.ToArray()
+                        );
                 }
 
                 S.lastCampReceipt = receipt.id;
@@ -141,11 +167,14 @@ namespace Rubezh.UnityPort
 
         void RewardSummary(string text)
         {
-            Modal("Операция завершена", (c, f) =>
-            {
-                Label(c, text, "paragraph");
-                Button(f, "Закрыть", Close, "gold");
-            });
+            Modal(
+                "Операция завершена",
+                (c, f) =>
+                {
+                    Label(c, text, "paragraph");
+                    Button(f, "Закрыть", Close, "gold");
+                }
+            );
         }
 
         void ResumeReward()
@@ -156,12 +185,15 @@ namespace Rubezh.UnityPort
 
         void AcceptReward(bool barracks = false)
         {
-            Change(() => S.rewardView = null, () =>
-            {
-                Close();
-                if (barracks)
-                    Navigate("barracks");
-            });
+            Change(
+                () => S.rewardView = null,
+                () =>
+                {
+                    Close();
+                    if (barracks)
+                        Navigate("barracks");
+                }
+            );
         }
 
         void DrawShipment(bool animate)
@@ -170,7 +202,8 @@ namespace Rubezh.UnityPort
             if (view == null || !S.caseHistory.ContainsKey(view.key))
                 return;
             var r = S.caseHistory[view.key];
-            bool crew = view.phase == "crew", done = view.phase == "done";
+            bool crew = view.phase == "crew",
+                done = view.phase == "done";
             Close();
             reopenModal = () => DrawShipment(false);
             overlay = V("modal-overlay");
@@ -180,17 +213,54 @@ namespace Rubezh.UnityPort
             SizeModal(box, true);
             var head = V("shipment-head");
             box.Add(head);
-            Label(head, "КЕДР / " + (done ? "ВЕДОМОСТЬ" : crew ? "УЧЕБНЫЙ ЦЕНТР" : "СНАБЖЕНИЕ"), "eyebrow");
+            Label(
+                head,
+                "КЕДР / "
+                    + (
+                        done ? "ВЕДОМОСТЬ"
+                        : crew ? "УЧЕБНЫЙ ЦЕНТР"
+                        : "СНАБЖЕНИЕ"
+                    ),
+                "eyebrow"
+            );
             var heading = Row(head);
-            Label(heading, done ? "Выдача завершена" : crew ? "Прибыло пополнение" : r.book ? "Улучшенный кейс" : "Обычный кейс", "modal-title grow");
-            Label(heading, done ? (r.book ? "03 / 03" : "02 / 02") : crew ? "02 / 03" : r.book ? "01 / 03" : "01 / 02", "sub");
+            Label(
+                heading,
+                done ? "Выдача завершена"
+                    : crew ? "Прибыло пополнение"
+                    : r.book ? "Улучшенный кейс"
+                    : "Обычный кейс",
+                "modal-title grow"
+            );
+            Label(
+                heading,
+                done ? (r.book ? "03 / 03" : "02 / 02")
+                    : crew ? "02 / 03"
+                    : r.book ? "01 / 03"
+                    : "01 / 02",
+                "sub"
+            );
             var scroll = Scroll(box, "shipment-scroll");
             if (done)
             {
-                Label(scroll, System.Text.RegularExpressions.Regex.Replace(view.summary ?? "", "<[^>]+>", "\n"), "paragraph");
-                Label(scroll, "На складе: " + string.Join(", ", r.gear.Select(id => M.Data.Item(id).name)) + ".", "paragraph");
+                Label(
+                    scroll,
+                    System.Text.RegularExpressions.Regex.Replace(view.summary ?? "", "<[^>]+>", "\n"),
+                    "paragraph"
+                );
+                Label(
+                    scroll,
+                    "На складе: " + string.Join(", ", r.gear.Select(id => M.Data.Item(id).name)) + ".",
+                    "paragraph"
+                );
                 if (r.book)
-                    Label(scroll, "Пополнение: " + string.Join(", ", r.fighters.Select(x => x.name)) + ". Книга повышения уровня ×1.", "paragraph");
+                    Label(
+                        scroll,
+                        "Пополнение: "
+                            + string.Join(", ", r.fighters.Select(x => x.name))
+                            + ". Книга повышения уровня ×1.",
+                        "paragraph"
+                    );
                 Pending(scroll);
             }
             else
@@ -215,22 +285,35 @@ namespace Rubezh.UnityPort
                 for (int i = 0; i < n; i++)
                 {
                     int index = i;
-                    var card = Button(row, "", () =>
-                    {
-                        foreach (var e in row.Children())
-                            e.RemoveFromClassList("selected");
-                        row[index].AddToClassList("selected");
-                        if (crew)
+                    var card = Button(
+                        row,
+                        "",
+                        () =>
                         {
-                            var a = r.fighters[index];
-                            info.text = a.name + " · " + M.Data.Template(a.template).role + " · ур. " + a.level + ". " + M.Data.Template(a.template).trait + (a.advanced ? " · Усиленная подготовка." : "");
-                        }
-                        else
-                        {
-                            var item = M.Data.Item(r.gear[index]);
-                            info.text = item.name + " · " + item.stats + ". " + item.desc;
-                        }
-                    }, "drop-card");
+                            foreach (var e in row.Children())
+                                e.RemoveFromClassList("selected");
+                            row[index].AddToClassList("selected");
+                            if (crew)
+                            {
+                                var a = r.fighters[index];
+                                info.text =
+                                    a.name
+                                    + " · "
+                                    + M.Data.Template(a.template).role
+                                    + " · ур. "
+                                    + a.level
+                                    + ". "
+                                    + M.Data.Template(a.template).trait
+                                    + (a.advanced ? " · Усиленная подготовка." : "");
+                            }
+                            else
+                            {
+                                var item = M.Data.Item(r.gear[index]);
+                                info.text = item.name + " · " + item.stats + ". " + item.desc;
+                            }
+                        },
+                        "drop-card"
+                    );
                     card.style.width = Length.Percent(100f / n);
                     if (crew)
                     {
@@ -255,15 +338,23 @@ namespace Rubezh.UnityPort
                         float start = Time.unscaledTime + .52f + i * .11f;
                         float offset = (n - 1) * .5f - i;
                         IVisualElementScheduledItem job = null;
-                        job = card.schedule.Execute(() =>
-                        {
-                            float t = Mathf.Clamp01((Time.unscaledTime - start) / .62f), smooth = 1 - Mathf.Pow(1 - t, 3);
-                            card.style.opacity = t;
-                            card.style.scale = new Scale(new Vector3(.14f + .86f * smooth, .14f + .86f * smooth, 1));
-                            card.style.translate = new Translate(offset * (1 - smooth) * card.resolvedStyle.width, -48 * (1 - smooth));
-                            if (t >= 1)
-                                job.Pause();
-                        }).Every(16);
+                        job = card
+                            .schedule.Execute(() =>
+                            {
+                                float t = Mathf.Clamp01((Time.unscaledTime - start) / .62f),
+                                    smooth = 1 - Mathf.Pow(1 - t, 3);
+                                card.style.opacity = t;
+                                card.style.scale = new Scale(
+                                    new Vector3(.14f + .86f * smooth, .14f + .86f * smooth, 1)
+                                );
+                                card.style.translate = new Translate(
+                                    offset * (1 - smooth) * card.resolvedStyle.width,
+                                    -48 * (1 - smooth)
+                                );
+                                if (t >= 1)
+                                    job.Pause();
+                            })
+                            .Every(16);
                         modalAnimations.Add(job);
                     }
                 }
@@ -273,29 +364,41 @@ namespace Rubezh.UnityPort
                 {
                     float started = Time.unscaledTime;
                     IVisualElementScheduledItem job = null;
-                    job = crate.schedule.Execute(() =>
-                    {
-                        float t = Mathf.Clamp01((Time.unscaledTime - started) / .36f);
-                        crate.style.opacity = t;
-                        crate.style.translate = new Translate(0, -14 * (1 - t));
-                        float open = Mathf.Clamp01((Time.unscaledTime - started - .32f) / .45f);
-                        lid.style.translate = new Translate(0, -12 * open);
-                        lid.style.rotate = new Rotate(new Angle(-5 * open));
-                        if (t >= 1 && open >= 1)
-                            job.Pause();
-                    }).Every(16);
+                    job = crate
+                        .schedule.Execute(() =>
+                        {
+                            float t = Mathf.Clamp01((Time.unscaledTime - started) / .36f);
+                            crate.style.opacity = t;
+                            crate.style.translate = new Translate(0, -14 * (1 - t));
+                            float open = Mathf.Clamp01((Time.unscaledTime - started - .32f) / .45f);
+                            lid.style.translate = new Translate(0, -12 * open);
+                            lid.style.rotate = new Rotate(new Angle(-5 * open));
+                            if (t >= 1 && open >= 1)
+                                job.Pause();
+                        })
+                        .Every(16);
                     modalAnimations.Add(job);
                 }
             }
 
             var foot = Row(box, "shipment-foot");
-            Label(foot, done ? "Награды учтены" : crew ? "Личные дела" : "Склад отряда", "sub grow");
+            Label(
+                foot,
+                done ? "Награды учтены"
+                    : crew ? "Личные дела"
+                    : "Склад отряда",
+                "sub grow"
+            );
             if (!done && animate && S.motion)
-                Button(foot, "Без анимации", () =>
-                {
-                    PauseAnimations();
-                    DrawShipment(false);
-                });
+                Button(
+                    foot,
+                    "Без анимации",
+                    () =>
+                    {
+                        PauseAnimations();
+                        DrawShipment(false);
+                    }
+                );
             if (done)
             {
                 if (S.pendingRecruits.Count > 0)
@@ -303,7 +406,13 @@ namespace Rubezh.UnityPort
                 Button(foot, "Принять", () => AcceptReward(), "gold");
             }
             else
-                Button(foot, !crew && r.book ? "К бойцам →" : "Итоги →", () => Change(() => S.rewardView.phase = !crew && r.book ? "crew" : "done", () => DrawShipment(true)), "gold");
+                Button(
+                    foot,
+                    !crew && r.book ? "К бойцам →" : "Итоги →",
+                    () =>
+                        Change(() => S.rewardView.phase = !crew && r.book ? "crew" : "done", () => DrawShipment(true)),
+                    "gold"
+                );
         }
     }
 }

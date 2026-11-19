@@ -5,10 +5,15 @@ namespace SilentOrders.Core
 {
     public sealed class CasualtyRecoveryState
     {
-        public bool Arrived, FarewellSpoken;
-        public float NextPlan, QuoteUntil;
-        public int TargetId = -1, Cursor, SearchOffset;
+        public bool Arrived,
+            FarewellSpoken;
+        public float NextPlan,
+            QuoteUntil;
+        public int TargetId = -1,
+            Cursor,
+            SearchOffset;
         public readonly List<V2> Path = new List<V2>();
+
         public void Reset()
         {
             Arrived = FarewellSpoken = false;
@@ -26,12 +31,17 @@ namespace SilentOrders.Core
             "Все, мужики... Я всё...",
             "...Сейчас... Только отдохну чуть...",
             "...Работайте... Братья...",
-            "...Выпейте... И за меня..."
+            "...Выпейте... И за меня...",
         };
+
         // Fear slows crawling, but must not make an incapacitated survivor immobile.
         public static float CrawlSpeed(BattleSimulation b, Soldier s)
         {
-            return CasualtyAI.Speed(b) * BodyArmor.Multiplier(s.ArmorLevel) * (.65f + .35f * Util.Clamp(s.Morale / .45f, 0, 1)) * (1 - s.Suppression * .42f) * ConcussionEffects.MovementMultiplier(ConcussionEffects.Current(b, s));
+            return CasualtyAI.Speed(b)
+                * BodyArmor.Multiplier(s.ArmorLevel)
+                * (.65f + .35f * Util.Clamp(s.Morale / .45f, 0, 1))
+                * (1 - s.Suppression * .42f)
+                * ConcussionEffects.MovementMultiplier(ConcussionEffects.Current(b, s));
         }
 
         static bool Comrade(Soldier s, Soldier other)
@@ -41,7 +51,9 @@ namespace SilentOrders.Core
 
         static bool Nearby(BattleSimulation b, Soldier s, Soldier other)
         {
-            return Comrade(s, other) && V2.Distance(s.Position, other.Position) <= 2f && Locomotion.WalkableSegment(b, s.Position, other.Position);
+            return Comrade(s, other)
+                && V2.Distance(s.Position, other.Position) <= 2f
+                && Locomotion.WalkableSegment(b, s.Position, other.Position);
         }
 
         public static void Maintain(BattleSimulation b)
@@ -59,8 +71,18 @@ namespace SilentOrders.Core
                     continue;
                 }
 
-                bool stalled = (h.RescuePhase == RescuePhase.Approach || h.RescuePhase == RescuePhase.Drag) && b.Time - Math.Max(h.LastMoved, h.RescueSince) > 2.5f;
-                if (!h.Alive || !h.Deployed || h.Incapacitated || h.Broken || h.Health < 28 || h.Suppression > .93f || stalled)
+                bool stalled =
+                    (h.RescuePhase == RescuePhase.Approach || h.RescuePhase == RescuePhase.Drag)
+                    && b.Time - Math.Max(h.LastMoved, h.RescueSince) > 2.5f;
+                if (
+                    !h.Alive
+                    || !h.Deployed
+                    || h.Incapacitated
+                    || h.Broken
+                    || h.Health < 28
+                    || h.Suppression > .93f
+                    || stalled
+                )
                 {
                     SupportAI.Release(b, h, false);
                     s.NextCrawlPlan = b.Time;
@@ -96,7 +118,8 @@ namespace SilentOrders.Core
                     return true;
                 }
 
-            bool valid = state.TargetId >= 0 && state.TargetId < b.Soldiers.Count && Comrade(s, b.Soldiers[state.TargetId]);
+            bool valid =
+                state.TargetId >= 0 && state.TargetId < b.Soldiers.Count && Comrade(s, b.Soldiers[state.TargetId]);
             if (!valid)
             {
                 state.Path.Clear();
@@ -113,7 +136,9 @@ namespace SilentOrders.Core
                 foreach (var ally in b.Soldiers)
                     if (Comrade(s, ally))
                         friends.Add(ally);
-                friends.Sort((a, c) => V2.Distance(s.Position, a.Position).CompareTo(V2.Distance(s.Position, c.Position)));
+                friends.Sort(
+                    (a, c) => V2.Distance(s.Position, a.Position).CompareTo(V2.Distance(s.Position, c.Position))
+                );
                 float best = float.MaxValue;
                 // Bounded batches rotate if blocked, so unreachable nearest allies cannot mask the rest.
                 for (int n = 0; n < Math.Min(3, friends.Count); n++)
@@ -139,10 +164,7 @@ namespace SilentOrders.Core
                             continue;
                         List<V2> path;
                         if (Locomotion.WalkableSegment(b, s.Position, goal))
-                            path = new List<V2>
-                            {
-                                goal
-                            };
+                            path = new List<V2> { goal };
                         else
                         {
                             path = LossMemory.Find(b, s, goal, v => TacticalAI.Risk(b, s, v));
@@ -166,7 +188,8 @@ namespace SilentOrders.Core
                     }
                 }
 
-                state.SearchOffset = state.TargetId >= 0 ? 0 : (friends.Count > 0 ? (state.SearchOffset + 3) % friends.Count : 0);
+                state.SearchOffset =
+                    state.TargetId >= 0 ? 0 : (friends.Count > 0 ? (state.SearchOffset + 3) % friends.Count : 0);
             }
 
             if (state.Cursor >= state.Path.Count)
@@ -176,7 +199,9 @@ namespace SilentOrders.Core
             }
 
             V2 delta = state.Path[state.Cursor] - s.Position;
-            if (Locomotion.TryStep(b, s, delta.Normalized * Math.Min(delta.Length, CrawlSpeed(b, s) * dt), out var next))
+            if (
+                Locomotion.TryStep(b, s, delta.Normalized * Math.Min(delta.Length, CrawlSpeed(b, s) * dt), out var next)
+            )
             {
                 float moved = V2.Distance(s.Position, next);
                 s.Position = next;
@@ -203,7 +228,13 @@ namespace SilentOrders.Core
 
         static bool TimelyTreatment(BattleSimulation b, Soldier h, Soldier s)
         {
-            if (!h.Alive || h.TreatmentUntil <= 0 || h.TreatmentKind == 0 || h.TreatmentUntil - b.Time >= s.Health || !InteractionReach.Can(b, h.Position, s.Position, 1.1f))
+            if (
+                !h.Alive
+                || h.TreatmentUntil <= 0
+                || h.TreatmentKind == 0
+                || h.TreatmentUntil - b.Time >= s.Health
+                || !InteractionReach.Can(b, h.Position, s.Position, 1.1f)
+            )
                 return false;
             int id = h.TreatmentDonorId;
             if (id < 0 || id >= b.Soldiers.Count)

@@ -8,7 +8,7 @@ namespace SilentOrders.Core
         Off,
         Assault,
         Retreat,
-        Defense
+        Defense,
     }
 
     // Only the original red squad is controlled by this state machine. Reinforcements
@@ -16,18 +16,25 @@ namespace SilentOrders.Core
     public sealed class RedCounterattackState
     {
         public RedCounterattackPhase Phase;
-        public int OriginalCount, LossThreshold, RetreatEvents, AssaultWing;
-        public float LastMoveAt, RetreatSince, FirstContactAt = -1;
+        public int OriginalCount,
+            LossThreshold,
+            RetreatEvents,
+            AssaultWing;
+        public float LastMoveAt,
+            RetreatSince,
+            FirstContactAt = -1;
         public string ExitReason = "";
         public readonly HashSet<int> RetreatMovers = new HashSet<int>();
         public readonly Dictionary<int, float> SelectedAt = new Dictionary<int, float>();
-        public int LastMoverId = -1, RetreatBoundDone = -1;
+        public int LastMoverId = -1,
+            RetreatBoundDone = -1;
         public bool RetreatClear;
         public readonly Dictionary<int, V2> AssaultCheckpoints = new Dictionary<int, V2>();
         public readonly Dictionary<int, float> AssaultProgressAt = new Dictionary<int, float>();
         public readonly Dictionary<int, float> NextRoute = new Dictionary<int, float>();
         public readonly HashSet<int> AtBase = new HashSet<int>();
         public readonly RedReserveDeploymentState ReserveDeployment = new RedReserveDeploymentState();
+
         public void Begin(int original)
         {
             Phase = original > 0 ? RedCounterattackPhase.Assault : RedCounterattackPhase.Off;
@@ -53,12 +60,8 @@ namespace SilentOrders.Core
 
     public static class RetreatVoices
     {
-        static readonly string[] Lines =
-        {
-            "Кто куда, а я по съебам!",
-            "Да ну нахер!",
-            "Не, ну ты видел? Видел?"
-        };
+        static readonly string[] Lines = { "Кто куда, а я по съебам!", "Да ну нахер!", "Не, ну ты видел? Видел?" };
+
         // Unique speakers and unique phrases inside each event. Red text is marked for
         // the presentation layer; ordinary red chatter remains hidden as before.
         public static int Emit(BattleSimulation b, Side side)
@@ -67,7 +70,13 @@ namespace SilentOrders.Core
                 return 0;
             var available = new List<Soldier>();
             foreach (var s in b.Soldiers)
-                if (s.Side == side && s.Alive && s.Deployed && !s.Incapacitated && (b.ActiveDefenderGroup == null || s.DefenderGroup == b.ActiveDefenderGroup))
+                if (
+                    s.Side == side
+                    && s.Alive
+                    && s.Deployed
+                    && !s.Incapacitated
+                    && (b.ActiveDefenderGroup == null || s.DefenderGroup == b.ActiveDefenderGroup)
+                )
                     available.Add(s);
             if (available.Count == 0)
                 return 0;
@@ -79,12 +88,7 @@ namespace SilentOrders.Core
                 available[j] = tmp;
             }
 
-            int[] phrases =
-            {
-                0,
-                1,
-                2
-            };
+            int[] phrases = { 0, 1, 2 };
             for (int i = 2; i > 0; i--)
             {
                 int j = b.VoiceRandom.Int(i + 1);
@@ -117,13 +121,18 @@ namespace SilentOrders.Core
     {
         const int FirstRedId = 5;
         public const float CoverRetreatDistance = 25f;
-        public static bool Orderly(BattleSimulation b) => b.ActiveDefenderGroup != null && b.ActiveDefenderGroup.Pullback;
+
+        public static bool Orderly(BattleSimulation b) =>
+            b.ActiveDefenderGroup != null && b.ActiveDefenderGroup.Pullback;
+
         public static bool PanicAllowed(BattleSimulation b)
         {
             if (b.CampaignLevel == 19 || b.CampaignLevel == 20)
                 return false;
             var g = b.ActiveDefenderGroup;
-            return g == null ? b.Counterattack.OriginalCount > 0 : g.Attack && !g.Pullback && g.SpawnTime <= 0 && !g.VehicleArrival;
+            return g == null
+                ? b.Counterattack.OriginalCount > 0
+                : g.Attack && !g.Pullback && g.SpawnTime <= 0 && !g.VehicleArrival;
         }
 
         static int GroupKills(BattleSimulation b)
@@ -154,7 +163,11 @@ namespace SilentOrders.Core
         public static bool RetreatCover(BattleSimulation b, Soldier s)
         {
             var g = s.DefenderGroup;
-            return g != null && g.Pullback && g.Counterattack.Phase == RedCounterattackPhase.Retreat && !g.Counterattack.RetreatClear && !g.Counterattack.RetreatMovers.Contains(s.Id);
+            return g != null
+                && g.Pullback
+                && g.Counterattack.Phase == RedCounterattackPhase.Retreat
+                && !g.Counterattack.RetreatClear
+                && !g.Counterattack.RetreatMovers.Contains(s.Id);
         }
 
         static void CheckRetreatDistance(BattleSimulation b)
@@ -167,14 +180,14 @@ namespace SilentOrders.Core
                 if (s.Available && s.Deployed)
                 {
                     foreach (var observer in g.Members)
-                        foreach (var c in Knowledge.Contacts(b, observer))
-                        {
-                            if (c.Confidence < .25f || b.Time - c.SeenAt > 25)
-                                continue;
-                            known = true;
-                            if (V2.Distance(s.Position, c.Position) - c.Uncertainty <= CoverRetreatDistance)
-                                return;
-                        }
+                    foreach (var c in Knowledge.Contacts(b, observer))
+                    {
+                        if (c.Confidence < .25f || b.Time - c.SeenAt > 25)
+                            continue;
+                        known = true;
+                        if (V2.Distance(s.Position, c.Position) - c.Uncertainty <= CoverRetreatDistance)
+                            return;
+                    }
                 }
 
             if (!known)
@@ -189,14 +202,28 @@ namespace SilentOrders.Core
         {
             var st = b.Counterattack;
             var members = b.ActiveDefenderGroup.Members;
-            st.RetreatMovers.RemoveWhere(id => id < 0 || id >= b.Soldiers.Count || !b.Soldiers[id].Available || b.Time - st.SelectedAt[id] > .5f && (!MotionCombat.HasRoute(b.Soldiers[id]) || b.Time - b.Soldiers[id].LastMoved > 2));
+            st.RetreatMovers.RemoveWhere(id =>
+                id < 0
+                || id >= b.Soldiers.Count
+                || !b.Soldiers[id].Available
+                || b.Time - st.SelectedAt[id] > .5f
+                    && (!MotionCombat.HasRoute(b.Soldiers[id]) || b.Time - b.Soldiers[id].LastMoved > 2)
+            );
             if (b.Time < st.LastMoveAt)
                 return;
             int start = members.FindIndex(s => s.Id == st.LastMoverId);
             for (int i = 1; i <= members.Count && st.RetreatMovers.Count < GroupMovement.Maximum; i++)
             {
                 var s = members[(start + i + members.Count) % members.Count];
-                if (st.RetreatMovers.Contains(s.Id) || !s.Available || s.Busy || TacticalOrders.ServiceActive(s) || SniperRetreatCover.Holding(b, s) || s.ReloadUntil > b.Time || V2.Distance(s.Position, b.Red.DefenseCenter(b)) <= 4.2f)
+                if (
+                    st.RetreatMovers.Contains(s.Id)
+                    || !s.Available
+                    || s.Busy
+                    || TacticalOrders.ServiceActive(s)
+                    || SniperRetreatCover.Holding(b, s)
+                    || s.ReloadUntil > b.Time
+                    || V2.Distance(s.Position, b.Red.DefenseCenter(b)) <= 4.2f
+                )
                     continue;
                 V2 goal = s.Position + (b.Red.DefenseCenter(b) - s.Position).Normalized * 6;
                 var excluded = new HashSet<int>(st.RetreatMovers);
@@ -219,7 +246,12 @@ namespace SilentOrders.Core
         }
 
         public static bool Enabled(BattleSimulation b) => b.Counterattack.Phase != RedCounterattackPhase.Off;
-        public static bool Original(BattleSimulation b, Soldier s) => b.ActiveDefenderGroup != null ? s.DefenderGroup == b.ActiveDefenderGroup : s.Side == Side.Red && s.Id >= FirstRedId && s.Id < FirstRedId + b.Counterattack.OriginalCount;
+
+        public static bool Original(BattleSimulation b, Soldier s) =>
+            b.ActiveDefenderGroup != null
+                ? s.DefenderGroup == b.ActiveDefenderGroup
+                : s.Side == Side.Red && s.Id >= FirstRedId && s.Id < FirstRedId + b.Counterattack.OriginalCount;
+
         public static int AliveOriginals(BattleSimulation b)
         {
             int n = 0;
@@ -229,7 +261,11 @@ namespace SilentOrders.Core
             return n;
         }
 
-        public static bool Retreating(BattleSimulation b, Soldier s) => s.DefenderGroup != null ? s.DefenderGroup.Counterattack.Phase == RedCounterattackPhase.Retreat : Original(b, s) && b.Counterattack.Phase == RedCounterattackPhase.Retreat;
+        public static bool Retreating(BattleSimulation b, Soldier s) =>
+            s.DefenderGroup != null
+                ? s.DefenderGroup.Counterattack.Phase == RedCounterattackPhase.Retreat
+                : Original(b, s) && b.Counterattack.Phase == RedCounterattackPhase.Retreat;
+
         public static void Configure(BattleSimulation b, int original)
         {
             // Only missions that really have pending reserves use the counterattack arc.
@@ -269,7 +305,17 @@ namespace SilentOrders.Core
                                 }
                         }
 
-                if (Orderly(b) ? (lost >= 1 || GroupKills(b) > 0 && pressure && st.FirstContactAt >= 0 && b.Time - st.FirstContactAt >= 4) : PanicAllowed(b) && lost >= st.LossThreshold)
+                if (
+                    Orderly(b)
+                        ? (
+                            lost >= 1
+                            || GroupKills(b) > 0
+                                && pressure
+                                && st.FirstContactAt >= 0
+                                && b.Time - st.FirstContactAt >= 4
+                        )
+                        : PanicAllowed(b) && lost >= st.LossThreshold
+                )
                 {
                     st.Phase = RedCounterattackPhase.Retreat;
                     st.RetreatSince = b.Time;
@@ -289,13 +335,24 @@ namespace SilentOrders.Core
                             s.ManeuverPaused = false;
                             s.Job = Job.Reposition;
                             s.NextDecision = b.Time;
-                            s.Order = Orderly(b) ? "Оттяжка: отход поочерёдно, держать прикрытие" : "ДА НУ НАХЕР! К базовому рубежу!";
+                            s.Order = Orderly(b)
+                                ? "Оттяжка: отход поочерёдно, держать прикрытие"
+                                : "ДА НУ НАХЕР! К базовому рубежу!";
                             s.Reason = "Приказ на отрыв после потерь: " + lost + " из " + st.OriginalCount;
                         }
 
                     b.Red.NextPlan = b.Time;
                     b.Red.CommanderOrder = "Отход первого отряда к флагу!";
-                    b.Log(Side.Red, Orderly(b) ? b.ActiveDefenderGroup.Name + ": организованная оттяжка к флагу." : "Первый отряд потерял " + lost + " из " + st.OriginalCount + ". Панический отход к базовому рубежу!");
+                    b.Log(
+                        Side.Red,
+                        Orderly(b)
+                            ? b.ActiveDefenderGroup.Name + ": организованная оттяжка к флагу."
+                            : "Первый отряд потерял "
+                                + lost
+                                + " из "
+                                + st.OriginalCount
+                                + ". Панический отход к базовому рубежу!"
+                    );
                     if (!Orderly(b))
                         RetreatVoices.Emit(b, Side.Red);
                 }
@@ -325,7 +382,9 @@ namespace SilentOrders.Core
                 // A blocked or medically incapacitated soldier cannot freeze command forever.
                 if (everyoneBack || b.Time - st.RetreatSince > (Orderly(b) ? 120f : 45f))
                 {
-                    st.ExitReason = everyoneBack ? "Дошли до оборонительного рубежа" : "Отход не завершён: локальная оборона после ограничения времени";
+                    st.ExitReason = everyoneBack
+                        ? "Дошли до оборонительного рубежа"
+                        : "Отход не завершён: локальная оборона после ограничения времени";
                     st.Phase = RedCounterattackPhase.Defense;
                     st.NextRoute.Clear();
                     foreach (var s in b.Soldiers)
@@ -344,7 +403,9 @@ namespace SilentOrders.Core
                     b.Red.Defense.Movers.Clear();
                     b.Red.Initialized = false;
                     b.Red.NextPlan = b.Time;
-                    b.Red.CommanderOrder = everyoneBack ? "Вернулись к рубежу. Занять сектора обороны!" : "Отход задержан. Закрепиться на доступных позициях и восстановить взаимодействие!";
+                    b.Red.CommanderOrder = everyoneBack
+                        ? "Вернулись к рубежу. Занять сектора обороны!"
+                        : "Отход задержан. Закрепиться на доступных позициях и восстановить взаимодействие!";
                     b.Log(Side.Red, b.Red.CommanderOrder);
                 }
             }
@@ -372,7 +433,12 @@ namespace SilentOrders.Core
             {
                 Soldier successor = null;
                 foreach (var candidate in b.Soldiers)
-                    if (candidate.Side == Side.Red && candidate.Available && (b.ActiveDefenderGroup == null || Original(b, candidate)) && (successor == null || Original(b, candidate) && !Original(b, successor)))
+                    if (
+                        candidate.Side == Side.Red
+                        && candidate.Available
+                        && (b.ActiveDefenderGroup == null || Original(b, candidate))
+                        && (successor == null || Original(b, candidate) && !Original(b, successor))
+                    )
                         successor = candidate;
                 if (successor != null)
                     q.LeaderId = successor.Id;
@@ -405,7 +471,10 @@ namespace SilentOrders.Core
                             // A squad timer must never cancel a progressing bound.
                             V2 checkpoint;
                             float progressAt;
-                            if (!st.AssaultCheckpoints.TryGetValue(unit.Id, out checkpoint) || V2.Distance(checkpoint, unit.Position) > 1.2f)
+                            if (
+                                !st.AssaultCheckpoints.TryGetValue(unit.Id, out checkpoint)
+                                || V2.Distance(checkpoint, unit.Position) > 1.2f
+                            )
                             {
                                 st.AssaultCheckpoints[unit.Id] = unit.Position;
                                 st.AssaultProgressAt[unit.Id] = b.Time;
@@ -435,7 +504,9 @@ namespace SilentOrders.Core
                             {
                                 b.Stats.Bounds++;
                                 last = unit.Id;
-                                unit.Reason = threatened ? "Контратака: короткая перебежка, прикрытие проверяется на маршруте" : "Сближение без контакта: подтягиваюсь вместе с отрядом";
+                                unit.Reason = threatened
+                                    ? "Контратака: короткая перебежка, прикрытие проверяется на маршруте"
+                                    : "Сближение без контакта: подтягиваюсь вместе с отрядом";
                                 if (GroupMovement.Count(b, q) >= GroupMovement.Maximum)
                                     break;
                             }
@@ -447,14 +518,21 @@ namespace SilentOrders.Core
                     st.LastMoveAt = b.Time + 1f;
                 }
 
-                string wing = st.AssaultWing < 0 ? "левым направлением" : st.AssaultWing > 0 ? "правым направлением" : "по центру";
+                string wing =
+                    st.AssaultWing < 0 ? "левым направлением"
+                    : st.AssaultWing > 0 ? "правым направлением"
+                    : "по центру";
                 q.Plan = q.Execution = "Первый красный отряд: контратака " + wing;
-                q.CommanderOrder = threatened ? "Контратака: перебежки с проверкой прикрытия" : "Сближаемся вместе, сохранять связь с отрядом";
+                q.CommanderOrder = threatened
+                    ? "Контратака: перебежки с проверкой прикрытия"
+                    : "Сближаемся вместе, сохранять связь с отрядом";
             }
             else
             {
                 q.Plan = q.Execution = "Первый отряд: отрыв от противника к флагу";
-                q.CommanderOrder = Orderly(b) ? "Оттяжка: до трёх отходят, остальные прикрывают" : "ДА НУ НАХЕР! На базовый рубеж!";
+                q.CommanderOrder = Orderly(b)
+                    ? "Оттяжка: до трёх отходят, остальные прикрывают"
+                    : "ДА НУ НАХЕР! На базовый рубеж!";
             }
 
             // On reinforcement arrival run the *original* AdaptiveDefense on reserves only.
@@ -471,7 +549,18 @@ namespace SilentOrders.Core
 
         static bool AssaultOwned(BattleSimulation b, Soldier s)
         {
-            return !AreaSuppression.Reserved(b, s) && !CounterSniper.Reserved(b, s) && s.HelpUntil <= b.Time && s.HelpRetreatUntil <= b.Time && s.FlagResponseUntil <= b.Time && !s.Busy && s.SupplyReceiverId < 0 && s.LauncherPickupId < 0 && s.LootGroundId < 0 && s.LootTargetId < 0 && s.WeaponAidTargetId < 0 && (s.Job == Job.Advance || s.Job == Job.Cover || s.Job == Job.Hold || s.Job == Job.Command);
+            return !AreaSuppression.Reserved(b, s)
+                && !CounterSniper.Reserved(b, s)
+                && s.HelpUntil <= b.Time
+                && s.HelpRetreatUntil <= b.Time
+                && s.FlagResponseUntil <= b.Time
+                && !s.Busy
+                && s.SupplyReceiverId < 0
+                && s.LauncherPickupId < 0
+                && s.LootGroundId < 0
+                && s.LootTargetId < 0
+                && s.WeaponAidTargetId < 0
+                && (s.Job == Job.Advance || s.Job == Job.Cover || s.Job == Job.Hold || s.Job == Job.Command);
         }
 
         static bool AssaultBound(BattleSimulation b, Soldier s)
@@ -487,7 +576,13 @@ namespace SilentOrders.Core
                 if (distance <= b.WeaponRange(s) * .9f && PositionLogic.CanEngage(b, s, s.Position, contact))
                     return false;
                 V2 to = (contact.Position - s.Position).Normalized;
-                desired = s.Position + to * Math.Min(MotionCombat.Recommended(b.Team(s)), Math.Max(0f, distance - b.WeaponRange(s) * .76f));
+                desired =
+                    s.Position
+                    + to
+                        * Math.Min(
+                            MotionCombat.Recommended(b.Team(s)),
+                            Math.Max(0f, distance - b.WeaponRange(s) * .76f)
+                        );
             }
             else
                 desired = s.Position + forward * MotionCombat.Recommended(b.Team(s));
@@ -501,7 +596,17 @@ namespace SilentOrders.Core
             List<V2> path = null;
             for (int attempt = 0; attempt < 5; attempt++)
             {
-                V2 candidate = TacticalOrders.Open(b, wanted + lateral * (attempt < 2 ? 0 : attempt == 2 ? 2f : attempt == 3 ? -2f : 4f));
+                V2 candidate = TacticalOrders.Open(
+                    b,
+                    wanted
+                        + lateral
+                            * (
+                                attempt < 2 ? 0
+                                : attempt == 2 ? 2f
+                                : attempt == 3 ? -2f
+                                : 4f
+                            )
+                );
                 V2 covered;
                 if (attempt == 0 && PositionLogic.TryPost(b, s, candidate, 3f, false, out covered))
                     candidate = covered;
@@ -511,7 +616,12 @@ namespace SilentOrders.Core
                     continue;
                 if (contact == null && V2.Dot(candidate - s.Position, forward) < .8f)
                     continue;
-                var route = LossMemory.Find(b, s, candidate, p => PositionLogic.Exposure(b, s, p) * 2f + (PositionLogic.Occupied(b, s, p) ? 12f : 0f));
+                var route = LossMemory.Find(
+                    b,
+                    s,
+                    candidate,
+                    p => PositionLogic.Exposure(b, s, p) * 2f + (PositionLogic.Occupied(b, s, p) ? 12f : 0f)
+                );
                 b.Stats.Paths++;
                 if (route.Count == 0 || SupportAI.PathLength(s.Position, route) > 12f)
                     continue;
@@ -619,7 +729,11 @@ namespace SilentOrders.Core
             if (dir.Length < .1f)
                 return;
             var perpendicular = new V2(-dir.Y, dir.X);
-            V2 target = TacticalOrders.Open(b, s.Position + dir * Math.Min(SequentialRetreat(b) ? 6f : 8f, V2.Distance(s.Position, b.Red.DefenseCenter(b))));
+            V2 target = TacticalOrders.Open(
+                b,
+                s.Position
+                    + dir * Math.Min(SequentialRetreat(b) ? 6f : 8f, V2.Distance(s.Position, b.Red.DefenseCenter(b)))
+            );
             List<V2> path = null;
             V2 goal = target;
             float best = float.MaxValue;
@@ -633,15 +747,32 @@ namespace SilentOrders.Core
                         continue;
                 }
                 else
-                    candidate = TacticalOrders.Open(b, target + perpendicular * (i == 1 ? 0 : i == 2 ? 1.5f : i == 3 ? -1.5f : i == 4 ? 3 : -3));
-                if (!b.Map.Walkable(candidate) || PositionLogic.Occupied(b, s, candidate) || V2.Distance(candidate, b.Red.DefenseCenter(b)) > homeDistance - Math.Min(2f, Math.Max(.5f, homeDistance - 4.2f)))
+                    candidate = TacticalOrders.Open(
+                        b,
+                        target
+                            + perpendicular
+                                * (
+                                    i == 1 ? 0
+                                    : i == 2 ? 1.5f
+                                    : i == 3 ? -1.5f
+                                    : i == 4 ? 3
+                                    : -3
+                                )
+                    );
+                if (
+                    !b.Map.Walkable(candidate)
+                    || PositionLogic.Occupied(b, s, candidate)
+                    || V2.Distance(candidate, b.Red.DefenseCenter(b))
+                        > homeDistance - Math.Min(2f, Math.Max(.5f, homeDistance - 4.2f))
+                )
                     continue;
                 var route = LossMemory.Find(b, s, candidate, p => PositionLogic.Exposure(b, s, p) * 3);
                 b.Stats.Paths++;
                 float length = SupportAI.PathLength(s.Position, route);
                 if (route.Count == 0 || length > 12)
                     continue;
-                float peak = 0, total = 0;
+                float peak = 0,
+                    total = 0;
                 foreach (var point in route)
                 {
                     float risk = PositionLogic.Exposure(b, s, point);
@@ -649,7 +780,12 @@ namespace SilentOrders.Core
                     total += risk;
                 }
 
-                float score = V2.Distance(candidate, b.Red.DefenseCenter(b)) + length * .25f + peak * 2 + total / route.Count * 4 - (PositionLogic.Protected(b, s, candidate) ? 2 : 0);
+                float score =
+                    V2.Distance(candidate, b.Red.DefenseCenter(b))
+                    + length * .25f
+                    + peak * 2
+                    + total / route.Count * 4
+                    - (PositionLogic.Protected(b, s, candidate) ? 2 : 0);
                 if (score < best)
                 {
                     best = score;
@@ -662,7 +798,12 @@ namespace SilentOrders.Core
             {
                 // The next safe waypoint may be sideways around a wall, not closer in a straight line.
                 // Follow a bounded prefix of the actual home route instead of retrying unreachable direct posts.
-                var homeRoute = LossMemory.Find(b, s, TacticalOrders.Open(b, b.Red.DefenseCenter(b)), p => PositionLogic.Exposure(b, s, p) * 3 + FireLaneSafety.PathCost(b, s, p));
+                var homeRoute = LossMemory.Find(
+                    b,
+                    s,
+                    TacticalOrders.Open(b, b.Red.DefenseCenter(b)),
+                    p => PositionLogic.Exposure(b, s, p) * 3 + FireLaneSafety.PathCost(b, s, p)
+                );
                 b.Stats.Paths++;
                 var prefix = new List<V2>();
                 V2 previous = s.Position;
@@ -679,7 +820,16 @@ namespace SilentOrders.Core
                 while (prefix.Count > 0)
                 {
                     var end = prefix[prefix.Count - 1];
-                    if (V2.Distance(s.Position, end) > .8f && !PositionLogic.Occupied(b, s, end) && PositionLogic.UsefulRoute(b, s, prefix) && (PositionLogic.Protected(b, s, end) || PositionLogic.Exposure(b, s, end) <= .12f || GroupMovement.Covered(b, s, end)))
+                    if (
+                        V2.Distance(s.Position, end) > .8f
+                        && !PositionLogic.Occupied(b, s, end)
+                        && PositionLogic.UsefulRoute(b, s, prefix)
+                        && (
+                            PositionLogic.Protected(b, s, end)
+                            || PositionLogic.Exposure(b, s, end) <= .12f
+                            || GroupMovement.Covered(b, s, end)
+                        )
+                    )
                     {
                         path = prefix;
                         goal = end;
@@ -726,7 +876,14 @@ namespace SilentOrders.Core
 
         static bool MoveGroup(BattleSimulation b, Soldier s, float dt)
         {
-            if (!Retreating(b, s) || !s.Alive || !s.Deployed || s.Incapacitated || s.Busy || TacticalOrders.ServiceActive(s))
+            if (
+                !Retreating(b, s)
+                || !s.Alive
+                || !s.Deployed
+                || s.Incapacitated
+                || s.Busy
+                || TacticalOrders.ServiceActive(s)
+            )
                 return false;
             if (SniperRetreatCover.Hold(b, s))
                 return false;

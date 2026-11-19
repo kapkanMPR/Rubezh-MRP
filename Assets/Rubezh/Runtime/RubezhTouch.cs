@@ -7,10 +7,7 @@ namespace Rubezh.UnityPort
     {
         float UIScale
         {
-            get
-            {
-                return Mathf.Max(.001f, Mathf.Min(Screen.safeArea.height / H, Screen.safeArea.width / 1400f));
-            }
+            get { return Mathf.Max(.001f, Mathf.Min(Screen.safeArea.height / H, Screen.safeArea.width / 1400f)); }
         }
 
         void CancelTouchInput()
@@ -21,7 +18,8 @@ namespace Rubezh.UnityPort
         void ZoomAt(Vector2 anchor, float value)
         {
             LayoutMap();
-            float u = (anchor.x - mapRect.x) / mapRect.width, v = (anchor.y - mapRect.y) / mapRect.height;
+            float u = (anchor.x - mapRect.x) / mapRect.width,
+                v = (anchor.y - mapRect.y) / mapRect.height;
             zoom = Mathf.Clamp(value, .65f, 3);
             LayoutMap();
             pan += new Vector2(anchor.x - mapRect.x - u * mapRect.width, anchor.y - mapRect.y - v * mapRect.height);
@@ -52,7 +50,7 @@ namespace Rubezh.UnityPort
 #if UNITY_5_3_OR_NEWER || RUBEZH_NATIVE_TEST_CONTRACT
                 NativeDrawer("journal");
 #else
-                drawer = "journal";
+
                 drawerScroll = Vector2.zero;
 #endif
             }
@@ -60,13 +58,29 @@ namespace Rubezh.UnityPort
 
         // Unrouted IMGUI helpers remain for editor-side compatibility only.
         // Runtime gestures are owned entirely by UI Toolkit pointer capture.
-        void TouchGroup(Rect r) { GUI.BeginGroup(r); }
-        void EndTouchGroup() { GUI.EndGroup(); }
-        bool TouchButton(Rect r, string text, GUIStyle style) { return GUI.Button(r, text, style); }
+        void TouchGroup(Rect r)
+        {
+            GUI.BeginGroup(r);
+        }
+
+        void EndTouchGroup()
+        {
+            GUI.EndGroup();
+        }
+
+        bool TouchButton(Rect r, string text, GUIStyle style)
+        {
+            return GUI.Button(r, text, style);
+        }
+
         Vector2 TouchScroll(string id, Rect viewport, Vector2 position, Rect content)
         {
             return GUI.BeginScrollView(viewport, position, content);
         }
-        void EndTouchScroll() { GUI.EndScrollView(); }
+
+        void EndTouchScroll()
+        {
+            GUI.EndScrollView();
+        }
     }
 }

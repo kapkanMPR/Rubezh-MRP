@@ -9,6 +9,6 @@ namespace SilentOrders.Core
         Move,
         Regroup,
         Hold,
-        Adapt
+        Adapt,
     }
 }

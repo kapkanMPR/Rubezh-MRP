@@ -25,7 +25,8 @@ namespace Rubezh.UnityPort
 
         MissionDialogueData missionDialogue;
         Texture2D[] dialoguePortraits;
-        int dialogueIndex, dialogueVisible;
+        int dialogueIndex,
+            dialogueVisible;
         int[] dialogueCharacters;
         float dialogueElapsed;
         string dialogueText = "";
@@ -88,12 +89,13 @@ namespace Rubezh.UnityPort
             paused = true;
             accumulator = 0;
             dialogueElapsed += Mathf.Min(Time.unscaledDeltaTime, .1f);
-            int count = Mathf.Min(dialogueCharacters.Length, Mathf.FloorToInt(
-                dialogueElapsed * Mathf.Clamp(missionDialogue.charactersPerSecond, 1, 120)));
+            int count = Mathf.Min(
+                dialogueCharacters.Length,
+                Mathf.FloorToInt(dialogueElapsed * Mathf.Clamp(missionDialogue.charactersPerSecond, 1, 120))
+            );
             if (count > dialogueVisible)
                 RevealDialogue(count);
-            if (dialogueVisible == dialogueCharacters.Length &&
-                missionDialogue.lines[dialogueIndex].mortarSalvo)
+            if (dialogueVisible == dialogueCharacters.Length && missionDialogue.lines[dialogueIndex].mortarSalvo)
                 TickDialogueSalvo();
         }
 
@@ -131,6 +133,5 @@ namespace Rubezh.UnityPort
             paused = false;
             CancelTouchInput(); // The finishing tap must not select or command a unit.
         }
-
     }
 }

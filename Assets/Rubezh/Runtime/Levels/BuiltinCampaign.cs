@@ -10,13 +10,11 @@ namespace Rubezh.UnityPort
         [Serializable]
         public class Point
         {
-            public int x, y;
+            public int x,
+                y;
             public Vector2Int Value
             {
-                get
-                {
-                    return new Vector2Int(x, y);
-                }
+                get { return new Vector2Int(x, y); }
             }
         }
 
@@ -25,10 +23,13 @@ namespace Rubezh.UnityPort
         {
             public string name;
             public Point position;
-            public float arrivalSeconds, holdRadius;
-            public bool legacyReserveTrigger, vehicleArrival;
+            public float arrivalSeconds,
+                holdRadius;
+            public bool legacyReserveTrigger,
+                vehicleArrival;
             public DefenderBehavior behavior;
             public List<DefenderSlot> soldiers;
+
             public DefenderSpawn Create()
             {
                 return new DefenderSpawn
@@ -40,7 +41,7 @@ namespace Rubezh.UnityPort
                     legacyReserveTrigger = legacyReserveTrigger,
                     vehicleArrival = vehicleArrival,
                     behavior = behavior,
-                    soldiers = soldiers
+                    soldiers = soldiers,
                 };
             }
         }
@@ -48,22 +49,35 @@ namespace Rubezh.UnityPort
         [Serializable]
         public class Map
         {
-        public List<DynamicBuildingData> dynamicBuildings = new List<DynamicBuildingData>();
-        public ProceduralVisualData terrainVisual;
-        public List<ProceduralVisualData> proceduralVisuals = new List<ProceduralVisualData>();
-        public int proceduralCombatVersion;
-        public List<ProceduralCombatCell> proceduralCombatCells = new List<ProceduralCombatCell>();
-        public List<LevelRoofCell> proceduralRoofArea = new List<LevelRoofCell>();
-        public List<LevelRoofCell> proceduralRoofCells = new List<LevelRoofCell>();
-        public List<string> proceduralWallIds = new List<string>();
+            public List<DynamicBuildingData> dynamicBuildings = new List<DynamicBuildingData>();
+            public ProceduralVisualData terrainVisual;
+            public List<ProceduralVisualData> proceduralVisuals = new List<ProceduralVisualData>();
+            public int proceduralCombatVersion;
+            public List<ProceduralCombatCell> proceduralCombatCells = new List<ProceduralCombatCell>();
+            public List<LevelRoofCell> proceduralRoofArea = new List<LevelRoofCell>();
+            public List<LevelRoofCell> proceduralRoofCells = new List<LevelRoofCell>();
+            public List<string> proceduralWallIds = new List<string>();
             public List<LevelRoofCell> roof;
-            public int formatVersion, campaignMission, columns, rows, theme;
-            public string name, operationDescription, expectedThreats;
-            public bool enabledInGame, useInQuickBattle, customDefenders, greenVehicleArrival, overrideBriefing;
-            public Point flag, playerSpawn, botSpawn;
+            public int formatVersion,
+                campaignMission,
+                columns,
+                rows,
+                theme;
+            public string name,
+                operationDescription,
+                expectedThreats;
+            public bool enabledInGame,
+                useInQuickBattle,
+                customDefenders,
+                greenVehicleArrival,
+                overrideBriefing;
+            public Point flag,
+                playerSpawn,
+                botSpawn;
             public List<LevelObjectCell> objects;
             public List<LevelGroundCell> ground;
             public List<Group> defenders;
+
             public RubezhLevel Create()
             {
                 var l = ScriptableObject.CreateInstance<RubezhLevel>();
@@ -73,7 +87,8 @@ namespace Rubezh.UnityPort
                 l.columns = columns;
                 l.rows = rows;
                 l.theme = theme;
-                l.proceduralVisuals = proceduralVisuals; l.dynamicBuildings=dynamicBuildings;
+                l.proceduralVisuals = proceduralVisuals;
+                l.dynamicBuildings = dynamicBuildings;
                 l.proceduralCombatVersion = proceduralCombatVersion;
                 l.proceduralCombatCells = proceduralCombatCells;
                 l.proceduralRoofArea = proceduralRoofArea;
@@ -108,11 +123,14 @@ namespace Rubezh.UnityPort
         }
 
         static readonly Dictionary<int, RubezhLevel> cache = new Dictionary<int, RubezhLevel>();
+
         public static bool Owns(RubezhLevel level) => cache.ContainsValue(level);
 
         public static void ReleaseCached()
         {
-            foreach (var level in cache.Values) if (level != null) UnityEngine.Object.Destroy(level);
+            foreach (var level in cache.Values)
+                if (level != null)
+                    UnityEngine.Object.Destroy(level);
             cache.Clear();
         }
 
@@ -121,14 +139,35 @@ namespace Rubezh.UnityPort
             RubezhLevel result;
             if (cache.TryGetValue(mission, out result) && result != null)
                 return result;
-            var regenerated=Resources.Load<TextAsset>("Regenerated/Campaign_"+mission.ToString("00"));
-            if(regenerated!=null){try{result=JsonUtility.FromJson<Map>(PackedLevel.Read(regenerated)).Create();string validationError;if(!LevelValidation.Valid(result,out validationError))throw new InvalidOperationException(validationError);cache[mission]=result;return result;}finally{Resources.UnloadAsset(regenerated);}}
+            var regenerated = Resources.Load<TextAsset>("Regenerated/Campaign_" + mission.ToString("00"));
+            if (regenerated != null)
+            {
+                try
+                {
+                    result = JsonUtility.FromJson<Map>(PackedLevel.Read(regenerated)).Create();
+                    string validationError;
+                    if (!LevelValidation.Valid(result, out validationError))
+                        throw new InvalidOperationException(validationError);
+                    cache[mission] = result;
+                    return result;
+                }
+                finally
+                {
+                    Resources.UnloadAsset(regenerated);
+                }
+            }
             var text = Resources.Load<TextAsset>("CampaignBaseline");
             if (text == null)
                 return null;
             Bundle data;
-            try { data = JsonUtility.FromJson<Bundle>(PackedLevel.Read(text)); }
-            finally { Resources.UnloadAsset(text); }
+            try
+            {
+                data = JsonUtility.FromJson<Bundle>(PackedLevel.Read(text));
+            }
+            finally
+            {
+                Resources.UnloadAsset(text);
+            }
             if (data == null || data.missions == null)
                 return null;
             foreach (var map in data.missions)

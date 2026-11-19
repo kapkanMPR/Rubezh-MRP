@@ -37,33 +37,41 @@ namespace Rubezh.UnityPort
         SandbagCornerA = 121,
         SandbagCornerB = 122,
         SandbagBrokenA = 123,
-        SandbagBrokenB = 124
+        SandbagBrokenB = 124,
     }
 
     [Serializable]
     public class LevelRoofCell
     {
-        public int x, y;
+        public int x,
+            y;
     }
 
     public enum LevelGroundKind
     {
         Ground = 0,
         Road = 1,
-        Rubble = 2
+        Rubble = 2,
     }
 
     [Serializable]
     public class LevelObjectCell
     {
-        public int x, y;
+        public int x,
+            y;
         public bool mirrored;
-        public string assetId, uid, parentUid;
-        public float offsetX, offsetY;
+        public string assetId,
+            uid,
+            parentUid;
+        public float offsetX,
+            offsetY;
         public LevelObjectKind kind;
+
         // Render-only adjustments. Never change the occupied tile or its cover physics.
         public float rotationDegrees;
-        public float scaleX = 1f, scaleY = 1f;
+        public float scaleX = 1f,
+            scaleY = 1f;
+
         public static float SafeScale(float scale)
         {
             return scale <= 0f ? 1f : Mathf.Clamp(scale, .4f, 2.5f);
@@ -73,7 +81,8 @@ namespace Rubezh.UnityPort
     [Serializable]
     public class LevelGroundCell
     {
-        public int x, y;
+        public int x,
+            y;
         public bool mirrored;
         public string assetId;
         public LevelGroundKind kind;
@@ -93,6 +102,7 @@ namespace Rubezh.UnityPort
         public List<string> proceduralWallIds = new List<string>();
         public int formatVersion = 6;
         public List<LevelRoofCell> roof = new List<LevelRoofCell>();
+
         public void SetRoof(int x, int y, bool value)
         {
             if (!Inside(x, y))
@@ -106,29 +116,40 @@ namespace Rubezh.UnityPort
 
         public bool enabledInGame = true;
         public bool customDefenders;
+
         [Header("Транспортная высадка — не больше одной машины для каждой стороны")]
         public bool greenVehicleArrival;
+
         [Header("Брифинг кампании — переопределение текста операции")]
         public bool overrideBriefing;
+
         [TextArea(2, 6)]
         public string displayName = "";
         public string DisplayName => string.IsNullOrEmpty(displayName) ? name : displayName;
         public string operationDescription = "";
+
         [TextArea(2, 6)]
         public string expectedThreats = "";
         public List<DefenderSpawn> defenders = new List<DefenderSpawn>();
         public int campaignMission = 1; // 0 = only sandbox / quick battle, 1..20 = campaign slot.
         public bool useInQuickBattle = true;
+
         [Header("Карта в клетках")]
-        public int columns = 60, rows = 36, theme = 2;
+        public int columns = 60,
+            rows = 36,
+            theme = 2;
+
         [Header("Сценарные точки (координаты клеток)")]
         public Vector2Int flag = new Vector2Int(51, 18);
         public Vector2Int playerSpawn = new Vector2Int(4, 18);
         public Vector2Int botSpawn = new Vector2Int(54, 18);
+
         [SerializeField]
         public List<LevelObjectCell> objects = new List<LevelObjectCell>();
+
         [SerializeField]
         public List<LevelGroundCell> ground = new List<LevelGroundCell>();
+
         public static bool IsSprite(LevelObjectKind kind)
         {
             return (int)kind >= 101 && (int)kind <= 124;
@@ -155,7 +176,9 @@ namespace Rubezh.UnityPort
                 foreach (var g in defenders)
                     if (g != null && g.position.x == x && g.position.y == y)
                         return true;
-            return flag.x == x && flag.y == y || playerSpawn.x == x && playerSpawn.y == y || !customDefenders && botSpawn.x == x && botSpawn.y == y;
+            return flag.x == x && flag.y == y
+                || playerSpawn.x == x && playerSpawn.y == y
+                || !customDefenders && botSpawn.x == x && botSpawn.y == y;
         }
 
         public static bool Contains(LevelObjectCell o, int x, int y)
@@ -167,7 +190,8 @@ namespace Rubezh.UnityPort
         public bool Fits(LevelObjectCell o)
         {
             var a = SilentOrders.Core.StudioCatalog.Find(o.assetId, o.mirrored);
-            return Inside(o.x, o.y) && Inside(o.x + (a == null ? 1 : a.Width) - 1, o.y + (a == null ? 1 : a.Height) - 1);
+            return Inside(o.x, o.y)
+                && Inside(o.x + (a == null ? 1 : a.Width) - 1, o.y + (a == null ? 1 : a.Height) - 1);
         }
 
         public bool SetStudioObject(int x, int y, string id, bool mirrored = false)
@@ -180,20 +204,38 @@ namespace Rubezh.UnityPort
             if (a.Ground)
             {
                 SetGround(x, y, LevelGroundKind.Ground);
-                ground.Add(new LevelGroundCell { x = x, y = y, assetId = id, mirrored = mirrored });
+                ground.Add(
+                    new LevelGroundCell
+                    {
+                        x = x,
+                        y = y,
+                        assetId = id,
+                        mirrored = mirrored,
+                    }
+                );
                 return true;
             }
 
             if (!Inside(x, y) || !Inside(x + a.Width - 1, y + a.Height - 1))
                 return false;
             for (int yy = y; yy < y + a.Height; yy++)
-                for (int xx = x; xx < x + a.Width; xx++)
-                    if (a.Blocking && IsMarker(xx, yy))
-                        return false;
+            for (int xx = x; xx < x + a.Width; xx++)
+                if (a.Blocking && IsMarker(xx, yy))
+                    return false;
             for (int yy = y; yy < y + a.Height; yy++)
-                for (int xx = x; xx < x + a.Width; xx++)
-                    SetObject(xx, yy, LevelObjectKind.None);
-            objects.Add(new LevelObjectCell { uid = Guid.NewGuid().ToString(), x = x, y = y, assetId = id, mirrored = mirrored, kind = (LevelObjectKind)(a.Blocking ? (a.High ? 5 : 1) : 0) });
+            for (int xx = x; xx < x + a.Width; xx++)
+                SetObject(xx, yy, LevelObjectKind.None);
+            objects.Add(
+                new LevelObjectCell
+                {
+                    uid = Guid.NewGuid().ToString(),
+                    x = x,
+                    y = y,
+                    assetId = id,
+                    mirrored = mirrored,
+                    kind = (LevelObjectKind)(a.Blocking ? (a.High ? 5 : 1) : 0),
+                }
+            );
             return true;
         }
 
@@ -218,8 +260,10 @@ namespace Rubezh.UnityPort
             foreach (var child in objects)
                 if (!string.IsNullOrEmpty(obj.uid) && child.parentUid == obj.uid)
                 {
-                    int x = child.x - obj.x, y = child.y - obj.y;
-                    float dx = child.offsetX, dy = child.offsetY;
+                    int x = child.x - obj.x,
+                        y = child.y - obj.y;
+                    float dx = child.offsetX,
+                        dy = child.offsetY;
                     child.x = obj.x + a.Height - 1 - y;
                     child.y = obj.y + a.Width - 1 - x;
                     child.offsetX = -dy;
@@ -240,7 +284,12 @@ namespace Rubezh.UnityPort
                     var a = SilentOrders.Core.StudioCatalog.Find(objects[i].assetId, objects[i].mirrored);
                     if (a != null && a.Decor)
                         continue;
-                    return a == null ? objects[i].kind : !a.Blocking ? LevelObjectKind.None : SilentOrders.Core.StudioRules.Cell(a, x - objects[i].x, y - objects[i].y) == SilentOrders.Core.Tile.Wall ? LevelObjectKind.HighWallOriginal : LevelObjectKind.LowCoverOriginal;
+                    return a == null ? objects[i].kind
+                        : !a.Blocking ? LevelObjectKind.None
+                        : SilentOrders.Core.StudioRules.Cell(a, x - objects[i].x, y - objects[i].y)
+                        == SilentOrders.Core.Tile.Wall
+                            ? LevelObjectKind.HighWallOriginal
+                        : LevelObjectKind.LowCoverOriginal;
                 }
 
             return LevelObjectKind.None;
@@ -272,10 +321,26 @@ namespace Rubezh.UnityPort
                 if (o != null && Contains(o, x, y) && !string.IsNullOrEmpty(o.uid))
                     removed.Add(o.uid);
             for (int i = objects.Count - 1; i >= 0; i--)
-                if (objects[i] != null && (Contains(objects[i], x, y) || !string.IsNullOrEmpty(objects[i].parentUid) && removed.Contains(objects[i].parentUid)))
+                if (
+                    objects[i] != null
+                    && (
+                        Contains(objects[i], x, y)
+                        || !string.IsNullOrEmpty(objects[i].parentUid) && removed.Contains(objects[i].parentUid)
+                    )
+                )
                     objects.RemoveAt(i);
             if (kind != LevelObjectKind.None)
-                objects.Add(new LevelObjectCell { x = x, y = y, kind = kind, rotationDegrees = Mathf.Clamp(degrees, -180f, 180f), scaleX = LevelObjectCell.SafeScale(scaleX), scaleY = LevelObjectCell.SafeScale(scaleY) });
+                objects.Add(
+                    new LevelObjectCell
+                    {
+                        x = x,
+                        y = y,
+                        kind = kind,
+                        rotationDegrees = Mathf.Clamp(degrees, -180f, 180f),
+                        scaleX = LevelObjectCell.SafeScale(scaleX),
+                        scaleY = LevelObjectCell.SafeScale(scaleY),
+                    }
+                );
         }
 
         public void SetGround(int x, int y, LevelGroundKind kind)
@@ -288,7 +353,14 @@ namespace Rubezh.UnityPort
                 if (ground[i] != null && ground[i].x == x && ground[i].y == y)
                     ground.RemoveAt(i);
             if (kind != LevelGroundKind.Ground)
-                ground.Add(new LevelGroundCell { x = x, y = y, kind = kind });
+                ground.Add(
+                    new LevelGroundCell
+                    {
+                        x = x,
+                        y = y,
+                        kind = kind,
+                    }
+                );
         }
 
         public void Resize(int width, int height)

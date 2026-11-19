@@ -9,7 +9,7 @@ Shader "Rubezh/Hybrid Range Surface"
     }
     SubShader
     {
-        Tags { "Queue"="Geometry" "RenderType"="Opaque" }
+        Tags { "Queue" = "Geometry" "RenderType" = "Opaque" }
         Cull Back
         ZWrite On
         ZTest LEqual
@@ -53,8 +53,8 @@ Shader "Rubezh/Hybrid Range Surface"
                 // Derivatives are taken before frac: crossing a repeat seam must not
                 // select a blurred mip. Original raster data stays untouched.
                 float2 uv = _UVRect.xy + frac(i.uv) * _UVRect.zw;
-                fixed3 albedo = tex2Dgrad(_MainTex, uv,
-                    ddx(i.uv) * _UVRect.zw, ddy(i.uv) * _UVRect.zw).rgb * i.color.rgb;
+                fixed3 albedo =
+                    tex2Dgrad(_MainTex, uv, ddx(i.uv) * _UVRect.zw, ddy(i.uv) * _UVRect.zw).rgb * i.color.rgb;
                 half3 normal = normalize(i.normal);
                 // A fixed, soft overcast key fits the existing painted sprite art.
                 // This deliberately needs no global light, shadow map, or deferred pass.

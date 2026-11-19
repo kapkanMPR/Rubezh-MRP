@@ -9,7 +9,9 @@ Shader "Rubezh/LoadingFireReveal"
     }
     SubShader
     {
-        Cull Off ZWrite Off ZTest Always
+        Cull Off
+        ZWrite Off
+        ZTest Always
         Pass
         {
             CGPROGRAM
@@ -29,8 +31,10 @@ Shader "Rubezh/LoadingFireReveal"
             }
             float reveal(float2 uv)
             {
-                if (_Progress <= 0) return 0.0;
-                if (_Progress >= 1) return 1.0;
+                if (_Progress <= 0)
+                    return 0.0;
+                if (_Progress >= 1)
+                    return 1.0;
                 float wisps = 0.009 * sin(uv.x * 117.0 + uv.y * 93.0 - _Clock * 4.1);
                 return 1.0 - smoothstep(-0.045, 0.045, uv.x - front(uv) + wisps);
             }
@@ -55,7 +59,8 @@ Shader "Rubezh/LoadingFireReveal"
                 float fire = 0.045 * sin(_Clock * 3.7 + uv.x * 31.0) + 0.025 * sin(_Clock * 7.1 - uv.y * 43.0);
                 c += hot * fire * mask * shown;
                 float edge = front(uv);
-                float rim = exp(-abs(uv.x - edge) * 80.0) * mask * step(0.001, _Progress) * (1.0 - step(0.999, _Progress));
+                float rim =
+                    exp(-abs(uv.x - edge) * 80.0) * mask * step(0.001, _Progress) * (1.0 - step(0.999, _Progress));
                 c += float3(0.22, 0.075, 0.01) * rim;
                 float flashes = flash(uv, float2(0.510, 0.628), 0.13) + flash(uv, float2(0.689, 0.629), 0.67);
                 c += float3(0.65, 0.39, 0.14) * flashes * mask;

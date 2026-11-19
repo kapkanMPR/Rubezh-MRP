@@ -9,11 +9,17 @@ namespace SilentOrders.Core
     {
         public sealed class State
         {
-            public float StartedAt, EndsAt, Strength;
+            public float StartedAt,
+                EndsAt,
+                Strength;
         }
 
-        static readonly ConditionalWeakTable<BattleSimulation, Dictionary<int, State>> States = new ConditionalWeakTable<BattleSimulation, Dictionary<int, State>>();
-        static Dictionary<int, State> For(BattleSimulation battle) => States.GetValue(battle, _ => new Dictionary<int, State>());
+        static readonly ConditionalWeakTable<BattleSimulation, Dictionary<int, State>> States =
+            new ConditionalWeakTable<BattleSimulation, Dictionary<int, State>>();
+
+        static Dictionary<int, State> For(BattleSimulation battle) =>
+            States.GetValue(battle, _ => new Dictionary<int, State>());
+
         // blastRadius is the damaging/suppression radius of the explosive source.
         // At the edge, concussion fades to zero; direct blasts last 3 seconds.
         public static float StrengthAt(float distance, float blastRadius)
@@ -32,7 +38,10 @@ namespace SilentOrders.Core
             if (strength <= 0f)
                 return;
             float duration = 2f + strength;
-            soldier.ConcussionReactUntil = Math.Max(soldier.ConcussionReactUntil, battle.Time + battle.Config.DecisionPeriod * ReactionTimeMultiplier(strength));
+            soldier.ConcussionReactUntil = Math.Max(
+                soldier.ConcussionReactUntil,
+                battle.Time + battle.Config.DecisionPeriod * ReactionTimeMultiplier(strength)
+            );
             soldier.NextDecision = Math.Max(soldier.NextDecision, soldier.ConcussionReactUntil);
             var states = For(battle);
             if (!states.TryGetValue(soldier.Id, out var previous) || previous.EndsAt <= battle.Time)
@@ -41,7 +50,7 @@ namespace SilentOrders.Core
                 {
                     StartedAt = battle.Time,
                     EndsAt = battle.Time + duration,
-                    Strength = strength
+                    Strength = strength,
                 };
             }
             else
@@ -71,7 +80,9 @@ namespace SilentOrders.Core
         }
 
         public static float MovementMultiplier(float strength) => 1f - .8f * Math.Max(0f, Math.Min(1f, strength));
+
         public static float AccuracyMultiplier(float strength) => 1f - .75f * Math.Max(0f, Math.Min(1f, strength));
+
         public static float ReactionTimeMultiplier(float strength) => 1f + 2f * Math.Max(0f, Math.Min(1f, strength));
     }
 }

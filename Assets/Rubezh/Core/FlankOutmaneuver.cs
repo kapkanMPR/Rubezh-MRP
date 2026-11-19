@@ -7,9 +7,13 @@ namespace SilentOrders.Core
     // the actual locations of unseen enemies. No morale or movement overrides.
     public sealed class OutmaneuverMemory
     {
-        public float NoContactSince = -1f, NextReview, CommittedUntil;
-        public int ReportsUsed, FailedRoutes;
+        public float NoContactSince = -1f,
+            NextReview,
+            CommittedUntil;
+        public int ReportsUsed,
+            FailedRoutes;
         public V2 LastGoal;
+
         public void Clear()
         {
             NoContactSince = -1f;
@@ -23,12 +27,32 @@ namespace SilentOrders.Core
     {
         public const float OutOfContactSeconds = 7f;
         public const float SideEdgeMargin = 4f;
+
         static bool Eligible(BattleSimulation b, Soldier s)
         {
             var q = b.Team(s);
             // Deep, unsupervised pursuit belongs to Aggressive only. Balanced
             // movement is controlled by the local two-person flank planner.
-            return q.Style == CombatStyle.Aggressive && TacticalOrders.Flanks(q) && q.FlankPlan.Active && !q.FlankPlan.FixedSupport.Contains(s.Id) && s.Id != q.LeaderId && s.Alive && s.Deployed && !s.Incapacitated && !s.Broken && !s.Busy && s.Health > 28f && s.Morale >= .32f && s.Suppression < .65f && s.Role != Role.Medic && !s.Sniper && s.Ammo + s.Reserve > 0 && s.ReloadUntil <= b.Time && !s.PriorityMovement.Transfer && s.HelpTargetId < 0 && s.HelpRetreatUntil <= b.Time;
+            return q.Style == CombatStyle.Aggressive
+                && TacticalOrders.Flanks(q)
+                && q.FlankPlan.Active
+                && !q.FlankPlan.FixedSupport.Contains(s.Id)
+                && s.Id != q.LeaderId
+                && s.Alive
+                && s.Deployed
+                && !s.Incapacitated
+                && !s.Broken
+                && !s.Busy
+                && s.Health > 28f
+                && s.Morale >= .32f
+                && s.Suppression < .65f
+                && s.Role != Role.Medic
+                && !s.Sniper
+                && s.Ammo + s.Reserve > 0
+                && s.ReloadUntil <= b.Time
+                && !s.PriorityMovement.Transfer
+                && s.HelpTargetId < 0
+                && s.HelpRetreatUntil <= b.Time;
         }
 
         public static bool AtSideEdge(BattleSimulation b, V2 position, int side)
@@ -39,7 +63,10 @@ namespace SilentOrders.Core
             // Detect the boundary *in the outward flank direction*, not the rear
             // deployment border. Geometry works for flipped/rotated maps too.
             V2 probe = position + outward * SideEdgeMargin;
-            return probe.X <= 1.4f || probe.X >= b.Map.Columns - 1.4f || probe.Y <= 1.4f || probe.Y >= b.Map.Rows - 1.4f;
+            return probe.X <= 1.4f
+                || probe.X >= b.Map.Columns - 1.4f
+                || probe.Y <= 1.4f
+                || probe.Y >= b.Map.Rows - 1.4f;
         }
 
         public static V2 TowardFlag(BattleSimulation b, V2 from)
@@ -64,7 +91,13 @@ namespace SilentOrders.Core
         public static bool ComradesFighting(BattleSimulation b, Soldier s)
         {
             foreach (var ally in b.Soldiers)
-                if (ally.Id != s.Id && ally.Side == s.Side && ally.Alive && ally.Deployed && (b.Time - ally.LastFire < 4f || b.Time - ally.LastIncoming < 3f))
+                if (
+                    ally.Id != s.Id
+                    && ally.Side == s.Side
+                    && ally.Alive
+                    && ally.Deployed
+                    && (b.Time - ally.LastFire < 4f || b.Time - ally.LastIncoming < 3f)
+                )
                     return true;
             return false;
         }
@@ -73,7 +106,8 @@ namespace SilentOrders.Core
         {
             sector = new V2();
             confirmed = false;
-            float newest = -999f, confidence = 0f;
+            float newest = -999f,
+                confidence = 0f;
             bool available = false;
             foreach (var contact in b.Team(s).Contacts.Values)
             {
@@ -95,7 +129,15 @@ namespace SilentOrders.Core
             // direction, not a precise, magically acquired enemy contact.
             float best = -999f;
             foreach (var ally in b.Soldiers)
-                if (ally.Side == s.Side && ally.Id != s.Id && ally.Alive && ally.Deployed && ally.LastFire >= 0 && b.Time - ally.LastFire < 4f && ally.Facing.Length > .1f)
+                if (
+                    ally.Side == s.Side
+                    && ally.Id != s.Id
+                    && ally.Alive
+                    && ally.Deployed
+                    && ally.LastFire >= 0
+                    && b.Time - ally.LastFire < 4f
+                    && ally.Facing.Length > .1f
+                )
                 {
                     if (ally.LastFire > best)
                     {
@@ -152,7 +194,11 @@ namespace SilentOrders.Core
             // redirect along the interior toward the operation flag even without a
             // fresh enemy report. A useful covering/firing sector is never abandoned.
             int boundaryWing = FlankTactics.SideOf(b.Team(s), s.Id);
-            if (boundaryWing != 0 && AtSideEdge(b, s.Position, boundaryWing) && !PositionLogic.HasSector(b, s, s.Position))
+            if (
+                boundaryWing != 0
+                && AtSideEdge(b, s.Position, boundaryWing)
+                && !PositionLogic.HasSector(b, s, s.Position)
+            )
             {
                 V2 outward = TacticalOrders.Lateral(b) * (boundaryWing < 0 ? -1f : 1f);
                 if (s.PathCursor < s.Path.Count)
@@ -260,7 +306,9 @@ namespace SilentOrders.Core
             s.MoveAuthorized = true;
             s.ManeuverPaused = false;
             s.Order = "Удар во фланг / тыл";
-            s.Reason = confirmed ? "Товарищи ведут бой; обхожу последнюю известную позицию врага" : "Ориентируюсь по направлению огня товарищей; ищу сектор";
+            s.Reason = confirmed
+                ? "Товарищи ведут бой; обхожу последнюю известную позицию врага"
+                : "Ориентируюсь по направлению огня товарищей; ищу сектор";
             return true;
         }
     }

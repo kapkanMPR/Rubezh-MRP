@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using SilentOrders.Core;
 
 namespace Rubezh.UnityPort
@@ -10,28 +10,60 @@ namespace Rubezh.UnityPort
         Compact,
         Full,
         Important,
-        Off
+        Off,
     }
 
     public static class SpeechPresentation
     {
-        public static readonly string[] ModeNames =
-        {
-            "Кратко",
-            "Полностью",
-            "Важное",
-            "Выключено"
-        };
+        public static readonly string[] ModeNames = { "Кратко", "Полностью", "Важное", "Выключено" };
+
         public static string Name(SpeechMode mode)
         {
             return ModeNames[(int)mode].ToLowerInvariant();
         }
 
-        public static IEnumerable<Soldier> Choose(BattleSimulation b, int selected, SpeechMode mode, int limit, Func<Soldier, bool> held = null)
+        public static IEnumerable<Soldier> Choose(
+            BattleSimulation b,
+            int selected,
+            SpeechMode mode,
+            int limit,
+            Func<Soldier, bool> held = null
+        )
         {
             if (mode == SpeechMode.Off)
                 return Enumerable.Empty<Soldier>();
-            return b.Soldiers.Where(s => s.Deployed && s.Alive && ((held != null && held(s)) || s.SpeechUntil > b.Time && !string.IsNullOrEmpty(s.Speech)) && (s.Side == Side.Green && ((held != null && held(s)) || !(s.Id == b.Green.LeaderId && s.Speech == b.Green.CommanderOrder)) && (mode != SpeechMode.Important || (held != null && held(s)) || s.Id == selected || s.SpeechUrgent || s.Id == b.Green.LeaderId) || s.Side == Side.Red && s.RetreatQuoteUntil > b.Time)).OrderByDescending(s => ((held != null && held(s)) ? 20 : 0) + (s.CasualtyRecovery.QuoteUntil > b.Time ? 16 : 0) + (s.Side == Side.Red && s.RetreatQuoteUntil > b.Time ? 12 : 0) + (s.Id == selected ? 8 : 0) + (s.SpeechUrgent ? 4 : 0) + (s.Id == b.Green.LeaderId ? 2 : 0)).ThenByDescending(s => s.SpeechAt).ThenBy(s => s.Id).Take(limit);
+            return b
+                .Soldiers.Where(s =>
+                    s.Deployed
+                    && s.Alive
+                    && ((held != null && held(s)) || s.SpeechUntil > b.Time && !string.IsNullOrEmpty(s.Speech))
+                    && (
+                        s.Side == Side.Green
+                            && (
+                                (held != null && held(s))
+                                || !(s.Id == b.Green.LeaderId && s.Speech == b.Green.CommanderOrder)
+                            )
+                            && (
+                                mode != SpeechMode.Important
+                                || (held != null && held(s))
+                                || s.Id == selected
+                                || s.SpeechUrgent
+                                || s.Id == b.Green.LeaderId
+                            )
+                        || s.Side == Side.Red && s.RetreatQuoteUntil > b.Time
+                    )
+                )
+                .OrderByDescending(s =>
+                    ((held != null && held(s)) ? 20 : 0)
+                    + (s.CasualtyRecovery.QuoteUntil > b.Time ? 16 : 0)
+                    + (s.Side == Side.Red && s.RetreatQuoteUntil > b.Time ? 12 : 0)
+                    + (s.Id == selected ? 8 : 0)
+                    + (s.SpeechUrgent ? 4 : 0)
+                    + (s.Id == b.Green.LeaderId ? 2 : 0)
+                )
+                .ThenByDescending(s => s.SpeechAt)
+                .ThenBy(s => s.Id)
+                .Take(limit);
         }
     }
 
@@ -49,7 +81,11 @@ namespace Rubezh.UnityPort
                 return "В руках: " + (s.LauncherKind == 1 ? "РШГ" : "РПГ-26") + " · основное оружие на спине";
             if (!s.HasBackWeapon)
                 return "";
-            string name = s.BackGunRole == Role.Sniper ? "СВД" : s.BackGunRole == Role.MachineGunner ? "ПКМ" : s.BackVariant == 2 || s.BackVariant == 3 ? "АК + ГП" : "АК";
+            string name =
+                s.BackGunRole == Role.Sniper ? "СВД"
+                : s.BackGunRole == Role.MachineGunner ? "ПКМ"
+                : s.BackVariant == 2 || s.BackVariant == 3 ? "АК + ГП"
+                : "АК";
             return "На спине: " + name + " · " + s.BackAmmo + " патр. в магазине";
         }
 

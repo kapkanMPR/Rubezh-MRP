@@ -8,6 +8,7 @@ namespace Rubezh.UnityPort
     {
         EquipmentUnlock[] newlyUnlocked = new EquipmentUnlock[0];
         Vector2 unlockScroll;
+
         void ProcessBattleCompletion()
         {
             if (WatchingInteresting)
@@ -19,8 +20,13 @@ namespace Rubezh.UnityPort
             if (awarded || battle == null || battle.Outcome == Outcome.Running)
                 return;
             awarded = true;
-            if(testBattle)return;
-            if(IsRaid){CompleteRaidWave();return;}
+            if (testBattle)
+                return;
+            if (IsRaid)
+            {
+                CompleteRaidWave();
+                return;
+            }
             newlyUnlocked = new EquipmentUnlock[0];
             unlockScroll = Vector2.zero;
             if (campBattle != null)
@@ -37,7 +43,11 @@ namespace Rubezh.UnityPort
             newlyUnlocked = CampaignUnlocks.Between(before, progress.completed);
             if (newlyUnlocked.Length > 0)
                 CancelTouchInput();
-            message = "+" + CampaignProgression.Reward(battle.CampaignLevel) + " опыта. " + UnlockNotice(battle.CampaignLevel);
+            message =
+                "+"
+                + CampaignProgression.Reward(battle.CampaignLevel)
+                + " опыта. "
+                + UnlockNotice(battle.CampaignLevel);
             Save();
         }
 
@@ -47,6 +57,5 @@ namespace Rubezh.UnityPort
             unlockScroll = Vector2.zero;
             CancelTouchInput();
         }
-
     }
 }

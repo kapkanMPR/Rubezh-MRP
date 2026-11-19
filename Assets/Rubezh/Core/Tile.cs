@@ -9,6 +9,6 @@ namespace SilentOrders.Core
         Road,
         Rubble,
         LowCover,
-        Wall
+        Wall,
     }
 }

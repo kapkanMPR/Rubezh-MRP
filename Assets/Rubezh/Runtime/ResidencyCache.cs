@@ -41,8 +41,13 @@ namespace Rubezh.UnityPort
 
         public void Remove(K key)
         {
-            Entry e;if(!entries.TryGetValue(key,out e))return;
-            entries.Remove(key);lru.Remove(e.Node);Bytes-=e.Bytes;release(e.Value);
+            Entry e;
+            if (!entries.TryGetValue(key, out e))
+                return;
+            entries.Remove(key);
+            lru.Remove(e.Node);
+            Bytes -= e.Bytes;
+            release(e.Value);
         }
 
         public void Add(K key, V value, long bytes)
@@ -53,7 +58,7 @@ namespace Rubezh.UnityPort
             {
                 Value = value,
                 Bytes = Math.Max(0, bytes),
-                Node = lru.AddLast(key)
+                Node = lru.AddLast(key),
             };
             entries.Add(key, e);
             Bytes += e.Bytes;

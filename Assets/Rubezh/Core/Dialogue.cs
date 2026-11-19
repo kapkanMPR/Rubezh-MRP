@@ -14,7 +14,7 @@ namespace SilentOrders.Core
                 "Обнаружил! Отметил позицию.",
                 "Есть контакт. Командир, прием.",
                 "Внимание, впереди противник.",
-                "Движение у укрытий. Докладываю."
+                "Движение у укрытий. Докладываю.",
             },
             new string[6]
             {
@@ -23,7 +23,7 @@ namespace SilentOrders.Core
                 "Я на месте. Можете идти.",
                 "Держу сектор, прикрою.",
                 "Встал за укрытие. Готов.",
-                "Наблюдаю. Жду вашей перебежки."
+                "Наблюдаю. Жду вашей перебежки.",
             },
             new string[6]
             {
@@ -32,7 +32,7 @@ namespace SilentOrders.Core
                 "Перебежка. Не теряйте нас.",
                 "Двигаемся к следующему укрытию.",
                 "Под прикрытием, вперед.",
-                "Напарник, держись рядом."
+                "Напарник, держись рядом.",
             },
             new string[6]
             {
@@ -41,7 +41,7 @@ namespace SilentOrders.Core
                 "Укрытие занято. Жду второго.",
                 "Позицию занял, прикрываю.",
                 "Здесь. Можно подтягиваться.",
-                "Готов принять следующую группу."
+                "Готов принять следующую группу.",
             },
             new string[6]
             {
@@ -50,7 +50,7 @@ namespace SilentOrders.Core
                 "Сначала займитесь прикрытием.",
                 "Не выхожу: поддержки нет.",
                 "Ждем своих. Не растягиваемся.",
-                "Остановился за укрытием. Жду."
+                "Остановился за укрытием. Жду.",
             },
             new string[6]
             {
@@ -59,7 +59,7 @@ namespace SilentOrders.Core
                 "Перезаряжаюсь за укрытием.",
                 "Пустой. Прикрой на секунду.",
                 "Магазин! Не отпускай сектор.",
-                "Перезарядка. Я пока не прикрываю."
+                "Перезарядка. Я пока не прикрываю.",
             },
             new string[6]
             {
@@ -68,7 +68,7 @@ namespace SilentOrders.Core
                 "Меняй магазин, я смотрю.",
                 "Я готов, оставайся за стенкой.",
                 "Не спеши, прикрытие есть.",
-                "Твой сектор принял."
+                "Твой сектор принял.",
             },
             new string[6]
             {
@@ -77,7 +77,7 @@ namespace SilentOrders.Core
                 "Готов прикрывать.",
                 "Магазин сменил. На связи.",
                 "Прикрытие восстановлено.",
-                "Патроны есть. Держу позицию."
+                "Патроны есть. Держу позицию.",
             },
             new string[6]
             {
@@ -86,7 +86,7 @@ namespace SilentOrders.Core
                 "Слишком плотно. Прижался.",
                 "По мне огонь. Сижу за укрытием.",
                 "Не могу высунуться!",
-                "Весь огонь сюда. Нужна помощь."
+                "Весь огонь сюда. Нужна помощь.",
             },
             new string[6]
             {
@@ -95,7 +95,7 @@ namespace SilentOrders.Core
                 "Прижался. Сектор не держу.",
                 "Не высовываюсь. Мне нужно время.",
                 "Слышу вас... пока не могу.",
-                "Я за укрытием. Не могу стрелять."
+                "Я за укрытием. Не могу стрелять.",
             },
             new string[6]
             {
@@ -104,7 +104,7 @@ namespace SilentOrders.Core
                 "Оставайся в укрытии, прикроем.",
                 "Держись. Группа тебя не бросит.",
                 "Я принял твой сектор.",
-                "Не торопись. Возвращайся, когда сможешь."
+                "Не торопись. Возвращайся, когда сможешь.",
             },
             new string[6]
             {
@@ -113,7 +113,7 @@ namespace SilentOrders.Core
                 "Я в порядке. Готов наблюдать.",
                 "Спасибо. Включаюсь в работу.",
                 "Пришел в себя. Остаюсь с группой.",
-                "Могу продолжать. Я с вами."
+                "Могу продолжать. Я с вами.",
             },
             new string[6]
             {
@@ -122,7 +122,7 @@ namespace SilentOrders.Core
                 "Задело! Ниже, ниже.",
                 "Я ранен, но на связи.",
                 "Есть попадание. Не высовываюсь.",
-                "Задело. Мне нужно укрытие."
+                "Задело. Мне нужно укрытие.",
             },
             new string[6]
             {
@@ -131,7 +131,7 @@ namespace SilentOrders.Core
                 "Один выбыл. Не рассыпаемся.",
                 "Потеряли бойца. Прикрываю.",
                 "Слышали? Держимся вместе.",
-                "Минус один. Командир, прием."
+                "Минус один. Командир, прием.",
             },
             new string[6]
             {
@@ -140,7 +140,7 @@ namespace SilentOrders.Core
                 "Группа, занять укрытия и доложить.",
                 "Держим дистанцию. Проверить прикрытие.",
                 "Не торопимся. Собираю подтверждения.",
-                "Первая задача — прикрыть перемещение."
+                "Первая задача — прикрыть перемещение.",
             },
             new string[6]
             {
@@ -149,7 +149,7 @@ namespace SilentOrders.Core
                 "Разрешаю перебежку. Остальные держат.",
                 "Двигаемся по приказу, вместе.",
                 "Маневр начинаем. Прикрытие остается.",
-                "Пара вперед. Доложить по прибытии."
+                "Пара вперед. Доложить по прибытии.",
             },
             new string[6]
             {
@@ -158,7 +158,7 @@ namespace SilentOrders.Core
                 "Закрепиться. Проверить напарника.",
                 "Занять укрытие, восстановить строй.",
                 "Прибыли. Готовим смену прикрытия.",
-                "Не уходить дальше. Сначала собрать всех."
+                "Не уходить дальше. Сначала собрать всех.",
             },
             new string[6]
             {
@@ -167,7 +167,7 @@ namespace SilentOrders.Core
                 "Наблюдать подходы. Не выбегать.",
                 "Оборона на месте. Докладывать изменения.",
                 "Держать линию. Напарника не терять.",
-                "Резерв, оставайтесь рядом с группой."
+                "Резерв, оставайтесь рядом с группой.",
             },
             new string[6]
             {
@@ -176,7 +176,7 @@ namespace SilentOrders.Core
                 "Командир выбыл. Принимаю группу.",
                 "Слушайте меня. Сначала соберемся.",
                 "Принимаю командование. Проверка связи.",
-                "Я веду группу. Держите позиции."
+                "Я веду группу. Держите позиции.",
             },
             new string[6]
             {
@@ -185,7 +185,7 @@ namespace SilentOrders.Core
                 "Поделюсь патронами. Оставайся рядом.",
                 "Магазин тебе. Сектор на мне.",
                 "Есть запас, передаю.",
-                "Патроны получил? Держимся вместе."
+                "Патроны получил? Держимся вместе.",
             },
             new string[6]
             {
@@ -194,7 +194,7 @@ namespace SilentOrders.Core
                 "Рубеж перед нами. Не рассыпаемся.",
                 "Последнее перемещение — к точке.",
                 "Дошли. Закрепляемся.",
-                "У точки. Проверить, все ли дошли."
+                "У точки. Проверить, все ли дошли.",
             },
             new string[6]
             {
@@ -203,7 +203,7 @@ namespace SilentOrders.Core
                 "Прикрывающие, согласовать цель.",
                 "Поддержите наших, общий контакт отмечен.",
                 "Согласованный огонь. Движущиеся ждут.",
-                "Цель для прикрытия передаю группе."
+                "Цель для прикрытия передаю группе.",
             },
             new string[6]
             {
@@ -212,7 +212,7 @@ namespace SilentOrders.Core
                 "Нужен проход к товарищу. Прикройте.",
                 "Подхожу. Не оставляйте без прикрытия.",
                 "Раненый рядом. Помогаю ему.",
-                "Медик на подходе. Держись."
+                "Медик на подходе. Держись.",
             },
             new string[6]
             {
@@ -221,7 +221,7 @@ namespace SilentOrders.Core
                 "Тяну своего. Прикрывайте нас.",
                 "Забираю за ближайшее укрытие.",
                 "Не вставай. Я тебя вытащу.",
-                "Переносим помощь в укрытие."
+                "Переносим помощь в укрытие.",
             },
             new string[6]
             {
@@ -230,7 +230,7 @@ namespace SilentOrders.Core
                 "Начал перевязку. Дайте время.",
                 "Держись. Оказываю помощь.",
                 "Жгут использую. Не высовывайся.",
-                "Остановились за укрытием. Помогаю."
+                "Остановились за укрытием. Помогаю.",
             },
             new string[6]
             {
@@ -239,7 +239,7 @@ namespace SilentOrders.Core
                 "Стабилизировал. Держись рядом.",
                 "Жгут наложен. Возвращаюсь к группе.",
                 "Стало лучше. Не торопись.",
-                "Готово. Остаемся под прикрытием."
+                "Готово. Остаемся под прикрытием.",
             },
             new string[6]
             {
@@ -248,7 +248,7 @@ namespace SilentOrders.Core
                 "Дымовая завеса. Проверяйте своих.",
                 "Помогающим — дым перед вами.",
                 "Дым на направлении огня.",
-                "Ставлю дым. Сектор виден хуже."
+                "Ставлю дым. Сектор виден хуже.",
             },
             new string[6]
             {
@@ -257,7 +257,7 @@ namespace SilentOrders.Core
                 "Одноразовый — по отмеченному контакту.",
                 "Пуск. Возвращаюсь к автомату.",
                 "Выстрел из гранатомета.",
-                "Работаю по группе у укрытий."
+                "Работаю по группе у укрытий.",
             },
             new string[6]
             {
@@ -266,7 +266,7 @@ namespace SilentOrders.Core
                 "Не застреваем. Перестраиваем маневр.",
                 "Обход под общим прикрытием.",
                 "Меняем направление, держимся группой.",
-                "Пулемет остается. Маневренные — на фланг."
+                "Пулемет остается. Маневренные — на фланг.",
             },
             new string[6]
             {
@@ -275,7 +275,7 @@ namespace SilentOrders.Core
                 "Два направления, одна группа. Связь держать.",
                 "Расширяем позиции под общим прикрытием.",
                 "Края занять, центр остается на месте.",
-                "Фланги работают согласованно."
+                "Фланги работают согласованно.",
             },
             new string[6]
             {
@@ -284,7 +284,7 @@ namespace SilentOrders.Core
                 "Сначала сохраним людей. Локальный отход.",
                 "Позицию меняем. Далеко не уходить.",
                 "Отходим по частям. Не бросать своих.",
-                "Перегруппировка рядом. Держать связь."
+                "Перегруппировка рядом. Держать связь.",
             },
             new string[6]
             {
@@ -293,7 +293,7 @@ namespace SilentOrders.Core
                 "Короб пуст. Держите мой сектор.",
                 "Заряжаю новый короб за укрытием.",
                 "Смена короба. Напарник, прикрой.",
-                "Перезаряжаю пулемет. На месте."
+                "Перезаряжаю пулемет. На месте.",
             },
             new string[6]
             {
@@ -302,8 +302,8 @@ namespace SilentOrders.Core
                 "Ноги не держат. Подтащите меня.",
                 "Сам не выйду. Прикройте.",
                 "Мне нужна эвакуация за укрытие.",
-                "Я жив. Нужен медик рядом."
-            }
+                "Я жив. Нужен медик рядом.",
+            },
         };
         public const int Contact = 0;
         public const int Ready = 1;
@@ -342,25 +342,25 @@ namespace SilentOrders.Core
         {
             get
             {
-                int num = 0;
+                int phraseCount = 0;
                 string[][] lines = Lines;
                 foreach (string[] array in lines)
                 {
-                    num += array.Length;
+                    phraseCount += array.Length;
                 }
 
-                return num;
+                return phraseCount;
             }
         }
 
-        public static bool CanAct(SilentOrders.Core.Soldier s)
+        public static bool CanAct(Soldier s)
         {
             return s.Available && !s.Broken && s.Suppression < 0.8f;
         }
 
-        public static bool HasRole(SilentOrders.Core.BattleSimulation b, SilentOrders.Core.Side side, SilentOrders.Core.Role role)
+        public static bool HasRole(BattleSimulation b, Side side, Role role)
         {
-            foreach (SilentOrders.Core.Soldier soldier in b.Soldiers)
+            foreach (Soldier soldier in b.Soldiers)
             {
                 if (soldier.Side == side && soldier.Role == role && CanAct(soldier))
                 {
@@ -373,11 +373,14 @@ namespace SilentOrders.Core
 
         struct VoiceContext
         {
-            public int Active, Maneuver, Alive;
-            public bool Medic, MachineGunner;
+            public int Active,
+                Maneuver,
+                Alive;
+            public bool Medic,
+                MachineGunner;
         }
 
-        static VoiceContext Context(SilentOrders.Core.BattleSimulation b, SilentOrders.Core.Side side)
+        static VoiceContext Context(BattleSimulation b, Side side)
         {
             var result = new VoiceContext();
             var squad = b.Team(side);
@@ -392,23 +395,23 @@ namespace SilentOrders.Core
                 result.Active++;
                 if (squad.ManeuverIds.Contains(unit.Id))
                     result.Maneuver++;
-                if (unit.Role == SilentOrders.Core.Role.Medic)
+                if (unit.Role == Role.Medic)
                     result.Medic = true;
-                if (unit.Role == SilentOrders.Core.Role.MachineGunner)
+                if (unit.Role == Role.MachineGunner)
                     result.MachineGunner = true;
             }
 
             return result;
         }
 
-        public static string Adapt(SilentOrders.Core.BattleSimulation b, SilentOrders.Core.Soldier speaker, string phrase)
+        public static string Adapt(BattleSimulation b, Soldier speaker, string phrase)
         {
             if (string.IsNullOrEmpty(phrase))
                 return phrase;
             return Adapt(b, speaker, phrase, Context(b, speaker.Side));
         }
 
-        static string Adapt(SilentOrders.Core.BattleSimulation b, SilentOrders.Core.Soldier speaker, string phrase, VoiceContext context)
+        static string Adapt(BattleSimulation b, Soldier speaker, string phrase, VoiceContext context)
         {
             if (string.IsNullOrEmpty(phrase))
             {
@@ -416,47 +419,69 @@ namespace SilentOrders.Core
             }
 
             if (phrase.Contains("за укрытием") && !PositionLogic.Protected(b, speaker, speaker.Position))
-                phrase = phrase.Replace("Я за укрытием", "Я на позиции").Replace("Сижу за укрытием", "Прижался к земле").Replace("сижу за укрытием", "прижался к земле").Replace("Остановился за укрытием", "Остановился").Replace("Ранен. Остаюсь за укрытием", "Ранен. Мне нужна защита");
-            int num = context.Maneuver, num2 = context.Active;
+                phrase = phrase
+                    .Replace("Я за укрытием", "Я на позиции")
+                    .Replace("Сижу за укрытием", "Прижался к земле")
+                    .Replace("сижу за укрытием", "прижался к земле")
+                    .Replace("Остановился за укрытием", "Остановился")
+                    .Replace("Ранен. Остаюсь за укрытием", "Ранен. Мне нужна защита");
+            int maneuverCount = context.Maneuver,
+                activeFighters = context.Active;
             if (!context.Medic)
             {
-                phrase = phrase.Replace("поддержку и медика", "оставшихся бойцов").Replace("Нужен медик рядом", "Нужна помощь");
+                phrase = phrase
+                    .Replace("поддержку и медика", "оставшихся бойцов")
+                    .Replace("Нужен медик рядом", "Нужна помощь");
                 if (phrase.ToLowerInvariant().Contains("медик"))
                 {
                     phrase = "Помощь по возможности. Бережём оставшихся";
                 }
             }
 
-            if (phrase.Contains("Медик на подходе") && speaker.Role != SilentOrders.Core.Role.Medic)
+            if (phrase.Contains("Медик на подходе") && speaker.Role != Role.Medic)
             {
                 phrase = "Иду на помощь. Держись";
             }
 
             if (!context.MachineGunner)
             {
-                phrase = phrase.Replace("пулемет и центр прикрывают", "оставшиеся держат позиции").Replace("пулемет прикрывает", "оставшиеся держат позиции");
+                phrase = phrase
+                    .Replace("пулемет и центр прикрывают", "оставшиеся держат позиции")
+                    .Replace("пулемет прикрывает", "оставшиеся держат позиции");
                 if (phrase.Contains("Пулемет остается"))
                 {
                     phrase = "Меняем направление по готовности оставшихся";
                 }
             }
 
-            SilentOrders.Core.Soldier s = speaker.BuddyId >= 0 && speaker.BuddyId < b.Soldiers.Count ? b.Soldiers[speaker.BuddyId] : null;
+            Soldier s = speaker.BuddyId >= 0 && speaker.BuddyId < b.Soldiers.Count ? b.Soldiers[speaker.BuddyId] : null;
             if (s == null || s.Id == speaker.Id || s.Side != speaker.Side || !CanAct(s))
             {
-                phrase = phrase.Replace("Напарник, прикрой!", "Прикрытие нужно!").Replace("Напарник, прикрой.", "Нужно прикрытие.").Replace("Напарник, держись рядом.", "Держусь укрытий.").Replace("Проверить напарника", "Проверить связь").Replace("Напарника не терять", "Связь не терять");
+                phrase = phrase
+                    .Replace("Напарник, прикрой!", "Прикрытие нужно!")
+                    .Replace("Напарник, прикрой.", "Нужно прикрытие.")
+                    .Replace("Напарник, держись рядом.", "Держусь укрытий.")
+                    .Replace("Проверить напарника", "Проверить связь")
+                    .Replace("Напарника не терять", "Связь не терять");
                 if (phrase.Contains("Жду второго"))
                 {
                     phrase = phrase.Replace("Жду второго", "Проверяю сектор");
                 }
             }
 
-            if (num < 2)
+            if (maneuverCount < 2)
             {
-                phrase = phrase.Replace("Пара меняет направление", "Боец меняет направление").Replace("Пара вперед", "Боец вперед").Replace("маневренная пара обходит", "маневренный боец меняет позицию").Replace("вместе с парой по сигналу", "по сигналу командира");
+                phrase = phrase
+                    .Replace("Пара меняет направление", "Боец меняет направление")
+                    .Replace("Пара вперед", "Боец вперед")
+                    .Replace("маневренная пара обходит", "маневренный боец меняет позицию")
+                    .Replace("вместе с парой по сигналу", "по сигналу командира");
             }
 
-            if ((num2 < 3 || num < 2) && (phrase.Contains("Два фланга") || phrase.Contains("два фланга") || phrase.Contains("оба фланга")))
+            if (
+                (activeFighters < 3 || maneuverCount < 2)
+                && (phrase.Contains("Два фланга") || phrase.Contains("два фланга") || phrase.Contains("оба фланга"))
+            )
             {
                 phrase = "Состав сокращён. Доступное направление по готовности";
             }
@@ -464,9 +489,31 @@ namespace SilentOrders.Core
             if (context.Alive == 1)
             {
                 string text = phrase.ToLowerInvariant();
-                if (text.Contains("групп") || text.Contains("остальн") || text.Contains("оставш") || text.Contains("бережём") || text.Contains("двигаемся") || text.Contains("держимся") || text.Contains("прикроем") || text.Contains("нас") || text.Contains("все") || text.Contains("своих") || text.Contains("медик") || text.Contains("поддержк") || text.Contains("прикры") || text.Contains("напарник") || text.Contains("вместе") || text.Contains("пара") || text.Contains("фланг") || text.Contains("двое") || text.Contains("второго"))
+                if (
+                    text.Contains("групп")
+                    || text.Contains("остальн")
+                    || text.Contains("оставш")
+                    || text.Contains("бережём")
+                    || text.Contains("двигаемся")
+                    || text.Contains("держимся")
+                    || text.Contains("прикроем")
+                    || text.Contains("нас")
+                    || text.Contains("все")
+                    || text.Contains("своих")
+                    || text.Contains("медик")
+                    || text.Contains("поддержк")
+                    || text.Contains("прикры")
+                    || text.Contains("напарник")
+                    || text.Contains("вместе")
+                    || text.Contains("пара")
+                    || text.Contains("фланг")
+                    || text.Contains("двое")
+                    || text.Contains("второго")
+                )
                 {
-                    return speaker.Incapacitated ? "Остался один. Сам двигаться не могу" : (speaker.Broken ? "Остался один. Не могу вести бой" : "Остался один. Действую из укрытия");
+                    return speaker.Incapacitated
+                        ? "Остался один. Сам двигаться не могу"
+                        : (speaker.Broken ? "Остался один. Не могу вести бой" : "Остался один. Действую из укрытия");
                 }
             }
 
@@ -477,7 +524,11 @@ namespace SilentOrders.Core
         {
             if (string.IsNullOrEmpty(phrase))
                 return "";
-            if (phrase.Contains("не прикрываю") || phrase.Contains("пока не готов") || phrase.Contains("Прикрытие снято"))
+            if (
+                phrase.Contains("не прикрываю")
+                || phrase.Contains("пока не готов")
+                || phrase.Contains("Прикрытие снято")
+            )
                 return "Прикрытие снято";
             if (phrase.Contains("Проверяю сектор") || phrase.Contains("Проверяю позицию"))
                 return "Проверяю позицию";
@@ -545,7 +596,12 @@ namespace SilentOrders.Core
                 return "Прикрытие";
             }
 
-            if (text.Contains("двиг") || text.Contains("перебеж") || text.Contains("маневр") || text.Contains("направлен"))
+            if (
+                text.Contains("двиг")
+                || text.Contains("перебеж")
+                || text.Contains("маневр")
+                || text.Contains("направлен")
+            )
             {
                 return "Меняю позицию";
             }
@@ -563,15 +619,15 @@ namespace SilentOrders.Core
             return (phrase.Length <= 28) ? phrase : (phrase.Substring(0, 25).TrimEnd() + "…");
         }
 
-        public static void Refresh(SilentOrders.Core.BattleSimulation b)
+        public static void Refresh(BattleSimulation b)
         {
-            var green = Context(b, SilentOrders.Core.Side.Green);
-            var red = Context(b, SilentOrders.Core.Side.Red);
+            var green = Context(b, Side.Green);
+            var red = Context(b, Side.Red);
             foreach (var soldier in b.Soldiers)
             {
                 if (!soldier.Alive)
                     continue;
-                var context = soldier.Side == SilentOrders.Core.Side.Green ? green : red;
+                var context = soldier.Side == Side.Green ? green : red;
                 string speech = Adapt(b, soldier, soldier.Speech, context);
                 if (speech != soldier.Speech || string.IsNullOrEmpty(soldier.SpeechShort))
                     soldier.SpeechShort = Short(speech);
@@ -583,7 +639,7 @@ namespace SilentOrders.Core
             RefreshSquad(b, b.Red, red);
         }
 
-        static void RefreshSquad(SilentOrders.Core.BattleSimulation b, SilentOrders.Core.Squad squad, VoiceContext context)
+        static void RefreshSquad(BattleSimulation b, Squad squad, VoiceContext context)
         {
             if (squad.LeaderId < 0 || squad.LeaderId >= b.Soldiers.Count)
                 return;
@@ -593,23 +649,23 @@ namespace SilentOrders.Core
             squad.Execution = Adapt(b, speaker, squad.Execution, context);
         }
 
-        public static void Say(SilentOrders.Core.BattleSimulation b, SilentOrders.Core.Soldier s, int category, bool urgent = false)
+        public static void Say(BattleSimulation b, Soldier s, int category, bool urgent = false)
         {
             if (EventVoice.Handle(b, s, category))
                 return;
             if (s.Alive && (urgent || !(b.Time < s.SpeechCooldown)))
             {
-                int num = b.VoiceRandom.Int(Lines[category].Length);
-                int num2 = category * 10 + num;
-                if (s.LastPhrase == num2)
+                int lineIndex = b.VoiceRandom.Int(Lines[category].Length);
+                int lineKey = category * 10 + lineIndex;
+                if (s.LastPhrase == lineKey)
                 {
-                    num = (num + 1) % Lines[category].Length;
-                    num2 = category * 10 + num;
+                    lineIndex = (lineIndex + 1) % Lines[category].Length;
+                    lineKey = category * 10 + lineIndex;
                 }
 
-                s.LastPhrase = num2;
-                string text = Lines[category][num];
-                if (category == 22 && s.Role != SilentOrders.Core.Role.Medic && text.Contains("Медик"))
+                s.LastPhrase = lineKey;
+                string text = Lines[category][lineIndex];
+                if (category == 22 && s.Role != Role.Medic && text.Contains("Медик"))
                 {
                     text = "Иду на помощь. Держись.";
                 }

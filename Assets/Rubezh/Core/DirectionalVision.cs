@@ -7,22 +7,50 @@ namespace SilentOrders.Core
         public readonly SurpriseBurstState Surprise = new SurpriseBurstState();
         public readonly ContactMoveState ContactMove = new ContactMoveState();
         public readonly ReactionState Reaction = new ReactionState();
-        public float MarchRouteUntil, ContactSprintUntil;
-        public V2 Look, AlertPosition, Watch;
-        public bool Initialized, Focused;
-        public int SuppressedKnownSounds, FocusTarget = -1, FocusStarts, FocusBreaks, Scans, HeardAlerts, RearDetections, SideDetections;
+        public float MarchRouteUntil,
+            ContactSprintUntil;
+        public V2 Look,
+            AlertPosition,
+            Watch;
+        public bool Initialized,
+            Focused;
+        public int SuppressedKnownSounds,
+            FocusTarget = -1,
+            FocusStarts,
+            FocusBreaks,
+            Scans,
+            HeardAlerts,
+            RearDetections,
+            SideDetections;
         public float FocusWorkedAt = -100;
-        public float UpdatedAt, NextScan, ScanUntil, ScanAngle, AlertUntil, LastHeard = -100, FocusSince, FocusLastSeen, FocusBlockedUntil, Health;
+        public float UpdatedAt,
+            NextScan,
+            ScanUntil,
+            ScanAngle,
+            AlertUntil,
+            LastHeard = -100,
+            FocusSince,
+            FocusLastSeen,
+            FocusBlockedUntil,
+            Health;
     }
 
     public static class DirectionalVision
     {
         const float Rad = (float)Math.PI / 180f;
+
         public static float FrontRange(BattleSimulation b, Soldier s)
         {
             if (s.Incapacitated)
                 return b.Config.SightRange * .6f * SuppressionRange(b, s);
-            float range = s.Sniper ? Math.Max(b.Config.SightRange, b.WeaponRange(s)) : b.Config.SightRange + (s.Role == Role.MachineGunner ? 6f : s.Role == Role.Grenadier ? 9f : 2f);
+            float range = s.Sniper
+                ? Math.Max(b.Config.SightRange, b.WeaponRange(s))
+                : b.Config.SightRange
+                    + (
+                        s.Role == Role.MachineGunner ? 6f
+                        : s.Role == Role.Grenadier ? 9f
+                        : 2f
+                    );
             // Kedr owns these binoculars personally; successors retain their own optics.
             if (s.Side == Side.Green)
             {
@@ -39,9 +67,14 @@ namespace SilentOrders.Core
             return range * SuppressionRange(b, s);
         }
 
-        public static float SuppressionAngle(BattleSimulation b, Soldier s) => !b.SuppressionVisionEnabled || b.Historical01225 ? 1 : 1 - .35f * Util.Clamp(s.Suppression, 0, 1);
-        public static float SuppressionRange(BattleSimulation b, Soldier s) => !b.SuppressionVisionEnabled || b.Historical01225 ? 1 : 1 - .15f * Util.Clamp(s.Suppression, 0, 1);
+        public static float SuppressionAngle(BattleSimulation b, Soldier s) =>
+            !b.SuppressionVisionEnabled || b.Historical01225 ? 1 : 1 - .35f * Util.Clamp(s.Suppression, 0, 1);
+
+        public static float SuppressionRange(BattleSimulation b, Soldier s) =>
+            !b.SuppressionVisionEnabled || b.Historical01225 ? 1 : 1 - .15f * Util.Clamp(s.Suppression, 0, 1);
+
         static float Lerp(float a, float z, float t) => a + (z - a) * Util.Clamp(t, 0, 1);
+
         public static float Multiplier(float angle, bool focus)
         {
             angle = Math.Abs(angle);
@@ -78,15 +111,20 @@ namespace SilentOrders.Core
 
         static V2 Rotate(V2 a, float radians)
         {
-            float c = (float)Math.Cos(radians), s = (float)Math.Sin(radians);
+            float c = (float)Math.Cos(radians),
+                s = (float)Math.Sin(radians);
             return new V2(a.X * c - a.Y * s, a.X * s + a.Y * c);
         }
 
         public static bool PeripheralFocus(BattleSimulation b) => b.PeripheralFocusEnabled && !b.Historical01225;
-        public static float RangeAtAngle(BattleSimulation b, Soldier s, float degrees) => RangeAtAngle(b, s, degrees, FrontRange(b, s), DefenderRest.Multiplier(b, s));
+
+        public static float RangeAtAngle(BattleSimulation b, Soldier s, float degrees) =>
+            RangeAtAngle(b, s, degrees, FrontRange(b, s), DefenderRest.Multiplier(b, s));
+
         static float RangeAtAngle(BattleSimulation b, Soldier s, float degrees, float front, float rest)
         {
-            float actual = Math.Abs(degrees), angle = Math.Min(180, actual / SuppressionAngle(b, s));
+            float actual = Math.Abs(degrees),
+                angle = Math.Min(180, actual / SuppressionAngle(b, s));
             if (!PeripheralFocus(b))
                 return Math.Max(3f, front * Multiplier(angle, s.Awareness.Focused)) * rest;
             float range = Math.Max(3f, front * Multiplier(angle, false));
@@ -99,7 +137,9 @@ namespace SilentOrders.Core
             return range * rest;
         }
 
-        public static bool InView(BattleSimulation b, Soldier s, V2 point) => InView(b, s, point, V2.Distance(point, s.Position), FrontRange(b, s));
+        public static bool InView(BattleSimulation b, Soldier s, V2 point) =>
+            InView(b, s, point, V2.Distance(point, s.Position), FrontRange(b, s));
+
         internal static bool InView(BattleSimulation b, Soldier s, V2 point, float distance, float front)
         {
             // Resolve alert side effects even for an out-of-range target.
@@ -116,7 +156,8 @@ namespace SilentOrders.Core
                 for (float d = .25f; d <= 1.5f && d < distance; d += .25f)
                 {
                     var at = s.Position + ray * d;
-                    int wx = (int)Math.Floor(at.X), wy = (int)Math.Floor(at.Y);
+                    int wx = (int)Math.Floor(at.X),
+                        wy = (int)Math.Floor(at.Y);
                     if (!b.Map.Inside(wx, wy))
                         break;
                     var tile = b.Map.At(at);
@@ -149,11 +190,29 @@ namespace SilentOrders.Core
 
         public static void WorkOnTarget(BattleSimulation b, Soldier s, Contact c)
         {
-            if (!PeripheralFocus(b) || c == null || !s.Available || s.Broken || s.Motion.Fast || s.ReloadUntil > b.Time || s.Suppression > .65f || s.GrenadeEscape.Active || b.Time < s.Awareness.FocusBlockedUntil)
+            if (
+                !PeripheralFocus(b)
+                || c == null
+                || !s.Available
+                || s.Broken
+                || s.Motion.Fast
+                || s.ReloadUntil > b.Time
+                || s.Suppression > .65f
+                || s.GrenadeEscape.Active
+                || b.Time < s.Awareness.FocusBlockedUntil
+            )
                 return;
             if (s.GunSniper && MotionCombat.InMotion(b, s))
                 return;
-            if (!s.Visible.Contains(c.EnemyId) || !c.Visual || c.Reported || c.Inferred || b.Time - c.SeenAt > b.Config.PerceptionPeriod * 2 || !b.Map.LineOfSight(s.Position, c.Position) || b.SmokeTransmission(s.Position, c.Position) < .25f)
+            if (
+                !s.Visible.Contains(c.EnemyId)
+                || !c.Visual
+                || c.Reported
+                || c.Inferred
+                || b.Time - c.SeenAt > b.Config.PerceptionPeriod * 2
+                || !b.Map.LineOfSight(s.Position, c.Position)
+                || b.SmokeTransmission(s.Position, c.Position) < .25f
+            )
                 return;
             var a = s.Awareness;
             if (!a.Focused || a.FocusTarget != c.EnemyId)
@@ -181,10 +240,20 @@ namespace SilentOrders.Core
         public static void Hear(BattleSimulation b, Soldier s, V2 source, float shotAt)
         {
             var a = s.Awareness;
-            if (shotAt <= a.LastHeard || b.Time - shotAt > b.Config.PerceptionPeriod || V2.Distance(source, s.Position) > 18)
+            if (
+                shotAt <= a.LastHeard
+                || b.Time - shotAt > b.Config.PerceptionPeriod
+                || V2.Distance(source, s.Position) > 18
+            )
                 return;
             foreach (var c in s.Contacts.Values)
-                if (c.Visual && !c.Reported && !c.Inferred && b.Time - c.SeenAt < 1.2f && V2.Distance(c.Position, source) < 1)
+                if (
+                    c.Visual
+                    && !c.Reported
+                    && !c.Inferred
+                    && b.Time - c.SeenAt < 1.2f
+                    && V2.Distance(c.Position, source) < 1
+                )
                 {
                     a.LastHeard = shotAt;
                     a.SuppressedKnownSounds++;
@@ -227,7 +296,18 @@ namespace SilentOrders.Core
 
             float dt = Math.Max(0, b.Time - a.UpdatedAt);
             a.UpdatedAt = b.Time;
-            if (a.Focused && (!s.Available || s.Broken || (s.GunSniper || !PeripheralFocus(b) ? s.Moving : s.Motion.Fast) || s.ReloadUntil > b.Time || s.GrenadeEscape.Active || s.Health < a.Health || s.Suppression > .65f))
+            if (
+                a.Focused
+                && (
+                    !s.Available
+                    || s.Broken
+                    || (s.GunSniper || !PeripheralFocus(b) ? s.Moving : s.Motion.Fast)
+                    || s.ReloadUntil > b.Time
+                    || s.GrenadeEscape.Active
+                    || s.Health < a.Health
+                    || s.Suppression > .65f
+                )
+            )
                 BreakFocus(b, s);
             if (PeripheralFocus(b) && a.Focused && !s.GunSniper && b.Time - a.FocusWorkedAt > 3)
                 BreakFocus(b, s);
@@ -235,7 +315,13 @@ namespace SilentOrders.Core
             Contact focus = null;
             if (a.Focused)
             {
-                if (s.Contacts.TryGetValue(a.FocusTarget, out focus) && focus.Visual && !focus.Reported && !focus.Inferred && b.Time - focus.SeenAt <= b.Config.PerceptionPeriod * 2)
+                if (
+                    s.Contacts.TryGetValue(a.FocusTarget, out focus)
+                    && focus.Visual
+                    && !focus.Reported
+                    && !focus.Inferred
+                    && b.Time - focus.SeenAt <= b.Config.PerceptionPeriod * 2
+                )
                     a.FocusLastSeen = b.Time;
                 else if (b.Time - a.FocusLastSeen > 1)
                     BreakFocus(b, s);
@@ -261,7 +347,14 @@ namespace SilentOrders.Core
                     }
 
                     // A received warning may break tunnel vision, without revealing a hidden unit.
-                    if (a.Focused && c.Reported && b.Time - c.SeenAt < 1 && c.EnemyId != a.FocusTarget && Angle(a.Look, c.Position - s.Position) > 80 && V2.Distance(s.Position, c.Position) < 10)
+                    if (
+                        a.Focused
+                        && c.Reported
+                        && b.Time - c.SeenAt < 1
+                        && c.EnemyId != a.FocusTarget
+                        && Angle(a.Look, c.Position - s.Position) > 80
+                        && V2.Distance(s.Position, c.Position) < 10
+                    )
                         BreakFocus(b, s);
                 }
 
@@ -288,16 +381,26 @@ namespace SilentOrders.Core
                 if (!working)
                 {
                     var observation = b.Team(s).Observation;
-                    float distance = Math.Min(8f, FrontRange(b,s)*.5f);
+                    float distance = Math.Min(8f, FrontRange(b, s) * .5f);
                     bool found = false;
-                    for(int attempt=0;attempt<3;attempt++)
+                    for (int attempt = 0; attempt < 3; attempt++)
                     {
-                        float angle = attempt==0 ? a.ScanAngle : attempt==1 ? -a.ScanAngle : 155f;
-                        V2 point=s.Position+Rotate(wanted,angle*Rad)*distance;
-                        if(observation.ClearedByMate(b,s,point)) continue;
-                        a.ScanAngle=angle;found=true;break;
+                        float angle =
+                            attempt == 0 ? a.ScanAngle
+                            : attempt == 1 ? -a.ScanAngle
+                            : 155f;
+                        V2 point = s.Position + Rotate(wanted, angle * Rad) * distance;
+                        if (observation.ClearedByMate(b, s, point))
+                            continue;
+                        a.ScanAngle = angle;
+                        found = true;
+                        break;
                     }
-                    if(!found) { a.ScanUntil=b.Time; observation.AvoidedChecks++; }
+                    if (!found)
+                    {
+                        a.ScanUntil = b.Time;
+                        observation.AvoidedChecks++;
+                    }
                 }
             }
 
@@ -317,7 +420,8 @@ namespace SilentOrders.Core
                 wanted = openingWatch;
             if (wanted.Length < .1f)
                 wanted = a.Look;
-            float turn = Angle(a.Look, wanted) * Rad, maxTurn = (s.Suppression > .6f ? 85f : 180f) * Rad * dt;
+            float turn = Angle(a.Look, wanted) * Rad,
+                maxTurn = (s.Suppression > .6f ? 85f : 180f) * Rad * dt;
             float cross = a.Look.X * wanted.Y - a.Look.Y * wanted.X;
             if (turn <= maxTurn)
                 a.Look = wanted.Normalized;
@@ -331,7 +435,13 @@ namespace SilentOrders.Core
             if (!s.GunSniper)
                 return true;
             var a = s.Awareness;
-            if (MotionCombat.InMotion(b, s) || s.Motion.Fast || s.ReloadUntil > b.Time || s.Suppression > .65f || b.Time < a.FocusBlockedUntil)
+            if (
+                MotionCombat.InMotion(b, s)
+                || s.Motion.Fast
+                || s.ReloadUntil > b.Time
+                || s.Suppression > .65f
+                || b.Time < a.FocusBlockedUntil
+            )
                 return false;
             if (!s.Visible.Contains(c.EnemyId) || !c.Visual || c.Inferred)
                 return false;

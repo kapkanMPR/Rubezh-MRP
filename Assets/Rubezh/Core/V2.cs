@@ -7,14 +7,14 @@ namespace SilentOrders.Core
     {
         public float X;
         public float Y;
-        public float Length => (float)System.Math.Sqrt(X * X + Y * Y);
+        public float Length => (float)Math.Sqrt(X * X + Y * Y);
 
-        public SilentOrders.Core.V2 Normalized
+        public V2 Normalized
         {
             get
             {
                 float length = Length;
-                return (length > 0.0001f) ? (this / length) : default(SilentOrders.Core.V2);
+                return (length > 0.0001f) ? (this / length) : default(V2);
             }
         }
 
@@ -24,41 +24,41 @@ namespace SilentOrders.Core
             Y = y;
         }
 
-        public static SilentOrders.Core.V2 operator +(SilentOrders.Core.V2 a, SilentOrders.Core.V2 b)
+        public static V2 operator +(V2 a, V2 b)
         {
-            return new SilentOrders.Core.V2(a.X + b.X, a.Y + b.Y);
+            return new V2(a.X + b.X, a.Y + b.Y);
         }
 
-        public static SilentOrders.Core.V2 operator -(SilentOrders.Core.V2 a, SilentOrders.Core.V2 b)
+        public static V2 operator -(V2 a, V2 b)
         {
-            return new SilentOrders.Core.V2(a.X - b.X, a.Y - b.Y);
+            return new V2(a.X - b.X, a.Y - b.Y);
         }
 
-        public static SilentOrders.Core.V2 operator *(SilentOrders.Core.V2 a, float b)
+        public static V2 operator *(V2 a, float b)
         {
-            return new SilentOrders.Core.V2(a.X * b, a.Y * b);
+            return new V2(a.X * b, a.Y * b);
         }
 
-        public static SilentOrders.Core.V2 operator /(SilentOrders.Core.V2 a, float b)
+        public static V2 operator /(V2 a, float b)
         {
-            return new SilentOrders.Core.V2(a.X / b, a.Y / b);
+            return new V2(a.X / b, a.Y / b);
         }
 
-        public static float Distance(SilentOrders.Core.V2 a, SilentOrders.Core.V2 b)
+        public static float Distance(V2 a, V2 b)
         {
             return (a - b).Length;
         }
 
-        public static float Dot(SilentOrders.Core.V2 a, SilentOrders.Core.V2 b)
+        public static float Dot(V2 a, V2 b)
         {
             return a.X * b.X + a.Y * b.Y;
         }
 
-        public static float SegmentDistance(SilentOrders.Core.V2 p, SilentOrders.Core.V2 a, SilentOrders.Core.V2 b)
+        public static float SegmentDistance(V2 p, V2 a, V2 b)
         {
-            SilentOrders.Core.V2 v = b - a;
-            float num = Dot(v, v);
-            float b2 = ((num < 0.0001f) ? 0f : SilentOrders.Core.Util.Clamp(Dot(p - a, v) / num, 0f, 1f));
+            V2 v = b - a;
+            float lengthSquared = Dot(v, v);
+            float b2 = ((lengthSquared < 0.0001f) ? 0f : Util.Clamp(Dot(p - a, v) / lengthSquared, 0f, 1f));
             return Distance(p, a + v * b2);
         }
     }

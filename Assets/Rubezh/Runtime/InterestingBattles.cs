@@ -9,21 +9,31 @@ namespace Rubezh.UnityPort
     public sealed class InterestingOrder
     {
         public float time;
-        public int style, intent;
+        public int style,
+            intent;
     }
 
     [Serializable]
     public sealed class InterestingExpected
     {
-        public int Id, Shots, Kills, Ammo, Reserve;
-        public float Health, DamageDealt;
+        public int Id,
+            Shots,
+            Kills,
+            Ammo,
+            Reserve;
+        public float Health,
+            DamageDealt;
     }
 
     [Serializable]
     public sealed class InterestingBattle
     {
-        public int id, seed;
-        public string kit, outcome, title, description;
+        public int id,
+            seed;
+        public string kit,
+            outcome,
+            title,
+            description;
         public int[] training;
         public FormationSettings formation;
         public InterestingOrder[] orders;
@@ -35,16 +45,24 @@ namespace Rubezh.UnityPort
     public sealed class InterestingArchive
     {
         public const string SupportedSourceVersion = "AI-0.12.25-test";
-        public const string CompatibilityWarning = "Архив AI-0.12.25. Это пересчёт текущим ИИ, не точный повтор: историческая совместимость нарушена, исход и действия могут отличаться.";
+        public const string CompatibilityWarning =
+            "Архив AI-0.12.25. Это пересчёт текущим ИИ, не точный повтор: историческая совместимость нарушена, исход и действия могут отличаться.";
         public string engineVersion;
         public BuiltinCampaign.Map map;
         public InterestingBattle[] battles;
+
         // The archived engine is not bundled. Matching a final result alone cannot prove replay parity.
         public bool HistoricalCompatibilityVerified => false;
 
         public void Validate()
         {
-            if (engineVersion != SupportedSourceVersion || map == null || map.formatVersion != 3 || battles == null || battles.Length == 0)
+            if (
+                engineVersion != SupportedSourceVersion
+                || map == null
+                || map.formatVersion != 3
+                || battles == null
+                || battles.Length == 0
+            )
                 throw new InvalidOperationException("Неподдерживаемая версия или структура архива.");
             if (battles.Any(e => e == null) || battles.Select(e => e.id).Distinct().Count() != battles.Length)
                 throw new InvalidOperationException("Повреждён список архивных боёв.");
@@ -53,19 +71,50 @@ namespace Rubezh.UnityPort
         }
 
         static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+
         public static void ValidateEntry(InterestingBattle entry)
         {
-            if (entry == null || entry.id < 0 || string.IsNullOrEmpty(entry.kit) || entry.training == null || entry.training.Length != Progress.TrainingCount || entry.training.Any(t => t < 0 || t > 3) || entry.formation == null || !entry.formation.Valid() || entry.orders == null || entry.orders.Length == 0 || entry.expected == null || entry.expected.Length == 0 || !Finite(entry.duration) || entry.duration <= 0 || !Enum.TryParse<Outcome>(entry.outcome, out var outcome) || !Enum.IsDefined(typeof(Outcome), outcome) || outcome == Outcome.Running)
+            if (
+                entry == null
+                || entry.id < 0
+                || string.IsNullOrEmpty(entry.kit)
+                || entry.training == null
+                || entry.training.Length != Progress.TrainingCount
+                || entry.training.Any(t => t < 0 || t > 3)
+                || entry.formation == null
+                || !entry.formation.Valid()
+                || entry.orders == null
+                || entry.orders.Length == 0
+                || entry.expected == null
+                || entry.expected.Length == 0
+                || !Finite(entry.duration)
+                || entry.duration <= 0
+                || !Enum.TryParse<Outcome>(entry.outcome, out var outcome)
+                || !Enum.IsDefined(typeof(Outcome), outcome)
+                || outcome == Outcome.Running
+            )
                 throw new InvalidOperationException("Повреждены исходные данные архивного боя.");
             float previous = -1;
             foreach (var order in entry.orders)
             {
-                if (order == null || !Finite(order.time) || order.time < 0 || order.time < previous || order.style < 0 || order.style > 4 || order.intent < 0 || order.intent > 8)
+                if (
+                    order == null
+                    || !Finite(order.time)
+                    || order.time < 0
+                    || order.time < previous
+                    || order.style < 0
+                    || order.style > 4
+                    || order.intent < 0
+                    || order.intent > 8
+                )
                     throw new InvalidOperationException("Повреждена последовательность приказов архива.");
                 previous = order.time;
             }
 
-            if (entry.expected.Any(e => e == null || e.Id < 0 || !Finite(e.Health) || !Finite(e.DamageDealt)) || entry.expected.Select(e => e.Id).Distinct().Count() != entry.expected.Length)
+            if (
+                entry.expected.Any(e => e == null || e.Id < 0 || !Finite(e.Health) || !Finite(e.DamageDealt))
+                || entry.expected.Select(e => e.Id).Distinct().Count() != entry.expected.Length
+            )
                 throw new InvalidOperationException("Повреждён ожидаемый результат архивного боя.");
         }
 
@@ -90,7 +139,11 @@ namespace Rubezh.UnityPort
         public readonly BattleSimulation Battle;
         int nextOrder;
         public bool HistoricalCompatibilityVerified => false;
-        public string ResultStatus => Battle.Outcome == Outcome.Running ? "Пересчёт текущим ИИ продолжается; точный исторический повтор не поддерживается." : MatchesResult() ? "Итоговые показатели совпали. Точность исторического хода боя не подтверждена." : "Пересчёт текущим ИИ отличается от архива AI-0.12.25. Исторический движок не восстановлен.";
+        public string ResultStatus =>
+            Battle.Outcome == Outcome.Running
+                ? "Пересчёт текущим ИИ продолжается; точный исторический повтор не поддерживается."
+            : MatchesResult() ? "Итоговые показатели совпали. Точность исторического хода боя не подтверждена."
+            : "Пересчёт текущим ИИ отличается от архива AI-0.12.25. Исторический движок не восстановлен.";
 
         public InterestingSession(InterestingArchive archive, InterestingBattle entry)
         {
@@ -101,7 +154,10 @@ namespace Rubezh.UnityPort
             Entry = entry;
             Battle = new BattleSimulation(entry.seed);
             Battle.Historical01225 = true;
-            if (!SquadLoadout.Apply(Battle, entry.kit) || !CampaignScenario.Apply(Battle, "20,19," + string.Join(",", entry.training)))
+            if (
+                !SquadLoadout.Apply(Battle, entry.kit)
+                || !CampaignScenario.Apply(Battle, "20,19," + string.Join(",", entry.training))
+            )
                 throw new InvalidOperationException("Повреждён исходный состав боя.");
             var level = archive.map.Create();
             try
@@ -139,7 +195,15 @@ namespace Rubezh.UnityPort
             foreach (var expected in Entry.expected)
             {
                 var actual = Battle.Soldiers.FirstOrDefault(s => s.Id == expected.Id);
-                if (actual == null || Math.Abs(actual.Health - expected.Health) > .02f || actual.Shots != expected.Shots || actual.Kills != expected.Kills || actual.Ammo != expected.Ammo || actual.Reserve != expected.Reserve || Math.Abs(actual.DamageDealt - expected.DamageDealt) > .05f)
+                if (
+                    actual == null
+                    || Math.Abs(actual.Health - expected.Health) > .02f
+                    || actual.Shots != expected.Shots
+                    || actual.Kills != expected.Kills
+                    || actual.Ammo != expected.Ammo
+                    || actual.Reserve != expected.Reserve
+                    || Math.Abs(actual.DamageDealt - expected.DamageDealt) > .05f
+                )
                     return false;
             }
 
@@ -153,13 +217,8 @@ namespace Rubezh.UnityPort
         InterestingSession interestingSession;
         bool WatchingInteresting
         {
-            get
-            {
-                return interestingSession != null && battle == interestingSession.Battle;
-            }
+            get { return interestingSession != null && battle == interestingSession.Battle; }
         }
-
-
 
         void StartInteresting(InterestingBattle entry)
         {
@@ -171,37 +230,41 @@ namespace Rubezh.UnityPort
                     interestingArchive = InterestingArchive.Load();
                 var session = new InterestingSession(interestingArchive, entry);
                 // Replays share native presentation but never adopt live-operation rewards.
-                testBattle=false;campBattle=null;
+                testBattle = false;
+                campBattle = null;
 #if UNITY_5_3_OR_NEWER
-                unityTestBattle=true;
+                unityTestBattle = true;
 #endif
-                QueueBattleLoad(session.Battle, () =>
-                {
-                    CancelTouchInput();
-                    interestingSession = session;
-                    battle = session.Battle;
-                    battle.AudioEvents.Enabled = true;
-                    campaignMode = false;
-                    mission = 20;
-                    screen = 2;
-                    paused = false;
-                    awarded = true;
-                    accumulator = 0;
-                    selected = 0;
-                    speed = 1;
-                    drawer = "";
-                    pickOptions = null;
-                    pickApply = null;
-                    zoom = 1;
-                    pan = Vector2.zero;
-                    style = entry.orders[0].style;
-                    maneuver = entry.orders[0].intent;
-                    message = "";
-                    nextFrame = 0;
-                    renderedBattle = null;
-                    newlyUnlocked = new EquipmentUnlock[0];
-                    unlockScroll = Vector2.zero;
-                });
+                QueueBattleLoad(
+                    session.Battle,
+                    () =>
+                    {
+                        CancelTouchInput();
+                        interestingSession = session;
+                        battle = session.Battle;
+                        battle.AudioEvents.Enabled = true;
+                        campaignMode = false;
+                        mission = 20;
+                        screen = ScreenId.Battle;
+                        paused = false;
+                        awarded = true;
+                        accumulator = 0;
+                        selected = 0;
+                        speed = 1;
+
+                        pickOptions = null;
+                        pickApply = null;
+                        zoom = 1;
+                        pan = Vector2.zero;
+                        style = entry.orders[0].style;
+                        maneuver = entry.orders[0].intent;
+                        message = "";
+                        nextFrame = 0;
+                        renderedBattle = null;
+                        newlyUnlocked = new EquipmentUnlock[0];
+                        unlockScroll = Vector2.zero;
+                    }
+                );
             }
             catch (Exception ex)
             {

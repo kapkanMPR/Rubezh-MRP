@@ -6,12 +6,16 @@ namespace SilentOrders.Core
     {
         public float Until;
         public bool Approved;
-        public int Reviews, Reserved, Urgent;
+        public int Reviews,
+            Reserved,
+            Urgent;
     }
 
     public static class HeavyWeaponPolicy
     {
-        public const float BalancedUseChance = .75f, ReviewSeconds = 8f;
+        public const float BalancedUseChance = .75f,
+            ReviewSeconds = 8f;
+
         public static bool Urgent(BattleSimulation b, Soldier s, Contact c)
         {
             if (BreakthroughTactics.Assigned(b, s) || CounterSniper.AreaFire(b, s, c))
@@ -19,11 +23,24 @@ namespace SilentOrders.Core
             if (b.Time - s.LastIncoming < 2 && s.Suppression >= .4f)
                 return true;
             foreach (var ally in b.Soldiers)
-                if (ally != s && b.Team(s).Contains(ally) && ally.Available && b.Time - ally.LastIncoming < 2 && ally.Suppression >= .6f && b.Time - c.FireSeenAt < 3 && V2.Distance(ally.Position, c.Position) < b.WeaponRange(ally) + 2)
+                if (
+                    ally != s
+                    && b.Team(s).Contains(ally)
+                    && ally.Available
+                    && b.Time - ally.LastIncoming < 2
+                    && ally.Suppression >= .6f
+                    && b.Time - c.FireSeenAt < 3
+                    && V2.Distance(ally.Position, c.Position) < b.WeaponRange(ally) + 2
+                )
                     return true;
             int nearby = 0;
             foreach (var x in s.Contacts.Values)
-                if (x.Visual && x.Confidence >= .7f && b.Time - x.SeenAt < 2.5f && V2.Distance(x.Position, c.Position) <= 2.7f)
+                if (
+                    x.Visual
+                    && x.Confidence >= .7f
+                    && b.Time - x.SeenAt < 2.5f
+                    && V2.Distance(x.Position, c.Position) <= 2.7f
+                )
                     nearby++;
             return nearby >= 3;
         }
@@ -85,7 +102,12 @@ namespace SilentOrders.Core
 
         public static float BreakChance(BattleMap map, int cell, int launcher)
         {
-            if (cell < 0 || cell >= map.Tiles.Length || map.Tiles[cell] != Tile.LowCover || map.VehicleFootprint != null && map.VehicleFootprint[cell] != 0)
+            if (
+                cell < 0
+                || cell >= map.Tiles.Length
+                || map.Tiles[cell] != Tile.LowCover
+                || map.VehicleFootprint != null && map.VehicleFootprint[cell] != 0
+            )
                 return 0;
             if (launcher == 0 || CoverDestruction.Strength(map, cell) != CoverStrength.Strong)
                 return 1;
@@ -96,7 +118,12 @@ namespace SilentOrders.Core
         public static bool Safe(BattleSimulation b, Soldier s, Contact c, V2 aim, V2 impact)
         {
             float margin = 1.2f + c.Uncertainty + HandLauncher.ExtraScatter(s);
-            if (b.Map.At(impact) == Tile.Wall || !b.Map.LineOfSight(impact, aim) || !SpecialWeapons.UsefulImpact(b, s, aim, impact) || b.FriendlyInLane(s, aim))
+            if (
+                b.Map.At(impact) == Tile.Wall
+                || !b.Map.LineOfSight(impact, aim)
+                || !SpecialWeapons.UsefulImpact(b, s, aim, impact)
+                || b.FriendlyInLane(s, aim)
+            )
                 return false;
             foreach (var ally in b.Soldiers)
                 if (ally.Side == s.Side && ally.Alive && ally.Deployed)
@@ -104,7 +131,11 @@ namespace SilentOrders.Core
                     if (V2.Distance(ally.Position, impact) < SpecialWeapons.Radius(s) + margin)
                         return false;
                     int shield = Shield(b.Map, ally.Position, c.Position);
-                    if (shield >= 0 && V2.Distance(b.Map.Center(shield), impact) <= SpecialWeapons.Radius(s) && b.Map.LineOfSight(impact, b.Map.Center(shield)))
+                    if (
+                        shield >= 0
+                        && V2.Distance(b.Map.Center(shield), impact) <= SpecialWeapons.Radius(s)
+                        && b.Map.LineOfSight(impact, b.Map.Center(shield))
+                    )
                         return false;
                 }
 
@@ -117,15 +148,21 @@ namespace SilentOrders.Core
             cell = -1;
             if (b.Historical01225)
                 return 0;
-            if (s.Side != Side.Green || (b.Team(s).Style != CombatStyle.Balanced && b.Team(s).Style != CombatStyle.Aggressive) || c.Inferred || c.Confidence < .7f || b.Time - c.SeenAt > 2.5f)
+            if (
+                s.Side != Side.Green
+                || (b.Team(s).Style != CombatStyle.Balanced && b.Team(s).Style != CombatStyle.Aggressive)
+                || c.Inferred
+                || c.Confidence < .7f
+                || b.Time - c.SeenAt > 2.5f
+            )
                 return 0;
             float best = 0;
             foreach (var ally in b.Soldiers)
             {
                 if (ally.Side != s.Side || !ally.Available || !ally.Deployed || ally.Ammo <= 0)
                     continue;
-                bool flag = V2.Distance(c.Position, b.Map.Objective) <= 8;
-                if (!flag && V2.Distance(ally.Position, c.Position) > b.WeaponRange(ally) + 3)
+                bool nearObjective = V2.Distance(c.Position, b.Map.Objective) <= 8;
+                if (!nearObjective && V2.Distance(ally.Position, c.Position) > b.WeaponRange(ally) + 3)
                     continue;
                 int candidate = Shield(b.Map, c.Position, ally.Position);
                 if (candidate < 0)
@@ -141,13 +178,16 @@ namespace SilentOrders.Core
                 if (pending)
                     continue;
                 V2 point = b.Map.Center(candidate);
-                if (V2.Distance(s.Position, point) > SpecialWeapons.Range(b) || !b.Map.LineOfSight(ally.Position, c.Position))
+                if (
+                    V2.Distance(s.Position, point) > SpecialWeapons.Range(b)
+                    || !b.Map.LineOfSight(ally.Position, c.Position)
+                )
                     continue;
                 V2 impact = b.Map.LauncherImpact(s.Position, point);
                 if (V2.Distance(impact, point) > SpecialWeapons.Radius(s) - .5f || !Safe(b, s, c, point, impact))
                     continue;
                 // Valuable if it protects a currently useful firing position, or the objective.
-                float value = 2f + (b.Time - c.FireSeenAt < 4 ? 2f : 0) + (flag ? 1f : 0);
+                float value = 2f + (b.Time - c.FireSeenAt < 4 ? 2f : 0) + (nearObjective ? 1f : 0);
                 if (c.TargetPriority == 1 || c.TargetPriority == 2 || c.TargetPriority == 0)
                     value += 1f;
                 float score = BreakChance(b.Map, candidate, s.LauncherKind) * value;

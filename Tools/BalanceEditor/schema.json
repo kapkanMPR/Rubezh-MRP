@@ -1122,7 +1122,10 @@
       "step": 1,
       "image": 10,
       "is_int": true,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "0\\.8f\\ \\+\\ V2\\.Distance\\(s\\.Position,\\ impactPoint\\)\\ /\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\)"
+      ]
     },
     {
       "id": "hand_flight",
@@ -1139,7 +1142,10 @@
       "step": 1,
       "image": 10,
       "is_int": true,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "1f\\ \\+\\ V2\\.Distance\\(s\\.Position,\\ impactPoint\\)\\ /\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\)\\)"
+      ]
     },
     {
       "id": "hand_dmg_min",
@@ -1241,7 +1247,10 @@
       "step": 0.01,
       "image": 4,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "\\(isProtected\\ \\?\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)\\ :\\ 0\\.08f\\)"
+      ]
     },
     {
       "id": "grenade_direct",
@@ -1292,7 +1301,10 @@
       "step": 0.01,
       "image": 4,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "tick\\ \\*\\ \\(isProtected\\ \\?\\ 0\\.16f\\ :\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)\\)\\)"
+      ]
     },
     {
       "id": "morale_recover",
@@ -1309,7 +1321,10 @@
       "step": 0.001,
       "image": 4,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "recentlyUnderFire\\ \\?\\ \\(\\-0\\.024f\\ \\*\\ fighter\\.Suppression\\ \\-\\ isolationPenalty\\)\\ :\\ \\((?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)\\ \\+\\ allyMoraleSupport\\)\\)"
+      ]
     },
     {
       "id": "morale_fire_loss",
@@ -1326,7 +1341,10 @@
       "step": 0.001,
       "image": 4,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "recentlyUnderFire\\ \\?\\ \\(\\-(?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\ \\*\\ fighter\\.Suppression\\ \\-\\ isolationPenalty\\)"
+      ]
     },
     {
       "id": "suppression_move",
@@ -1411,7 +1429,10 @@
       "step": 1,
       "image": 10,
       "is_int": true,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "V2\\.Distance\\(s\\.Position,\\ v4\\)\\ /\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\)"
+      ]
     },
     {
       "id": "rpg_min_flight",
@@ -1428,7 +1449,10 @@
       "step": 0.01,
       "image": 10,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "Duration\\ =\\ Math\\.Max\\((?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f,\\ V2\\.Distance\\(s\\.Position,\\ v4\\)"
+      ]
     },
     {
       "id": "explosion_morale",
@@ -1445,7 +1469,10 @@
       "step": 0.01,
       "image": 10,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "\\)\\ :\\ \\((?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\ \\*\\ falloff\\ \\*\\ coverMultiplier\\)\\);"
+      ]
     },
     {
       "id": "explosion_suppression",
@@ -1462,7 +1489,10 @@
       "step": 0.01,
       "image": 10,
       "is_int": false,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "thermobaric\\ \\?\\ 0\\.95f\\ :\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)\\)\\ \\*\\ falloff\\ \\*\\ coverMultiplier"
+      ]
     },
     {
       "id": "rshg_damage_peak",
@@ -1479,7 +1509,10 @@
       "step": 1,
       "image": 10,
       "is_int": true,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "thermobaric\\ \\?\\ \\((?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\ \\-\\ 15f\\ \\*\\ Util\\.Clamp"
+      ]
     },
     {
       "id": "rshg_damage_falloff",
@@ -1496,7 +1529,10 @@
       "step": 1,
       "image": 10,
       "is_int": true,
-      "available": true
+      "available": true,
+      "alternate_patterns": [
+        "thermobaric\\ \\?\\ \\(65f\\ \\-\\ (?P<num>-?(?:\\d+(?:\\.\\d+)?|\\.\\d+))(?P<suffix>f?)f\\ \\*\\ Util\\.Clamp"
+      ]
     }
   ]
 }

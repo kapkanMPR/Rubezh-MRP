@@ -16,7 +16,14 @@ namespace SilentOrders.Core
         public int CareMask { get; }
         public int MechanicsMask { get; private set; }
 
-        public GameplayRules(bool ordnance = true, bool somaliFire = true, int careMask = 7, int mechanicsMask = NewMechanics.AcceptedMask, bool friendlyGrenadeWarnings = true, bool fragmentDodge = true)
+        public GameplayRules(
+            bool ordnance = true,
+            bool somaliFire = true,
+            int careMask = 7,
+            int mechanicsMask = NewMechanics.AcceptedMask,
+            bool friendlyGrenadeWarnings = true,
+            bool fragmentDodge = true
+        )
         {
             Ordnance = ordnance;
             SomaliFire = somaliFire;
@@ -26,8 +33,19 @@ namespace SilentOrders.Core
             FragmentDodge = fragmentDodge;
         }
 
-        public GameplayRules Copy() => new GameplayRules(Ordnance, SomaliFire, CareMask, MechanicsMask, FriendlyGrenadeWarnings, FragmentDodge);
-        internal static GameplayRules CaptureDefaults() => new GameplayRules(OrdnanceExperiment.Enabled, global::SilentOrders.Core.SomaliFire.Enabled, CareExperiments.Mask, NewMechanics.Mask, FriendlyGrenadeSafety.Enabled, FriendlyGrenadeSafety.FragmentDodgeEnabled);
+        public GameplayRules Copy() =>
+            new GameplayRules(Ordnance, SomaliFire, CareMask, MechanicsMask, FriendlyGrenadeWarnings, FragmentDodge);
+
+        internal static GameplayRules CaptureDefaults() =>
+            new GameplayRules(
+                OrdnanceExperiment.Enabled,
+                global::SilentOrders.Core.SomaliFire.Enabled,
+                CareExperiments.Mask,
+                NewMechanics.Mask,
+                FriendlyGrenadeSafety.Enabled,
+                FriendlyGrenadeSafety.FragmentDodgeEnabled
+            );
+
         internal void SetMechanicsMask(int value)
         {
             MechanicsMask = value & NewMechanics.AcceptedMask;
