@@ -17,6 +17,7 @@ Shader "Rubezh/Unity Test Scene"
         _MainTex("Atlas", 2D) = "white" {}
         _Occlusion("Terrain depth", 2D) = "black" {}
         _PictureDepth("Picture depth", 2D) = "black" {}
+        [HideInInspector] _PackedRoofMask("Roof depth in green channel", Float) = 0
         _RoofOcclusion("Roof depth", 2D) = "black" {}
         _RevealMask("Roof reveal", 2D) = "white" {}
         _ClosureWood("Closure wood", 2D) = "white" {}
@@ -38,9 +39,9 @@ Shader "Rubezh/Unity Test Scene"
             #pragma multi_compile_instancing
             #include "UnityCG.cginc"
             #include "RubezhBuildingMask.cginc"
-            sampler2D _ClosureWood, _MainTex, _Occlusion, _PictureDepth, _RoofOcclusion, _RevealMask;
-            sampler2D _GroundTex1, _GroundTex2, _GroundTex3;
-            float _GroundMultiTex;
+            sampler2D _ClosureWood, _Occlusion, _PictureDepth, _RoofOcclusion, _RevealMask;
+            #include "RubezhSceneryAtlas.cginc"
+            float _PackedRoofMask;
             float4 _RevealBounds;
             UNITY_INSTANCING_BUFFER_START(NativeProps)
             UNITY_DEFINE_INSTANCED_PROP(float, _NativeInstance)
@@ -93,13 +94,34 @@ Shader "Rubezh/Unity Test Scene"
             {
                 if (i.screen.x * _CanvasSize.x < i.clipRange.x || i.screen.x * _CanvasSize.x >= i.clipRange.y)
                     discard;
+                // Baked building images contain large transparent margins. In this
+                // premultiplied, depth-write-free pass zero RGBA leaves the target intact.
+                // Compare the filtered sample, including RGB, to preserve subpixel edges.
+                bool buildingPicture = _BuildingMode > .5 && i.depth.y > 1.5 && i.depth.y <= 2.5;
+                fixed4 buildingColor = 0;
+                if (buildingPicture)
+                {
+                    buildingColor = tex2D(_MainTex, i.uv);
+                    if (all(buildingColor == 0))
+                        discard;
+                }
                 float z = i.depth.y > 2.5   ? 256 + i.uv.y * 4 - i.uv.x * 4 + .06
                           : i.depth.y > 1.5 ? tex2D(_PictureDepth, i.uv).r
                                             : i.depth.x;
                 float2 depthUV = i.nativeScreen.xy / i.nativeScreen.w;
-                if ((i.depth.y > .5 || i.depth.y < -1.5) &&
-                    (i.depth.y > 2.5 ? tex2D(_RoofOcclusion, depthUV).r : tex2D(_Occlusion, depthUV).r) > z + .001)
-                    discard;
+                if (i.depth.y > .5 || i.depth.y < -1.5)
+                {
+                    float occluder;
+                    if (i.depth.y > 2.5)
+                    {
+                        float2 roof = tex2D(_RoofOcclusion, depthUV).rg;
+                        occluder = _PackedRoofMask > .5 ? roof.g : roof.r;
+                    }
+                    else
+                        occluder = tex2D(_Occlusion, depthUV).r;
+                    if (occluder > z + .001)
+                        discard;
+                }
                 if (i.depth.y < -1.5)
                 {
                     float2 cell = floor(i.uv * float2(23, 15)) * 2 - float2(22, 14);
@@ -122,21 +144,10 @@ Shader "Rubezh/Unity Test Scene"
                     c = tex2D(_ClosureWood, float2((i.uv.x + i.uv.y) * 2, i.depth.x / 3)) * i.color;
                 else if (i.depth.y > 3.5)
                     c = fixed4(.467, .478, .471, 1) * i.color;
-                else if (_GroundMultiTex > .5)
-                {
-                    // The selector is constant across each original triangle. One original
-                    // sampler is read, with its unchanged UV and texture filtering state.
-                    if (i.groundSlot < .5)
-                        c = tex2D(_MainTex, i.uv) * i.color;
-                    else if (i.groundSlot < 1.5)
-                        c = tex2D(_GroundTex1, i.uv) * i.color;
-                    else if (i.groundSlot < 2.5)
-                        c = tex2D(_GroundTex2, i.uv) * i.color;
-                    else
-                        c = tex2D(_GroundTex3, i.uv) * i.color;
-                }
+                else if (buildingPicture)
+                    c = buildingColor;
                 else
-                    c = tex2D(_MainTex, i.uv) * (_BuildingMode > .5 ? fixed4(1, 1, 1, 1) : i.color);
+                    c = SampleSceneryAtlas(i.uv, i.groundSlot) * (_BuildingMode > .5 ? fixed4(1, 1, 1, 1) : i.color);
                 if (i.depth.y > 2.5)
                 {
                     float opacity = tex2D(_RevealMask, (i.uv * 4 - _RevealBounds.xy) / _RevealBounds.zw).r;

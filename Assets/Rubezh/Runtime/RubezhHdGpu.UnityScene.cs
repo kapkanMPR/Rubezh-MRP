@@ -3,6 +3,7 @@ using SilentOrders.Core;
 using UnityEngine;
 #if UNITY_5_3_OR_NEWER || RUBEZH_NATIVE_TEST_CONTRACT
 using System.Collections.Generic;
+using Stopwatch = System.Diagnostics.Stopwatch;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 #endif
@@ -15,6 +16,7 @@ namespace Rubezh.UnityPort
             MaskRenderMs,
             CameraRenderMs;
         public int UnitySceneNodes { get; private set; }
+        public int UnityStaticRendererNodes { get; private set; }
         public bool UnityCompatibilityDraw
         {
             get => false;
@@ -45,6 +47,7 @@ namespace Rubezh.UnityPort
 
         void ReleaseUnityMask()
         {
+            UnityPackedMasks = false;
             if (unityRoofMask != null)
             {
                 unityRoofMask.Release();
@@ -100,10 +103,21 @@ namespace Rubezh.UnityPort
         readonly Dictionary<long, SceneNode> unityActorNodes = new Dictionary<long, SceneNode>();
         readonly List<long> expiredActorNodes = new List<long>();
         int unitySubmissionOrder;
+        float submittedActorInterpolation;
         readonly List<Material> unityMaterialSources = new List<Material>();
         BattleMap unityMaterialMap;
         int unityMaterialWidth = -1,
             unityMaterialHeight = -1;
+
+        [Flags]
+        enum StaticRendererTargets
+        {
+            None = 0,
+            Color = 1,
+            Masks = 2,
+        }
+
+        StaticRendererTargets submittedStaticTargets;
         int staticPrefixSerial = -1,
             staticPrefixCount,
             staticPrefixOrder;
@@ -135,7 +149,8 @@ namespace Rubezh.UnityPort
             unityCommandsRoof = -1,
             unityCommandsWidth = -1,
             unityCommandsHeight = -1;
-        Rect unityCommandsView;
+        Rect unityCommandsView,
+            unityCommandsCoverage;
         bool unityCommandsSceneryDisabled,
             unityCommandsRoofsDisabled,
             unityCommandsDrawRoof;
@@ -199,13 +214,15 @@ namespace Rubezh.UnityPort
             unityCommandsGeometry = unityCommandsRoof = -1;
         }
 
-        void AppendStaticCommands(CommandBuffer commands, Mesh mesh, int[] pages, Rect pixels)
+        void AppendStaticCommands(CommandBuffer commands, Mesh mesh, int[] pages, Rect pixels) =>
+            AppendBoundedStaticCommands(commands, mesh, pages, pixels, null);
+
+        void AppendBoundedStaticCommands(CommandBuffer commands, Mesh mesh, int[] pages, Rect pixels, Rect[] submeshes)
         {
             if (mesh == null || pages == null || pages.Length == 0)
                 return;
             UnityStaticSubmeshes += pages.Length;
-            // These meshes are baked in canvas space; the static renderers all have identity transforms.
-            // Expand by two output pixels to retain touching edges and texture filtering at the viewport.
+            // Static meshes are baked in canvas space and have identity transforms.
             var bounds = mesh.bounds;
             if (
                 bounds.max.x < pixels.xMin
@@ -217,35 +234,68 @@ namespace Rubezh.UnityPort
                 UnityStaticCulledNodes++;
                 return;
             }
-            UnityStaticVisibleNodes++;
+            int drawsBefore = UnityExplicitDraws;
             for (int i = 0; i < pages.Length; i++)
             {
+                if (submeshes != null)
+                {
+                    var area = submeshes[i];
+                    if (
+                        area.xMax < pixels.xMin
+                        || area.xMin > pixels.xMax
+                        || area.yMax < pixels.yMin
+                        || area.yMin > pixels.yMax
+                    )
+                        continue;
+                }
                 commands.DrawMesh(mesh, Matrix4x4.identity, unityMaterials[pages[i]], i, 0);
                 UnityExplicitDraws++;
             }
+            if (UnityExplicitDraws == drawsBefore)
+                UnityStaticCulledNodes++;
+            else
+                UnityStaticVisibleNodes++;
         }
 
         void UpdateStaticCommands(Rect uv, int width, int height)
         {
             UnityEngine.Profiling.Profiler.BeginSample("Rubezh.StaticCommands");
+            long start = Stopwatch.GetTimestamp();
             try
             {
                 UpdateStaticCommandsCore(uv, width, height);
             }
             finally
             {
+                UnityStaticCommandsMs = (Stopwatch.GetTimestamp() - start) * 1000.0 / Stopwatch.Frequency;
                 UnityEngine.Profiling.Profiler.EndSample();
             }
         }
 
+        // Commands contain world-space meshes. Unity projects and clips them using the current
+        // camera every frame, so the same buffer is valid throughout this region, even for
+        // fractional moves. Keep its extra area bounded both in output pixels and at close zoom.
+        static Rect ExpandCommandCoverage(Rect pixels, int width, int height)
+        {
+            float padX = pixels.width * Math.Min(1f / 16, 64f / Math.Max(1, width));
+            float padY = pixels.height * Math.Min(1f / 16, 64f / Math.Max(1, height));
+            return new Rect(pixels.xMin - padX, pixels.yMin - padY, pixels.width + 2 * padX, pixels.height + 2 * padY);
+        }
+
+        static bool CoversCommandView(Rect coverage, Rect pixels) =>
+            coverage.xMin <= pixels.xMin
+            && coverage.yMin <= pixels.yMin
+            && coverage.xMax >= pixels.xMax
+            && coverage.yMax >= pixels.yMax
+            && coverage.width <= pixels.width * 1.25f
+            && coverage.height <= pixels.height * 1.25f;
+
         void UpdateStaticCommandsCore(Rect uv, int width, int height)
         {
-            var clock = System.Diagnostics.Stopwatch.StartNew();
             if (!UnityCachedStaticCommands)
             {
                 AttachStaticCommands(false);
                 UnityExplicitDraws = 0;
-                UnityStaticCommandsMs = clock.Elapsed.TotalMilliseconds;
                 return;
             }
             if (unityStaticCommands == null)
@@ -253,10 +303,19 @@ namespace Rubezh.UnityPort
                 unityStaticCommands = new CommandBuffer { name = "Rubezh retained static colour" };
                 unityRoofCommands = new CommandBuffer { name = "Rubezh retained roof colour" };
             }
+            unityCommandsView = uv;
+            float edgeX = Math.Abs(uv.width) * canvas.Width / Math.Max(1, width) * 2;
+            float edgeY = Math.Abs(uv.height) * canvas.Height / Math.Max(1, height) * 2;
+            var viewPixels = new Rect(
+                uv.xMin * canvas.Width - edgeX,
+                uv.yMin * canvas.Height - edgeY,
+                uv.width * canvas.Width + 2 * edgeX,
+                uv.height * canvas.Height + 2 * edgeY
+            );
             bool changed =
                 unityCommandsGeometry != geometrySerial
                 || unityCommandsRoof != roofGeometryRevision
-                || unityCommandsView != uv
+                || !CoversCommandView(unityCommandsCoverage, viewPixels)
                 || unityCommandsWidth != width
                 || unityCommandsHeight != height
                 || unityCommandsSceneryDisabled != DisableScenery
@@ -268,21 +327,20 @@ namespace Rubezh.UnityPort
                 unityStaticCommands.Clear();
                 unityRoofCommands.Clear();
                 UnityExplicitDraws = UnityStaticVisibleNodes = UnityStaticCulledNodes = UnityStaticSubmeshes = 0;
-                float padX = Math.Abs(uv.width) * canvas.Width / Math.Max(1, width) * 2,
-                    padY = Math.Abs(uv.height) * canvas.Height / Math.Max(1, height) * 2;
-                var pixels = new Rect(
-                    uv.xMin * canvas.Width - padX,
-                    uv.yMin * canvas.Height - padY,
-                    uv.width * canvas.Width + padX * 2,
-                    uv.height * canvas.Height + padY * 2
-                );
+                var pixels = ExpandCommandCoverage(viewPixels, width, height);
                 if (!DisableScenery)
                 {
                     foreach (var batch in groundDraws)
                         AppendStaticCommands(unityStaticCommands, batch.Mesh, batch.Pages, pixels);
                     foreach (var batch in sceneExteriorChunks)
                         AppendStaticCommands(unityStaticCommands, batch.Mesh, batch.Pages, pixels);
-                    AppendStaticCommands(unityStaticCommands, pictureBatch.Mesh, pictureBatch.Pages, pixels);
+                    AppendBoundedStaticCommands(
+                        unityStaticCommands,
+                        pictureBatch.Mesh,
+                        pictureBatch.Pages,
+                        pixels,
+                        pictureBatch.SubmeshBounds
+                    );
                     foreach (var batch in sceneObjectChunks)
                         AppendStaticCommands(unityStaticCommands, batch.Mesh, batch.Pages, pixels);
                 }
@@ -292,7 +350,7 @@ namespace Rubezh.UnityPort
                 unityRoofCommandDraws = UnityExplicitDraws - beforeRoof;
                 unityCommandsGeometry = geometrySerial;
                 unityCommandsRoof = roofGeometryRevision;
-                unityCommandsView = uv;
+                unityCommandsCoverage = pixels;
                 unityCommandsWidth = width;
                 unityCommandsHeight = height;
                 unityCommandsSceneryDisabled = DisableScenery;
@@ -301,7 +359,6 @@ namespace Rubezh.UnityPort
                 UnityStaticCommandBuilds++;
             }
             AttachStaticCommands(true);
-            UnityStaticCommandsMs = clock.Elapsed.TotalMilliseconds;
         }
 
         readonly List<Material> unityMaterials = new List<Material>();
@@ -362,6 +419,72 @@ namespace Rubezh.UnityPort
             unityMaskCamera.cullingMask = (1 << SceneryLayer) | (1 << ObjectLayer);
             unityMaskCamera.nearClipPlane = .1f;
             unityMaskCamera.farClipPlane = 100f;
+        }
+
+        void SubmitStaticPrefix(StaticRendererTargets targets)
+        {
+            if (staticPrefixSerial == geometrySerial && staticPrefixDisabled == DisableScenery)
+            {
+                TouchStaticNodes(0, staticPrefixCount);
+                usedUnityNodes = staticPrefixCount;
+                unitySubmissionOrder = staticPrefixOrder;
+                StaticSubmissionReuse++;
+                return;
+            }
+            if (!DisableScenery && targets != StaticRendererTargets.None)
+            {
+                if ((targets & StaticRendererTargets.Color) != 0)
+                {
+                    foreach (var ground in groundDraws)
+                        AddUnityMesh(ground.Mesh, ground.Pages, "Ground chunk", TerrainLayer);
+                    foreach (var exterior in sceneExteriorChunks)
+                        AddUnityMesh(exterior.Mesh, exterior.Pages, "Exterior chunk", TerrainLayer);
+                }
+                AddUnityMesh(pictureBatch.Mesh, pictureBatch.Pages, "Dynamic surfaces", ObjectLayer);
+                foreach (var scenery in sceneObjectChunks)
+                    AddUnityMesh(scenery.Mesh, scenery.Pages, "Object chunk", ObjectLayer);
+            }
+            staticPrefixSerial = geometrySerial;
+            staticPrefixDisabled = DisableScenery;
+            staticPrefixCount = usedUnityNodes;
+            staticPrefixOrder = unitySubmissionOrder;
+        }
+
+        void SubmitStaticSuffix(StaticRendererTargets targets)
+        {
+            if (
+                staticSuffixSerial == geometrySerial
+                && staticSuffixStart == usedUnityNodes
+                && staticSuffixStartOrder == unitySubmissionOrder
+                && staticSuffixDrawRoof == drawNativeRoof
+                && staticSuffixRoof == roofGeometryRevision
+                && staticSuffixDisabled == DisableScenery
+                && staticSuffixRoofsDisabled == DisableRoofs
+            )
+            {
+                TouchStaticNodes(usedUnityNodes, staticSuffixCount);
+                usedUnityNodes += staticSuffixCount;
+                unitySubmissionOrder += staticSuffixOrder;
+                StaticSubmissionReuse++;
+                return;
+            }
+            staticSuffixStart = usedUnityNodes;
+            staticSuffixStartOrder = unitySubmissionOrder;
+            if ((targets & StaticRendererTargets.Color) != 0 && drawNativeRoof && !DisableRoofs)
+                AddUnityMesh(roofBatch.Mesh, roofBatch.Pages, "Roofs", RoofLayer);
+            if ((targets & StaticRendererTargets.Masks) != 0 && !DisableScenery)
+            {
+                AddUnityMesh(pictureBatch.Mesh, pictureBatch.Pages, "Roof mask surfaces", RoofMaskLayer);
+                foreach (var occluder in sceneRoofChunks)
+                    AddUnityMesh(occluder.Mesh, occluder.Pages, "Roof mask occluder", RoofMaskLayer);
+            }
+            staticSuffixSerial = geometrySerial;
+            staticSuffixRoof = roofGeometryRevision;
+            staticSuffixDrawRoof = drawNativeRoof;
+            staticSuffixDisabled = DisableScenery;
+            staticSuffixRoofsDisabled = DisableRoofs;
+            staticSuffixCount = usedUnityNodes - staticSuffixStart;
+            staticSuffixOrder = unitySubmissionOrder - staticSuffixStartOrder;
         }
 
         void AddUnityMesh(
@@ -516,6 +639,65 @@ namespace Rubezh.UnityPort
         }
 #endif
 
+#if UNITY_5_3_OR_NEWER || RUBEZH_NATIVE_TEST_CONTRACT
+        void SyncUnityMaterials(BattleSimulation battle, bool maskAllocated)
+        {
+            bool commonChanged =
+                maskAllocated
+                || unityMaterialMap != battle.Map
+                || unityMaterialWidth != canvas.Width
+                || unityMaterialHeight != canvas.Height;
+            if (!commonChanged && unityMaterialFrame == pictureFrame && unityMaterials.Count == materials.Count)
+                return;
+
+            while (unityMaterials.Count < materials.Count)
+            {
+                unityMaterials.Add(new Material(unityTemplate) { enableInstancing = true });
+                unityMaterialSources.Add(null);
+            }
+            for (int i = 0; i < materials.Count; i++)
+                if (materials[i] != null)
+                {
+                    bool copy =
+                        unityMaterialSources[i] != materials[i]
+                        || (i == roofPage && unityMaterialFrame != pictureFrame);
+                    if (copy)
+                    {
+                        unityMaterials[i].CopyPropertiesFromMaterial(materials[i]);
+                        unityMaterials[i].shader = unityShader;
+                        unityMaterials[i].enableInstancing = true;
+                        unityMaterialSources[i] = materials[i];
+                        MaterialCopies++;
+                        if (i != roofPage)
+                            unityStaticMaterialRevision++;
+                    }
+                    if (copy || commonChanged)
+                    {
+                        unityMaterials[i].SetVector("_CanvasSize", new Vector4(canvas.Width, canvas.Height, 0, 0));
+                        unityMaterials[i]
+                            .SetVector(
+                                "_MapInfo",
+                                new Vector4(
+                                    battle.Map.Columns,
+                                    battle.Map.Rows,
+                                    SilentOrders.Rendering.BattleVisualRecipes.LogicalWidth(battle.Map),
+                                    SilentOrders.Rendering.BattleVisualRecipes.LogicalHeight(battle.Map)
+                                )
+                            );
+                        unityMaterials[i].SetTexture("_Occlusion", unityMask);
+                        unityMaterials[i].SetTexture("_RoofOcclusion", UnityPackedMasks ? unityMask : unityRoofMask);
+                        unityMaterials[i].SetFloat("_PackedRoofMask", UnityPackedMasks ? 1 : 0);
+                    }
+                }
+            if (commonChanged)
+                unityStaticMaterialRevision++;
+            unityMaterialMap = battle.Map;
+            unityMaterialWidth = canvas.Width;
+            unityMaterialHeight = canvas.Height;
+            unityMaterialFrame = pictureFrame;
+        }
+#endif
+
         void RenderUnityCamera(BattleSimulation battle, Rect uv, int width, int height)
         {
 #if UNITY_5_3_OR_NEWER || RUBEZH_NATIVE_TEST_CONTRACT
@@ -525,159 +707,35 @@ namespace Rubezh.UnityPort
             var previous = RenderTexture.active;
             try
             {
-                // Unity owns both geometry visibility and the mask projection; no legacy depth command buffer.
-                bool maskAllocated =
-                    unityMask == null
-                    || unityMask.width != width
-                    || unityMask.height != height
-                    || !unityMask.IsCreated();
-                if (maskAllocated)
-                {
-                    ReleaseUnityMask();
-                    unityMask = new RenderTexture(
-                        width,
-                        height,
-                        0,
-                        RenderTextureFormat.RFloat,
-                        RenderTextureReadWrite.Linear
-                    );
-                    unityMask.name = "Unity Forest camera occlusion";
-                    unityMask.filterMode = FilterMode.Point;
-                    unityMask.wrapMode = TextureWrapMode.Clamp;
-                    if (!unityMask.Create())
-                        throw new InvalidOperationException("Cannot create Unity forest mask");
-                    unityRoofMask = new RenderTexture(
-                        width,
-                        height,
-                        0,
-                        RenderTextureFormat.RFloat,
-                        RenderTextureReadWrite.Linear
-                    );
-                    unityRoofMask.name = "Unity roof camera occlusion";
-                    unityRoofMask.filterMode = FilterMode.Point;
-                    unityRoofMask.wrapMode = TextureWrapMode.Clamp;
-                    if (!unityRoofMask.Create())
-                        throw new InvalidOperationException("Cannot create Unity roof mask");
-                }
+                bool maskAllocated = EnsureUnityMaskTargets(width, height);
 
                 var stageWatch = System.Diagnostics.Stopwatch.StartNew();
-                bool commonChanged =
-                    maskAllocated
-                    || unityMaterialMap != battle.Map
-                    || unityMaterialWidth != canvas.Width
-                    || unityMaterialHeight != canvas.Height;
-                while (unityMaterials.Count < materials.Count)
-                {
-                    unityMaterials.Add(new Material(unityTemplate) { enableInstancing = true });
-                    unityMaterialSources.Add(null);
-                }
-                for (int i = 0; i < materials.Count; i++)
-                    if (materials[i] != null)
-                    {
-                        bool copy =
-                            unityMaterialSources[i] != materials[i]
-                            || (i == roofPage && unityMaterialFrame != pictureFrame);
-                        if (copy)
-                        {
-                            unityMaterials[i].CopyPropertiesFromMaterial(materials[i]);
-                            unityMaterials[i].shader = unityShader;
-                            unityMaterials[i].enableInstancing = true;
-                            unityMaterialSources[i] = materials[i];
-                            MaterialCopies++;
-                            if (i != roofPage)
-                                unityStaticMaterialRevision++;
-                        }
-                        if (copy || commonChanged)
-                        {
-                            unityMaterials[i].SetVector("_CanvasSize", new Vector4(canvas.Width, canvas.Height, 0, 0));
-                            unityMaterials[i]
-                                .SetVector(
-                                    "_MapInfo",
-                                    new Vector4(
-                                        battle.Map.Columns,
-                                        battle.Map.Rows,
-                                        SilentOrders.Rendering.BattleVisualRecipes.LogicalWidth(battle.Map),
-                                        SilentOrders.Rendering.BattleVisualRecipes.LogicalHeight(battle.Map)
-                                    )
-                                );
-                            unityMaterials[i].SetTexture("_Occlusion", unityMask);
-                            unityMaterials[i].SetTexture("_RoofOcclusion", unityRoofMask);
-                        }
-                    }
-                if (commonChanged)
-                    unityStaticMaterialRevision++;
-                unityMaterialMap = battle.Map;
-                unityMaterialWidth = canvas.Width;
-                unityMaterialHeight = canvas.Height;
-                unityMaterialFrame = pictureFrame;
+                SyncUnityMaterials(battle, maskAllocated);
                 MaterialSyncMs = stageWatch.Elapsed.TotalMilliseconds;
                 stageWatch.Restart();
-                if (unitySubmittedFrame != pictureFrame)
+                // Command buffers reference the retained meshes directly. Register static
+                // MeshRenderers only for a camera pass which actually culls those layers.
+                var staticTargets = UnityCachedStaticCommands
+                    ? StaticRendererTargets.None
+                    : StaticRendererTargets.Color;
+                if (!CanUseMergedMaskGeometry())
+                    staticTargets |= StaticRendererTargets.Masks;
+                bool targetsChanged = submittedStaticTargets != staticTargets;
+                bool submitScene = unitySubmittedFrame != pictureFrame || targetsChanged;
+                if (submitScene)
                 {
+                    if (targetsChanged)
+                        staticPrefixSerial = staticSuffixSerial = -1;
+                    submittedStaticTargets = staticTargets;
                     usedUnityNodes = 0;
                     unitySubmissionOrder = 0;
-                    if (staticPrefixSerial == geometrySerial && staticPrefixDisabled == DisableScenery)
-                    {
-                        TouchStaticNodes(0, staticPrefixCount);
-                        usedUnityNodes = staticPrefixCount;
-                        unitySubmissionOrder = staticPrefixOrder;
-                        StaticSubmissionReuse++;
-                    }
-                    else
-                    {
-                        if (!DisableScenery)
-                        {
-                            foreach (var g in groundDraws)
-                                AddUnityMesh(g.Mesh, g.Pages, "Ground chunk", TerrainLayer);
-                            foreach (var c in sceneExteriorChunks)
-                                AddUnityMesh(c.Mesh, c.Pages, "Exterior chunk", TerrainLayer);
-                            AddUnityMesh(pictureBatch.Mesh, pictureBatch.Pages, "Dynamic surfaces", ObjectLayer);
-                            foreach (var c in sceneObjectChunks)
-                                AddUnityMesh(c.Mesh, c.Pages, "Object chunk", ObjectLayer);
-                        }
-                        staticPrefixSerial = geometrySerial;
-                        staticPrefixDisabled = DisableScenery;
-                        staticPrefixCount = usedUnityNodes;
-                        staticPrefixOrder = unitySubmissionOrder;
-                    }
-                    nativeCraterOrder = usedUnityNodes * 2 - 1;
+                    SubmitStaticPrefix(staticTargets);
+                    int prefixNodes = usedUnityNodes;
+                    nativeCraterOrder = unitySubmissionOrder * 2 - 1;
                     AddNativeVisualGroups();
-                    if (
-                        staticSuffixSerial == geometrySerial
-                        && staticSuffixStart == usedUnityNodes
-                        && staticSuffixStartOrder == unitySubmissionOrder
-                        && staticSuffixDrawRoof == drawNativeRoof
-                        && staticSuffixRoof == roofGeometryRevision
-                        && staticSuffixDisabled == DisableScenery
-                        && staticSuffixRoofsDisabled == DisableRoofs
-                    )
-                    {
-                        TouchStaticNodes(usedUnityNodes, staticSuffixCount);
-                        usedUnityNodes += staticSuffixCount;
-                        unitySubmissionOrder += staticSuffixOrder;
-                        StaticSubmissionReuse++;
-                    }
-                    else
-                    {
-                        staticSuffixStart = usedUnityNodes;
-                        staticSuffixStartOrder = unitySubmissionOrder;
-                        staticSuffixDrawRoof = drawNativeRoof;
-                        int startOrder = unitySubmissionOrder;
-                        if (drawNativeRoof && !DisableRoofs)
-                            AddUnityMesh(roofBatch.Mesh, roofBatch.Pages, "Roofs", RoofLayer);
-                        if (!DisableScenery)
-                        {
-                            AddUnityMesh(pictureBatch.Mesh, pictureBatch.Pages, "Roof mask surfaces", RoofMaskLayer);
-                            foreach (var c in sceneRoofChunks)
-                                AddUnityMesh(c.Mesh, c.Pages, "Roof mask occluder", RoofMaskLayer);
-                        }
-                        staticSuffixSerial = geometrySerial;
-                        staticSuffixRoof = roofGeometryRevision;
-                        staticSuffixDisabled = DisableScenery;
-                        staticSuffixRoofsDisabled = DisableRoofs;
-                        staticSuffixCount = usedUnityNodes - staticSuffixStart;
-                        staticSuffixOrder = unitySubmissionOrder - startOrder;
-                    }
+                    int suffixStart = usedUnityNodes;
+                    SubmitStaticSuffix(staticTargets);
+                    UnityStaticRendererNodes = prefixNodes + usedUnityNodes - suffixStart;
                     for (int i = usedUnityNodes; i < unityNodes.Count; i++)
                         if (unityNodes[i].Active)
                         {
@@ -717,8 +775,13 @@ namespace Rubezh.UnityPort
                     UnitySceneNodes = usedUnityNodes + activeActors;
                     unitySubmittedFrame = pictureFrame;
                 }
-                nativeComposer?.ApplyActorTransforms(this);
-                UpdateInterpolatedOrder();
+                float actorInterpolation = nativeComposer?.InterpolationAlpha ?? 1f;
+                if (submitScene || submittedActorInterpolation != actorInterpolation)
+                {
+                    nativeComposer?.ApplyActorTransforms(this);
+                    UpdateInterpolatedOrder();
+                    submittedActorInterpolation = actorInterpolation;
+                }
                 SceneSubmissionMs = stageWatch.Elapsed.TotalMilliseconds;
                 stageWatch.Restart();
                 unityCamera.targetTexture = target;
@@ -754,7 +817,7 @@ namespace Rubezh.UnityPort
                     UnityEngine.Profiling.Profiler.EndSample();
                 }
                 MaskRenderMs = stageWatch.Elapsed.TotalMilliseconds;
-                if (unityEffectFrame != pictureFrame)
+                if (maskAllocated || targetsChanged || unityEffectFrame != pictureFrame)
                 {
                     UpdateNativeEffects(battle);
                     unityEffectFrame = pictureFrame;

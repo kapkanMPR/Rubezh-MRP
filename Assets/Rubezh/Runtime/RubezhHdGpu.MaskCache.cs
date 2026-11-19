@@ -7,7 +7,64 @@ namespace Rubezh.UnityPort
     {
         public int UnityObjectMaskBuilds { get; private set; }
         public int UnityRoofMaskBuilds { get; private set; }
+        public bool UnityPackedMasks { get; private set; }
 #if UNITY_5_3_OR_NEWER || RUBEZH_NATIVE_TEST_CONTRACT
+        bool? packedMaskSupported;
+
+        static RenderTexture CreateMaskTarget(int width, int height, RenderTextureFormat format, string name)
+        {
+            var texture = new RenderTexture(width, height, 0, format, RenderTextureReadWrite.Linear)
+            {
+                name = name,
+                filterMode = FilterMode.Point,
+                wrapMode = TextureWrapMode.Clamp,
+            };
+            if (texture.Create() && texture.format == format)
+                return texture;
+            texture.Release();
+            UnityEngine.Object.Destroy(texture);
+            return null;
+        }
+
+        bool EnsureUnityMaskTargets(int width, int height)
+        {
+            if (!packedMaskSupported.HasValue)
+                packedMaskSupported =
+                    SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.RGFloat)
+                    && SystemInfo.SupportsBlendingOnRenderTextureFormat(RenderTextureFormat.RGFloat);
+            bool packed = packedMaskSupported.Value && CanUseMergedMaskGeometry();
+            if (
+                unityMask != null
+                && unityMask.width == width
+                && unityMask.height == height
+                && unityMask.IsCreated()
+                && packed == UnityPackedMasks
+                && (packed || (unityRoofMask != null && unityRoofMask.IsCreated()))
+            )
+                return false;
+
+            ReleaseUnityMask();
+            if (packed)
+            {
+                // MAX blends the channels independently. Moving vehicles contribute to red only.
+                unityMask = CreateMaskTarget(width, height, RenderTextureFormat.RGFloat, "Rubezh object + roof depth");
+                if (unityMask != null)
+                {
+                    UnityPackedMasks = true;
+                    return true;
+                }
+                packedMaskSupported = false;
+            }
+            unityMask = CreateMaskTarget(width, height, RenderTextureFormat.RFloat, "Rubezh object depth");
+            unityRoofMask = CreateMaskTarget(width, height, RenderTextureFormat.RFloat, "Rubezh roof depth");
+            if (unityMask == null || unityRoofMask == null)
+            {
+                ReleaseUnityMask();
+                throw new System.InvalidOperationException("Cannot create Rubezh occlusion targets.");
+            }
+            return true;
+        }
+
         // Match the visibility and geometry inputs of BattleRenderer.DrawVehicleArrival.
         // An active, parked vehicle is not a changing occluder.
         struct VehicleMaskState
@@ -71,22 +128,24 @@ namespace Rubezh.UnityPort
                 || unityMaskView != view
                 || unityMaskSceneryDisabled != DisableScenery;
             bool vehiclesChanged = !green.Same(greenMaskState) || !red.Same(redMaskState);
-            bool merged = (sceneChanged || vehiclesChanged) && PrepareUnityMaskCommands(view);
-            if (sceneChanged || vehiclesChanged)
+            if (!sceneChanged && !vehiclesChanged)
+                return;
+            bool merged = PrepareUnityMaskCommands(view);
+            if (merged)
+                RenderUnityMergedMask(unityObjectMaskCommands, unityMask, true);
+            else
             {
-                if (merged)
-                    RenderUnityMergedMask(unityObjectMaskCommands, unityMask, true);
-                else
-                {
-                    UnityObjectMaskDraws = -1;
-                    unityMaskCamera.cullingMask = (1 << ObjectLayer) | (1 << SceneryLayer);
-                    unityMaskCamera.targetTexture = unityMask;
-                    unityMaskCamera.RenderWithShader(unityMaskShader, "");
-                }
-                UnityObjectMaskBuilds++;
+                UnityObjectMaskDraws = -1;
+                unityMaskCamera.cullingMask = (1 << ObjectLayer) | (1 << SceneryLayer);
+                unityMaskCamera.targetTexture = unityMask;
+                unityMaskCamera.RenderWithShader(unityMaskShader, "");
             }
-            // Vehicles do not contribute to layer 26: do not redraw the roof mask for them.
-            if (sceneChanged)
+            UnityObjectMaskBuilds++;
+            if (UnityPackedMasks)
+            {
+                UnityRoofMaskBuilds++;
+            }
+            else if (sceneChanged)
             {
                 if (merged)
                     RenderUnityMergedMask(unityRoofMaskCommands, unityRoofMask, false);
@@ -101,8 +160,7 @@ namespace Rubezh.UnityPort
             }
             else
                 UnityRoofMaskDraws = 0;
-            if (sceneChanged || vehiclesChanged)
-                UnityMaskBuilds++;
+            UnityMaskBuilds++;
             greenMaskState = green;
             redMaskState = red;
             unityMaskBuildingUpdates = NativeBuildingMaskUpdates;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -44,6 +45,8 @@ static class GroundPalette221Check
                 "nativeTexturePages",
                 "groundMaterialPalettes",
                 "groundMaterialPages",
+                "objectGroups",
+                "objectDraws",
             }
         )
         {
@@ -321,6 +324,127 @@ static class GroundPalette221Check
         );
     }
 
+    static void SceneryMeshIntegration()
+    {
+        var r = Fixture();
+        int[] pages = { 1, 2, 1, 3, 1, 2, 1 };
+        for (int i = 0; i < pages.Length; i++)
+            Add(r, pages[i], i == 3 ? 2 : 1);
+        var original = Get<AtlasLayout.DrawRuns>(r, "runs").Items.ToArray();
+        var indices = Get<List<int>>(r, "indices").ToArray();
+        var type = typeof(HdGpuRenderer).GetNestedType("MeshBatch", BindingFlags.NonPublic);
+        var batch = Activator.CreateInstance(type, true);
+        Set(r, "pictureBatch", batch);
+        Mesh.RecordData = true;
+        try
+        {
+            Call(r, "StoreGeometry", batch);
+        }
+        finally
+        {
+            Mesh.RecordData = false;
+        }
+        var mesh = Get<Mesh>(batch, "Mesh");
+        var slots = mesh.UvChannels[3].ToList();
+        VerifyMapping(r, pages, slots);
+        Check(
+            mesh.subMeshCount == 3 && r.SceneryPaletteRunsSaved == 4,
+            "seven overlapping draws become three ordered draws around a picture depth boundary"
+        );
+        Check(Get<int[]>(batch, "Pages")[1] == 3, "picture depth keeps its own source material");
+        var source = Get<object>(batch, "Data");
+        Check(
+            indices.SequenceEqual(Get<int[]>(source, "Indices"))
+                && original.SequenceEqual(Get<AtlasLayout.DrawRuns.Run[]>(source, "Runs")),
+            "merged mask builder still receives the original uncompacted pages and indices"
+        );
+
+        Clear(r);
+        for (int i = 0; i < pages.Length; i++)
+            Add(r, pages[i], i == 3 ? 2 : 1);
+        bool Matches() => (bool)Call(r, "MatchesPictureGeometry", source);
+        Check(Matches(), "identical picture inputs reuse the retained geometry");
+        var depth = Get<List<Vector2>>(r, "depths");
+        var savedDepth = depth[0];
+        depth[0] = new Vector2(savedDepth.x + 1, savedDepth.y);
+        Check(!Matches(), "changed depth at fixed UV and position invalidates pictures");
+        depth[0] = savedDepth;
+        var clips = Get<List<Vector2>>(r, "clips");
+        var savedClip = clips[0];
+        clips[0] = new Vector2(savedClip.x, savedClip.y - 1);
+        Check(!Matches(), "changed clip span invalidates pictures");
+        clips[0] = savedClip;
+        var colors = Get<List<Color32>>(r, "colors");
+        var savedColor = colors[0];
+        colors[0] = new Color32(savedColor.r, savedColor.g, savedColor.b, 0);
+        Check(!Matches(), "changed transparency invalidates pictures");
+        colors[0] = savedColor;
+        Get<List<int>>(r, "indices")[0] = 1;
+        Check(!Matches(), "changed triangle at fixed vertex count invalidates pictures");
+    }
+
+    static void SpatialPainterOrder()
+    {
+        var r = Fixture();
+        var source = Get<IList>(r, "objectDraws");
+        var type = typeof(HdGpuRenderer).GetNestedType("MeshBatch", BindingFlags.NonPublic);
+        var rng = new System.Random(223);
+        const int count = 360;
+        var rects = new Rect[count];
+        var sequence = new Dictionary<object, int>();
+        for (int i = 0; i < count; i++)
+        {
+            var batch = Activator.CreateInstance(type, true);
+            Set(batch, "CpuOnly", true);
+            Clear(r);
+            Add(r, 1 + i % 4, 1);
+            float x = i % 6 * 210 + rng.Next(-40, 40);
+            float y = rng.Next(40, 220);
+            float w = i % 41 == 0 ? 620 : rng.Next(12, 68);
+            float h = rng.Next(8, 46);
+            rects[i] = new Rect(x, y, w, h);
+            var vertices = Get<List<Vector3>>(r, "vertices");
+            vertices[0] = new Vector3(x, y, 0);
+            vertices[1] = new Vector3(x + w, y, 0);
+            vertices[2] = new Vector3(x + w, y + h, 0);
+            vertices[3] = new Vector3(x, y + h, 0);
+            Call(r, "StoreGeometry", batch);
+            source.Add(batch);
+            sequence.Add(batch, i);
+        }
+        var order = new List<int>();
+        for (int build = 0; build < 2; build++)
+        {
+            order.Clear();
+            int groups = (int)Call(r, "GroupStaticObjects", source);
+            Check(groups < count / 2, "separate columns can reuse spatial mesh groups");
+            foreach (var group in Get<IList>(r, "objectGroups").Cast<object>().Take(groups))
+            foreach (var batch in Get<IList>(group, "Members"))
+                order.Add(sequence[batch]);
+            Check(
+                order.Count == count && order.Distinct().Count() == count,
+                "every nonempty object is submitted exactly once, including after a rebuild"
+            );
+            var position = new int[count];
+            for (int i = 0; i < count; i++)
+                position[order[i]] = i;
+            for (int a = 0; a < count; a++)
+            for (int b = a + 1; b < count; b++)
+            {
+                Rect left = rects[a],
+                    right = rects[b];
+                if (
+                    left.xMax + 2 < right.xMin
+                    || right.xMax + 2 < left.xMin
+                    || left.yMax + 2 < right.yMin
+                    || right.yMax + 2 < left.yMin
+                )
+                    continue;
+                Check(position[a] < position[b], "every intersecting object pair retains its original painter order");
+            }
+        }
+    }
+
     internal static int Run()
     {
         BasicMapping();
@@ -328,6 +452,8 @@ static class GroundPalette221Check
         BoundedMaterials();
         MeshIntegration();
         SharedVertexFallback();
+        SceneryMeshIntegration();
+        SpatialPainterOrder();
         Console.WriteLine(
             "PASS ground four-atlas palette: "
                 + checks

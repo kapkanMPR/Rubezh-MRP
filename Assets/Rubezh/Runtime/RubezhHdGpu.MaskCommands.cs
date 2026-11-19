@@ -22,9 +22,8 @@ namespace Rubezh.UnityPort
         {
             public long Chunk;
             public int Page;
-            public bool Roof;
 
-            public bool Equals(MaskMergeKey b) => Chunk == b.Chunk && Page == b.Page && Roof == b.Roof;
+            public bool Equals(MaskMergeKey b) => Chunk == b.Chunk && Page == b.Page;
 
             public override bool Equals(object b) => b is MaskMergeKey && Equals((MaskMergeKey)b);
 
@@ -32,7 +31,7 @@ namespace Rubezh.UnityPort
             {
                 unchecked
                 {
-                    return (Chunk.GetHashCode() * 397 ^ Page) * 397 ^ (Roof ? 1 : 0);
+                    return Chunk.GetHashCode() * 397 ^ Page;
                 }
             }
         }
@@ -41,7 +40,30 @@ namespace Rubezh.UnityPort
         {
             public Mesh Mesh;
             public int Page;
-            public bool Roof;
+            public int RoofSubmesh;
+            public Bounds Bounds;
+            public Bounds[] SplitBounds;
+
+            static bool Intersects(Bounds bounds, Rect pixels) =>
+                bounds.max.x >= pixels.xMin
+                && bounds.min.x <= pixels.xMax
+                && bounds.max.y >= pixels.yMin
+                && bounds.min.y <= pixels.yMax;
+
+            public int VisibleSubmesh(Rect pixels)
+            {
+                if (!Intersects(Bounds, pixels))
+                    return -1;
+                if (SplitBounds == null)
+                    return 0;
+                bool first = Intersects(SplitBounds[0], pixels);
+                bool second = Intersects(SplitBounds[1], pixels);
+                if (first && second)
+                    return 0;
+                if (first)
+                    return 1;
+                return second ? 2 : -1;
+            }
         }
 
         sealed class MaskMergeBuilder
@@ -53,54 +75,162 @@ namespace Rubezh.UnityPort
             public readonly List<Color32> Colors = new List<Color32>();
             public readonly List<int> Indices = new List<int>();
             readonly Dictionary<int, int> remap = new Dictionary<int, int>();
+            readonly List<Vector2> membership = new List<Vector2>();
             GeometryData lastData;
+            bool lastRoof;
+            int roofIndexCount;
 
-            public void Add(GeometryData data, int start, int count)
+            public void Add(GeometryData data, int start, int count, bool roof)
             {
-                if (!ReferenceEquals(lastData, data))
+                if (!ReferenceEquals(lastData, data) || lastRoof != roof)
                 {
                     remap.Clear();
                     lastData = data;
+                    lastRoof = roof;
                 }
-                for (int i = start; i < start + count; i++)
+                for (int i = start; i < start + count; i += 3)
                 {
-                    int source = data.Indices[i],
-                        index;
-                    if (!remap.TryGetValue(source, out index))
-                    {
-                        index = Vertices.Count;
-                        remap.Add(source, index);
-                        Vertices.Add(data.Vertices[source]);
-                        UVs.Add(data.UVs[source]);
-                        Depths.Add(data.Depths[source]);
-                        Clips.Add(data.Clips[source]);
-                        Colors.Add(data.Colors[source]);
-                    }
-                    Indices.Add(index);
+                    int a = data.Indices[i],
+                        b = data.Indices[i + 1],
+                        c = data.Indices[i + 2];
+                    // The shader accepts the closed mode interval [.5, 2.5]. Interpolated
+                    // modes that cross a boundary must remain available to the fragment shader.
+                    float ma = data.Depths[a].y,
+                        mb = data.Depths[b].y,
+                        mc = data.Depths[c].y;
+                    if ((ma < .5f && mb < .5f && mc < .5f) || (ma > 2.5f && mb > 2.5f && mc > 2.5f))
+                        continue;
+                    Indices.Add(MapVertex(data, a, roof));
+                    Indices.Add(MapVertex(data, b, roof));
+                    Indices.Add(MapVertex(data, c, roof));
+                    if (roof)
+                        roofIndexCount += 3;
                 }
             }
 
-            public Mesh Upload()
+            int MapVertex(GeometryData data, int source, bool roof)
             {
-                var mesh = new Mesh { name = "Rubezh merged MAX occluders", indexFormat = IndexFormat.UInt32 };
+                if (remap.TryGetValue(source, out int index))
+                    return index;
+                index = Vertices.Count;
+                remap.Add(source, index);
+                Vertices.Add(data.Vertices[source]);
+                UVs.Add(data.UVs[source]);
+                Depths.Add(data.Depths[source]);
+                Clips.Add(data.Clips[source]);
+                Colors.Add(data.Colors[source]);
+                membership.Add(new Vector2(roof ? 1 : 0, 0));
+                return index;
+            }
+
+            // Picture pages can span distant buildings. Select one of two smaller index
+            // ranges when only that half is visible; both halves together still cost one draw.
+            Bounds[] AddPictureRanges(Mesh mesh)
+            {
+                if (Indices.Count < 12)
+                    return null;
+                var whole = mesh.bounds;
+                bool splitX = whole.size.x >= whole.size.y;
+                var ranges = new[] { new List<int>(), new List<int>() };
+                var bounds = new Bounds[2];
+                for (int i = 0; i < Indices.Count; i += 3)
+                {
+                    var triangle = new Bounds(Vertices[Indices[i]], Vector3.zero);
+                    triangle.Encapsulate(Vertices[Indices[i + 1]]);
+                    triangle.Encapsulate(Vertices[Indices[i + 2]]);
+                    bool second = splitX ? triangle.center.x >= whole.center.x : triangle.center.y >= whole.center.y;
+                    int half = second ? 1 : 0;
+                    if (ranges[half].Count == 0)
+                        bounds[half] = triangle;
+                    else
+                        bounds[half].Encapsulate(triangle);
+                    ranges[half].Add(Indices[i]);
+                    ranges[half].Add(Indices[i + 1]);
+                    ranges[half].Add(Indices[i + 2]);
+                }
+                if (ranges[0].Count == 0 || ranges[1].Count == 0)
+                    return null;
+                mesh.subMeshCount = 3;
+                mesh.SetTriangles(ranges[0], 1, false);
+                mesh.SetTriangles(ranges[1], 2, false);
+                return bounds;
+            }
+
+            public MaskMergedMesh Upload(int page, bool packed, bool picture)
+            {
+                var mesh = new Mesh
+                {
+                    name = picture ? "Rubezh picture MAX occluders" : "Rubezh merged MAX occluders",
+                    indexFormat = Vertices.Count <= ushort.MaxValue ? IndexFormat.UInt16 : IndexFormat.UInt32,
+                };
                 mesh.SetVertices(Vertices);
                 mesh.SetUVs(0, UVs);
                 mesh.SetUVs(1, Depths);
                 mesh.SetUVs(2, Clips);
+                if (packed)
+                    mesh.SetUVs(4, membership);
                 mesh.SetColors(Colors);
-                mesh.subMeshCount = 1;
+                bool separateRoofRange = !packed && roofIndexCount > 0 && roofIndexCount < Indices.Count;
+                mesh.subMeshCount = separateRoofRange ? 2 : 1;
                 mesh.SetTriangles(Indices, 0, false);
+                if (separateRoofRange)
+                {
+                    var roofIndices = new List<int>(roofIndexCount);
+                    foreach (int index in Indices)
+                        if (membership[index].x > .5f)
+                            roofIndices.Add(index);
+                    mesh.SetTriangles(roofIndices, 1, false);
+                }
                 mesh.RecalculateBounds();
-                return mesh;
+                var bounds = mesh.bounds;
+                var splitBounds = picture ? AddPictureRanges(mesh) : null;
+                mesh.UploadMeshData(true);
+                return new MaskMergedMesh
+                {
+                    Mesh = mesh,
+                    Page = page,
+                    RoofSubmesh =
+                        roofIndexCount == 0 ? -1
+                        : separateRoofRange ? 1
+                        : 0,
+                    Bounds = bounds,
+                    SplitBounds = splitBounds,
+                };
             }
         }
 
+        sealed class MaskPageMaterial
+        {
+            public Material Material;
+            public int Revision = -1;
+        }
+
         readonly List<MaskMergedMesh> unityMaskMergedMeshes = new List<MaskMergedMesh>();
-        readonly List<Material> unityMergedMaskMaterials = new List<Material>();
+        readonly Dictionary<int, MaskPageMaterial> unityMergedMaskMaterials = new Dictionary<int, MaskPageMaterial>();
         CommandBuffer unityObjectMaskCommands,
             unityRoofMaskCommands;
         int unityMaskMergedGeometry = -1,
-            unityMaskMergedMaterialRevision = -1;
+            unityMaskAvailabilitySerial = -1;
+        bool unityMaskDataAvailable,
+            unityMaskMeshesPacked;
+
+        Material MaskMaterialForPage(int page)
+        {
+            if (!unityMergedMaskMaterials.TryGetValue(page, out var entry))
+            {
+                entry = new MaskPageMaterial { Material = new Material(unityMaskShader) };
+                unityMergedMaskMaterials.Add(page, entry);
+            }
+            if (entry.Revision != unityStaticMaterialRevision)
+            {
+                entry.Material.CopyPropertiesFromMaterial(unityMaterials[page]);
+                entry.Material.shader = unityMaskShader;
+                entry.Material.SetFloat("_NativeInstance", 0);
+                entry.Material.SetFloat("_ActorRootDepth", 0);
+                entry.Revision = unityStaticMaterialRevision;
+            }
+            return entry.Material;
+        }
 
         void ReleaseUnityMaskCommands()
         {
@@ -118,10 +248,10 @@ namespace Rubezh.UnityPort
             foreach (var batch in unityMaskMergedMeshes)
                 UnityEngine.Object.Destroy(batch.Mesh);
             unityMaskMergedMeshes.Clear();
-            foreach (var material in unityMergedMaskMaterials)
-                UnityEngine.Object.Destroy(material);
+            foreach (var entry in unityMergedMaskMaterials.Values)
+                UnityEngine.Object.Destroy(entry.Material);
             unityMergedMaskMaterials.Clear();
-            unityMaskMergedGeometry = unityMaskMergedMaterialRevision = -1;
+            unityMaskMergedGeometry = unityMaskAvailabilitySerial = -1;
             UnityMaskMergedMeshes = UnityObjectMaskDraws = UnityRoofMaskDraws = 0;
         }
 
@@ -138,81 +268,65 @@ namespace Rubezh.UnityPort
             {
                 if (run.Count == 0)
                     continue;
-                var key = new MaskMergeKey
-                {
-                    Chunk = chunk,
-                    Page = run.Page,
-                    Roof = roof,
-                };
+                var key = new MaskMergeKey { Chunk = chunk, Page = run.Page };
                 MaskMergeBuilder builder;
                 if (!groups.TryGetValue(key, out builder))
                 {
                     builder = new MaskMergeBuilder();
                     groups.Add(key, builder);
                 }
-                builder.Add(data, run.Start, run.Count);
+                builder.Add(data, run.Start, run.Count, roof);
             }
+        }
+
+        bool CanUseMergedMaskGeometry()
+        {
+            if (!UnityMergedMaskCommands)
+                return false;
+            if (unityMaskAvailabilitySerial != geometrySerial)
+            {
+                unityMaskDataAvailable =
+                    pictureBatch.Mesh == null || pictureBatch.Pages.Length == 0 || pictureBatch.Data != null;
+                foreach (var batch in objectDraws)
+                    if (batch.Data == null)
+                    {
+                        unityMaskDataAvailable = false;
+                        break;
+                    }
+                unityMaskAvailabilitySerial = geometrySerial;
+            }
+            return unityMaskDataAvailable;
         }
 
         bool PrepareUnityMaskCommands(Rect view)
         {
-            if (!UnityMergedMaskCommands)
+            if (!CanUseMergedMaskGeometry())
                 return false;
-            // The direct path remains available for a partially initialized scene.
-            if (pictureBatch.Mesh != null && pictureBatch.Pages.Length > 0 && pictureBatch.Data == null)
-                return false;
-            foreach (var batch in objectDraws)
-                if (batch.Data == null)
-                    return false;
-            if (unityMaskMergedGeometry != geometrySerial)
+            if (unityMaskMergedGeometry != geometrySerial || unityMaskMeshesPacked != UnityPackedMasks)
             {
                 var groups = new Dictionary<MaskMergeKey, MaskMergeBuilder>();
-                AddMergedMaskData(groups, pictureBatch.Data, long.MinValue, false);
                 AddMergedMaskData(groups, pictureBatch.Data, long.MinValue, true);
                 foreach (var batch in objectDraws)
-                {
-                    AddMergedMaskData(groups, batch.Data, batch.Chunk, false);
-                    if (batch.BlocksRoof)
-                        AddMergedMaskData(groups, batch.Data, batch.Chunk, true);
-                }
+                    AddMergedMaskData(groups, batch.Data, batch.Chunk, batch.BlocksRoof);
                 foreach (var batch in unityMaskMergedMeshes)
                     UnityEngine.Object.Destroy(batch.Mesh);
                 unityMaskMergedMeshes.Clear();
                 foreach (var entry in groups)
-                    unityMaskMergedMeshes.Add(
-                        new MaskMergedMesh
-                        {
-                            Mesh = entry.Value.Upload(),
-                            Page = entry.Key.Page,
-                            Roof = entry.Key.Roof,
-                        }
-                    );
+                    if (entry.Value.Indices.Count > 0)
+                        unityMaskMergedMeshes.Add(
+                            entry.Value.Upload(entry.Key.Page, UnityPackedMasks, entry.Key.Chunk == long.MinValue)
+                        );
+                unityMaskMeshesPacked = UnityPackedMasks;
                 unityMaskMergedGeometry = geometrySerial;
                 UnityMaskGeometryBuilds++;
                 UnityMaskMergedMeshes = unityMaskMergedMeshes.Count;
             }
-            while (unityMergedMaskMaterials.Count < unityMaterials.Count)
-                unityMergedMaskMaterials.Add(new Material(unityMaskShader));
-            if (unityMaskMergedMaterialRevision != unityStaticMaterialRevision)
-            {
-                for (int i = 0; i < unityMaterials.Count; i++)
-                {
-                    var material = unityMergedMaskMaterials[i];
-                    material.CopyPropertiesFromMaterial(unityMaterials[i]);
-                    material.shader = unityMaskShader;
-                    // Static geometry supplies these values in vertex channels, never a native instance block.
-                    material.SetFloat("_NativeInstance", 0);
-                    material.SetFloat("_ActorRootDepth", 0);
-                }
-                unityMaskMergedMaterialRevision = unityStaticMaterialRevision;
-            }
             if (unityObjectMaskCommands == null)
-            {
                 unityObjectMaskCommands = new CommandBuffer { name = "Rubezh grouped object MAX mask" };
+            if (!UnityPackedMasks && unityRoofMaskCommands == null)
                 unityRoofMaskCommands = new CommandBuffer { name = "Rubezh grouped roof MAX mask" };
-            }
             unityObjectMaskCommands.Clear();
-            unityRoofMaskCommands.Clear();
+            unityRoofMaskCommands?.Clear();
             UnityObjectMaskDraws = UnityRoofMaskDraws = 0;
             if (DisableScenery)
                 return true;
@@ -226,20 +340,18 @@ namespace Rubezh.UnityPort
             );
             foreach (var batch in unityMaskMergedMeshes)
             {
-                var bounds = batch.Mesh.bounds;
-                if (
-                    bounds.max.x < pixels.xMin
-                    || bounds.min.x > pixels.xMax
-                    || bounds.max.y < pixels.yMin
-                    || bounds.min.y > pixels.yMax
-                )
+                int submesh = batch.VisibleSubmesh(pixels);
+                if (submesh < 0)
                     continue;
-                var commands = batch.Roof ? unityRoofMaskCommands : unityObjectMaskCommands;
-                commands.DrawMesh(batch.Mesh, Matrix4x4.identity, unityMergedMaskMaterials[batch.Page], 0, 0);
-                if (batch.Roof)
+                var material = MaskMaterialForPage(batch.Page);
+                unityObjectMaskCommands.DrawMesh(batch.Mesh, Matrix4x4.identity, material, submesh, 0);
+                UnityObjectMaskDraws++;
+                if (!UnityPackedMasks && batch.RoofSubmesh >= 0)
+                {
+                    int roofSubmesh = batch.RoofSubmesh == 0 ? submesh : batch.RoofSubmesh;
+                    unityRoofMaskCommands.DrawMesh(batch.Mesh, Matrix4x4.identity, material, roofSubmesh, 0);
                     UnityRoofMaskDraws++;
-                else
-                    UnityObjectMaskDraws++;
+                }
             }
             return true;
         }

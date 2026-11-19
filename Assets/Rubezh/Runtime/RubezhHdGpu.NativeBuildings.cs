@@ -16,7 +16,8 @@ namespace Rubezh.UnityPort
                 Meta;
             public byte[] MaskBytes;
             public float[] MetaFloats;
-            public readonly Dictionary<DynamicBuilding.Wall, int> Rows = new Dictionary<DynamicBuilding.Wall, int>();
+            public readonly Dictionary<DynamicBuilding.Wall, Vector2Int> MaskOrigins =
+                new Dictionary<DynamicBuilding.Wall, Vector2Int>();
             public readonly Dictionary<DynamicBuilding.Wall, int> Revisions =
                 new Dictionary<DynamicBuilding.Wall, int>();
             public readonly Dictionary<NativeBuildingRegion, int> RegionRows =
@@ -67,30 +68,36 @@ namespace Rubezh.UnityPort
             if (buildingPages.TryGetValue(source, out result))
                 return result;
             result = new BuildingPage { Source = source };
-            int rows = 1,
-                width = 1;
+            int limit = SystemInfo.maxTextureSize;
+            if (source.Regions.Count > Math.Min(65535, limit))
+                throw new InvalidOperationException("Building metadata exceeds texture limit");
+            int x = 0,
+                y = 1,
+                columnWidth = 0,
+                usedHeight = 1;
             foreach (var region in source.Regions)
             {
-                var picture = buildingPictures[region.key];
-                var wall = picture.NativeWall;
-                if (wall != null && !result.Rows.ContainsKey(wall))
+                var wall = buildingPictures[region.key].NativeWall;
+                if (wall == null || result.MaskOrigins.ContainsKey(wall))
+                    continue;
+                if (wall.NX <= 0 || wall.NZ <= 0 || wall.NX > limit || wall.NZ > limit)
+                    throw new InvalidOperationException("Invalid building damage grid");
+                if (y + wall.NZ > limit)
                 {
-                    if (wall.NX <= 0 || wall.NZ <= 0)
-                        throw new InvalidOperationException("Invalid building damage grid");
-                    result.Rows.Add(wall, rows);
-                    rows += wall.NZ;
-                    width = Math.Max(width, wall.NX);
+                    x += columnWidth;
+                    y = 0;
+                    columnWidth = 0;
                 }
+                if (x + wall.NX > limit)
+                    throw new InvalidOperationException("Building damage masks exceed texture limit");
+                result.MaskOrigins.Add(wall, new Vector2Int(x, y));
+                columnWidth = Math.Max(columnWidth, wall.NX);
+                y += wall.NZ;
+                usedHeight = Math.Max(usedHeight, y);
             }
-            int height = PowerOfTwo(rows);
-            width = PowerOfTwo(width);
+            int width = Math.Min(limit, PowerOfTwo(Math.Max(1, x + columnWidth)));
+            int height = Math.Min(limit, PowerOfTwo(usedHeight));
             result.MaskWidth = width;
-            if (
-                height > SystemInfo.maxTextureSize
-                || width > SystemInfo.maxTextureSize
-                || source.Regions.Count > Math.Min(65535, SystemInfo.maxTextureSize)
-            )
-                throw new InvalidOperationException("Building mask page exceeds texture limit");
             result.Mask = new Texture2D(width, height, TextureFormat.R8, false, true);
             result.MaskBytes = new byte[width * height];
             result.Mask.filterMode = FilterMode.Point;
@@ -123,8 +130,9 @@ namespace Rubezh.UnityPort
                     f[offset + 10] = s.windowHi;
                     f[offset + 12] = s.sill;
                     f[offset + 13] = s.lintel;
-                    f[offset + 14] = 0;
-                    f[offset + 15] = result.Rows[w];
+                    var origin = result.MaskOrigins[w];
+                    f[offset + 14] = origin.x;
+                    f[offset + 15] = origin.y;
                     f[offset + 16] = w.NX;
                     f[offset + 17] = w.NZ;
                     f[offset + 18] = width;
@@ -161,7 +169,7 @@ namespace Rubezh.UnityPort
         void UpdateBuildingMask(BuildingPage page, bool force = false)
         {
             bool changed = force;
-            foreach (var pair in page.Rows)
+            foreach (var pair in page.MaskOrigins)
             {
                 var wall = pair.Key;
                 int previous;
@@ -169,7 +177,11 @@ namespace Rubezh.UnityPort
                     continue;
                 for (int z = 0; z < wall.NZ; z++)
                 for (int x = 0; x < wall.NX; x++)
-                    page.MaskBytes[(pair.Value + z) * page.MaskWidth + x] = BuildingDamageMask.Removed(wall, x, z)
+                    page.MaskBytes[(pair.Value.y + z) * page.MaskWidth + pair.Value.x + x] = BuildingDamageMask.Removed(
+                        wall,
+                        x,
+                        z
+                    )
                         ? (byte)255
                         : (byte)0;
                 page.Revisions[wall] = wall.Revision;

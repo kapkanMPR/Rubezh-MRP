@@ -9,12 +9,14 @@ namespace Rubezh.UnityPort
     // disjoint projected bounds, including the caller's rasterization guard.
     internal static class OrderedMeshRuns
     {
-        struct Box
+        internal struct Box
         {
             internal float L,
                 T,
                 R,
                 B;
+
+            internal Rect Rect => new Rect(L, T, R - L, B - T);
 
             internal bool Separate(Box b, float guard) =>
                 R + guard < b.L || b.R + guard < L || B + guard < b.T || b.B + guard < T;
@@ -26,6 +28,89 @@ namespace Rubezh.UnityPort
                 R = Math.Max(R, b.R);
                 B = Math.Max(B, b.B);
             }
+        }
+
+        internal static Box RunBounds(List<Vector3> vertices, List<int> indices, AtlasLayout.DrawRuns.Run run)
+        {
+            var first = vertices[indices[run.Start]];
+            var box = new Box
+            {
+                L = first.x,
+                R = first.x,
+                T = first.y,
+                B = first.y,
+            };
+            for (int n = run.Start + 1; n < run.Start + run.Count; n++)
+            {
+                var v = vertices[indices[n]];
+                box.L = Math.Min(box.L, v.x);
+                box.R = Math.Max(box.R, v.x);
+                box.T = Math.Min(box.T, v.y);
+                box.B = Math.Max(box.B, v.y);
+            }
+            return box;
+        }
+
+        // Picture layers alternate atlas pages across many separate buildings. A layer
+        // may be emitted once all overlapping earlier layers in the window are drawn.
+        // Windows stay ordered, bounding both the search cost and spatial spread.
+        internal static int CompactPictures(
+            List<Vector3> vertices,
+            List<int> indices,
+            AtlasLayout.DrawRuns runs,
+            float guard
+        )
+        {
+            const int window = 64;
+            int count = runs.Items.Count;
+            if (count < 3)
+                return 0;
+            var bounds = new Box[window];
+            var dependencies = new ulong[window];
+            var order = new List<int>(count);
+            int page = -1;
+            int scheduledRuns = 0;
+            for (int start = 0; start < count; start += window)
+            {
+                int length = Math.Min(window, count - start);
+                for (int i = 0; i < length; i++)
+                {
+                    var run = runs.Items[start + i];
+                    if (run.Count == 0 || run.Count % 6 != 0)
+                        return 0;
+                    bounds[i] = RunBounds(vertices, indices, run);
+                    ulong earlier = 0;
+                    for (int j = 0; j < i; j++)
+                        if (!bounds[i].Separate(bounds[j], guard))
+                            earlier |= 1UL << j;
+                    dependencies[i] = earlier;
+                }
+                ulong pending = length == window ? ulong.MaxValue : (1UL << length) - 1;
+                while (pending != 0)
+                {
+                    int next = -1;
+                    for (int i = 0; i < length; i++)
+                    {
+                        if ((pending & (1UL << i)) == 0 || (pending & dependencies[i]) != 0)
+                            continue;
+                        if (next < 0)
+                            next = i;
+                        if (runs.Items[start + i].Page == page)
+                        {
+                            next = i;
+                            break;
+                        }
+                    }
+                    // Dependencies only point backwards. The earliest pending run is always ready.
+                    pending &= ~(1UL << next);
+                    order.Add(start + next);
+                    int nextPage = runs.Items[start + next].Page;
+                    if (nextPage != page)
+                        scheduledRuns++;
+                    page = nextPage;
+                }
+            }
+            return scheduledRuns < count ? Rewrite(indices, runs, order) : 0;
         }
 
         internal static int Compact(List<Vector3> vertices, List<int> indices, AtlasLayout.DrawRuns runs, float guard)
@@ -40,23 +125,7 @@ namespace Rubezh.UnityPort
                 var run = runs.Items[i];
                 if (run.Count == 0 || run.Count % 6 != 0)
                     return 0;
-                var first = vertices[indices[run.Start]];
-                var box = new Box
-                {
-                    L = first.x,
-                    R = first.x,
-                    T = first.y,
-                    B = first.y,
-                };
-                for (int n = run.Start + 1; n < run.Start + run.Count; n++)
-                {
-                    var v = vertices[indices[n]];
-                    box.L = Math.Min(box.L, v.x);
-                    box.R = Math.Max(box.R, v.x);
-                    box.T = Math.Min(box.T, v.y);
-                    box.B = Math.Max(box.B, v.y);
-                }
-                bounds[i] = box;
+                bounds[i] = RunBounds(vertices, indices, run);
                 order.Add(i);
             }
             bool moved = false;
@@ -83,6 +152,11 @@ namespace Rubezh.UnityPort
             }
             if (!moved)
                 return 0;
+            return Rewrite(indices, runs, order);
+        }
+
+        static int Rewrite(List<int> indices, AtlasLayout.DrawRuns runs, List<int> order)
+        {
             var original = runs.Items.ToArray();
             var rewritten = new List<int>(indices.Count);
             runs.Clear();
@@ -96,7 +170,7 @@ namespace Rubezh.UnityPort
             }
             indices.Clear();
             indices.AddRange(rewritten);
-            return count - runs.Items.Count;
+            return original.Length - runs.Items.Count;
         }
     }
 }

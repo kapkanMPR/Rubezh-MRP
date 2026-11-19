@@ -10,8 +10,8 @@ namespace Rubezh.UnityPort
 {
     public static class RubezhVersion
     {
-        public const string Current = "AI-0.12.222-RecoveredFull";
-        public const int AndroidCode = 323;
+        public const string Current = "AI-0.12.223";
+        public const int AndroidCode = 324;
     }
 
     public sealed partial class RubezhApp

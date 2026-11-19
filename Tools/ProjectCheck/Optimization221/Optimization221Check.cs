@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Rubezh.UnityPort;
 using SilentOrders.Core;
@@ -7,7 +8,7 @@ using SilentOrders.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-class Optimization221Check
+partial class Optimization221Check
 {
     const BindingFlags F = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     static int checks;
@@ -49,6 +50,13 @@ class Optimization221Check
                 "sceneObjectChunks",
                 "pictureBatch",
                 "roofBatch",
+                "vertices",
+                "uvs",
+                "clips",
+                "depths",
+                "colors",
+                "indices",
+                "runs",
             }
         )
         {
@@ -213,6 +221,168 @@ class Optimization221Check
         Call(failed, "ReleaseStaticCommands");
     }
 
+    static void RetainedCommandCoverage()
+    {
+        var r = Fixture();
+        var picture = Get(r, "pictureBatch");
+        var roof = Get(r, "roofBatch");
+        Set(picture, "Mesh", MeshAt(109, 50));
+        Set(roof, "Mesh", MeshAt(125, 50));
+        Set(r, "geometrySerial", (int)Get(r, "geometrySerial") + 1);
+        Call(r, "UpdateStaticCommands", new Rect(0, 0, 1, 1), 100, 100);
+        var staticBuffer = Prefix(r)[0];
+        var roofBuffer = ((Camera)Get(r, "unityCamera")).BufferLists[CameraEvent.AfterForwardAlpha][0];
+        int builds = r.UnityStaticCommandBuilds;
+        Check(staticBuffer.Draws.Count == 2 && roofBuffer.Draws.Count == 0, "edge mesh retained, distant roof culled");
+        for (int i = 1; i <= 60; i++)
+        {
+            var view = new Rect(i * .001f, -i * .0002f, 1, 1);
+            Call(r, "UpdateStaticCommands", view, 100, 100);
+            Check((Rect)Get(r, "unityCommandsView") == view, "camera keeps exact subpixel projection");
+        }
+        Check(r.UnityStaticCommandBuilds == builds, "60 subpixel pan frames reuse ordered world geometry");
+        Call(r, "UpdateStaticCommands", new Rect(.03f, .03f, .96f, .96f), 100, 100);
+        Check(r.UnityStaticCommandBuilds == builds, "small zoom within submitted coverage retains buffers");
+        Call(r, "UpdateStaticCommands", new Rect(.25f, 0, 1, 1), 100, 100);
+        Check(
+            r.UnityStaticCommandBuilds == builds + 1 && roofBuffer.Draws.Count == 1,
+            "pan beyond coverage includes new roof"
+        );
+        Call(r, "UpdateStaticCommands", new Rect(.5f, .25f, .5f, .5f), 100, 100);
+        Check(r.UnityStaticCommandBuilds == builds + 2 && roofBuffer.Draws.Count == 0, "deep zoom drops distant draws");
+        Set(r, "geometrySerial", (int)Get(r, "geometrySerial") + 1);
+        Call(r, "UpdateStaticCommands", new Rect(.501f, .25f, .5f, .5f), 100, 100);
+        Check(r.UnityStaticCommandBuilds == builds + 3, "content changes rebuild inside retained coverage");
+        Call(r, "ReleaseStaticCommands");
+    }
+
+    static void PictureRunCulling()
+    {
+        var r = Fixture();
+        var picture = Get(r, "pictureBatch");
+        for (int page = 0; page < 2; page++)
+        {
+            float x = page == 0 ? 215 : 15;
+            Call(
+                r,
+                "Quad",
+                x,
+                15f,
+                x + 10,
+                15f,
+                x + 10,
+                25f,
+                x,
+                25f,
+                0f,
+                0f,
+                1f,
+                1f,
+                new Color32(255, 255, 255, 255),
+                1f,
+                false,
+                page
+            );
+        }
+        Call(r, "StoreGeometry", picture);
+        Set(r, "geometrySerial", (int)Get(r, "geometrySerial") + 1);
+        var pages = (int[])Get(picture, "Pages");
+        var areas = (Rect[])Get(picture, "SubmeshBounds");
+        for (int i = 0; i < areas.Length; i++)
+            Check(areas[i] == new Rect(pages[i] == 0 ? 215 : 15, 15, 10, 10), "uploaded range owns exact bounds");
+        Call(r, "UpdateStaticCommands", new Rect(0, 0, 1, 1), 100, 100);
+        var draws = Prefix(r)[0].Draws;
+        Check(draws.Count == 1 && pages[draws[0].Submesh] == 1, "only near picture range submitted");
+        Call(r, "UpdateStaticCommands", new Rect(.01f, 0, 1, 1), 100, 100);
+        Check(draws.Count == 1 && pages[draws[0].Submesh] == 1, "retained pan keeps correct range");
+        Call(r, "UpdateStaticCommands", new Rect(.7f, 0, 1, 1), 100, 100);
+        Check(draws.Count == 0, "empty area inside whole mesh bounds submits no picture draws");
+        Call(r, "UpdateStaticCommands", new Rect(2, 0, 1, 1), 100, 100);
+        Check(draws.Count == 1 && pages[draws[0].Submesh] == 0, "camera jump selects opposite material range");
+        Call(r, "ReleaseStaticCommands");
+    }
+
+    static void PicturePainterOrder()
+    {
+        const int count = 149;
+        const float guard = 2;
+        var random = new System.Random(223);
+        for (int sample = 0; sample < 12; sample++)
+        {
+            var vertices = new List<Vector3>();
+            var indices = new List<int>();
+            var runs = new AtlasLayout.DrawRuns();
+            var bounds = new Rect[count];
+            var pages = new int[count];
+            for (int i = 0; i < count; i++)
+            {
+                var area =
+                    sample == 0
+                        ? new Rect(0, 0, 40, 40)
+                        : new Rect(random.Next(-60, 60), random.Next(-60, 60), random.Next(1, 19), random.Next(1, 19));
+                bounds[i] = area;
+                pages[i] = i % 7;
+                runs.AddQuad(pages[i]);
+                vertices.Add(new Vector3(area.xMin, area.yMin, 0));
+                vertices.Add(new Vector3(area.xMax, area.yMin, 0));
+                vertices.Add(new Vector3(area.xMax, area.yMax, 0));
+                vertices.Add(new Vector3(area.xMin, area.yMax, 0));
+                int first = i * 4;
+                indices.AddRange(new[] { first, first + 1, first + 2, first, first + 2, first + 3 });
+            }
+            var sourceIndices = indices.ToArray();
+            var positions = vertices.ToArray();
+            int saved = OrderedMeshRuns.CompactPictures(vertices, indices, runs, guard);
+            Check(saved == count - runs.Items.Count && saved >= 0, "picture scheduling only eliminates material runs");
+            Check(
+                sample == 0 ? saved == 0 : saved > 0,
+                "opaque overlap chain remains fixed, disjoint layers can batch"
+            );
+            Check(
+                indices.Count == sourceIndices.Length && vertices.SequenceEqual(positions),
+                "vertex data stays in place"
+            );
+            var seen = new bool[count];
+            var order = new int[count];
+            foreach (var run in runs.Items)
+                for (int j = run.Start; j < run.Start + run.Count; j += 6)
+                {
+                    int quad = indices[j] / 4;
+                    Check(!seen[quad] && run.Page == pages[quad], "every picture uses its original atlas once");
+                    seen[quad] = true;
+                    order[quad] = j;
+                    for (int k = 0; k < 6; k++)
+                        Check(
+                            indices[j + k] == sourceIndices[6 * quad + k],
+                            "index preserves all attached vertex channels"
+                        );
+                }
+            for (int i = 0; i < count; i++)
+            for (int j = i + 1; j < count; j++)
+            {
+                Rect a = bounds[i],
+                    b = bounds[j];
+                if (
+                    a.xMax + guard < b.xMin
+                    || b.xMax + guard < a.xMin
+                    || a.yMax + guard < b.yMin
+                    || b.yMax + guard < a.yMin
+                )
+                    continue;
+                Check(
+                    order[i] < order[j],
+                    "overlapping picture ranges keep their painter order across window boundaries"
+                );
+            }
+            var replay = new AtlasLayout.DrawRuns();
+            foreach (int page in pages)
+                replay.AddQuad(page);
+            var replayIndices = new List<int>(sourceIndices);
+            OrderedMeshRuns.CompactPictures(vertices, replayIndices, replay, guard);
+            Check(replayIndices.SequenceEqual(indices), "identical input produces identical picture scheduling");
+        }
+    }
+
     static void Main()
     {
         Resources.Loader = path => new Shader();
@@ -348,6 +518,12 @@ class Optimization221Check
             "release detaches cache camera buffer before releasing shared commands"
         );
         FailureFallbacks();
+        RetainedCommandCoverage();
+        PictureRunCulling();
+        PicturePainterOrder();
+        BuildingPagePacking();
+        BuildingMaskColumns(2048);
+        BuildingMaskColumns(8192);
         checks += Primitive221Check.Run();
         checks += Benchmark221Check.Run();
         checks += Mask221Check.Run();

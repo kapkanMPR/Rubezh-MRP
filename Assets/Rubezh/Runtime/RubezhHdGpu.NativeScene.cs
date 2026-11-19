@@ -15,6 +15,7 @@ namespace Rubezh.UnityPort
         {
             public Mesh Mesh;
             public int[] Pages = new int[0];
+            public Rect[] SubmeshBounds;
             public bool Dirty = true,
                 BlocksRoof,
                 Exterior;
@@ -34,6 +35,7 @@ namespace Rubezh.UnityPort
                 Clips;
             public Color32[] Colors;
             public int[] Indices;
+            public Rect Bounds;
             public AtlasLayout.DrawRuns.Run[] Runs;
         }
 
@@ -110,7 +112,6 @@ namespace Rubezh.UnityPort
             roofGeometryMap;
         int staticRevision = -1,
             roofGeometryRevision = -1;
-        ulong pictureGeometryHash;
         bool drawNativeRoof,
             depthDirty = true;
         RenderTexture nativeDepth,
@@ -177,13 +178,18 @@ namespace Rubezh.UnityPort
             }
             if (batch.CpuOnly)
             {
+                batch.Data.Bounds = ProjectedBounds(vertices);
                 batch.Dirty = false;
                 StaticMeshBuilds++;
                 return;
             }
             StaticRunsBefore += runs.Items.Count;
             CompactSolidMaterialRuns();
-            OrderedMeshRuns.Compact(vertices, indices, runs, 2 * canvas.Scale);
+            if (ReferenceEquals(batch, pictureBatch))
+                OrderedMeshRuns.CompactPictures(vertices, indices, runs, 2 * canvas.Scale);
+            else
+                OrderedMeshRuns.Compact(vertices, indices, runs, 2 * canvas.Scale);
+            var textureSlots = CompactStaticMaterialRuns();
             StaticRunsAfter += runs.Items.Count;
             if (batch.Mesh == null)
                 batch.Mesh = new Mesh { name = "Rubezh cached scene", indexFormat = IndexFormat.UInt32 };
@@ -192,14 +198,22 @@ namespace Rubezh.UnityPort
             batch.Mesh.SetUVs(0, uvs);
             batch.Mesh.SetUVs(1, depths);
             batch.Mesh.SetUVs(2, clips);
+            if (textureSlots != null)
+                batch.Mesh.SetUVs(3, textureSlots);
             batch.Mesh.SetColors(colors);
             batch.Mesh.subMeshCount = runs.Items.Count;
             if (batch.Pages.Length != runs.Items.Count)
                 batch.Pages = new int[runs.Items.Count];
+            // The picture mesh spans the whole map. Record bounds for the exact final
+            // index range of each draw while its data is on the CPU.
+            if (ReferenceEquals(batch, pictureBatch) && batch.SubmeshBounds?.Length != runs.Items.Count)
+                batch.SubmeshBounds = new Rect[runs.Items.Count];
             for (int i = 0; i < runs.Items.Count; i++)
             {
                 var run = runs.Items[i];
                 batch.Pages[i] = run.Page;
+                if (batch.SubmeshBounds != null)
+                    batch.SubmeshBounds[i] = OrderedMeshRuns.RunBounds(vertices, indices, run).Rect;
                 batch.Mesh.SetTriangles(indices, run.Start, run.Count, i, false);
             }
             batch.Mesh.RecalculateBounds();
@@ -316,33 +330,53 @@ namespace Rubezh.UnityPort
                 depthDirty = true;
         }
 
+        // Baked building pages can keep the same positions and UVs while their depth,
+        // damage row or clipping changes. Compare the original submitted geometry.
+        bool MatchesPictureGeometry(GeometryData previous)
+        {
+            if (
+                previous == null
+                || previous.Vertices.Length != vertices.Count
+                || previous.Indices.Length != indices.Count
+                || previous.Runs.Length != runs.Items.Count
+            )
+                return false;
+            for (int i = 0; i < vertices.Count; i++)
+                if (
+                    !Same(previous.Vertices[i], vertices[i])
+                    || !Same(previous.UVs[i], uvs[i])
+                    || !Same(previous.Depths[i], depths[i])
+                    || !Same(previous.Clips[i], clips[i])
+                    || !Same(previous.Colors[i], colors[i])
+                )
+                    return false;
+            for (int i = 0; i < indices.Count; i++)
+                if (previous.Indices[i] != indices[i])
+                    return false;
+            for (int i = 0; i < previous.Runs.Length; i++)
+            {
+                var before = previous.Runs[i];
+                var after = runs.Items[i];
+                if (before.Page != after.Page || before.Start != after.Start || before.Count != after.Count)
+                    return false;
+            }
+            return true;
+        }
+
         public void EndScene()
         {
-            // Procedural atlas updates usually change pixels, not the quad layout.
-            ulong hash = 1469598103934665603UL;
-            unchecked
-            {
-                for (int i = 0; i < vertices.Count; i++)
-                {
-                    hash = (hash ^ (uint)vertices[i].x.GetHashCode()) * 1099511628211UL;
-                    hash = (hash ^ (uint)vertices[i].y.GetHashCode()) * 1099511628211UL;
-                    hash = (hash ^ (uint)uvs[i].x.GetHashCode()) * 1099511628211UL;
-                    hash = (hash ^ (uint)uvs[i].y.GetHashCode()) * 1099511628211UL;
-                }
-                foreach (var run in runs.Items)
-                    hash = (hash ^ (uint)(run.Page * 397 ^ run.Count)) * 1099511628211UL;
-            }
-            if (pictureBatch.Dirty || hash != pictureGeometryHash)
+            if (pictureBatch.Dirty || !MatchesPictureGeometry(pictureBatch.Data))
             {
                 StoreGeometry(pictureBatch);
-                pictureGeometryHash = hash;
                 depthDirty = true;
             }
             ClearGroundScratch();
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            BuildObjectChunks(objectDraws, sceneObjectChunks, false, 1);
-            BuildObjectChunks(objectDraws, sceneRoofChunks, true, 2);
-            BuildObjectChunks(exteriorDraws, sceneExteriorChunks, false, 3);
+            int objectGroups = GroupStaticObjects(objectDraws);
+            BuildObjectChunks(objectGroups, sceneObjectChunks, false, 1);
+            BuildObjectChunks(objectGroups, sceneRoofChunks, true, 2);
+            BuildObjectChunks(GroupExteriorImages(), sceneExteriorChunks, false, 3);
+            ClearObjectGroups();
             expiredObjectChunks.Clear();
             foreach (var entry in objectChunkCache)
                 if (pictureFrame - entry.Value.LastFrame > 180)
@@ -359,18 +393,132 @@ namespace Rubezh.UnityPort
             geometrySerial++;
         }
 
-        // Preserve painter order: only consecutive objects in the same spatial chunk
-        // are combined. Moving a viewport edge invalidates its boundary groups only.
-        void BuildObjectChunks(List<MeshBatch> source, List<MeshBatch> output, bool roofOnly, uint kind)
+        // A group stays small enough for viewport culling. Searching recent groups lets
+        // neighbouring objects share a mesh even when the painter visits other map columns
+        // between them. An object can only cross groups separated in screen space.
+        sealed class StaticObjectGroup
+        {
+            public readonly List<MeshBatch> Members = new List<MeshBatch>();
+            public Rect Bounds;
+            public int Vertices;
+        }
+
+        readonly List<StaticObjectGroup> objectGroups = new List<StaticObjectGroup>();
+        int usedObjectGroups;
+
+        static Rect ProjectedBounds(List<Vector3> positions)
+        {
+            if (positions.Count == 0)
+                return default;
+            float left = positions[0].x,
+                right = left,
+                top = positions[0].y,
+                bottom = top;
+            for (int i = 1; i < positions.Count; i++)
+            {
+                var v = positions[i];
+                left = Math.Min(left, v.x);
+                right = Math.Max(right, v.x);
+                top = Math.Min(top, v.y);
+                bottom = Math.Max(bottom, v.y);
+            }
+            return new Rect(left, top, right - left, bottom - top);
+        }
+
+        void ClearObjectGroups()
+        {
+            for (int i = 0; i < usedObjectGroups; i++)
+                objectGroups[i].Members.Clear();
+            usedObjectGroups = 0;
+        }
+
+        StaticObjectGroup AddObjectGroup()
+        {
+            if (usedObjectGroups == objectGroups.Count)
+                objectGroups.Add(new StaticObjectGroup());
+            var group = objectGroups[usedObjectGroups++];
+            group.Vertices = 0;
+            return group;
+        }
+
+        int GroupExteriorImages()
+        {
+            ClearObjectGroups();
+            // Exterior sprites are single baked quads sorted in depth bands. Their
+            // stable run IDs keep a sparse skyline inside a few small index buffers.
+            StaticObjectGroup group = null;
+            long previous = 0;
+            foreach (var image in exteriorDraws)
+            {
+                if (image.Data == null || image.Data.Indices.Length == 0)
+                    continue;
+                if (group == null || image.Chunk != previous)
+                    group = AddObjectGroup();
+                group.Members.Add(image);
+                previous = image.Chunk;
+            }
+            return usedObjectGroups;
+        }
+
+        int GroupStaticObjects(List<MeshBatch> objects)
+        {
+            ClearObjectGroups();
+            float maxWidth = 320 * canvas.Scale,
+                maxHeight = 160 * canvas.Scale;
+            float guard = 2 * canvas.Scale;
+            foreach (var item in objects)
+            {
+                var data = item.Data;
+                if (data == null || data.Indices.Length == 0)
+                    continue;
+                Rect bounds = data.Bounds;
+                int groupIndex = usedObjectGroups;
+                // Bound work per visible object during a scene rebuild.
+                int first = Math.Max(0, usedObjectGroups - 32);
+                for (int i = usedObjectGroups - 1; i >= first; i--)
+                {
+                    var candidate = objectGroups[i];
+                    Rect other = candidate.Bounds;
+                    float left = Math.Min(bounds.xMin, other.xMin),
+                        top = Math.Min(bounds.yMin, other.yMin);
+                    float width = Math.Max(bounds.xMax, other.xMax) - left;
+                    float height = Math.Max(bounds.yMax, other.yMax) - top;
+                    if (
+                        width <= maxWidth
+                        && height <= maxHeight
+                        && candidate.Members.Count < 64
+                        && candidate.Vertices + data.Vertices.Length <= 16384
+                    )
+                    {
+                        groupIndex = i;
+                        bounds = new Rect(left, top, width, height);
+                        break;
+                    }
+                    if (
+                        bounds.xMax + guard >= other.xMin
+                        && other.xMax + guard >= bounds.xMin
+                        && bounds.yMax + guard >= other.yMin
+                        && other.yMax + guard >= bounds.yMin
+                    )
+                        break;
+                }
+                var group = groupIndex == usedObjectGroups ? AddObjectGroup() : objectGroups[groupIndex];
+                group.Bounds = bounds;
+                group.Vertices += data.Vertices.Length;
+                group.Members.Add(item);
+            }
+            return usedObjectGroups;
+        }
+
+        void BuildObjectChunks(int groupCount, List<MeshBatch> output, bool roofOnly, uint kind)
         {
             output.Clear();
             if (roofOnly)
                 SharedRoofMaskChunks = 0;
-            for (int start = 0; start < source.Count; )
+            for (int group = 0; group < groupCount; group++)
             {
-                int end = start + 1;
-                while (end < source.Count && end - start < 64 && source[end].Chunk == source[start].Chunk)
-                    end++;
+                var source = objectGroups[group].Members;
+                int end = source.Count;
                 // A fully roof-blocking group has identical geometry in the color and
                 // roof-mask passes. Share the cache entry (and its single owner), not a
                 // second mesh allocation. Mixed groups still get a filtered mask mesh.
@@ -378,7 +526,7 @@ namespace Rubezh.UnityPort
                 if (kind == 2)
                 {
                     bool allBlockRoof = true;
-                    for (int i = start; i < end && allBlockRoof; i++)
+                    for (int i = 0; i < end && allBlockRoof; i++)
                         allBlockRoof = source[i].BlocksRoof;
                     if (allBlockRoof)
                     {
@@ -390,7 +538,7 @@ namespace Rubezh.UnityPort
                 int count = 0;
                 unchecked
                 {
-                    for (int i = start; i < end; i++)
+                    for (int i = 0; i < end; i++)
                     {
                         var batch = source[i];
                         if (roofOnly && !batch.BlocksRoof)
@@ -403,17 +551,14 @@ namespace Rubezh.UnityPort
                     }
                 }
                 if (count == 0)
-                {
-                    start = end;
                     continue;
-                }
                 ObjectChunk chunk;
                 bool found = objectChunkCache.TryGetValue(hash, out chunk);
                 if (found)
                 {
                     int j = 0;
                     found = chunk.Members.Length == count;
-                    for (int i = start; found && i < end; i++)
+                    for (int i = 0; found && i < end; i++)
                     {
                         var batch = source[i];
                         if (roofOnly && !batch.BlocksRoof)
@@ -432,7 +577,7 @@ namespace Rubezh.UnityPort
                         chunk.Versions = new int[count];
                     }
                     int j = 0;
-                    for (int i = start; i < end; i++)
+                    for (int i = 0; i < end; i++)
                     {
                         var batch = source[i];
                         if (roofOnly && !batch.BlocksRoof)
@@ -451,7 +596,6 @@ namespace Rubezh.UnityPort
                     ObjectChunkHits++;
                 chunk.LastFrame = pictureFrame;
                 output.Add(chunk.Mesh);
-                start = end;
             }
         }
 

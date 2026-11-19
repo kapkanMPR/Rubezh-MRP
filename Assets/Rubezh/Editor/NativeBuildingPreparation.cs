@@ -56,7 +56,7 @@ namespace Rubezh.UnityPort.Editor
     public static class NativeBuildingPreparation
     {
         public const string Root = "Assets/Rubezh/NativeContent/Buildings";
-        const string Recipe = "native-buildings-213-1";
+        const string Recipe = "native-buildings-223-draw-order";
 
         [Serializable]
         public sealed class Receipt
@@ -191,7 +191,7 @@ namespace Rubezh.UnityPort.Editor
             {
                 if (pieces.Count == 0)
                     return;
-                var pack = SilentOrders.Rendering.AtlasLayout.Pack(sizes, 1024);
+                var pack = SilentOrders.Rendering.AtlasLayout.PackBuildingPages(sizes);
                 for (int page = 0; page < pack.Pages.Length; page++)
                 {
                     var size = pack.Pages[page];

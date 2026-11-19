@@ -99,9 +99,9 @@ static class Mask221Check
         var first = Geometry(3);
         var second = Geometry(70);
         var builder = Nested("MaskMergeBuilder");
-        Invoke(builder, "Add", first, 0, 6);
-        Invoke(builder, "Add", first, 12, 6);
-        Invoke(builder, "Add", second, 0, 6);
+        Invoke(builder, "Add", first, 0, 6, true);
+        Invoke(builder, "Add", first, 12, 6, true);
+        Invoke(builder, "Add", second, 0, 6, false);
         var sourceData = new[] { first, first, second };
         var starts = new[] { 0, 12, 0 };
         var result = Get<List<int>>(builder, "Indices");
@@ -156,7 +156,6 @@ static class Mask221Check
         Set(r, "canvas", new PixelCanvas(100, 100));
         Set(r, "geometrySerial", 1);
         Set(r, "unityMaskMergedGeometry", -1);
-        Set(r, "unityMaskMergedMaterialRevision", -1);
         Set(r, "unityMaskCamera", new Camera());
         Set(r, "unityMaskShader", new Shader());
         Set(r, "unityMask", new RenderTexture(100, 100, 0, RenderTextureFormat.RFloat));
@@ -173,16 +172,181 @@ static class Mask221Check
         return r;
     }
 
+    static void CheckPictureRanges()
+    {
+        var renderer = Fixture();
+        Get<IList>(renderer, "objectDraws").Clear();
+        Set(Get<object>(renderer, "pictureBatch"), "Data", Geometry(0));
+        var battle = new BattleSimulation(223);
+        battle.Fog.Enabled = false;
+        void Visible(float left, float width, int commands, int submesh, int triangles)
+        {
+            Invoke(renderer, "RenderCachedUnityMasks", battle, new Rect(left, 0, width, 1), true);
+            var draws = Get<CommandBuffer>(renderer, "unityObjectMaskCommands").Draws;
+            var roof = Get<CommandBuffer>(renderer, "unityRoofMaskCommands").Draws;
+            Check(draws.Count == commands && roof.Count == commands, "single draw per visible picture page");
+            int count = 0;
+            for (int i = 0; i < draws.Count; i++)
+            {
+                var draw = draws[i];
+                Check(
+                    (submesh < 0 || draw.Submesh == submesh) && draw.Submesh == roof[i].Submesh,
+                    "roof and object cameras share exactly the visible picture triangles"
+                );
+                count += draw.Mesh.SubmeshIndices[draw.Submesh].Length / 3;
+            }
+            Check(count == triangles, "correct picture triangle count at viewport boundaries");
+        }
+        Visible(0, .08f, 1, 1, 2);
+        Visible(.2f, .08f, 1, 2, 2);
+        Visible(.16f, .02f, 0, -1, 0);
+        Visible(0, 1, 2, 0, 6);
+        Invoke(renderer, "ReleaseUnityMaskCommands");
+    }
+
+    static void CheckPackedMasksAndFallback()
+    {
+        Mesh.RecordData = true;
+        try
+        {
+            CheckPictureRanges();
+            var r = Fixture();
+            var objects = Get<IList>(r, "objectDraws");
+            var extra = Nested("MeshBatch");
+            var data = Geometry(28);
+            var depths = Get<Vector2[]>(data, "Depths");
+            for (int i = 0; i < 4; i++)
+                depths[i].y = 0;
+            // Entire second quad survives; third has one triangle wholly above the range.
+            depths[8].y = depths[9].y = depths[10].y = 3;
+            Set(extra, "Data", data);
+            Set(extra, "Chunk", 5L);
+            objects.Add(extra);
+            var battle = new BattleSimulation(223);
+            battle.Fog.Enabled = false;
+            Check(
+                (bool)Invoke(r, "EnsureUnityMaskTargets", 100, 100) && r.UnityPackedMasks,
+                "blendable RG32F selects full-precision packed masks"
+            );
+            Check(
+                Get<RenderTexture>(r, "unityMask").format == RenderTextureFormat.RGFloat
+                    && Get<RenderTexture>(r, "unityRoofMask") == null,
+                "only one packed target allocated"
+            );
+            var view = new Rect(0, 0, 1, 1);
+            Invoke(r, "RenderCachedUnityMasks", battle, view, true);
+            var camera = Get<Camera>(r, "unityMaskCamera");
+            Check(
+                camera.RenderCalls.Count == 1
+                    && camera.RenderCalls[0].CullingMask == (1 << 30)
+                    && camera.RenderCalls[0].Draws == 2
+                    && r.UnityRoofMaskDraws == 0,
+                "packed masks share one camera pass"
+            );
+            Check(
+                Get<CommandBuffer>(r, "unityRoofMaskCommands") == null
+                    && Get<IDictionary>(r, "unityMergedMaskMaterials").Count == 2,
+                "packed path allocates only the object command buffer and visible mask materials"
+            );
+            var commands = Get<CommandBuffer>(r, "unityObjectMaskCommands");
+            int roof = 0,
+                other = 0;
+            foreach (var draw in commands.Draws)
+            foreach (int vertex in draw.Mesh.SubmeshIndices[0])
+            {
+                if (draw.Mesh.UvChannels[4][vertex].x == 1)
+                    roof++;
+                else
+                    other++;
+            }
+            Check(
+                roof == 18 && other == 9,
+                "roof channel membership survives MAX batching; nonwriting triangles culled"
+            );
+            Invoke(r, "RenderCachedUnityMasks", battle, new Rect(.01f, 0, 1, 1), false);
+            Check(camera.RenderCalls.Count == 2 && r.UnityMaskGeometryBuilds == 1, "camera pan takes one mask pass");
+            var pannedView = new Rect(.01f, 0, 1, 1);
+            battle.GreenVehicle = new VehicleArrivalState
+            {
+                Active = true,
+                Side = Side.Green,
+                Center = new V2(10, 10),
+            };
+            Invoke(r, "RenderCachedUnityMasks", battle, pannedView, false);
+            Check(
+                camera.RenderCalls.Count == 3
+                    && r.UnityObjectMaskBuilds == 3
+                    && r.UnityRoofMaskBuilds == 3
+                    && r.UnityRoofMaskDraws == 0
+                    && r.UnityMaskGeometryBuilds == 1,
+                "vehicle arrival updates the packed target in one pass; static green channel inputs are retained"
+            );
+            Invoke(r, "RenderCachedUnityMasks", battle, pannedView, false);
+            Check(camera.RenderCalls.Count == 3 && r.UnityObjectMaskDraws == 0, "parked vehicle reuses packed pixels");
+            battle.GreenVehicle.Center = new V2(10.125f, 10);
+            Invoke(r, "RenderCachedUnityMasks", battle, pannedView, false);
+            Check(
+                camera.RenderCalls.Count == 4 && camera.RenderCalls[3].Draws == 2 && r.UnityMaskGeometryBuilds == 1,
+                "subcell vehicle motion updates both channels together without rebuilding geometry"
+            );
+            r.UnityMergedMaskCommands = false;
+            Check(
+                (bool)Invoke(r, "EnsureUnityMaskTargets", 100, 100) && !r.UnityPackedMasks,
+                "renderer-based mode restores separate R32F targets"
+            );
+            Invoke(r, "RenderCachedUnityMasks", battle, view, true);
+            Check(camera.RenderCalls.Count == 6 && r.UnityRoofMaskDraws == -1, "separate renderer passes available");
+
+            SystemInfo.RGFloatBlendSupported = false;
+            var fallback = Fixture();
+            Invoke(fallback, "ReleaseUnityMask");
+            Check(
+                (bool)Invoke(fallback, "EnsureUnityMaskTargets", 100, 100) && !fallback.UnityPackedMasks,
+                "unsupported RG32F blending selects separate targets"
+            );
+            Get<IList>(fallback, "objectDraws").Add(extra);
+            Set(fallback, "geometrySerial", 42);
+            Invoke(fallback, "RenderCachedUnityMasks", battle, view, true);
+            var allDraws = Get<CommandBuffer>(fallback, "unityObjectMaskCommands").Draws;
+            var roofDraws = Get<CommandBuffer>(fallback, "unityRoofMaskCommands").Draws;
+            Check(allDraws.Count == 2 && roofDraws.Count == 2, "two full-resolution legacy passes");
+            int allIndices = 0,
+                roofIndices = 0;
+            for (int i = 0; i < allDraws.Count; i++)
+            {
+                var total = allDraws[i];
+                var subset = roofDraws[i];
+                Check(
+                    ReferenceEquals(total.Mesh, subset.Mesh) && subset.Submesh == 1,
+                    "fallback shares mixed vertices"
+                );
+                allIndices += total.Mesh.SubmeshIndices[total.Submesh].Length;
+                roofIndices += subset.Mesh.SubmeshIndices[subset.Submesh].Length;
+            }
+            Check(allIndices == 27 && roofIndices == 18, "two targets retain distinct occlusion membership");
+            Invoke(fallback, "ReleaseUnityMaskCommands");
+            Invoke(fallback, "ReleaseUnityMask");
+            Invoke(r, "ReleaseUnityMaskCommands");
+            Invoke(r, "ReleaseUnityMask");
+        }
+        finally
+        {
+            Mesh.RecordData = false;
+            SystemInfo.RGFloatBlendSupported = true;
+        }
+    }
+
     internal static int Run()
     {
         BuilderPreservesAttributes();
+        CheckPackedMasksAndFallback();
         var r = Fixture();
         var battle = new BattleSimulation(221);
         battle.Fog.Enabled = false;
         Invoke(r, "RenderCachedUnityMasks", battle, new Rect(0, 0, 1, 1), true);
         Check(
-            r.UnityMaskGeometryBuilds == 1 && r.UnityMaskMergedMeshes == 4,
-            "nonconsecutive page runs merge into two object + two roof meshes"
+            r.UnityMaskGeometryBuilds == 1 && r.UnityMaskMergedMeshes == 2,
+            "both mask passes reuse the same two page meshes"
         );
         Check(
             r.UnityObjectMaskDraws == 2 && r.UnityRoofMaskDraws == 2,
