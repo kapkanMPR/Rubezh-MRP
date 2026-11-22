@@ -14,6 +14,7 @@ namespace Rubezh.UnityPort
             SceneSubmissionMs,
             MaskRenderMs,
             CameraRenderMs;
+        public int UnityStaticRendererNodes { get; private set; }
         public int UnitySceneNodes { get; private set; }
         public bool UnityCompatibilityDraw
         {
@@ -724,6 +725,7 @@ namespace Rubezh.UnityPort
                         UnityEngine.Object.Destroy(unityActorNodes[key].Object);
                         unityActorNodes.Remove(key);
                     }
+                    UnityStaticRendererNodes = staticPrefixCount + staticSuffixCount;
                     UnitySceneNodes = usedUnityNodes + activeActors;
                     unitySubmittedFrame = pictureFrame;
                 }
