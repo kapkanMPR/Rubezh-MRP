@@ -81,8 +81,18 @@ namespace Rubezh.UnityPort
             }
             finally
             {
-                UnityEngine.Object.Destroy(color);
-                UnityEngine.Object.Destroy(depth);
+#if UNITY_EDITOR
+                if (!UnityEngine.Application.isPlaying)
+                {
+                    UnityEngine.Object.DestroyImmediate(color);
+                    UnityEngine.Object.DestroyImmediate(depth);
+                }
+                else
+#endif
+                {
+                    UnityEngine.Object.Destroy(color);
+                    UnityEngine.Object.Destroy(depth);
+                }
             }
 #endif
         }
