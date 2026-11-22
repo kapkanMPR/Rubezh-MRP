@@ -71,52 +71,9 @@ namespace SilentOrders.Core
             return ordinary;
         }
 
-        public static bool ReservedByOtherPair(BattleSimulation b, Squad q, Soldier mover, Soldier other)
-        {
-            return Enabled(q, 16)
-                && other != mover
-                && Live(other, q)
-                && other.Assignment.PairId >= 0
-                && other.Assignment.PairId != mover.Assignment.PairId
-                && other.Assignment.Active
-                && other.Assignment.IsBound
-                && other.Assignment.Deadline > b.Time
-                && other.PathCursor < other.Path.Count;
-        }
+        public static bool ReservedByOtherPair(BattleSimulation b, Squad q, Soldier mover, Soldier other) => false;
 
-        public static float Spacing(BattleSimulation b, Squad q, Soldier mover, V2 point)
-        {
-            if (Enabled(q, 16))
-            {
-                float reservationCost = 0;
-                foreach (var u in b.Soldiers)
-                    if (ReservedByOtherPair(b, q, mover, u))
-                    {
-                        q.CommandPlan.Experiments.ReservationsReviewed++;
-                        float distance = V2.Distance(point, u.Assignment.Goal);
-                        if (distance < 1.3f)
-                            reservationCost -= (1.3f - distance) * 3;
-                    }
-
-                return reservationCost;
-            }
-
-            if (!Enabled(q, 2))
-                return 0;
-            q.CommandPlan.Experiments.SpacingReviews++;
-            float score = 0;
-            foreach (var u in b.Soldiers)
-                if (u != mover && Live(u, q))
-                {
-                    // A bound reserves its endpoint; a stationary soldier owns the occupied firing post.
-                    V2 anchor = u.Assignment.Active && u.Assignment.IsBound ? u.Assignment.Goal : u.Position;
-                    float d = V2.Distance(point, anchor);
-                    if (d < 2.5f)
-                        score -= (2.5f - d) * 2;
-                }
-
-            return score;
-        }
+        public static float Spacing(BattleSimulation b, Squad q, Soldier mover, V2 point) => 0;
 
         public static bool WaitForPartner(BattleSimulation b, Squad q, PairCommandPlan p, Soldier mover)
         {
@@ -147,12 +104,6 @@ namespace SilentOrders.Core
             return true;
         }
 
-        public static int SearchRadius(Squad q, PairCommandPlan p)
-        {
-            if (!Enabled(q, 8) || p.Failures < 3 || q.Style == CombatStyle.Passive || q.Style == CombatStyle.Withdraw)
-                return 3;
-            q.CommandPlan.Experiments.DetourSearches++;
-            return 5;
-        }
+        public static int SearchRadius(Squad q, PairCommandPlan p) => 3;
     }
 }
