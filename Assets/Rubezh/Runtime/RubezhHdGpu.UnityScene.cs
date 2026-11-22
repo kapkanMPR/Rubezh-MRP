@@ -483,6 +483,16 @@ namespace Rubezh.UnityPort
                 {
                     if (node.Properties == null)
                         node.Properties = new MaterialPropertyBlock();
+#if UNITY_ANDROID && !UNITY_EDITOR
+                    // Actor nodes carry individual depth, clipping and tint. Use ordinary
+                    // per-renderer uniforms for them on Vulkan during the device comparison.
+                    if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Vulkan)
+                    {
+                        node.Properties.Clear();
+                        if (parent != null)
+                            node.Properties.SetFloat("_BuildingMode", 0);
+                    }
+#endif
                     node.Properties.SetFloat("_NativeInstance", 1);
                     node.Properties.SetFloat("_ActorRootDepth", parent != null ? 1 : 0);
                     node.Properties.SetVector("_InstanceData", data);
